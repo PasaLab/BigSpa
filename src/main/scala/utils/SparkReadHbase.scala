@@ -1,19 +1,15 @@
+package utils
+
 /**
   * Created by cycy on 2018/1/26.
   */
-import org.apache.hadoop.hbase.client.Put
-import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp
-import org.apache.hadoop.hbase.filter.SingleColumnValueFilter
-import org.apache.hadoop.hbase.io.ImmutableBytesWritable
+import org.apache.hadoop.hbase.HBaseConfiguration
+import org.apache.hadoop.hbase.client._
 import org.apache.hadoop.hbase.mapred.TableOutputFormat
 import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.hadoop.hbase.protobuf.ProtobufUtil
 import org.apache.hadoop.hbase.util.{Base64, Bytes}
-import org.apache.hadoop.hbase.HBaseConfiguration
-import org.apache.hadoop.mapred.JobConf
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.hadoop.hbase.client._
-import org.apache.spark.rdd.RDD
 
 object SparkReadHbase {
   def convertScanToString(scan: Scan) = {
@@ -31,17 +27,8 @@ object SparkReadHbase {
     var hbase_output:String="data/result/hbase/hbhfile"
     var par: Int = 96
 
-    var openBloomFilter:Boolean=true
-    var edges_totalnum:Int=1
-    var error_rate:Double=0.1
-
     var htable_name:String="edges"
-    var Hbase_interval:Int=1000
-    var query_internal:Int=2
-
-    var is_complete_loop:Boolean=false
-    var max_complete_loop_turn:Int=5
-    var max_delta:Int=10000
+    var HRegion_splitnum:Int=1000
 
     for (arg <- args) {
       val argname = arg.split(",")(0)
@@ -56,17 +43,8 @@ object SparkReadHbase {
         case "hbase_output"=>hbase_output=argvalue
         case "par" => par = argvalue.toInt
 
-        case "openBloomFilter"=>openBloomFilter=argvalue.toBoolean
-        case "edges_totalnum"=>edges_totalnum=argvalue.toInt
-        case "error_rate"=>error_rate=argvalue.toDouble
-
         case "htable_name"=>htable_name=argvalue
-        case "Hbase_interval"=>Hbase_interval=argvalue.toInt
-        case "query_internal"=>query_internal=argvalue.toInt
-
-        case "is_complete_loop"=>is_complete_loop=argvalue.toBoolean
-        case "max_complete_loop_turn"=>max_complete_loop_turn=argvalue.toInt
-        case "max_delta"=>max_delta=argvalue.toInt
+        case "HRegion_splitnum"=>HRegion_splitnum=argvalue.toInt
 
         case _ => {}
       }
@@ -100,9 +78,11 @@ object SparkReadHbase {
     usersRDD.cache()
 
     deleteDir.deletedir(islocal,master,output)
+    val split_length=utils.HBase_OP.getIntBit(HRegion_splitnum)
     usersRDD.map(s=>{
       val str=Bytes.toString(s._2.getRow)
-      (str.substring(1,8).toInt+"\t"+str.substring(8,15).toInt+"\t"+str.substring(15,17).toInt)
+      (str.substring(split_length,split_length+7).toInt+"\t"+str.substring(split_length+7,split_length+14)
+        .toInt+"\t"+str.substring(split_length+14,split_length+16).toInt)
     }).repartition(1).saveAsTextFile(output)
     // =================================
   }

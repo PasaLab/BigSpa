@@ -1,10 +1,6 @@
-
 /**
-  * Created by cycy on 2018/1/18.
-  * Grammar Format: A B C.---------->     A<-BC
-  * InputGraph Format: src,dst,Label
+  * Created by cycy on 2018/1/28.
   */
-
 import java.util
 import java.util.concurrent.Executors
 
@@ -20,14 +16,14 @@ import org.apache.hadoop.hbase.mapreduce.HFileOutputFormat
 import org.apache.hadoop.hbase.util.Bytes
 import utils.{HBase_OP, Para, deleteDir}
 
-object Graspan_noBF extends Para{
+object Graspan_continue extends Para{
 
   def processGrammar(grammar_origin:List[Array[String]],input_grammar:String)
   :(Map[String,EdgeLabel],Int,Int,List[EdgeLabel],Map[EdgeLabel,EdgeLabel],List[((EdgeLabel,EdgeLabel),EdgeLabel)])={
     val symbol_Map=grammar_origin.flatMap(s=>s.toList).distinct.zipWithIndex.toMap
     val (loop:List[EdgeLabel],directadd:Map[EdgeLabel,EdgeLabel],grammar:List[((EdgeLabel,EdgeLabel),EdgeLabel)])={
       if(input_grammar.contains("pointsto")){
-//        println("Grammar need preprocessed")
+        //        println("Grammar need preprocessed")
         (grammar_origin.filter(s=>s.length==1).map(s=>symbol_Map.getOrElse(s(0),-1)),grammar_origin.filter(s=>s
           .length==2)
           .map(s=>(symbol_Map.getOrElse(s(1),-1),symbol_Map.getOrElse(s(0),-1))).toMap,grammar_origin.filter(s=>s
@@ -47,7 +43,7 @@ object Graspan_noBF extends Para{
     val nodes=graph_origin.flatMap(s=>List(s._1,s._2)).distinct()
     val graph={
       if(input_grammar.contains("pointsto")){
-//        println("Graph need preprocessed")
+        //        println("Graph need preprocessed")
         (graph_changelabel
           ++ nodes.flatMap(s=>loop.map(x=>(s,s,x)))
           ++ graph_changelabel.filter(s=>directadd.contains(s._3)).map(s=>(s._1,s._2,directadd.getOrElse(s._3,-1)))
@@ -104,19 +100,18 @@ object Graspan_noBF extends Para{
     //    tmp_str+="DV: "+res_edges.filter(s=>s._3==1).length+", "
     //    tmp_str+="M: "+res_edges.filter(s=>s._3==0).length+"\n"
 
-    val old_num=res_edges.length
+    println("|| origin newedges: "+res_edges.length)
+    tmp_str+="|| origin newedges: "+res_edges.length
     val add_edges=res_edges.filter(s=>directadd.contains(s._3)).map(s=>(s._1,s._2,directadd.getOrElse(s
       ._3,-1)))
+    println("add_newedges: "+add_edges.length)
+    tmp_str+=", add_newedges: "+add_edges.length
     res_edges=(res_edges ++ add_edges).distinct
+    println("distinct newedges: "+res_edges.length+" ||")
+    tmp_str+=", distinct newedges: "+res_edges.length+" ||"
     val t1=System.nanoTime():Double
-    println("|| origin newedges: "+old_num
-      +",\tadd_newedges: "+add_edges.length
-      +",\tdistinct newedges: " +res_edges.length+" ||"
-      +"join take time:"+((t1-t0) /1000000000.0)+" secs")
-    tmp_str+=("|| origin newedges: "+old_num
-      +",\tadd_newedges: "+add_edges.length
-      +",\tdistinct newedges: " +res_edges.length+" ||"
-      +"join take time:"+((t1-t0) /1000000000.0)+" secs")
+    println("join take time:"+((t1-t0)/1000000000.0)+" secs")
+    tmp_str+="join take time:"+(t1-t0)/1000000000.0 +" secs"
     (res_edges,tmp_str)
   }
   def computeInPartition_completely(step:Int,index:Int,
@@ -136,9 +131,9 @@ object Graspan_noBF extends Para{
     var t1=System.nanoTime():Double
     var recording:List[String]=List()
     val mid_adj_list=mid_adj.toList
-//    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
-    println("At STEP "+step+", partition "+index+mid_adj_list.map(s=>s._2.length).sum)
-    recording:+="At STEP "+step+", partition "+index+mid_adj_list.map(s=>s._2.length).sum
+    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
+    println("At STEP "+step+", partition "+index+", origin edges sum to "+old_edges.length)
+    recording:+="At STEP "+step+", partition "+index+", origin edges sum to "+old_edges.length
     var (res_edges,tmp_str)=join(mid_adj_list,grammar,directadd)
     recording:+=tmp_str
     //    res_edges=res_edges.filter(s=> !old_edges.contains(s))
@@ -199,22 +194,29 @@ object Graspan_noBF extends Para{
       * Hbase过滤
       */
     t0=System.nanoTime():Double
+    //    val distribution=res_edges.map(s=>(s._1,1)).groupBy(_._1).map(s=>(s._1,s._2.length)).toList.map(s=>(htable_split_Map
+    //      .getOrElse(s
+    //      ._1/htable_nodes_interval,"g"),s._2)).groupBy(_._1).map(s=>(s._1,s._2.map(x=>x._2).sum))
+    //    println("res_edges distribution:")
+    //    println(distribution.mkString("\n"))
+    //    recording:+="res_edges distribution:"
+    //    recording:+=distribution.mkString("\n")
     val len=res_edges.length
     res_edges= {
       val res=HBase_OP.queryHbase_inPartition(res_edges,nodes_num_bitsize,symbol_num_bitsize,htable_name,
         htable_split_Map,
         htable_nodes_interval,
         Hbase_interval,default_split)
-//      recording:+="res_edges confirmed new by Hbase: "+res.length
+      //      recording:+="res_edges confirmed new by Hbase: "+res.length
       res
     }
     t1=System.nanoTime():Double
-    println("Query Hbase for edges: \t"+len
-      +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
-      +", \tres_edges:             \t"+res_edges.length+"\n")
-    recording:+=("Query Hbase for edges: \t"+len
-    +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
-    +", \tres_edges:             \t"+res_edges.length+"\n")
+    println("Query Hbase for edges: \t"+len)
+    println("Query Hbase take time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec")
+    recording:+="Query Hbase for edges: \t"+res_edges.length
+    recording:+="Query Hbase take time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
+    println("res_edges:             \t"+res_edges.length+"\n")
+    recording:+="res_edges: "+res_edges.length
     List((res_edges,recording)).toIterator
   }
 
@@ -232,6 +234,7 @@ object Graspan_noBF extends Para{
 
     var openBloomFilter:Boolean=false
     var edges_totalnum:Int=1
+    var nodes_totalnum:Int=1721418
     var error_rate:Double=0.1
 
     var htable_name:String="edges"
@@ -257,6 +260,7 @@ object Graspan_noBF extends Para{
 
         case "openBloomFilter"=>openBloomFilter=argvalue.toBoolean
         case "edges_totalnum"=>edges_totalnum=argvalue.toInt
+        case "nodes_totalnum"=>nodes_totalnum=argvalue.toInt
         case "error_rate"=>error_rate=argvalue.toDouble
 
         case "htable_name"=>htable_name=argvalue
@@ -321,30 +325,36 @@ object Graspan_noBF extends Para{
     /**
       * Graph相关设置
       */
-    val graph_origin=sc.textFile(input_graph,par).filter(!_.trim.equals("")).map(s=>{
+//    val graph_origin=sc.textFile(input_graph,par).filter(!_.trim.equals("")).map(s=>{
+//      val str=s.split("\\s+")
+//      (str(0).toInt,str(1).toInt,str(2))
+//    })
+//    if(graph_origin.isEmpty()){
+//      println("input graph is empty")
+//      System.exit(0)
+//    }
+//    val(graph,nodes_num_bitsize,nodes_totalnum)=processGraph(graph_origin,input_grammar,symbol_Map,loop,
+//      directadd,par)
+//    println("------------Graph INFO--------------------------------------------")
+//    println("graph_origin edges: \t"+graph_origin.count())
+//    println("processed edges:    \t"+graph.count())
+//    println("nodes_totoalnum:    \t"+nodes_totalnum)
+//    println("nodes_num_bitsize:  \t"+nodes_num_bitsize)
+//    println("------------------------------------------------------------------")
+//    println
+
+    val graph=sc.textFile(input_graph,par).filter(!_.trim.equals("")).map(s=>{
       val str=s.split("\\s+")
-      (str(0).toInt,str(1).toInt,str(2))
+      (str(0).toInt,str(1).toInt,str(2).toInt)
     })
-    if(graph_origin.isEmpty()){
-      println("input graph is empty")
-      System.exit(0)
-    }
-    val(graph,nodes_num_bitsize,nodes_totalnum)=processGraph(graph_origin,input_grammar,symbol_Map,loop,
-      directadd,par)
-    println("------------Graph INFO--------------------------------------------")
-    println("graph_origin edges: \t"+graph_origin.count())
-    println("processed edges:    \t"+graph.count())
-    println("nodes_totoalnum:    \t"+nodes_totalnum)
-    println("nodes_num_bitsize:  \t"+nodes_num_bitsize)
-    println("------------------------------------------------------------------")
-    println
     val htable_nodes_interval:Int=nodes_totalnum/HRegion_splitnum+1
     val (htable_split_Map,default_split)=HBase_OP.createHBase_Table(htable_name,HRegion_splitnum)
 
     /**
       * 原边集存入Hbase
       */
-//    println("graph Partitions: "+graph.partitions.length)
+    //    println("graph Partitions: "+graph.partitions.length)
+    val nodes_num_bitsize=HBase_OP.getIntBit(nodes_totalnum)
     deleteDir.deletedir(islocal,master,hbase_output)
     HBase_OP.updateHbase(graph,nodes_num_bitsize,symbol_num_bitsize,htable_name,hbase_output,
       htable_split_Map,htable_nodes_interval,default_split)
@@ -352,25 +362,21 @@ object Graspan_noBF extends Para{
     /**
       * 开始迭代
       */
-    deleteDir.deletedir(islocal,master,output)
     var oldedges:RDD[(VertexId,VertexId,EdgeLabel,Boolean)]=sc.parallelize(List())
-    var newedges:RDD[(VertexId,VertexId,EdgeLabel,Boolean)]=graph.map(s=>(s._1,s._2,s._3,true))
+    var newedges:RDD[(VertexId,VertexId,EdgeLabel,Boolean)]=graph.map(s=>(s._1,s._2,s._3,true)).coalesce(par)
     var step=0
     var continue:Boolean= !newedges.isEmpty()
-    var newnum:Long=newedges.count()
     while(continue){
       t0=System.nanoTime():Double
       step+=1
       println("\n************During step "+step+"************")
       val t0_compute=System.nanoTime():Double
       val newedges_dup_str={
-        if(newnum<100000){
-          println("alter way")
-          val candiSet_front=newedges.map(s=>s._1).collect().toSet
-          val candiSet_back=newedges.map(s=>s._2).collect().toSet
-          (oldedges.filter(s=>candiSet_front.contains(s._2)||candiSet_back.contains(s._1)) ++ newedges)
-              .flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,
-            ((s._1,s._2),s._3,s._4))))
+        if(newedges.count<10000){
+          val candiSet=newedges.flatMap(s=>List(s._1,s._2)).collect().toSet
+          (oldedges ++ newedges).filter(s=>candiSet.contains(s._1)||candiSet.contains(s._2))
+            .flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,
+              ((s._1,s._2),s._3,s._4))))
             .groupByKey()
             .map(s=>(s._1,s._2.toList))
             .repartition(par)
@@ -378,27 +384,35 @@ object Graspan_noBF extends Para{
               htable_name,
               nodes_num_bitsize,symbol_num_bitsize,directadd,
               is_complete_loop,max_complete_loop_turn,max_delta,
-              htable_split_Map,htable_nodes_interval,queryHBase_interval,default_split)).cache()
+              htable_split_Map,htable_nodes_interval,queryHBase_interval,default_split))
         }
-        else
-          (oldedges ++ newedges).flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,
-            ((s._1,s._2),s._3,s._4))))
-            .groupByKey()
-            .map(s=>(s._1,s._2.toList))
-            .repartition(par)
-            .mapPartitionsWithIndex((index,s)=>computeInPartition_completely(step,index,s,grammar,
-              htable_name,
-              nodes_num_bitsize,symbol_num_bitsize,directadd,
-              is_complete_loop,max_complete_loop_turn,max_delta,
-              htable_split_Map,htable_nodes_interval,queryHBase_interval,default_split)).cache()
+        else (oldedges ++ newedges).flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,
+          ((s._1,s._2),s._3,s._4))))
+          .groupByKey()
+          .map(s=>(s._1,s._2.toList))
+          .repartition(par)
+          .mapPartitionsWithIndex((index,s)=>computeInPartition_completely(step,index,s,grammar,
+            htable_name,
+            nodes_num_bitsize,symbol_num_bitsize,directadd,
+            is_complete_loop,max_complete_loop_turn,max_delta,
+            htable_split_Map,htable_nodes_interval,queryHBase_interval,default_split))
       }
 
-      val (newedges_dup,partition_info)=(newedges_dup_str.flatMap(s=>s._1),newedges_dup_str.map(s=>s._2))
+//      val newedges_dup_str=(oldedges ++ newedges).flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,
+//        ((s._1,s._2),s._3,s._4))))
+//        .groupByKey()
+//        .map(s=>(s._1,s._2.toList))
+//        .repartition(par)
+//        .mapPartitionsWithIndex((index,s)=>computeInPartition_completely(step,index,s,grammar,
+//          htable_name,
+//          nodes_num_bitsize,symbol_num_bitsize,directadd,
+//          is_complete_loop,max_complete_loop_turn,max_delta,
+//          htable_split_Map,htable_nodes_interval,queryHBase_interval,default_split))
+
+      val (newedges_dup,parition_info)=(newedges_dup_str.flatMap(s=>s._1),newedges_dup_str.map(s=>s._2))
 
       println("new_edges_bf count inPartition:")
-      deleteDir.deletedir(islocal,master,output+"step"+step+"/ParINFO/")
-      partition_info.repartition(1).saveAsTextFile(output+"step"+step+"/ParINFO/")
-//      println(partition_info.collect().mkString("\n"))
+      println(parition_info.collect().mkString("\n"))
       val t1_compute=System.nanoTime():Double
       println("clousure compute take time:    \t"+((t1_compute-t0_compute) / 1000000000.0).formatted("%.3f") + " sec")
 
@@ -406,13 +420,12 @@ object Graspan_noBF extends Para{
         * 获得各分区内经过Bloom Filter和Hbase过滤之后留下的新边
         * 再汇总distinct
         */
-      val t0_distinct=System.nanoTime():Double
       println("newedges_dup:                  \t"+newedges_dup.count())
+      val t0_distinct=System.nanoTime():Double
       val newedges_removedup=newedges_dup.distinct()
-      deleteDir.deletedir(islocal,master,output+"step"+step+"/new/")
-      newedges_dup.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/new/")
+      //      deleteDir.deletedir(islocal,master,output+"step"+step)
+      //      newedges_dup.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).repartition(1).saveAsTextFile(output+"step"+step)
       println("newedges_removedup:            \t"+newedges_removedup.count())
-      newnum=newedges_removedup.count()
       //      println(newedges_removedup.collect().mkString("\n"))
       val t1_distinct=System.nanoTime():Double
       println("distinct take time:           \t "+((t1_distinct-t0_distinct) / 1000000000.0).formatted("%.3f") + " " +
@@ -430,22 +443,20 @@ object Graspan_noBF extends Para{
 
       val tmp_old = oldedges
       val tmp_new = newedges
-      oldedges=(oldedges ++ newedges.map(s=>(s._1,s._2,s._3,false))).repartition(par)cache()
-      deleteDir.deletedir(islocal,master,output+"step"+step+"/old/")
-      oldedges.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/old/")
-      newedges=newedges_removedup.map(s=>(s._1,s._2,s._3,true)).cache()
+      oldedges=(oldedges ++ newedges.map(s=>(s._1,s._2,s._3,false))).coalesce(par)
+      newedges=newedges_removedup.map(s=>(s._1,s._2,s._3,true)).coalesce(par)
       continue= !(newedges.isEmpty())
       t1=System.nanoTime():Double
       tmp_old.unpersist()
       tmp_new.unpersist()
-      println("all edges sum to:              \t"+oldedges.count())
+      println("all edges sum to:               \t"+oldedges.count())
       println("*step: step "+step+" take time: \t "+((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
       println
     }
 
     println("final edges count:             \t"+oldedges.count())
-//    h_admin.close()
-//    h_table.close()
+    //    h_admin.close()
+    //    h_table.close()
   }
 
 }

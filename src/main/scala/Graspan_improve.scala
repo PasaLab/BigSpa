@@ -20,14 +20,14 @@ import org.apache.hadoop.hbase.mapreduce.HFileOutputFormat
 import org.apache.hadoop.hbase.util.Bytes
 import utils.{HBase_OP, Para, deleteDir}
 
-object Graspan_noBF extends Para{
+object Graspan_improve extends Para{
 
   def processGrammar(grammar_origin:List[Array[String]],input_grammar:String)
   :(Map[String,EdgeLabel],Int,Int,List[EdgeLabel],Map[EdgeLabel,EdgeLabel],List[((EdgeLabel,EdgeLabel),EdgeLabel)])={
     val symbol_Map=grammar_origin.flatMap(s=>s.toList).distinct.zipWithIndex.toMap
     val (loop:List[EdgeLabel],directadd:Map[EdgeLabel,EdgeLabel],grammar:List[((EdgeLabel,EdgeLabel),EdgeLabel)])={
       if(input_grammar.contains("pointsto")){
-//        println("Grammar need preprocessed")
+        //        println("Grammar need preprocessed")
         (grammar_origin.filter(s=>s.length==1).map(s=>symbol_Map.getOrElse(s(0),-1)),grammar_origin.filter(s=>s
           .length==2)
           .map(s=>(symbol_Map.getOrElse(s(1),-1),symbol_Map.getOrElse(s(0),-1))).toMap,grammar_origin.filter(s=>s
@@ -47,7 +47,7 @@ object Graspan_noBF extends Para{
     val nodes=graph_origin.flatMap(s=>List(s._1,s._2)).distinct()
     val graph={
       if(input_grammar.contains("pointsto")){
-//        println("Graph need preprocessed")
+        //        println("Graph need preprocessed")
         (graph_changelabel
           ++ nodes.flatMap(s=>loop.map(x=>(s,s,x)))
           ++ graph_changelabel.filter(s=>directadd.contains(s._3)).map(s=>(s._1,s._2,directadd.getOrElse(s._3,-1)))
@@ -136,7 +136,7 @@ object Graspan_noBF extends Para{
     var t1=System.nanoTime():Double
     var recording:List[String]=List()
     val mid_adj_list=mid_adj.toList
-//    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
+    //    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
     println("At STEP "+step+", partition "+index+mid_adj_list.map(s=>s._2.length).sum)
     recording:+="At STEP "+step+", partition "+index+mid_adj_list.map(s=>s._2.length).sum
     var (res_edges,tmp_str)=join(mid_adj_list,grammar,directadd)
@@ -205,7 +205,7 @@ object Graspan_noBF extends Para{
         htable_split_Map,
         htable_nodes_interval,
         Hbase_interval,default_split)
-//      recording:+="res_edges confirmed new by Hbase: "+res.length
+      //      recording:+="res_edges confirmed new by Hbase: "+res.length
       res
     }
     t1=System.nanoTime():Double
@@ -213,8 +213,8 @@ object Graspan_noBF extends Para{
       +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
       +", \tres_edges:             \t"+res_edges.length+"\n")
     recording:+=("Query Hbase for edges: \t"+len
-    +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
-    +", \tres_edges:             \t"+res_edges.length+"\n")
+      +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
     List((res_edges,recording)).toIterator
   }
 
@@ -344,7 +344,7 @@ object Graspan_noBF extends Para{
     /**
       * 原边集存入Hbase
       */
-//    println("graph Partitions: "+graph.partitions.length)
+    //    println("graph Partitions: "+graph.partitions.length)
     deleteDir.deletedir(islocal,master,hbase_output)
     HBase_OP.updateHbase(graph,nodes_num_bitsize,symbol_num_bitsize,htable_name,hbase_output,
       htable_split_Map,htable_nodes_interval,default_split)
@@ -369,8 +369,8 @@ object Graspan_noBF extends Para{
           val candiSet_front=newedges.map(s=>s._1).collect().toSet
           val candiSet_back=newedges.map(s=>s._2).collect().toSet
           (oldedges.filter(s=>candiSet_front.contains(s._2)||candiSet_back.contains(s._1)) ++ newedges)
-              .flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,
-            ((s._1,s._2),s._3,s._4))))
+            .flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,
+              ((s._1,s._2),s._3,s._4))))
             .groupByKey()
             .map(s=>(s._1,s._2.toList))
             .repartition(par)
@@ -397,8 +397,8 @@ object Graspan_noBF extends Para{
 
       println("new_edges_bf count inPartition:")
       deleteDir.deletedir(islocal,master,output+"step"+step+"/ParINFO/")
-      partition_info.repartition(1).saveAsTextFile(output+"step"+step+"/ParINFO/")
-//      println(partition_info.collect().mkString("\n"))
+      partition_info.saveAsTextFile(output+"step"+step+"/ParINFO/")
+      //      println(partition_info.collect().mkString("\n"))
       val t1_compute=System.nanoTime():Double
       println("clousure compute take time:    \t"+((t1_compute-t0_compute) / 1000000000.0).formatted("%.3f") + " sec")
 
@@ -409,8 +409,8 @@ object Graspan_noBF extends Para{
       val t0_distinct=System.nanoTime():Double
       println("newedges_dup:                  \t"+newedges_dup.count())
       val newedges_removedup=newedges_dup.distinct()
-      deleteDir.deletedir(islocal,master,output+"step"+step+"/new/")
-      newedges_dup.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/new/")
+//      deleteDir.deletedir(islocal,master,output+"step"+step+"/new/")
+//      newedges_dup.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/new/")
       println("newedges_removedup:            \t"+newedges_removedup.count())
       newnum=newedges_removedup.count()
       //      println(newedges_removedup.collect().mkString("\n"))
@@ -430,9 +430,9 @@ object Graspan_noBF extends Para{
 
       val tmp_old = oldedges
       val tmp_new = newedges
-      oldedges=(oldedges ++ newedges.map(s=>(s._1,s._2,s._3,false))).repartition(par)cache()
-      deleteDir.deletedir(islocal,master,output+"step"+step+"/old/")
-      oldedges.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/old/")
+      oldedges=(oldedges ++ newedges.map(s=>(s._1,s._2,s._3,false))).repartition(par).cache()
+//      deleteDir.deletedir(islocal,master,output+"step"+step+"/old/")
+//      oldedges.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/old/")
       newedges=newedges_removedup.map(s=>(s._1,s._2,s._3,true)).cache()
       continue= !(newedges.isEmpty())
       t1=System.nanoTime():Double
@@ -444,8 +444,8 @@ object Graspan_noBF extends Para{
     }
 
     println("final edges count:             \t"+oldedges.count())
-//    h_admin.close()
-//    h_table.close()
+    //    h_admin.close()
+    //    h_table.close()
   }
 
 }
