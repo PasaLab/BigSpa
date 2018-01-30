@@ -443,8 +443,8 @@ object Graspan_continue extends Para{
 
       val tmp_old = oldedges
       val tmp_new = newedges
-      oldedges=(oldedges ++ newedges.map(s=>(s._1,s._2,s._3,false))).coalesce(par)
-      newedges=newedges_removedup.map(s=>(s._1,s._2,s._3,true)).coalesce(par)
+      oldedges=(oldedges ++ newedges.map(s=>(s._1,s._2,s._3,false))).repartition(par)
+      newedges=newedges_removedup.map(s=>(s._1,s._2,s._3,true))
       continue= !(newedges.isEmpty())
       t1=System.nanoTime():Double
       tmp_old.unpersist()
