@@ -2,12 +2,13 @@ package utils
 
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.Path
-import org.apache.hadoop.hbase.client.{Get, HBaseAdmin, HTable}
+import org.apache.hadoop.hbase.client.{Get, HBaseAdmin, HTable, Put}
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable
 import org.apache.hadoop.hbase.mapred.TableOutputFormat
 import org.apache.hadoop.hbase.mapreduce.{HFileOutputFormat, LoadIncrementalHFiles}
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.hadoop.hbase.{HBaseConfiguration, HColumnDescriptor, HTableDescriptor, KeyValue}
+import org.apache.hadoop.mapred.JobConf
 import org.apache.hadoop.mapreduce.Job
 import org.apache.spark.rdd.RDD
 
@@ -89,6 +90,9 @@ object HBase_OP extends Para{
 
     val h_conf = HBaseConfiguration.create()
     h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
+    println("hbase ipc.server.max.callqueue.size:\t"+h_conf.get("hbase ipc.server.max.callqueue.size"))
+    h_conf.set("hbase ipc.server.max.callqueue.size","5368709120")
+    println(h_conf.get("hbase ipc.server.max.callqueue.size"))
     h_conf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
     val h_table = new HTable(h_conf, htable_name)
     /**
@@ -195,31 +199,30 @@ object HBase_OP extends Para{
   //    println("End Update HBase")
   //  }
   //
-  //  def updateHbase_new_Partition(edge_processed:RDD[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
-  //                                symbol_num_bitsize:Int,htable_name:String,output:String,htable_split_Map:Map[Int,String],
-  //                                htable_nodes_interval:Int,Hbase_interval:Int)= {
-  //    println("Start Update HBase Partition")
-  //    edge_processed.foreachPartition(s=> {
-  //      var lp: util.ArrayList[Put] = new util.ArrayList[Put]()
-  //      val h_conf = HBaseConfiguration.create()
-  //      h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
-  //      val h_jobConf = new JobConf(h_conf, this.getClass)
-  //      h_jobConf.setOutputFormat(classOf[TableOutputFormat])
-  //      h_jobConf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
-  //      val h_table =new HTable(h_conf, htable_name)
-  //
-  //      val list = s.toList
-  //      for (i: Int <- 0 until(list.length, Hbase_interval)) {
-  //        val p_l = list.subList(i, Math.min(i + Hbase_interval, list.length)).map(x => {
-  //          val p: Put = new Put(Bytes.toBytes(Edge2String(x, nodes_num_bitsize, symbol_num_bitsize, htable_split_Map,
-  //            htable_nodes_interval)))
-  //          p.add("edges".getBytes(), "contents".getBytes, Bytes.toBytes("1"))
-  //        })
-  //        h_table.put(p_l)
-  //      }
-  //      h_table.close()
-  //    })
-  //
-  //    println("End Update HBase")
-  //  }
+    def updateHbase_new_Partition(edge_processed:RDD[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
+                                  symbol_num_bitsize:Int,htable_name:String,output:String,htable_split_Map:Map[Int,String],
+                                  htable_nodes_interval:Int,default_split:String,Hbase_interval:Int)= {
+      println("Start Update HBase Partition")
+      edge_processed.foreachPartition(s=> {
+        val h_conf = HBaseConfiguration.create()
+        h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
+        val h_jobConf = new JobConf(h_conf, this.getClass)
+        h_jobConf.setOutputFormat(classOf[TableOutputFormat])
+        h_jobConf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
+        val h_table =new HTable(h_conf, htable_name)
+
+        val list = s.toList
+        for (i: Int <- 0 until(list.length, Hbase_interval)) {
+          val p_l = list.subList(i, Math.min(i + Hbase_interval, list.length)).map(x => {
+            val p: Put = new Put(Bytes.toBytes(Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
+              htable_nodes_interval,default_split)))
+            p.add("edges".getBytes(), "contents".getBytes, Bytes.toBytes("1"))
+          })
+          h_table.put(p_l)
+        }
+        h_table.close()
+      })
+
+      println("End Update HBase")
+    }
 }

@@ -1,6 +1,9 @@
 package utils
 
+import org.apache.spark.{HashPartitioner, SparkContext}
 import org.apache.spark.rdd.RDD
+import org.apache.hadoop.conf.Configuration
+import org.apache.hadoop.fs.{FileUtil, Path}
 
 /**
   * Created by cycy on 2018/1/29.
@@ -24,21 +27,49 @@ object Graspan_OP extends Para {
     val symbol_num_bitsize=HBase_OP.getIntBit(symbol_num)
     (symbol_Map,symbol_num,symbol_num_bitsize,loop,directadd,grammar)
   }
-  def processGraph(graph_origin:RDD[(Int,Int,String)],input_grammar:String,symbol_Map:Map[String,EdgeLabel],
+
+  def processLinux(sc:SparkContext,input_graph:String,input_grammar:String,output:String): Unit ={
+      val configuration = new Configuration()
+      val input = new Path(input_graph)
+      val hdfs = input.getFileSystem(configuration)
+      val fs = hdfs.listStatus(input)
+      val fileName = FileUtil.stat2Paths(fs)
+
+      var start=0
+      for(i<-fileName){
+        println(i.toString+" is processing")
+        val tmp_graph=sc.textFile(i.toString,4).filter(!_.trim.equals("")).map(s=>{
+          val str=s.split("\\s+")
+          (str(0).toInt,str(1).toInt,str(2))
+        })
+        val nodes_order=tmp_graph.flatMap(s=>List(s._1,s._2)).distinct().zipWithIndex().map(s=>(s._1,s._2.toInt+start))
+        start=nodes_order.map(s=>s._2).max()+1
+        val nodes_Map=nodes_order.collect().toMap
+        tmp_graph.map(s=>(nodes_Map.getOrElse(s._1,-1),nodes_Map.getOrElse(s._2,-1),s._3)).repartition(1)
+          .saveAsTextFile (output+"/"+i.toString.split("/").last)
+      }
+  }
+  def processGraph(sc:SparkContext,input_graph:String,input_grammar:String,symbol_Map:Map[String,EdgeLabel],
                    loop:List[EdgeLabel],
                    directadd:Map[EdgeLabel,EdgeLabel],par:Int):(RDD[(VertexId,VertexId,EdgeLabel)],Int,Int)={
-    val graph_changelabel=graph_origin.map(s=>(s._1,s._2,symbol_Map.getOrElse(s._3,-1)))
-    val nodes=graph_origin.flatMap(s=>List(s._1,s._2)).distinct()
+    val graph_changelabel:RDD[(VertexId,VertexId,EdgeLabel)]={
+       sc.textFile(input_graph,par).filter(!_.trim.equals("")).map(s=>{
+          val str=s.split("\\s+")
+          (str(0).toInt,str(1).toInt,symbol_Map.getOrElse(str(2),-1))
+        })
+    }
+    val nodes=graph_changelabel.flatMap(s=>List(s._1,s._2)).distinct()
     val graph={
       if(input_grammar.contains("pointsto")){
-        //        println("Graph need preprocessed")
+                println("Graph need preprocessed")
         (graph_changelabel
           ++ nodes.flatMap(s=>loop.map(x=>(s,s,x)))
           ++ graph_changelabel.filter(s=>directadd.contains(s._3)).map(s=>(s._1,s._2,directadd.getOrElse(s._3,-1)))
           ).distinct()
       }
-      else graph_origin.map(s=>(s._1,s._2,symbol_Map.getOrElse(s._3,-1))).distinct()
+      else graph_changelabel.map(s=>(s._1,s._2,s._3)).distinct()
     }.cache()
+    if(graph.filter(s=>s._3== -1).isEmpty()==false) println("读取EdgeLabel出错")
     val nodes_totalnum=nodes.count().toInt
     val nodes_num_bitsize=HBase_OP.getIntBit(nodes_totalnum)
     (graph,nodes_num_bitsize,nodes_totalnum)
