@@ -31,6 +31,7 @@ object Graspan_improve extends Para{
     var output: String = "data/result/" //除去ip地址
     var hbase_output:String="data/result/hbase/hbhfile/"
     var defaultpar:Int=352
+    var largestpar:Int=3520
     var smallpar:Int=64
 
     var openBloomFilter:Boolean=false
@@ -57,6 +58,7 @@ object Graspan_improve extends Para{
         case "output" => output = argvalue
         case "hbase_output"=>hbase_output=argvalue
         case "smallpar"=>smallpar=argvalue.toInt
+        case "largestpar"=>largestpar=argvalue.toInt
 
         case "openBloomFilter"=>openBloomFilter=argvalue.toBoolean
         case "edges_totalnum"=>edges_totalnum=argvalue.toInt
@@ -95,7 +97,9 @@ object Graspan_improve extends Para{
     println("spark.driver.memory:  \t"+conf.get("spark.driver.memory"))
     println("spark.executor.memory: \t"+conf.get("spark.executor.memory"))
     println("spark.executor.cores: \t"+conf.get("spark.executor.cores"))
-    println("partition num:        \t"+defaultpar)
+    println("default partition num: \t"+defaultpar)
+    println("samll partition num:  \t"+smallpar)
+    println("largest partition num: \t"+largestpar)
     println("queryHBase_interval:  \t"+queryHBase_interval)
     println("HRegion_splitnum:     \t"+HRegion_splitnum)
     println("--------------------------------------------------------------------")
@@ -153,7 +157,7 @@ object Graspan_improve extends Para{
     deleteDir.deletedir(islocal,master,output)
     var compute_par_num=defaultpar
     var compute_Partitioner=new HashPartitioner(compute_par_num)
-    var old_par_num=defaultpar
+    var old_par_num=largestpar
     var old_Partitioner=new HashPartitioner(old_par_num)
     var oldedges:RDD[(VertexId,List[((VertexId,VertexId),EdgeLabel,Boolean)])]=sc.parallelize(List())
     var newedges:RDD[(VertexId,List[((VertexId,VertexId),EdgeLabel,Boolean)])]=graph.flatMap(s=>List((s._1,((s._1,s
@@ -212,7 +216,7 @@ object Graspan_improve extends Para{
       tmp_old.unpersist()
       tmp_new.unpersist()
       newedges=newedges_removedup.flatMap(s=>List((s._1,((s._1,s
-        ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList))
+        ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList)).partitionBy(old_Partitioner)
 
       /**
         * Update HBase
