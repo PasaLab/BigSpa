@@ -211,8 +211,8 @@ object Graspan_improve extends Para{
       .partitionBy(old_Partitioner).persist(StorageLevel.MEMORY_AND_DISK)
       tmp_old.unpersist()
       tmp_new.unpersist()
-      newedges=newedges_dup.distinct.flatMap(s=>List((s._1,((s._1,s
-        ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList))
+      newedges=newedges_removedup.flatMap(s=>List((s._1,((s._1,s
+        ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList)).partitionBy(old_Partitioner)
 
       /**
         * Update HBase
