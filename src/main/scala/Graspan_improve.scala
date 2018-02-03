@@ -212,7 +212,7 @@ object Graspan_improve extends Para{
       tmp_old.unpersist()
       tmp_new.unpersist()
       newedges=newedges_removedup.flatMap(s=>List((s._1,((s._1,s
-        ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList)).partitionBy(old_Partitioner)
+        ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList))
 
       /**
         * Update HBase
