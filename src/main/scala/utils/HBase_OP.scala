@@ -84,23 +84,23 @@ object HBase_OP extends Para{
 
   def queryHbase_inPartition(res_edges_maynotin:List[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
                              symbol_num_bitsize:Int,htable_name:String,
-                             htable_split_Map:Map[Int,String],htable_nodes_interval:Int,Hbase_interval:Int,
+                             htable_split_Map:Map[Int,String],htable_nodes_interval:Int,queryHbase_interval:Int,
                              default_split:String)
   :List[(VertexId,VertexId,EdgeLabel)]={
 
     val h_conf = HBaseConfiguration.create()
     h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
-    println("hbase ipc.server.max.callqueue.size:\t"+h_conf.get("hbase ipc.server.max.callqueue.size"))
+//    println("hbase ipc.server.max.callqueue.size:\t"+h_conf.get("hbase ipc.server.max.callqueue.size"))
     h_conf.set("hbase ipc.server.max.callqueue.size","5368709120")
-    println(h_conf.get("hbase ipc.server.max.callqueue.size"))
+//    println(h_conf.get("hbase ipc.server.max.callqueue.size"))
     h_conf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
     val h_table = new HTable(h_conf, htable_name)
     /**
       * Query interval
       */
 //        var res_all:List[(VertexId,VertexId,EdgeLabel)]=List()
-//        for(i:Int<-0 until (res_edges_maynotin.length,Hbase_interval)){
-//          val sublist=res_edges_maynotin.subList(i,Math.min(i+Hbase_interval,res_edges_maynotin.length))
+//        for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
+//          val sublist=res_edges_maynotin.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
 //          val g_l=sublist.map(x=>{
 //            val rk = Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,htable_nodes_interval,default_split)
 //            val get = new Get(Bytes.toBytes(rk))

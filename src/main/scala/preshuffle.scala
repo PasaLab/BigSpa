@@ -15,10 +15,9 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable
 import org.apache.hadoop.hbase.mapred.TableOutputFormat
 import org.apache.hadoop.hbase.mapreduce.HFileOutputFormat
 import org.apache.hadoop.hbase.util.Bytes
-import org.apache.spark.storage.StorageLevel
 import utils.{Graspan_OP, HBase_OP, Para, deleteDir}
 
-object Graspan_improve extends Para{
+object preshuffle extends Para{
 
   def main(args: Array[String]): Unit = {
     var t0=System.nanoTime():Double
@@ -151,75 +150,56 @@ object Graspan_improve extends Para{
       * 开始迭代
       */
     deleteDir.deletedir(islocal,master,output)
-    var compute_par_num=defaultpar
-    var compute_Partitioner=new HashPartitioner(compute_par_num)
-    var old_par_num=defaultpar
-    var old_Partitioner=new HashPartitioner(old_par_num)
+    var lastpar=defaultpar
+    var curpar=defaultpar
+    var curParway=new HashPartitioner(curpar)
     var oldedges:RDD[(VertexId,List[((VertexId,VertexId),EdgeLabel,Boolean)])]=sc.parallelize(List())
     var newedges:RDD[(VertexId,List[((VertexId,VertexId),EdgeLabel,Boolean)])]=graph.flatMap(s=>List((s._1,((s._1,s
-      ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList)).partitionBy(old_Partitioner)
+      ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList)).partitionBy(curParway)
     var step=0
     var continue:Boolean= !newedges.isEmpty()
-    var newnum:Long=graph.count()
+    var newnum:Long=newedges.count()
     while(continue){
       t0=System.nanoTime():Double
       step+=1
       println("\n************During step "+step+"************")
-      val tmp_old=oldedges
-      val tmp_new=newedges
-      val last_compute_par_num=compute_par_num
-
+      lastpar=curpar
       if(newnum>100000) {
-        compute_par_num = (newnum / 20000000 + 1).toInt * defaultpar
-        println("large way: \t" + compute_par_num)
+        curpar = (newnum / 20000000 + 1).toInt * defaultpar
+        println("large way: \t" + curpar)
       }
       else{
-        compute_par_num=((newnum/1000)+1).toInt
-        println("small way: \t"+compute_par_num)
+        curpar=((newnum/1000)+1).toInt
+        println("small way: \t"+curpar)
       }
-      if(last_compute_par_num!=compute_par_num){
-        compute_Partitioner=new HashPartitioner(compute_par_num)
+      if(lastpar!=curpar){
+        curParway=new HashPartitioner(curpar)
       }
-      /**
-        * 计算
-        */
-      val new_edges_str=(newedges leftOuterJoin oldedges).map(s=>(s._1,s._2._1 ++ s._2._2.getOrElse(List())))
-        .partitionBy(compute_Partitioner)
+      val new_edges_str=newedges.partitionBy(curParway)
         .mapPartitionsWithIndex((index,s)=>Graspan_OP.computeInPartition_completely(step,index,s,grammar,htable_name,nodes_num_bitsize,
           symbol_num_bitsize,directadd,is_complete_loop,max_complete_loop_turn,max_delta,htable_split_Map,
           htable_nodes_interval,queryHBase_interval,default_split)).cache()
 
-      /**
-        * 记录各分区情况
-        */
       val par_INFO=new_edges_str.map(s=>s._2)
-//      println(par_INFO.collect().mkString("\n"))
-      /**
-        * 新边去重
-        */
+      println(par_INFO.collect().mkString("\n"))
       val newedges_dup=new_edges_str.flatMap(s=>s._1)
-      val newedges_removedup=newedges_dup.distinct.persist(StorageLevel.MEMORY_AND_DISK)
-      newnum=newedges_removedup.count
-      println("newedges_removedup: \t"+newnum)
+      val newedges_removedup=newedges_dup.distinct.cache()
+      println("newedges_removedup: \t"+newedges_removedup.count)
       new_edges_str.unpersist()
-
-      /**
-        * 更新旧边和新边
-        */
-      oldedges =(oldedges cogroup  newedges.map(x=>(x._1,x._2.map(y=>(y._1,y._2,false)))))
-          .map(s=>(s._1,s._2._1.headOption.getOrElse(List()) ++ s._2._2.headOption.getOrElse(List())))
-      .partitionBy(old_Partitioner).persist(StorageLevel.MEMORY_AND_DISK)
-      tmp_old.unpersist()
-      tmp_new.unpersist()
-      newedges=newedges_dup.distinct.flatMap(s=>List((s._1,((s._1,s
-        ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList))
+      oldedges={
+        if(curpar>lastpar) (oldedges join newedges).map(s=>(s._1,s._2._1 ++ s._2._2)).partitionBy(curParway)
+        else (oldedges join newedges).map(s=>(s._1,s._2._1 ++ s._2._2))
+      }
+      newedges=newedges_removedup.flatMap(s=>List((s._1,((s._1,s
+        ._2),s._3,true)),(s._2,((s._1,s._2),s._3,true)))).groupByKey().map(s=>(s._1,s._2.toList)).partitionBy(curParway)
 
       /**
         * Update HBase
         */
       val t0_hb=System.nanoTime():Double
+      newnum=newedges_dup.count()
       deleteDir.deletedir(islocal,master,hbase_output)
-      HBase_OP.updateHbase(newedges_removedup,nodes_num_bitsize,symbol_num_bitsize,htable_name,hbase_output,
+      HBase_OP.updateHbase(newedges_dup,nodes_num_bitsize,symbol_num_bitsize,htable_name,hbase_output,
         htable_split_Map,htable_nodes_interval,default_split)
       newedges_removedup.unpersist()
       val t1_hb=System.nanoTime():Double
@@ -228,10 +208,9 @@ object Graspan_improve extends Para{
       t1=System.nanoTime():Double
       println("*step: step "+step+" take time: \t "+((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
       println
-      continue= newnum!=0
     }
 
-    println("final edges count:             \t"+oldedges.map(s=>s._2.length).sum().toLong/2)
+    println("final edges count:             \t"+oldedges.count())
     //    h_admin.close()
     //    h_table.close()
     sc.stop()
