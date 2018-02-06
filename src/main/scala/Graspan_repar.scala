@@ -19,7 +19,7 @@ import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.storage.StorageLevel
 import utils.{Graspan_OP, HBase_OP, Para, deleteDir}
 
-object Graspan_improve extends Para{
+object Graspan_repar extends Para{
 
   def main(args: Array[String]): Unit = {
     var t0=System.nanoTime():Double
@@ -157,13 +157,9 @@ object Graspan_improve extends Para{
         * 开始迭代
         */
       deleteDir.deletedir(islocal, master, output)
-      var compute_par_num = defaultpar
-      var compute_Partitioner = new HashPartitioner(compute_par_num)
-      var old_par_num = defaultpar
-      var old_Partitioner = new HashPartitioner(old_par_num)
       var oldedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel, Boolean)])] = sc.parallelize(List())
       var newedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel, Boolean)])] = graph.flatMap(s => List((s._1, ((s._1, s
-        ._2), s._3, true)), (s._2, ((s._1, s._2), s._3, true)))).groupByKey().mapValues(s => s.toList).partitionBy(old_Partitioner)
+        ._2), s._3, true)), (s._2, ((s._1, s._2), s._3, true)))).groupByKey().mapValues(s => s.toList).repartition(defaultpar)
       var step = 0
       var continue: Boolean = !newedges.isEmpty()
       var newnum: Long = graph.count()
@@ -173,24 +169,12 @@ object Graspan_improve extends Para{
         println("\n************During step " + step + "************")
         val tmp_old = oldedges
         val tmp_new = newedges
-        val last_compute_par_num = compute_par_num
-
-        if (newnum > 100000) {
-          compute_par_num = (newnum / newedges_interval + 1).toInt * defaultpar
-          println("large way: \t" + compute_par_num)
-        }
-        else {
-          compute_par_num = ((newnum / 1000) + 1).toInt
-          println("small way: \t" + compute_par_num)
-        }
-        if (last_compute_par_num != compute_par_num) {
-          compute_Partitioner = new HashPartitioner(compute_par_num)
-        }
         /**
           * 计算
           */
+          val t0_compute=System.nanoTime():Double
         val new_edges_str = (newedges leftOuterJoin oldedges).mapValues(s => s._1 ++ s._2.getOrElse(List()))
-          //        .partitionBy(compute_Partitioner)
+                  .repartition(defaultpar)
           .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely(step, index, s, grammar, htable_name, nodes_num_bitsize,
           symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, htable_split_Map,
           htable_nodes_interval, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_AND_DISK)
@@ -205,9 +189,13 @@ object Graspan_improve extends Para{
           * 新边去重
           */
         val newedges_dup = new_edges_str.flatMap(s => s._1)
+        println("newedges_dup: \t" + newedges_dup.count())
+        val t1_compute=System.nanoTime():Double
+        println("compute take time: \t" + ((t1_compute-t0_compute)/1000000000.0).formatted("%.3f")+" secs")
         val newedges_removedup = newedges_dup.distinct.persist(StorageLevel.MEMORY_AND_DISK)
         newnum = newedges_removedup.count()
         println("newedges: \t" + newnum)
+        println("distinct take time: \t" + ((System.nanoTime()-t1_compute)/1000000000.0).formatted("%.3f")+" secs")
         new_edges_str.unpersist()
 
         /**
@@ -215,14 +203,13 @@ object Graspan_improve extends Para{
           */
         oldedges = (oldedges cogroup newedges.mapValues(x => x.map(y => (y._1, y._2, false))))
           .mapValues(s => s._1.headOption.getOrElse(List()) ++ s._2.headOption.getOrElse(List()))
+            .repartition(defaultpar)
           .persist(StorageLevel.MEMORY_AND_DISK)
-        //      .partitionBy(old_Partitioner).persist(StorageLevel.MEMORY_AND_DISK)
+
         tmp_old.unpersist()
         tmp_new.unpersist()
         newedges = newedges_removedup.flatMap(s => List((s._1, ((s._1, s._2), s._3, true)), (s._2, ((s._1, s._2), s._3, true))))
-          .groupByKey().mapValues(s => s.toList)
-          .partitionBy(old_Partitioner).cache()
-        //      println("oldedges:           \t"+oldedges.map(s=>s._2.length).sum().toLong/2)
+          .groupByKey().mapValues(s => s.toList).cache()
 
         /**
           * Update HBase
@@ -232,11 +219,10 @@ object Graspan_improve extends Para{
         HBase_OP.updateHbase(newedges_removedup, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
           htable_split_Map, htable_nodes_interval, default_split)
         newedges_removedup.unpersist()
-        val t1_hb = System.nanoTime(): Double
-        println("update Hbase take time:        \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
+        println("update Hbase take time:        \t" + ((System.nanoTime() - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
 
-        t1 = System.nanoTime(): Double
-        println("*step: step " + step + " take time: \t " + ((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
+        println("*step: step " + step + " take time: \t " + ((System.nanoTime() - t0) / 1000000000.0).formatted("%.3f") + "" +
+          " sec")
         println
         continue = newnum != 0
       }
@@ -246,16 +232,6 @@ object Graspan_improve extends Para{
       //    h_table.close()
       val scan = new Scanner(System.in)
       sc.stop()
-    }
-    catch{
-      case e:Exception => {
-        println("sc stop")
-        sc.stop()
-      }
-      case _=>{
-        println("sc stop")
-        sc.stop()
-      }
     }
     finally {
       println("sc stop")

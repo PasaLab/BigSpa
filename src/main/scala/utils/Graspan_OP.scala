@@ -57,7 +57,7 @@ object Graspan_OP extends Para {
           val str=s.split("\\s+")
           (str(0).toInt,str(1).toInt,symbol_Map.getOrElse(str(2),-1))
         })
-    }
+    }.cache()
     val nodes=graph_changelabel.flatMap(s=>List(s._1,s._2)).distinct()
     val graph={
       if(input_grammar.contains("pointsto")){
@@ -97,17 +97,17 @@ object Graspan_OP extends Para {
         if(f_list.length<b_list.length){
           for(j<-f_list){
             if(j._2==false){
-              res_edges ++= b_list.filter(x=>x._2).map(x=>(j._1,x._1,res_label)).distinct
+              res_edges ++= b_list.filter(x=>x._2).map(x=>(j._1,x._1,res_label))//.distinct
             }
-            else res_edges ++= b_list.map(x=>(j._1,x._1,res_label)).distinct
+            else res_edges ++= b_list.map(x=>(j._1,x._1,res_label))//.distinct
           }
         }
         else{
           for(j<-b_list){
             if(j._2==false){
-              res_edges ++= f_list.filter(x=>x._2).map(x=>(x._1,j._1,res_label)).distinct
+              res_edges ++= f_list.filter(x=>x._2).map(x=>(x._1,j._1,res_label))//.distinct
             }
-            else res_edges ++= f_list.map(x=>(x._1,j._1,res_label)).distinct
+            else res_edges ++= f_list.map(x=>(x._1,j._1,res_label))//.distinct
           }
         }
       }
@@ -124,16 +124,20 @@ object Graspan_OP extends Para {
       ._3,-1)))
     res_edges=(res_edges ++ add_edges).distinct
     val t1=System.nanoTime():Double
-    println("|| origin newedges: "+old_num
+    println()
+    println("|| input edges: "+mid_adj_list.map(s=>s._2.length).sum
+      +",\torigin newedges: "+old_num
       +",\tadd_newedges: "+add_edges.length
       +",\tdistinct newedges: " +res_edges.length+" ||"
       +"join take time:"+((t1-t0) /1000000000.0)+" secs")
-    tmp_str+=("|| origin newedges: "+old_num
+    tmp_str+=("|| input edges: "+mid_adj_list.map(s=>s._2.length).sum
+      +",\torigin newedges: "+old_num
       +",\tadd_newedges: "+add_edges.length
       +",\tdistinct newedges: " +res_edges.length+" ||"
       +"join take time:"+((t1-t0) /1000000000.0)+" secs")
     (res_edges,tmp_str)
   }
+
   def computeInPartition_completely(step:Int,index:Int,
                                     mid_adj:Iterator[(VertexId,List[((VertexId,VertexId),EdgeLabel, Boolean)])],
                                     grammar:List[((EdgeLabel,EdgeLabel),EdgeLabel)],

@@ -1,4 +1,3 @@
-
 /**
   * Created by cycy on 2018/1/18.
   * Grammar Format: A B C.---------->     A<-BC
@@ -27,7 +26,7 @@ object Graspan_noBF extends Para{
     val symbol_Map=grammar_origin.flatMap(s=>s.toList).distinct.zipWithIndex.toMap
     val (loop:List[EdgeLabel],directadd:Map[EdgeLabel,EdgeLabel],grammar:List[((EdgeLabel,EdgeLabel),EdgeLabel)])={
       if(input_grammar.contains("pointsto")){
-//        println("Grammar need preprocessed")
+        //        println("Grammar need preprocessed")
         (grammar_origin.filter(s=>s.length==1).map(s=>symbol_Map.getOrElse(s(0),-1)),grammar_origin.filter(s=>s
           .length==2)
           .map(s=>(symbol_Map.getOrElse(s(1),-1),symbol_Map.getOrElse(s(0),-1))).toMap,grammar_origin.filter(s=>s
@@ -47,7 +46,7 @@ object Graspan_noBF extends Para{
     val nodes=graph_origin.flatMap(s=>List(s._1,s._2)).distinct()
     val graph={
       if(input_grammar.contains("pointsto")){
-//        println("Graph need preprocessed")
+        //        println("Graph need preprocessed")
         (graph_changelabel
           ++ nodes.flatMap(s=>loop.map(x=>(s,s,x)))
           ++ graph_changelabel.filter(s=>directadd.contains(s._3)).map(s=>(s._1,s._2,directadd.getOrElse(s._3,-1)))
@@ -136,7 +135,7 @@ object Graspan_noBF extends Para{
     var t1=System.nanoTime():Double
     var recording:List[String]=List()
     val mid_adj_list=mid_adj.toList
-//    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
+    //    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
     println("At STEP "+step+", partition "+index+mid_adj_list.map(s=>s._2.length).sum)
     recording:+="At STEP "+step+", partition "+index+mid_adj_list.map(s=>s._2.length).sum
     var (res_edges,tmp_str)=join(mid_adj_list,grammar,directadd)
@@ -205,7 +204,7 @@ object Graspan_noBF extends Para{
         htable_split_Map,
         htable_nodes_interval,
         Hbase_interval,default_split)
-//      recording:+="res_edges confirmed new by Hbase: "+res.length
+      //      recording:+="res_edges confirmed new by Hbase: "+res.length
       res
     }
     t1=System.nanoTime():Double
@@ -213,8 +212,8 @@ object Graspan_noBF extends Para{
       +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
       +", \tres_edges:             \t"+res_edges.length+"\n")
     recording:+=("Query Hbase for edges: \t"+len
-    +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
-    +", \tres_edges:             \t"+res_edges.length+"\n")
+      +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
     List((res_edges,recording)).toIterator
   }
 
@@ -228,7 +227,7 @@ object Graspan_noBF extends Para{
     var input_graph:String="data/InputGraph/test_graph"
     var output: String = "data/result/" //除去ip地址
     var hbase_output:String="data/result/hbase/hbhfile"
-    var par: Int = 96
+    var par: Int = 384
 
     var openBloomFilter:Boolean=false
     var edges_totalnum:Int=1
@@ -288,164 +287,181 @@ object Graspan_noBF extends Para{
       conf.setMaster("local")
     }
     val sc = new SparkContext(conf)
-    println("------------Spark and HBase settings--------------------------------")
-    println("spark.driver.memory:  \t"+conf.get("spark.driver.memory"))
-    println("spark.executor.memory: \t"+conf.get("spark.executor.memory"))
-    println("spark.executor.cores: \t"+conf.get("spark.executor.cores"))
-    println("partition num:        \t"+par)
-    println("queryHBase_interval:  \t"+queryHBase_interval)
-    println("HRegion_splitnum:     \t"+HRegion_splitnum)
-    println("--------------------------------------------------------------------")
-    println
-    /**
-      * Grammar相关设置
-      */
-    val grammar_origin=sc.textFile(input_grammar).map(s=>s.split("\\s+")).collect().toList
-    val (symbol_Map,symbol_num,symbol_num_bitsize,loop,directadd,grammar)=processGrammar(grammar_origin,input_grammar)
-    println("------------Grammar INFO--------------------------------------------")
-    println("symbol_num_bitsize: \t"+symbol_num_bitsize)
-    println("symbol_Map:         \t")
-    symbol_Map.foreach(s=>println("                    \t"+s._2+"\t->\t"+s._1))
-    println
-    println("loop:               \t")
-    loop.foreach(s=>println("                    \t"+s))
-    println
-    println("directadd:          \t")
-    directadd.foreach(s=>println("                    \t"+s._1+"\t->\t"+s._2))
-    println
-    println("grammar_clean:      \t")
-    grammar.foreach(s=>println("                    \t"+s._1._1+"\t+\t"+s._1._2+"\t->\t"+s._2))
-    println("---------------------------------------------------------------------")
-    println
+    try {
+      println("------------Spark and HBase settings--------------------------------")
+      println("spark.driver.memory:  \t" + conf.get("spark.driver.memory"))
+      println("spark.executor.memory: \t" + conf.get("spark.executor.memory"))
+      println("spark.executor.cores: \t" + conf.get("spark.executor.cores"))
+      println("partition num:        \t" + par)
+      println("queryHBase_interval:  \t" + queryHBase_interval)
+      println("HRegion_splitnum:     \t" + HRegion_splitnum)
+      println("--------------------------------------------------------------------")
+      println
+      /**
+        * Grammar相关设置
+        */
+      val grammar_origin = sc.textFile(input_grammar).map(s => s.split("\\s+")).collect().toList
+      val (symbol_Map, symbol_num, symbol_num_bitsize, loop, directadd, grammar) = processGrammar(grammar_origin, input_grammar)
+      println("------------Grammar INFO--------------------------------------------")
+      println("symbol_num_bitsize: \t" + symbol_num_bitsize)
+      println("symbol_Map:         \t")
+      symbol_Map.foreach(s => println("                    \t" + s._2 + "\t->\t" + s._1))
+      println
+      println("loop:               \t")
+      loop.foreach(s => println("                    \t" + s))
+      println
+      println("directadd:          \t")
+      directadd.foreach(s => println("                    \t" + s._1 + "\t->\t" + s._2))
+      println
+      println("grammar_clean:      \t")
+      grammar.foreach(s => println("                    \t" + s._1._1 + "\t+\t" + s._1._2 + "\t->\t" + s._2))
+      println("---------------------------------------------------------------------")
+      println
 
-    /**
-      * Graph相关设置
-      */
-    val graph_origin=sc.textFile(input_graph,par).filter(!_.trim.equals("")).map(s=>{
-      val str=s.split("\\s+")
-      (str(0).toInt,str(1).toInt,str(2))
-    })
-    if(graph_origin.isEmpty()){
-      println("input graph is empty")
-      System.exit(0)
-    }
-    val(graph,nodes_num_bitsize,nodes_totalnum)=processGraph(graph_origin,input_grammar,symbol_Map,loop,
-      directadd,par)
-    println("------------Graph INFO--------------------------------------------")
-    println("graph_origin edges: \t"+graph_origin.count())
-    println("processed edges:    \t"+graph.count())
-    println("nodes_totoalnum:    \t"+nodes_totalnum)
-    println("nodes_num_bitsize:  \t"+nodes_num_bitsize)
-    println("------------------------------------------------------------------")
-    println
-    val htable_nodes_interval:Int=nodes_totalnum/HRegion_splitnum+1
-    val (htable_split_Map,default_split)=HBase_OP.createHBase_Table(htable_name,HRegion_splitnum)
+      /**
+        * Graph相关设置
+        */
+      val graph_origin = sc.textFile(input_graph, par).filter(!_.trim.equals("")).map(s => {
+        val str = s.split("\\s+")
+        (str(0).toInt, str(1).toInt, str(2))
+      })
+      if (graph_origin.isEmpty()) {
+        println("input graph is empty")
+        System.exit(0)
+      }
+      val (graph, nodes_num_bitsize, nodes_totalnum) = processGraph(graph_origin, input_grammar, symbol_Map, loop,
+        directadd, par)
+      println("------------Graph INFO--------------------------------------------")
+      println("graph_origin edges: \t" + graph_origin.count())
+      println("processed edges:    \t" + graph.count())
+      println("nodes_totoalnum:    \t" + nodes_totalnum)
+      println("nodes_num_bitsize:  \t" + nodes_num_bitsize)
+      println("------------------------------------------------------------------")
+      println
+      val htable_nodes_interval: Int = nodes_totalnum / HRegion_splitnum + 1
+      val (htable_split_Map, default_split) = HBase_OP.createHBase_Table(htable_name, HRegion_splitnum)
 
-    /**
-      * 原边集存入Hbase
-      */
-//    println("graph Partitions: "+graph.partitions.length)
-    deleteDir.deletedir(islocal,master,hbase_output)
-    HBase_OP.updateHbase(graph,nodes_num_bitsize,symbol_num_bitsize,htable_name,hbase_output,
-      htable_split_Map,htable_nodes_interval,default_split)
+      /**
+        * 原边集存入Hbase
+        */
+      //    println("graph Partitions: "+graph.partitions.length)
+      deleteDir.deletedir(islocal, master, hbase_output)
+      HBase_OP.updateHbase(graph, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
+        htable_split_Map, htable_nodes_interval, default_split)
 
-    /**
-      * 开始迭代
-      */
-    deleteDir.deletedir(islocal,master,output)
-    var oldedges:RDD[(VertexId,VertexId,EdgeLabel,Boolean)]=sc.parallelize(List())
-    var newedges:RDD[(VertexId,VertexId,EdgeLabel,Boolean)]=graph.map(s=>(s._1,s._2,s._3,true))
-    var step=0
-    var continue:Boolean= !newedges.isEmpty()
-    var newnum:Long=newedges.count()
-    while(continue){
-      t0=System.nanoTime():Double
-      step+=1
-      println("\n************During step "+step+"************")
-      val t0_compute=System.nanoTime():Double
-      val newedges_dup_str={
-        if(newnum<100000){
-          println("alter way")
-          val candiSet_front=newedges.map(s=>s._1).collect().toSet
-          val candiSet_back=newedges.map(s=>s._2).collect().toSet
-          (oldedges.filter(s=>candiSet_front.contains(s._2)||candiSet_back.contains(s._1)) ++ newedges)
-              .flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,
-            ((s._1,s._2),s._3,s._4))))
-            .groupByKey()
-            .map(s=>(s._1,s._2.toList))
-            .repartition(par)
-            .mapPartitionsWithIndex((index,s)=>computeInPartition_completely(step,index,s,grammar,
-              htable_name,
-              nodes_num_bitsize,symbol_num_bitsize,directadd,
-              is_complete_loop,max_complete_loop_turn,max_delta,
-              htable_split_Map,htable_nodes_interval,queryHBase_interval,default_split)).cache()
+      /**
+        * 开始迭代
+        */
+      deleteDir.deletedir(islocal, master, output)
+      var oldedges: RDD[(VertexId, VertexId, EdgeLabel, Boolean)] = sc.parallelize(List())
+      var newedges: RDD[(VertexId, VertexId, EdgeLabel, Boolean)] = graph.map(s => (s._1, s._2, s._3, true))
+      var step = 0
+      var continue: Boolean = !newedges.isEmpty()
+      var newnum: Long = newedges.count()
+      while (continue) {
+        t0 = System.nanoTime(): Double
+        step += 1
+        println("\n************During step " + step + "************")
+        val t0_compute = System.nanoTime(): Double
+        val newedges_dup_str = {
+          if (newnum < 100000) {
+            println("alter way")
+            val candiSet_front = newedges.map(s => s._1).collect().toSet
+            val candiSet_back = newedges.map(s => s._2).collect().toSet
+            (oldedges.filter(s => candiSet_front.contains(s._2) || candiSet_back.contains(s._1)) ++ newedges)
+              .flatMap(s => List((s._1, ((s._1, s._2), s._3, s._4)), (s._2,
+                ((s._1, s._2), s._3, s._4))))
+              .groupByKey()
+              .map(s => (s._1, s._2.toList))
+              .repartition(par)
+              .mapPartitionsWithIndex((index, s) => computeInPartition_completely(step, index, s, grammar,
+                htable_name,
+                nodes_num_bitsize, symbol_num_bitsize, directadd,
+                is_complete_loop, max_complete_loop_turn, max_delta,
+                htable_split_Map, htable_nodes_interval, queryHBase_interval, default_split)).cache()
+          }
+          else
+            (oldedges ++ newedges).flatMap(s => List((s._1, ((s._1, s._2), s._3, s._4)), (s._2,
+              ((s._1, s._2), s._3, s._4))))
+              .groupByKey()
+              .map(s => (s._1, s._2.toList))
+              .repartition(par)
+              .mapPartitionsWithIndex((index, s) => computeInPartition_completely(step, index, s, grammar,
+                htable_name,
+                nodes_num_bitsize, symbol_num_bitsize, directadd,
+                is_complete_loop, max_complete_loop_turn, max_delta,
+                htable_split_Map, htable_nodes_interval, queryHBase_interval, default_split)).cache()
         }
-        else
-          (oldedges ++ newedges).flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,
-            ((s._1,s._2),s._3,s._4))))
-            .groupByKey()
-            .map(s=>(s._1,s._2.toList))
-            .repartition(par)
-            .mapPartitionsWithIndex((index,s)=>computeInPartition_completely(step,index,s,grammar,
-              htable_name,
-              nodes_num_bitsize,symbol_num_bitsize,directadd,
-              is_complete_loop,max_complete_loop_turn,max_delta,
-              htable_split_Map,htable_nodes_interval,queryHBase_interval,default_split)).cache()
+
+        val (newedges_dup, partition_info) = (newedges_dup_str.flatMap(s => s._1), newedges_dup_str.map(s => s._2))
+
+        println("new_edges_bf count inPartition:")
+        deleteDir.deletedir(islocal, master, output + "step" + step + "/ParINFO/")
+        partition_info.saveAsTextFile(output + "step" + step + "/ParINFO/")
+        //      println(partition_info.collect().mkString("\n"))
+        val t1_compute = System.nanoTime(): Double
+        println("clousure compute take time:    \t" + ((t1_compute - t0_compute) / 1000000000.0).formatted("%.3f") + " sec")
+
+        /**
+          * 获得各分区内经过Bloom Filter和Hbase过滤之后留下的新边
+          * 再汇总distinct
+          */
+        val t0_distinct = System.nanoTime(): Double
+        println("newedges_dup:                  \t" + newedges_dup.count())
+        val newedges_removedup = newedges_dup.distinct()
+        //      deleteDir.deletedir(islocal,master,output+"step"+step+"/new/")
+        //      newedges_dup.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/new/")
+        println("newedges_removedup:            \t" + newedges_removedup.count())
+        newnum = newedges_removedup.count()
+        //      println(newedges_removedup.collect().mkString("\n"))
+        val t1_distinct = System.nanoTime(): Double
+        println("distinct take time:           \t " + ((t1_distinct - t0_distinct) / 1000000000.0).formatted("%.3f") + " " +
+          "sec")
+
+        /**
+          * Hbase更新
+          */
+        val t0_hb = System.nanoTime(): Double
+        deleteDir.deletedir(islocal, master, hbase_output)
+        HBase_OP.updateHbase(newedges_removedup, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
+          htable_split_Map, htable_nodes_interval, default_split)
+        val t1_hb = System.nanoTime(): Double
+        println("update Hbase take time:        \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
+
+        val tmp_old = oldedges
+        val tmp_new = newedges
+        oldedges = (oldedges ++ newedges.map(s => (s._1, s._2, s._3, false))).repartition(par).cache()
+        //      deleteDir.deletedir(islocal,master,output+"step"+step+"/old/")
+        //      oldedges.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/old/")
+        newedges = newedges_removedup.map(s => (s._1, s._2, s._3, true)).cache()
+        continue = !(newedges.isEmpty())
+        t1 = System.nanoTime(): Double
+        tmp_old.unpersist()
+        tmp_new.unpersist()
+        println("all edges sum to:              \t" + oldedges.count())
+        println("*step: step " + step + " take time: \t " + ((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
+        println
       }
 
-      val (newedges_dup,partition_info)=(newedges_dup_str.flatMap(s=>s._1),newedges_dup_str.map(s=>s._2))
-
-      println("new_edges_bf count inPartition:")
-      deleteDir.deletedir(islocal,master,output+"step"+step+"/ParINFO/")
-      partition_info.repartition(1).saveAsTextFile(output+"step"+step+"/ParINFO/")
-//      println(partition_info.collect().mkString("\n"))
-      val t1_compute=System.nanoTime():Double
-      println("clousure compute take time:    \t"+((t1_compute-t0_compute) / 1000000000.0).formatted("%.3f") + " sec")
-
-      /**
-        * 获得各分区内经过Bloom Filter和Hbase过滤之后留下的新边
-        * 再汇总distinct
-        */
-      val t0_distinct=System.nanoTime():Double
-      println("newedges_dup:                  \t"+newedges_dup.count())
-      val newedges_removedup=newedges_dup.distinct()
-      deleteDir.deletedir(islocal,master,output+"step"+step+"/new/")
-      newedges_dup.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/new/")
-      println("newedges_removedup:            \t"+newedges_removedup.count())
-      newnum=newedges_removedup.count()
-      //      println(newedges_removedup.collect().mkString("\n"))
-      val t1_distinct=System.nanoTime():Double
-      println("distinct take time:           \t "+((t1_distinct-t0_distinct) / 1000000000.0).formatted("%.3f") + " " +
-        "sec")
-
-      /**
-        * Hbase更新
-        */
-      val t0_hb=System.nanoTime():Double
-      deleteDir.deletedir(islocal,master,hbase_output)
-      HBase_OP.updateHbase(newedges_removedup,nodes_num_bitsize,symbol_num_bitsize,htable_name,hbase_output,
-        htable_split_Map,htable_nodes_interval,default_split)
-      val t1_hb=System.nanoTime():Double
-      println("update Hbase take time:        \t"+((t1_hb-t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
-
-      val tmp_old = oldedges
-      val tmp_new = newedges
-      oldedges=(oldedges ++ newedges.map(s=>(s._1,s._2,s._3,false))).repartition(par)cache()
-      deleteDir.deletedir(islocal,master,output+"step"+step+"/old/")
-      oldedges.map(s=>(s._1+"\t"+s._2+"\t"+s._3)).saveAsTextFile(output+"step"+step+"/old/")
-      newedges=newedges_removedup.map(s=>(s._1,s._2,s._3,true)).cache()
-      continue= !(newedges.isEmpty())
-      t1=System.nanoTime():Double
-      tmp_old.unpersist()
-      tmp_new.unpersist()
-      println("all edges sum to:              \t"+oldedges.count())
-      println("*step: step "+step+" take time: \t "+((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
-      println
+      println("final edges count:             \t" + oldedges.count())
+      //    h_admin.close()
+      //    h_table.close()
+      sc.stop()
     }
-
-    println("final edges count:             \t"+oldedges.count())
-//    h_admin.close()
-//    h_table.close()
+    catch{
+      case e:Exception => {
+        println("sc stop")
+        sc.stop()
+      }
+      case _=>{
+        println("sc stop")
+        sc.stop()
+      }
+    }
+    finally {
+      println("sc stop")
+      sc.stop()
+    }
   }
 
 }
