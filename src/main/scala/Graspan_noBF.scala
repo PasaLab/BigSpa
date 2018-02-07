@@ -397,7 +397,7 @@ object Graspan_noBF extends Para{
 
         println("new_edges_bf count inPartition:")
         deleteDir.deletedir(islocal, master, output + "step" + step + "/ParINFO/")
-        partition_info.saveAsTextFile(output + "step" + step + "/ParINFO/")
+        partition_info.repartition(1).saveAsTextFile(output + "step" + step + "/ParINFO/")
         //      println(partition_info.collect().mkString("\n"))
         val t1_compute = System.nanoTime(): Double
         println("clousure compute take time:    \t" + ((t1_compute - t0_compute) / 1000000000.0).formatted("%.3f") + " sec")
@@ -450,10 +450,6 @@ object Graspan_noBF extends Para{
     }
     catch{
       case e:Exception => {
-        println("sc stop")
-        sc.stop()
-      }
-      case _=>{
         println("sc stop")
         sc.stop()
       }

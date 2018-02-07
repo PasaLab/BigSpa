@@ -1,4 +1,11 @@
 /**
+  * Created by cycy on 2018/2/6.
+  */
+object Graph_UDFP {
+
+}
+
+/**
   * Created by cycy on 2018/2/3.
   */
 
@@ -17,9 +24,9 @@ import org.apache.hadoop.hbase.mapred.TableOutputFormat
 import org.apache.hadoop.hbase.mapreduce.HFileOutputFormat
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.spark.storage.StorageLevel
-import utils.{Graspan_OP, HBase_OP, Para, deleteDir}
+import utils.{Graspan_OP, HBase_OP, Para, deleteDir,UDFPartitioner}
 
-object Graspan_improve extends Para{
+object Graspan_UDFP extends Para{
 
   def main(args: Array[String]): Unit = {
     var t0=System.nanoTime():Double
@@ -33,6 +40,7 @@ object Graspan_improve extends Para{
     var hbase_output:String="data/result/hbase/hbhfile/"
     var defaultpar:Int=352
     var smallpar:Int=64
+    var Max_Par_Size:Int=50000000
     var newedges_interval:Int=40000000
 
     var openBloomFilter:Boolean=false
@@ -60,6 +68,7 @@ object Graspan_improve extends Para{
         case "hbase_output"=>hbase_output=argvalue
         case "smallpar"=>smallpar=argvalue.toInt
         case "defaultpar"=>defaultpar=argvalue.toInt
+        case "Max_Par_Size"=>Max_Par_Size=argvalue.toInt
         case "newedges_interval"=>newedges_interval=argvalue.toInt
 
         case "openBloomFilter"=>openBloomFilter=argvalue.toBoolean
@@ -189,13 +198,24 @@ object Graspan_improve extends Para{
         /**
           * 计算
           */
-        val new_edges_str = (oldedges rightOuterJoin newedges).mapValues(s =>(s._1.getOrElse(List()),s._2))
+        val new_edges_str ={
+          val tmp_rdd=(oldedges rightOuterJoin newedges).mapValues(s =>(s._1.getOrElse(List()),s._2))
+          val t0_par=System.nanoTime():Double
+          val node_size=tmp_rdd.mapValues(s=>s._2.length.toLong*(s._1.length.toLong+s._2.length.toLong/2))
+          val node_par=Graspan_OP.arrangePartition(node_size,Max_Par_Size,defaultpar)
+          println("node par distribution")
+          println(node_par.mapValues(s=>s/10000000).map(s=>s.swap).groupByKey().mapValues(s=>s.size).map(s=>"Size" +
+            " > " +s._1+"0000000, node num "+s._2).collect().mkString("\n"))
+          val all_par_num=node_par.map(s=>s._2).distinct.count()
+          println("compute par num:             \t"+all_par_num)
+          println("compute par take time:       \t"+((System.nanoTime()-t0_par)/1000000000.0).formatted("%.3f")+" secs")
+          (tmp_rdd join node_par).map(s=>(s._2._2,(s._1,s._2._1))).partitionBy(new UDFPartitioner(all_par_num.toInt))
           //        .partitionBy(compute_Partitioner)
-          .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_2(step, index, s, grammar,
+          .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_3(step, index, s, grammar,
           htable_name, nodes_num_bitsize,
           symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, htable_split_Map,
           htable_nodes_interval, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_AND_DISK)
-
+        }
         /**
           * 记录各分区情况
           */
@@ -203,7 +223,7 @@ object Graspan_improve extends Para{
         deleteDir.deletedir(islocal, master, output + "par_INFO/step" + step)
         par_INFO.repartition(1).saveAsTextFile(output + "par_INFO/step" + step)
         val coarest_num=new_edges_str.map(s=>s._3).sum
-        println("coarest_num:        \t"+coarest_num.toLong)
+        println("coarest_num:                   \t"+coarest_num.toLong)
         /**
           * 新边去重
           */
@@ -267,5 +287,6 @@ object Graspan_improve extends Para{
   }
 
 }
+
 
 

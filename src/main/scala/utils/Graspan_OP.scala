@@ -1,6 +1,6 @@
 package utils
 
-import org.apache.spark.{HashPartitioner, SparkContext}
+import org.apache.spark.{HashPartitioner, RangePartitioner, SparkContext}
 import org.apache.spark.rdd.RDD
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileUtil, Path}
@@ -29,39 +29,39 @@ object Graspan_OP extends Para {
   }
 
   def processLinux(sc:SparkContext,input_graph:String,input_grammar:String,output:String): Unit ={
-      val configuration = new Configuration()
-      val input = new Path(input_graph)
-      val hdfs = input.getFileSystem(configuration)
-      val fs = hdfs.listStatus(input)
-      val fileName = FileUtil.stat2Paths(fs)
+    val configuration = new Configuration()
+    val input = new Path(input_graph)
+    val hdfs = input.getFileSystem(configuration)
+    val fs = hdfs.listStatus(input)
+    val fileName = FileUtil.stat2Paths(fs)
 
-      var start=0
-      for(i<-fileName){
-        println(i.toString+" is processing")
-        val tmp_graph=sc.textFile(i.toString,4).filter(!_.trim.equals("")).map(s=>{
-          val str=s.split("\\s+")
-          (str(0).toInt,str(1).toInt,str(2))
-        })
-        val nodes_order=tmp_graph.flatMap(s=>List(s._1,s._2)).distinct().zipWithIndex().map(s=>(s._1,s._2.toInt+start))
-        start=nodes_order.map(s=>s._2).max()+1
-        val nodes_Map=nodes_order.collect().toMap
-        tmp_graph.map(s=>(nodes_Map.getOrElse(s._1,-1),nodes_Map.getOrElse(s._2,-1),s._3)).repartition(1)
-          .saveAsTextFile (output+"/"+i.toString.split("/").last)
-      }
+    var start=0
+    for(i<-fileName){
+      println(i.toString+" is processing")
+      val tmp_graph=sc.textFile(i.toString,4).filter(!_.trim.equals("")).map(s=>{
+        val str=s.split("\\s+")
+        (str(0).toInt,str(1).toInt,str(2))
+      })
+      val nodes_order=tmp_graph.flatMap(s=>List(s._1,s._2)).distinct().zipWithIndex().map(s=>(s._1,s._2.toInt+start))
+      start=nodes_order.map(s=>s._2).max()+1
+      val nodes_Map=nodes_order.collect().toMap
+      tmp_graph.map(s=>(nodes_Map.getOrElse(s._1,-1),nodes_Map.getOrElse(s._2,-1),s._3)).repartition(1)
+        .saveAsTextFile (output+"/"+i.toString.split("/").last)
+    }
   }
   def processGraph(sc:SparkContext,input_graph:String,input_grammar:String,symbol_Map:Map[String,EdgeLabel],
                    loop:List[EdgeLabel],
                    directadd:Map[EdgeLabel,EdgeLabel],par:Int):(RDD[(VertexId,VertexId,EdgeLabel)],Int,Int)={
     val graph_changelabel:RDD[(VertexId,VertexId,EdgeLabel)]={
-       sc.textFile(input_graph,par).filter(!_.trim.equals("")).map(s=>{
-          val str=s.split("\\s+")
-          (str(0).toInt,str(1).toInt,symbol_Map.getOrElse(str(2),-1))
-        })
+      sc.textFile(input_graph,par).filter(!_.trim.equals("")).map(s=>{
+        val str=s.split("\\s+")
+        (str(0).toInt,str(1).toInt,symbol_Map.getOrElse(str(2),-1))
+      })
     }.cache()
     val nodes=graph_changelabel.flatMap(s=>List(s._1,s._2)).distinct()
     val graph={
       if(input_grammar.contains("pointsto")){
-                println("Graph need preprocessed")
+        println("Graph need preprocessed")
         (graph_changelabel
           ++ nodes.flatMap(s=>loop.map(x=>(s,s,x)))
           ++ graph_changelabel.filter(s=>directadd.contains(s._3)).map(s=>(s._1,s._2,directadd.getOrElse(s._3,-1)))
@@ -97,17 +97,17 @@ object Graspan_OP extends Para {
         if(f_list.length<b_list.length){
           for(j<-f_list){
             if(j._2==false){
-              res_edges ++= b_list.filter(x=>x._2).map(x=>(j._1,x._1,res_label))//.distinct
+              res_edges ++= b_list.filter(x=>x._2).map(x=>(j._1,x._1,res_label)).distinct
             }
-            else res_edges ++= b_list.map(x=>(j._1,x._1,res_label))//.distinct
+            else res_edges ++= b_list.map(x=>(j._1,x._1,res_label)).distinct
           }
         }
         else{
           for(j<-b_list){
             if(j._2==false){
-              res_edges ++= f_list.filter(x=>x._2).map(x=>(x._1,j._1,res_label))//.distinct
+              res_edges ++= f_list.filter(x=>x._2).map(x=>(x._1,j._1,res_label)).distinct
             }
-            else res_edges ++= f_list.map(x=>(x._1,j._1,res_label))//.distinct
+            else res_edges ++= f_list.map(x=>(x._1,j._1,res_label)).distinct
           }
         }
       }
@@ -235,6 +235,329 @@ object Graspan_OP extends Para {
       +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
       +", \tres_edges:             \t"+res_edges.length+"\n")
     List((res_edges,recording)).toIterator
+  }
+
+  def join_2(mid_adj_list:List[(VertexId,(List[((VertexId,VertexId),EdgeLabel)],List[((VertexId,VertexId),EdgeLabel)]))],
+             grammar:List[((EdgeLabel, EdgeLabel),EdgeLabel)],
+             directadd:Map[EdgeLabel,EdgeLabel])
+  :(List[(VertexId,VertexId,EdgeLabel)],String,Long)={
+    val t0=System.nanoTime():Double
+    var res_edges:List[(VertexId,VertexId,EdgeLabel)]=List()
+    var tmp_str:String=""
+    var origin_formedgesnum:Long=0L
+    var coarest_num:Long=0L
+    mid_adj_list.foreach(s=>{
+      val flag=s._1
+      val old_list:List[((VertexId,VertexId),EdgeLabel)]=s._2._1
+      val new_list:List[((VertexId,VertexId),EdgeLabel)]=s._2._2
+
+        coarest_num += (old_list.length+new_list.length/2) * new_list.length
+        /**
+          * 1、新边之间的两两连接
+          */
+        val new_edge_before = new_list.filter(x => x._1._2 == flag).map(x => (x._2, x._1._1)).groupBy(_._1)
+          .map(x => (x._1, x._2.map(y => (y._2))))
+        val new_edge_after = new_list.filter(x => x._1._1 == flag).map(x => (x._2, x._1._2)).groupBy(_._1)
+          .map(x => (x._1, x._2.map(y => (y._2))))
+        grammar.foreach(i=>{
+          val (f, b) = i._1
+          val res_label = i._2
+          val f_list = new_edge_before.getOrElse(f, List())
+          val b_list = new_edge_after.getOrElse(b, List())
+          origin_formedgesnum += f_list.length * b_list.length
+          if (f_list.length < b_list.length) {
+            for (j <- f_list) {
+              res_edges ++= b_list.map(x => (j, x, res_label)).distinct
+            }
+          }
+          else {
+            for (j <- b_list) {
+              res_edges ++= f_list.map(x => (x, j, res_label)).distinct
+            }
+          }
+        })
+
+        /**
+          * 2、旧边与新边的连接
+          */
+      if(old_list.length!=0){
+        val old_edge_before = old_list.filter(x => x._1._2 == flag).map(x => (x._2, x._1._1)).groupBy(_._1)
+          .map(x => (x._1, x._2.map(y => (y._2))))
+        val old_edge_after = old_list.filter(x => x._1._1 == flag).map(x => (x._2, x._1._2)).groupBy(_._1)
+          .map(x => (x._1, x._2.map(y => (y._2))))
+
+        for (i <- grammar) {
+          val (f, b) = i._1
+          val res_label = i._2
+          //nf , ob
+          val new_f_list = new_edge_before.getOrElse(f, List())
+          val old_b_list = old_edge_after.getOrElse(b, List())
+          origin_formedgesnum += new_f_list.length * old_b_list.length
+          if (new_f_list.length < old_b_list.length) {
+            for (j <- new_f_list) {
+              res_edges ++= old_b_list.map(x => (j, x, res_label)).distinct
+            }
+          }
+          else {
+            for (j <- old_b_list) {
+              res_edges ++= new_f_list.map(x => (x, j, res_label)).distinct
+            }
+          }
+          //of , nb
+          val old_f_list = old_edge_before.getOrElse(f, List())
+          val new_b_list = new_edge_after.getOrElse(b, List())
+          origin_formedgesnum += old_f_list.length * new_b_list.length
+          if (old_f_list.length < new_b_list.length) {
+            for (j <- old_f_list) {
+              res_edges ++= new_b_list.map(x => (j, x, res_label)).distinct
+            }
+          }
+          else {
+            for (j <- new_b_list) {
+              res_edges ++= old_f_list.map(x => (x, j, res_label)).distinct
+            }
+          }
+        }
+      }
+    })
+
+    val old_num=res_edges.length
+    val add_edges=res_edges.filter(s=>directadd.contains(s._3)).map(s=>(s._1,s._2,directadd.getOrElse(s
+      ._3,-1)))
+    res_edges=(res_edges ++ add_edges).distinct
+    val t1=System.nanoTime():Double
+    println()
+    println("|| coarest_num: "+coarest_num
+      +",\tall newly_formed edges: "+origin_formedgesnum
+      +",\torigin newedges: "+old_num
+      +",\tadd_newedges: "+add_edges.length
+      +",\tdistinct newedges: " +res_edges.length+" ||"
+      +"join take time:"+((t1-t0) /1000000000.0)+" secs")
+    tmp_str+=("|| coarest_num: "+coarest_num
+      +",\tall newly_formed edges: "+origin_formedgesnum
+      +",\torigin newedges: "+old_num
+      +",\tadd_newedges: "+add_edges.length
+      +",\tdistinct newedges: " +res_edges.length+" ||"
+      +"join take time:"+((t1-t0) /1000000000.0)+" secs")
+    (res_edges,tmp_str,coarest_num)
+  }
+
+  def computeInPartition_completely_2(step:Int,index:Int,
+                                      mid_adj:Iterator[(VertexId,(List[((VertexId,VertexId),EdgeLabel)],List[((VertexId,VertexId),EdgeLabel)]))],
+                                      grammar:List[((EdgeLabel,EdgeLabel),EdgeLabel)],
+                                      htable_name:String,
+                                      nodes_num_bitsize:Int,symbol_num_bitsize:Int,
+                                      directadd:Map[EdgeLabel,EdgeLabel],
+                                      is_complete_loop:Boolean,max_complete_loop_turn:Int,max_delta:Int,
+                                      htable_split_Map:Map[Int,String],
+                                      htable_nodes_interval:Int,
+                                      Hbase_interval:Int,
+                                      default_split:String)
+  :Iterator[(List[(VertexId,VertexId,EdgeLabel)],List[String],Long)]={
+
+    var t0=System.nanoTime():Double
+    var t1=System.nanoTime():Double
+    var recording:List[String]=List()
+    val mid_adj_list=mid_adj.toList
+    //    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
+        println("At STEP "+step+", partition "+index)
+        recording:+="At STEP "+step+", partition "+index
+    var (res_edges,tmp_str,coarest_num)=join_2(mid_adj_list,grammar,directadd)
+    recording:+=tmp_str
+    //    res_edges=res_edges.filter(s=> !old_edges.contains(s))
+    //    println("res_edges distinct: "+res_edges.length)
+    //    recording:+="res_edges distinct: "+res_edges.length
+    /**
+      * form clousure
+      * only focused on edges from key inpartition or to key inpartition
+      */
+    //    if(is_complete_loop){
+    //      val key_Set=mid_adj_list.map(s=>s._1).toSet
+    //      var continue:Boolean=is_complete_loop
+    //      var oldedges:List[(VertexId,VertexId,EdgeLabel,Boolean)]=old_edges.map(s=>(s._1,s._2,s._3,false))
+    //      var newedges:List[(VertexId,VertexId,EdgeLabel,Boolean)]=res_edges.map(s=>(s._1,s._2,s._3,true))
+    //      val first_new_num=newedges.length
+    //      val max_loop=max_complete_loop_turn
+    //      var turn=0
+    //      while(continue){
+    //        println("start loop ")
+    //        tmp_str+="start loop "
+    //        val t0=System.nanoTime():Double
+    //        turn+=1
+    //        val m_a_l=(oldedges ++ newedges).flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,((s._1,s._2),s._3,s._4)))
+    //        ).groupBy(_._1).toList.map(s=>(s._1,s._2.map(x=>x._2)))
+    //        val edges_before=(oldedges ++ newedges).map(s=>(s._1,s._2,s._3))
+    //        val (tmp_edges,tmp_str_inloop)=join(m_a_l,grammar,directadd)
+    //        tmp_str+=tmp_str_inloop
+    //        //      tmp_str+="bfore filter: "+tmp.length
+    //        oldedges=oldedges ++newedges.map(s=>(s._1,s._2,s._3,false))
+    //        //过滤新边，只保留与本partition有关的新边
+    //        newedges=tmp_edges.filter(s=>(key_Set.contains(s._1)||key_Set.contains(s._2))&&edges_before.contains(s)==false)
+    //          .map(s=>(s._1,s._2,s._3,true))
+    //        continue= (turn<max_loop && !newedges.isEmpty && oldedges.length-first_new_num<max_delta)
+    //        val t1=System.nanoTime():Double
+    //        println("complete_loop take time: "+((t1-t0)/ 1000000000.0/60).formatted("%.3f") + " min")
+    //        if(continue==false){
+    //          println("end loop")
+    //          tmp_str+="end loop"
+    //          recording:+=tmp_str
+    //          res_edges=oldedges.map(s=>(s._1,s._2,s._3))
+    //          println("after complete loop, res_edges= "+res_edges.length)
+    //          recording:+="after complete loop, res_edges= "+res_edges.length
+    //        }
+    //      }
+    //    }
+    /**
+      * 多线程开启
+      */
+    //    val executors = Executors.newCachedThreadPool()
+    //    val thread = new MyThread
+    //    class MyThread extends Thread{
+    //      override def run(): Unit = {
+    //
+    //      }
+    //    }
+    //    executors.submit(thread)
+    /**
+      * Hbase过滤
+      */
+    t0=System.nanoTime():Double
+    val len=res_edges.length
+    res_edges= {
+      val res=HBase_OP.queryHbase_inPartition(res_edges,nodes_num_bitsize,symbol_num_bitsize,htable_name,
+        htable_split_Map,
+        htable_nodes_interval,
+        Hbase_interval,default_split)
+      //      recording:+="res_edges confirmed new by Hbase: "+res.length
+      res
+    }
+    t1=System.nanoTime():Double
+    println("Query Hbase for edges: \t"+len
+      +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
+    recording:+=("Query Hbase for edges: \t"+len
+      +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
+    List((res_edges,recording,coarest_num)).toIterator
+  }
+
+  def computeInPartition_completely_3(step:Int,index:Int,
+                                      mid_adj:Iterator[(Int,(VertexId,(List[((VertexId,VertexId),EdgeLabel)],List[(
+                                        (VertexId,VertexId),EdgeLabel)])))],
+                                      grammar:List[((EdgeLabel,EdgeLabel),EdgeLabel)],
+                                      htable_name:String,
+                                      nodes_num_bitsize:Int,symbol_num_bitsize:Int,
+                                      directadd:Map[EdgeLabel,EdgeLabel],
+                                      is_complete_loop:Boolean,max_complete_loop_turn:Int,max_delta:Int,
+                                      htable_split_Map:Map[Int,String],
+                                      htable_nodes_interval:Int,
+                                      Hbase_interval:Int,
+                                      default_split:String)
+  :Iterator[(List[(VertexId,VertexId,EdgeLabel)],List[String],Long)]={
+
+    var t0=System.nanoTime():Double
+    var t1=System.nanoTime():Double
+    var recording:List[String]=List()
+    val mid_adj_list=mid_adj.toList.map(s=>s._2)
+    //    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
+    println("At STEP "+step+", partition "+index)
+    recording:+="At STEP "+step+", partition "+index
+    var (res_edges,tmp_str,coarest_num)=join_2(mid_adj_list,grammar,directadd)
+    recording:+=tmp_str
+    //    res_edges=res_edges.filter(s=> !old_edges.contains(s))
+    //    println("res_edges distinct: "+res_edges.length)
+    //    recording:+="res_edges distinct: "+res_edges.length
+    /**
+      * form clousure
+      * only focused on edges from key inpartition or to key inpartition
+      */
+    //    if(is_complete_loop){
+    //      val key_Set=mid_adj_list.map(s=>s._1).toSet
+    //      var continue:Boolean=is_complete_loop
+    //      var oldedges:List[(VertexId,VertexId,EdgeLabel,Boolean)]=old_edges.map(s=>(s._1,s._2,s._3,false))
+    //      var newedges:List[(VertexId,VertexId,EdgeLabel,Boolean)]=res_edges.map(s=>(s._1,s._2,s._3,true))
+    //      val first_new_num=newedges.length
+    //      val max_loop=max_complete_loop_turn
+    //      var turn=0
+    //      while(continue){
+    //        println("start loop ")
+    //        tmp_str+="start loop "
+    //        val t0=System.nanoTime():Double
+    //        turn+=1
+    //        val m_a_l=(oldedges ++ newedges).flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,((s._1,s._2),s._3,s._4)))
+    //        ).groupBy(_._1).toList.map(s=>(s._1,s._2.map(x=>x._2)))
+    //        val edges_before=(oldedges ++ newedges).map(s=>(s._1,s._2,s._3))
+    //        val (tmp_edges,tmp_str_inloop)=join(m_a_l,grammar,directadd)
+    //        tmp_str+=tmp_str_inloop
+    //        //      tmp_str+="bfore filter: "+tmp.length
+    //        oldedges=oldedges ++newedges.map(s=>(s._1,s._2,s._3,false))
+    //        //过滤新边，只保留与本partition有关的新边
+    //        newedges=tmp_edges.filter(s=>(key_Set.contains(s._1)||key_Set.contains(s._2))&&edges_before.contains(s)==false)
+    //          .map(s=>(s._1,s._2,s._3,true))
+    //        continue= (turn<max_loop && !newedges.isEmpty && oldedges.length-first_new_num<max_delta)
+    //        val t1=System.nanoTime():Double
+    //        println("complete_loop take time: "+((t1-t0)/ 1000000000.0/60).formatted("%.3f") + " min")
+    //        if(continue==false){
+    //          println("end loop")
+    //          tmp_str+="end loop"
+    //          recording:+=tmp_str
+    //          res_edges=oldedges.map(s=>(s._1,s._2,s._3))
+    //          println("after complete loop, res_edges= "+res_edges.length)
+    //          recording:+="after complete loop, res_edges= "+res_edges.length
+    //        }
+    //      }
+    //    }
+    /**
+      * 多线程开启
+      */
+    //    val executors = Executors.newCachedThreadPool()
+    //    val thread = new MyThread
+    //    class MyThread extends Thread{
+    //      override def run(): Unit = {
+    //
+    //      }
+    //    }
+    //    executors.submit(thread)
+    /**
+      * Hbase过滤
+      */
+    t0=System.nanoTime():Double
+    val len=res_edges.length
+    res_edges= {
+      val res=HBase_OP.queryHbase_inPartition(res_edges,nodes_num_bitsize,symbol_num_bitsize,htable_name,
+        htable_split_Map,
+        htable_nodes_interval,
+        Hbase_interval,default_split)
+      //      recording:+="res_edges confirmed new by Hbase: "+res.length
+      res
+    }
+    t1=System.nanoTime():Double
+    println("Query Hbase for edges: \t"+len
+      +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
+    recording:+=("Query Hbase for edges: \t"+len
+      +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
+    List((res_edges,recording,coarest_num)).toIterator
+  }
+
+  def arrangePartition(node_size:RDD[(VertexId,Long)],Max_Par_Size:Long,defaultpar:Int): RDD[(VertexId,Int)] ={
+    val index_subindex_node:RDD[((Int,Int),VertexId)]=node_size.partitionBy(new RangePartitioner(defaultpar,node_size))
+      .mapPartitionsWithIndex((index,s)=>{
+      val list=s.toList
+      var res:List[((Int,Int),VertexId)]=List()
+      var sum:Long=0L
+      var subindex:Int=0
+      for(i<-list){
+        if(sum+i._2>Max_Par_Size){
+          subindex +=1
+          sum=i._2
+        }
+        res :+= ((index,subindex),i._1)
+      }
+      res.toIterator
+    })
+    index_subindex_node.groupByKey().zipWithIndex().flatMap(s=>s._1._2.map(x=>(x,s._2.toInt)))
   }
 
 }
