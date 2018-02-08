@@ -38,7 +38,7 @@ object Graspan_OP extends Para {
     var start=0
     for(i<-fileName){
       println(i.toString+" is processing")
-      val tmp_graph=sc.textFile(i.toString,4).filter(!_.trim.equals("")).map(s=>{
+      val tmp_graph=sc.textFile(i.toString,22).filter(!_.trim.equals("")).map(s=>{
         val str=s.split("\\s+")
         (str(0).toInt,str(1).toInt,str(2))
       })
