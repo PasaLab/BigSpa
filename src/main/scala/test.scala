@@ -58,7 +58,7 @@ object test extends utils.Para{
       conf.setMaster("local")
     }
     val sc = new SparkContext(conf)
-    deleteDir.deletedir(islocal,master,output)
-    Graspan_OP.processLinux(sc,input_graph,input_grammar,output)
+//    deleteDir.deletedir(islocal,master,output)
+//    Graspan_OP.processLinux(sc,input_graph,input_grammar,output)
   }
 }

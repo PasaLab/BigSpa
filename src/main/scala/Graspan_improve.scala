@@ -95,11 +95,13 @@ object Graspan_improve extends Para{
       conf.setMaster("local")
     }
     val sc = new SparkContext(conf)
-    try {
+//    try {
       println("------------Spark and HBase settings--------------------------------")
-      println("spark.driver.memory:  \t" + conf.get("spark.driver.memory"))
-      println("spark.executor.memory: \t" + conf.get("spark.executor.memory"))
-      println("spark.executor.cores: \t" + conf.get("spark.executor.cores"))
+      println("spark.driver.memory:          \t" + conf.get("spark.driver.memory"))
+      println("spark.executor.memory:        \t" + conf.get("spark.executor.memory"))
+      println("spark.executor.cores:         \t" + conf.get("spark.executor.cores"))
+      println("spark.storage.memoryFraction: \t" + conf.get("spark.storage.memoryFraction"))
+      println("spark.shuffle.memoryFraction: \t" + conf.get("spark.shuffle.memoryFraction"))
       println("default partition num: \t" + defaultpar)
       println("samll partition num:  \t" + smallpar)
       println("queryHBase_interval:  \t" + queryHBase_interval)
@@ -157,13 +159,9 @@ object Graspan_improve extends Para{
         * 开始迭代
         */
       deleteDir.deletedir(islocal, master, output)
-      var compute_par_num = defaultpar
-      var compute_Partitioner = new HashPartitioner(compute_par_num)
-      var old_par_num = defaultpar
-      var old_Partitioner = new HashPartitioner(old_par_num)
       var oldedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel)])] = sc.parallelize(List())
       var newedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel)])] = graph.flatMap(s => List((s._1, ((s._1, s
-        ._2), s._3)), (s._2, ((s._1, s._2), s._3)))).groupByKey().mapValues(s => s.toList).partitionBy(old_Partitioner)
+        ._2), s._3)), (s._2, ((s._1, s._2), s._3)))).groupByKey().mapValues(s => s.toList).repartition(defaultpar)
       var step = 0
       var continue: Boolean = !newedges.isEmpty()
       var newnum: Long = graph.count()
@@ -173,25 +171,12 @@ object Graspan_improve extends Para{
         println("\n************During step " + step + "************")
         val tmp_old = oldedges
         val tmp_new = newedges
-        val last_compute_par_num = compute_par_num
-
-        if (newnum > 100000) {
-          compute_par_num = (newnum / newedges_interval + 1).toInt * defaultpar
-          println("large way: \t" + compute_par_num)
-        }
-        else {
-          compute_par_num = ((newnum / 1000) + 1).toInt
-          println("small way: \t" + compute_par_num)
-        }
-        if (last_compute_par_num != compute_par_num) {
-          compute_Partitioner = new HashPartitioner(compute_par_num)
-        }
         /**
           * 计算
           */
         val new_edges_str = (oldedges rightOuterJoin newedges).mapValues(s =>(s._1.getOrElse(List()),s._2))
-          //        .partitionBy(compute_Partitioner)
-          .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_2(step, index, s, grammar,
+            .repartition(defaultpar)
+          .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_flat(step, index, s, grammar,
           htable_name, nodes_num_bitsize,
           symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, htable_split_Map,
           htable_nodes_interval, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_AND_DISK)
@@ -200,22 +185,23 @@ object Graspan_improve extends Para{
           * 记录各分区情况
           */
         val par_INFO = new_edges_str.map(s=>s._2)
-        deleteDir.deletedir(islocal, master, output + "par_INFO/step" + step)
-        par_INFO.repartition(1).saveAsTextFile(output + "par_INFO/step" + step)
+        deleteDir.deletedir(islocal, master, output + "/par_INFO/step" + step)
+        par_INFO.repartition(1).saveAsTextFile(output + "/par_INFO/step" + step)
         val coarest_num=new_edges_str.map(s=>s._3).sum
-        println("coarest_num:        \t"+coarest_num.toLong)
+        println("coarest_num:                    \t"+coarest_num.toLong)
         /**
           * 新边去重
           */
         val newedges_dup = new_edges_str.flatMap(s => s._1)
-        println("newedges_dup:                  \t"+newedges_dup.count())
+        println("newedges_dup:                   \t"+newedges_dup.count())
         val t1_compute=System.nanoTime():Double
-        println("compute take time:             \t" + ((t1_compute-t0)/1000000000.0).formatted("%.3f")+" secs")
+        println("compute take time:              \t" + ((t1_compute-t0)/1000000000.0).formatted("%.3f")+" secs")
 
         val newedges_removedup = newedges_dup.distinct.persist(StorageLevel.MEMORY_AND_DISK)
         newnum = newedges_removedup.count()
-        println("newedges:                      \t" + newnum)
-        println("distinct take time:            \t" + ((System.nanoTime()-t1_compute)/1000000000.0).formatted("%.3f")+" secs")
+        println("newedges:                       \t" + newnum)
+        println("distinct take time:             \t" + ((System.nanoTime()-t1_compute)/1000000000.0).formatted("%" +
+          ".3f")+" secs")
         new_edges_str.unpersist()
 
         /**
@@ -229,7 +215,7 @@ object Graspan_improve extends Para{
         tmp_new.unpersist()
         newedges = newedges_removedup.flatMap(s => List((s._1, ((s._1, s._2), s._3)), (s._2, ((s._1, s._2), s._3))))
           .groupByKey().mapValues(s => s.toList)
-          .partitionBy(old_Partitioner).cache()
+//          .persist(StorageLevel.MEMORY_AND_DISK)
         //      println("oldedges:           \t"+oldedges.map(s=>s._2.length).sum().toLong/2)
 
         /**
@@ -241,7 +227,7 @@ object Graspan_improve extends Para{
           htable_split_Map, htable_nodes_interval, default_split)
         newedges_removedup.unpersist()
         val t1_hb = System.nanoTime(): Double
-        println("update Hbase take time:        \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
+        println("update Hbase take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
         t1 = System.nanoTime(): Double
         println("*step: step " + step + " take time: \t " + ((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
         println
@@ -253,17 +239,17 @@ object Graspan_improve extends Para{
       //    h_table.close()
       val scan = new Scanner(System.in)
       sc.stop()
-    }
-    catch{
-      case e:Exception => {
-        println("sc stop")
-        sc.stop()
-      }
-    }
-    finally {
-      println("sc stop")
-      sc.stop()
-    }
+//    }
+//    catch{
+//      case e:Exception => {
+//        println("sc stop")
+//        sc.stop()
+//      }
+//    }
+//    finally {
+//      println("sc stop")
+//      sc.stop()
+//    }
   }
 
 }
