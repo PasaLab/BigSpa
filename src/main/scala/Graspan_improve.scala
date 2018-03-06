@@ -27,8 +27,8 @@ object Graspan_improve extends Para{
     var islocal: Boolean = true
     var master: String = "local"
 
-    var input_grammar: String = "data/GrammarFiles/test_grammar"
-    var input_graph:String="data/InputGraph/test_graph"
+    var input_grammar: String = "data/test_grammar"
+    var input_graph:String="data/test_graph"
     var output: String = "data/result/" //除去ip地址
     var hbase_output:String="data/result/hbase/hbhfile/"
     var defaultpar:Int=352
@@ -100,8 +100,8 @@ object Graspan_improve extends Para{
       println("spark.driver.memory:          \t" + conf.get("spark.driver.memory"))
       println("spark.executor.memory:        \t" + conf.get("spark.executor.memory"))
       println("spark.executor.cores:         \t" + conf.get("spark.executor.cores"))
-      println("spark.storage.memoryFraction: \t" + conf.get("spark.storage.memoryFraction"))
-      println("spark.shuffle.memoryFraction: \t" + conf.get("spark.shuffle.memoryFraction"))
+//      println("spark.storage.memoryFraction: \t" + conf.get("spark.storage.memoryFraction"))
+//      println("spark.shuffle.memoryFraction: \t" + conf.get("spark.shuffle.memoryFraction"))
       println("default partition num: \t" + defaultpar)
       println("samll partition num:  \t" + smallpar)
       println("queryHBase_interval:  \t" + queryHBase_interval)
@@ -116,6 +116,7 @@ object Graspan_improve extends Para{
         input_grammar)
       println("------------Grammar INFO--------------------------------------------")
       println("input grammar:      \t" + input_grammar.split("/").last)
+      println("symbol_num:         \t" + symbol_num)
       println("symbol_num_bitsize: \t" + symbol_num_bitsize)
       println("symbol_Map:         \t")
       symbol_Map.foreach(s => println("                    \t" + s._2 + "\t->\t" + s._1))
@@ -161,7 +162,7 @@ object Graspan_improve extends Para{
       deleteDir.deletedir(islocal, master, output)
       var oldedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel)])] = sc.parallelize(List())
       var newedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel)])] = graph.flatMap(s => List((s._1, ((s._1, s
-        ._2), s._3)), (s._2, ((s._1, s._2), s._3)))).groupByKey().mapValues(s => s.toList).repartition(defaultpar)
+        ._2), s._3)), (s._2, ((s._1, s._2), s._3)))).groupByKey().mapValues(s => s.toList)
       var step = 0
       var continue: Boolean = !newedges.isEmpty()
       var newnum: Long = graph.count()
@@ -175,11 +176,12 @@ object Graspan_improve extends Para{
           * 计算
           */
         val new_edges_str = (oldedges rightOuterJoin newedges).mapValues(s =>(s._1.getOrElse(List()),s._2))
-            .repartition(defaultpar)
-          .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_flat(step, index, s, grammar,
-          htable_name, nodes_num_bitsize,
-          symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, htable_split_Map,
-          htable_nodes_interval, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_AND_DISK)
+//            .repartition(defaultpar)
+          .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_flat_java(step, index, s,
+          symbol_num,grammar,
+          nodes_num_bitsize,
+          symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, htable_name, htable_split_Map,
+          htable_nodes_interval, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_ONLY_SER)
 
         /**
           * 记录各分区情况
@@ -197,11 +199,19 @@ object Graspan_improve extends Para{
         val t1_compute=System.nanoTime():Double
         println("compute take time:              \t" + ((t1_compute-t0)/1000000000.0).formatted("%.3f")+" secs")
 
-        val newedges_removedup = newedges_dup.distinct.persist(StorageLevel.MEMORY_AND_DISK)
+        val newedges_removedup = newedges_dup.distinct.persist(StorageLevel.MEMORY_ONLY_SER)
         newnum = newedges_removedup.count()
         println("newedges:                       \t" + newnum)
         println("distinct take time:             \t" + ((System.nanoTime()-t1_compute)/1000000000.0).formatted("%" +
           ".3f")+" secs")
+//        for(i<-symbol_Map){
+//          val symbol=i._1
+//          val symbol_num=i._2
+//          println(symbol+":                      \t"+newedges_removedup.filter(s=>s._3==symbol_num).count())
+//        }
+//        println("V:                              \t"+newedges_removedup.filter(s=>s._3==4).count())
+//        println("MAs:                            \t"+newedges_removedup.filter(s=>s._3==7).count())
+//        println("AMs:                            \t"+newedges_removedup.filter(s=>s._3==6).count())
         new_edges_str.unpersist()
 
         /**
@@ -209,12 +219,12 @@ object Graspan_improve extends Para{
           */
         oldedges = (oldedges cogroup newedges)
           .mapValues(s => s._1.headOption.getOrElse(List()) ++ s._2.headOption.getOrElse(List()))
-          .persist(StorageLevel.MEMORY_AND_DISK)
+          .repartition(defaultpar).persist(StorageLevel.MEMORY_ONLY_SER)
         //      .partitionBy(old_Partitioner).persist(StorageLevel.MEMORY_AND_DISK)
         tmp_old.unpersist()
         tmp_new.unpersist()
         newedges = newedges_removedup.flatMap(s => List((s._1, ((s._1, s._2), s._3)), (s._2, ((s._1, s._2), s._3))))
-          .groupByKey().mapValues(s => s.toList)
+          .groupByKey().mapValues(s => s.toList)//自环在这里会重复
 //          .persist(StorageLevel.MEMORY_AND_DISK)
         //      println("oldedges:           \t"+oldedges.map(s=>s._2.length).sum().toLong/2)
 

@@ -87,7 +87,6 @@ object HBase_OP extends Para{
                              htable_split_Map:Map[Int,String],htable_nodes_interval:Int,queryHbase_interval:Int,
                              default_split:String)
   :List[(VertexId,VertexId,EdgeLabel)]={
-
     val h_conf = HBaseConfiguration.create()
     h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
 //    println("hbase ipc.server.max.callqueue.size:\t"+h_conf.get("hbase ipc.server.max.callqueue.size"))

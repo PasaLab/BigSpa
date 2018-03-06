@@ -2,6 +2,9 @@
  * Created by cycy on 2018/2/28.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.System.out;
 
 public class Solution {
@@ -46,8 +49,27 @@ public class Solution {
         return false;
     }
     public static void main(String[] args){
-        int[] nums={3,1};
-        int target=0;
-        out.println(search(nums,target));
+        int length=10000000                                      ;
+        List<int[]> list=new ArrayList<int[]>();
+        for(int i=0;i<length;i++){
+            int[] a={1,1};
+            list.add(a);
+        }
+        long t0=System.nanoTime();
+        int tmp=0;
+
+        t0=System.nanoTime();
+        for(int i=0;i<length;i++){
+            if(list.get(i)[0]==1) tmp++;
+        }
+        out.println("list use time: "+(double)(System.nanoTime()-t0)/1000000+"msecs");
+
+        t0=System.nanoTime();
+        int[][] array=new int[length][2];
+        list.toArray(array);
+        for(int i=0;i<length;i++){
+            if(array[0][1]==1) tmp++;
+        }
+        out.println("array use time: "+(double)(System.nanoTime()-t0)/1000000+"msecs");
     }
 }
