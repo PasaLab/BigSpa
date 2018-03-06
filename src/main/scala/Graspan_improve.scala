@@ -160,9 +160,14 @@ object Graspan_improve extends Para{
         * 开始迭代
         */
       deleteDir.deletedir(islocal, master, output)
-      var oldedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel)])] = sc.parallelize(List())
-      var newedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel)])] = graph.flatMap(s => List((s._1, ((s._1, s
-        ._2), s._3)), (s._2, ((s._1, s._2), s._3)))).groupByKey().mapValues(s => s.toList)
+      var oldedges: RDD[(VertexId, (Iterable[Array[Int]],Iterable[Array[Int]]))] = sc.parallelize(List())
+      var newedges: RDD[(VertexId, (Iterable[Array[Int]],Iterable[Array[Int]]))] =
+        graph.flatMap(s => List((s._1,Array(s._1,s._2,s._3)), (s._2, Array(s._1,s._2,s._3))))
+        .groupByKey()
+        .map(s=>{
+        val flag=s._1
+        (flag,(s._2.filter(x=>x(1)==flag).map(x=>Array(x(2),x(0))),s._2.filter(x=>x(0)==flag).map(x=>Array(x(2),x(1)))))
+      })
       var step = 0
       var continue: Boolean = !newedges.isEmpty()
       var newnum: Long = graph.count()
@@ -175,7 +180,7 @@ object Graspan_improve extends Para{
         /**
           * 计算
           */
-        val new_edges_str = (oldedges rightOuterJoin newedges).mapValues(s =>(s._1.getOrElse(List()),s._2))
+        val new_edges_str = (oldedges rightOuterJoin newedges).mapValues(s =>(s._1.getOrElse((List(),List())),s._2))
 //            .repartition(defaultpar)
           .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_flat_java(step, index, s,
           symbol_num,grammar,
@@ -218,13 +223,19 @@ object Graspan_improve extends Para{
           * 更新旧边和新边
           */
         oldedges = (oldedges cogroup newedges)
-          .mapValues(s => s._1.headOption.getOrElse(List()) ++ s._2.headOption.getOrElse(List()))
+          .mapValues(s =>
+            (s._1.headOption.getOrElse((List(),List()))._1 ++ s._2.headOption.getOrElse((List(),List()))._1
+              ,s._1.headOption.getOrElse((List(),List()))._2 ++ s._2.headOption.getOrElse((List(),List()))._2))
           .repartition(defaultpar).persist(StorageLevel.MEMORY_ONLY_SER)
         //      .partitionBy(old_Partitioner).persist(StorageLevel.MEMORY_AND_DISK)
         tmp_old.unpersist()
         tmp_new.unpersist()
-        newedges = newedges_removedup.flatMap(s => List((s._1, ((s._1, s._2), s._3)), (s._2, ((s._1, s._2), s._3))))
-          .groupByKey().mapValues(s => s.toList)//自环在这里会重复
+        newedges = newedges_removedup.flatMap(s => List((s(0),Array(s(0),s(1),s(2))), (s(1), Array(s(0),s(1),s(2)))))
+          .groupByKey()
+          .map(s=>{
+            val flag=s._1
+            (flag,(s._2.filter(x=>x(1)==flag).map(x=>Array(x(2),x(0))),s._2.filter(x=>x(0)==flag).map(x=>Array(x(2),x(1)))))
+          })//自环在这里会重复
 //          .persist(StorageLevel.MEMORY_AND_DISK)
         //      println("oldedges:           \t"+oldedges.map(s=>s._2.length).sum().toLong/2)
 
@@ -233,7 +244,7 @@ object Graspan_improve extends Para{
           */
         val t0_hb = System.nanoTime(): Double
         deleteDir.deletedir(islocal, master, hbase_output)
-        HBase_OP.updateHbase(newedges_removedup, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
+        HBase_OP.updateHbase_java_flat(newedges_removedup, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
           htable_split_Map, htable_nodes_interval, default_split)
         newedges_removedup.unpersist()
         val t1_hb = System.nanoTime(): Double
@@ -244,7 +255,7 @@ object Graspan_improve extends Para{
         continue = newnum != 0
       }
 
-      println("final edges count:             \t" + oldedges.map(s => s._2.length).sum().toLong / 2)
+      println("final edges count:             \t" + oldedges.map(s => (s._2._1.size)).sum().toLong)
       //    h_admin.close()
       //    h_table.close()
       val scan = new Scanner(System.in)

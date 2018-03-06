@@ -58,6 +58,8 @@ object test extends utils.Para{
       conf.setMaster("local")
     }
     val sc = new SparkContext(conf)
+    val rdd_array=sc.parallelize(List((Vector(1,1)),(Vector(2,2)),(Vector(1,1))))
+    println(rdd_array.distinct().collect().mkString(","))
 //    deleteDir.deletedir(islocal,master,output)
 //    Graspan_OP.processLinux(sc,input_graph,input_grammar,output)
   }

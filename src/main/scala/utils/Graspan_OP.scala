@@ -802,7 +802,8 @@ object Graspan_OP extends Para {
     * java int[]
     */
   def computeInPartition_completely_flat_java(step:Int,index:Int,
-                                              mid_adj:Iterator[(VertexId,(List[((VertexId,VertexId),EdgeLabel)],List[((VertexId,VertexId),EdgeLabel)]))],
+                                              mid_adj:Iterator[(VertexId,((Iterable[Array[Int]],Iterable[Array[Int]]),
+                                                (Iterable[Array[Int]],Iterable[Array[Int]])))],
                                               symbol_num:Int,
                                               grammar:List[((EdgeLabel,EdgeLabel),EdgeLabel)],
                                               nodes_num_bitsize:Int,symbol_num_bitsize:Int,
@@ -813,7 +814,7 @@ object Graspan_OP extends Para {
                                               htable_nodes_interval:Int,
                                               Hbase_interval:Int,
                                               default_split:String)
-  :Iterator[(List[(VertexId,VertexId,EdgeLabel)],List[String],Long)]={
+  :Iterator[(Iterable[Array[Int]],List[String],Long)]={
     var t0=System.nanoTime():Double
     var t1=System.nanoTime():Double
     var recording:List[String]=List()
@@ -821,8 +822,10 @@ object Graspan_OP extends Para {
     var coarest_num=0L
     mid_adj.foreach(s=>{
       val res=Graspan_OP_java.join_flat(s._1,
-        s._2._1.toArray.map(x=>Array(x._1._1,x._1._2,x._2)),
-        s._2._2.toArray.map(x=>Array(x._1._1,x._1._2,x._2)),
+        s._2._1._1.toArray,
+        s._2._1._2.toArray,
+        s._2._2._1.toArray,
+        s._2._2._2.toArray,
         grammar.toArray.map(x=>Array(x._1._1,x._1._2,x._2)),symbol_num)
 //      coarest_num += res.length
 //      recording :+="*******************************"
@@ -831,7 +834,7 @@ object Graspan_OP extends Para {
 //      recording :+="new: "+s._2._2.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
 //      recording :+="res: "+res.toList.map(x=>"("+"("+x(0)+","+x(1)+"),"+x(2)+")").mkString(", ")+"\n"
 //      recording :+="*******************************"
-      res_edges_array=res_edges_array ++ res.toList
+      res_edges_array =res_edges_array ++ res
     })
 
     //    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
@@ -916,7 +919,7 @@ object Graspan_OP extends Para {
     t0=System.nanoTime():Double
     val len=res_edges_array.length
     val res_edges= {
-      HBase_OP.queryHbase_inPartition(res_edges_array.map(s=>(s(0),s(1),s(2))),nodes_num_bitsize,
+      HBase_OP.queryHbase_inPartition_java_flat(res_edges_array.toList,nodes_num_bitsize,
         symbol_num_bitsize,
         htable_name,
         htable_split_Map,
@@ -931,6 +934,6 @@ object Graspan_OP extends Para {
       +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
       +", \tres_edges:             \t"+res_edges.length+"\n")
     List((res_edges,recording,coarest_num)).toIterator
-//    List((res_edges_array.map(s=>(s(0),s(1),s(2))),recording,coarest_num)).toIterator
+//    List((res_edges_array.toList,recording,coarest_num)).toIterator
   }
 }

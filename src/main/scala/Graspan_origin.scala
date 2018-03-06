@@ -27,11 +27,11 @@ object Graspan_test extends Para{
     var islocal: Boolean = true
     var master: String = "local"
 
-    var input_grammar: String = "H:\\Graspan资料\\Graspan数据和源代码\\Grammar_Files\\rules_pointsto"
-    var input_graph:String="H:/Graspan资料/Graspan数据和源代码/Apache_Httpd_2.2.18_Points-to/Apache_httpd_2.2.18_pointsto_graph"
+    var input_grammar: String = "data/test_grammar"
+    var input_graph:String="data/test_graph"
     var output: String = "data/result/" //除去ip地址
     var hbase_output:String="data/result/hbase/hbhfile/"
-    var defaultpar:Int=4
+    var defaultpar:Int=1
     var smallpar:Int=64
     var newedges_interval:Int=40000000
 
@@ -100,8 +100,8 @@ object Graspan_test extends Para{
 //    println("spark.driver.memory:          \t" + conf.get("spark.driver.memory"))
 //    println("spark.executor.memory:        \t" + conf.get("spark.executor.memory"))
 //    println("spark.executor.cores:         \t" + conf.get("spark.executor.cores"))
-//    println("spark.storage.memoryFraction: \t" + conf.get("spark.storage.memoryFraction"))
-//    println("spark.shuffle.memoryFraction: \t" + conf.get("spark.shuffle.memoryFraction"))
+    //      println("spark.storage.memoryFraction: \t" + conf.get("spark.storage.memoryFraction"))
+    //      println("spark.shuffle.memoryFraction: \t" + conf.get("spark.shuffle.memoryFraction"))
     println("default partition num: \t" + defaultpar)
     println("samll partition num:  \t" + smallpar)
     println("queryHBase_interval:  \t" + queryHBase_interval)
@@ -116,6 +116,7 @@ object Graspan_test extends Para{
       input_grammar)
     println("------------Grammar INFO--------------------------------------------")
     println("input grammar:      \t" + input_grammar.split("/").last)
+    println("symbol_num:         \t" + symbol_num)
     println("symbol_num_bitsize: \t" + symbol_num_bitsize)
     println("symbol_Map:         \t")
     symbol_Map.foreach(s => println("                    \t" + s._2 + "\t->\t" + s._1))
@@ -144,8 +145,9 @@ object Graspan_test extends Para{
     println("nodes_num_bitsize:  \t" + nodes_num_bitsize)
     println("------------------------------------------------------------------")
     println
-//    val htable_nodes_interval: Int = nodes_totalnum / HRegion_splitnum + 1
+    val htable_nodes_interval: Int = nodes_totalnum / HRegion_splitnum + 1
 //    val (htable_split_Map, default_split) = HBase_OP.createHBase_Table(htable_name, HRegion_splitnum)
+val (htable_split_Map, default_split) = (Map((0,"s")),"000")
 
     /**
       * 原边集存入Hbase
@@ -159,9 +161,14 @@ object Graspan_test extends Para{
       * 开始迭代
       */
     deleteDir.deletedir(islocal, master, output)
-    var oldedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel)])] = sc.parallelize(List())
-    var newedges: RDD[(VertexId, List[((VertexId, VertexId), EdgeLabel)])] = graph.flatMap(s => List((s._1, ((s._1, s
-      ._2), s._3)), (s._2, ((s._1, s._2), s._3)))).groupByKey().mapValues(s => s.toList)
+    var oldedges: RDD[(VertexId, (Iterable[Array[Int]],Iterable[Array[Int]]))] = sc.parallelize(List())
+    var newedges: RDD[(VertexId, (Iterable[Array[Int]],Iterable[Array[Int]]))] =
+      graph.flatMap(s => List((s._1,Array(s._1,s._2,s._3)), (s._2, Array(s._1,s._2,s._3))))
+        .groupByKey()
+        .map(s=>{
+          val flag=s._1
+          (flag,(s._2.filter(x=>x(1)==flag).map(x=>Array(x(2),x(0))),s._2.filter(x=>x(0)==flag).map(x=>Array(x(2),x(1)))))
+        })
     var step = 0
     var continue: Boolean = !newedges.isEmpty()
     var newnum: Long = graph.count()
@@ -174,13 +181,13 @@ object Graspan_test extends Para{
       /**
         * 计算
         */
-      val new_edges_str = (oldedges rightOuterJoin newedges).mapValues(s =>(s._1.getOrElse(List()),s._2))
+      val new_edges_str = (oldedges rightOuterJoin newedges).mapValues(s =>(s._1.getOrElse((List(),List())),s._2))
         //            .repartition(defaultpar)
         .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_flat_java(step, index, s,
         symbol_num,grammar,
         nodes_num_bitsize,
-        symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, htable_name, Map(),
-        0, queryHBase_interval, "000")).persist(StorageLevel.MEMORY_ONLY_SER)
+        symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, htable_name, htable_split_Map,
+        htable_nodes_interval, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_ONLY_SER)
 
       /**
         * 记录各分区情况
@@ -203,39 +210,53 @@ object Graspan_test extends Para{
       println("newedges:                       \t" + newnum)
       println("distinct take time:             \t" + ((System.nanoTime()-t1_compute)/1000000000.0).formatted("%" +
         ".3f")+" secs")
+      //        for(i<-symbol_Map){
+      //          val symbol=i._1
+      //          val symbol_num=i._2
+      //          println(symbol+":                      \t"+newedges_removedup.filter(s=>s._3==symbol_num).count())
+      //        }
+      //        println("V:                              \t"+newedges_removedup.filter(s=>s._3==4).count())
+      //        println("MAs:                            \t"+newedges_removedup.filter(s=>s._3==7).count())
+      //        println("AMs:                            \t"+newedges_removedup.filter(s=>s._3==6).count())
       new_edges_str.unpersist()
 
       /**
         * 更新旧边和新边
         */
       oldedges = (oldedges cogroup newedges)
-        .mapValues(s => s._1.headOption.getOrElse(List()) ++ s._2.headOption.getOrElse(List()))
+        .mapValues(s =>
+          (s._1.headOption.getOrElse((List(),List()))._1 ++ s._2.headOption.getOrElse((List(),List()))._1
+            ,s._1.headOption.getOrElse((List(),List()))._2 ++ s._2.headOption.getOrElse((List(),List()))._2))
         .repartition(defaultpar).persist(StorageLevel.MEMORY_ONLY_SER)
       //      .partitionBy(old_Partitioner).persist(StorageLevel.MEMORY_AND_DISK)
       tmp_old.unpersist()
       tmp_new.unpersist()
-      newedges = newedges_removedup.flatMap(s => List((s._1, ((s._1, s._2), s._3)), (s._2, ((s._1, s._2), s._3))))
-        .groupByKey().mapValues(s => s.toList)
+      newedges = newedges_removedup.flatMap(s => List((s(0),Array(s(0),s(1),s(2))), (s(1), Array(s(0),s(1),s(2)))))
+        .groupByKey()
+        .map(s=>{
+          val flag=s._1
+          (flag,(s._2.filter(x=>x(1)==flag).map(x=>Array(x(2),x(0))),s._2.filter(x=>x(0)==flag).map(x=>Array(x(2),x(1)))))
+        })//自环在这里会重复
       //          .persist(StorageLevel.MEMORY_AND_DISK)
       //      println("oldedges:           \t"+oldedges.map(s=>s._2.length).sum().toLong/2)
 
       /**
         * Update HBase
         */
-//      val t0_hb = System.nanoTime(): Double
-//      deleteDir.deletedir(islocal, master, hbase_output)
-//      HBase_OP.updateHbase(newedges_removedup, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
-//        htable_split_Map, htable_nodes_interval, default_split)
-//      newedges_removedup.unpersist()
-//      val t1_hb = System.nanoTime(): Double
-//      println("update Hbase take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
+      val t0_hb = System.nanoTime(): Double
+      deleteDir.deletedir(islocal, master, hbase_output)
+      HBase_OP.updateHbase_java_flat(newedges_removedup, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
+        htable_split_Map, htable_nodes_interval, default_split)
+      newedges_removedup.unpersist()
+      val t1_hb = System.nanoTime(): Double
+      println("update Hbase take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
       t1 = System.nanoTime(): Double
       println("*step: step " + step + " take time: \t " + ((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
       println
       continue = newnum != 0
     }
 
-    println("final edges count:             \t" + oldedges.map(s => s._2.length).sum().toLong / 2)
+    println("final edges count:             \t" + oldedges.map(s => (s._2._1.size)).sum().toLong)
     //    h_admin.close()
     //    h_table.close()
     val scan = new Scanner(System.in)
