@@ -161,13 +161,13 @@ val (htable_split_Map, default_split) = (Map((0,"s")),"000")
       * 开始迭代
       */
     deleteDir.deletedir(islocal, master, output)
-    var oldedges: RDD[(VertexId, (Iterable[Array[Int]],Iterable[Array[Int]]))] = sc.parallelize(List())
-    var newedges: RDD[(VertexId, (Iterable[Array[Int]],Iterable[Array[Int]]))] =
-      graph.flatMap(s => List((s._1,Array(s._1,s._2,s._3)), (s._2, Array(s._1,s._2,s._3))))
+    var oldedges: RDD[(VertexId, (Iterable[Vector[Int]],Iterable[Vector[Int]]))] = sc.parallelize(List())
+    var newedges: RDD[(VertexId, (Iterable[Vector[Int]],Iterable[Vector[Int]]))] =
+      graph.flatMap(s => List((s._1,Vector(s._1,s._2,s._3)), (s._2, Vector(s._1,s._2,s._3))))
         .groupByKey()
         .map(s=>{
           val flag=s._1
-          (flag,(s._2.filter(x=>x(1)==flag).map(x=>Array(x(2),x(0))),s._2.filter(x=>x(0)==flag).map(x=>Array(x(2),x(1)))))
+          (flag,(s._2.filter(x=>x(1)==flag).map(x=>Vector(x(2),x(0))),s._2.filter(x=>x(0)==flag).map(x=>Vector(x(2),x(1)))))
         })
     var step = 0
     var continue: Boolean = !newedges.isEmpty()
@@ -231,11 +231,11 @@ val (htable_split_Map, default_split) = (Map((0,"s")),"000")
       //      .partitionBy(old_Partitioner).persist(StorageLevel.MEMORY_AND_DISK)
       tmp_old.unpersist()
       tmp_new.unpersist()
-      newedges = newedges_removedup.flatMap(s => List((s(0),Array(s(0),s(1),s(2))), (s(1), Array(s(0),s(1),s(2)))))
+      newedges = newedges_removedup.flatMap(s => List((s(0),Vector(s(0),s(1),s(2))), (s(1), Vector(s(0),s(1),s(2)))))
         .groupByKey()
         .map(s=>{
           val flag=s._1
-          (flag,(s._2.filter(x=>x(1)==flag).map(x=>Array(x(2),x(0))),s._2.filter(x=>x(0)==flag).map(x=>Array(x(2),x(1)))))
+          (flag,(s._2.filter(x=>x(1)==flag).map(x=>Vector(x(2),x(0))),s._2.filter(x=>x(0)==flag).map(x=>Vector(x(2),x(1)))))
         })//自环在这里会重复
       //          .persist(StorageLevel.MEMORY_AND_DISK)
       //      println("oldedges:           \t"+oldedges.map(s=>s._2.length).sum().toLong/2)
@@ -243,13 +243,13 @@ val (htable_split_Map, default_split) = (Map((0,"s")),"000")
       /**
         * Update HBase
         */
-      val t0_hb = System.nanoTime(): Double
-      deleteDir.deletedir(islocal, master, hbase_output)
-      HBase_OP.updateHbase_java_flat(newedges_removedup, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
-        htable_split_Map, htable_nodes_interval, default_split)
-      newedges_removedup.unpersist()
-      val t1_hb = System.nanoTime(): Double
-      println("update Hbase take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
+//      val t0_hb = System.nanoTime(): Double
+//      deleteDir.deletedir(islocal, master, hbase_output)
+//      HBase_OP.updateHbase_java_flat(newedges_removedup, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
+//        htable_split_Map, htable_nodes_interval, default_split)
+//      newedges_removedup.unpersist()
+//      val t1_hb = System.nanoTime(): Double
+//      println("update Hbase take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
       t1 = System.nanoTime(): Double
       println("*step: step " + step + " take time: \t " + ((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
       println

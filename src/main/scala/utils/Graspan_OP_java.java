@@ -67,16 +67,15 @@ public class Graspan_OP_java {
      * @param symbol_num
      * @return
      */
-    public static List<int[]> join_flat(int flag,int[][] old_edge_before,int[][] old_edge_after,int[][] new_edge_before,
-                                        int[][] new_edge_after,
-                                        int[][] grammar,int
-            symbol_num){
+    public static Vector<int[]> join_flat(int flag,int[][] old_edge_before,int[][] old_edge_after,
+                                          int[][] new_edge_before,int[][] new_edge_after,
+                                        int[][] grammar,int symbol_num){
 //        String tmp="XXX mid= "+flag+"\n";
 //        for(int[] i:new_array){
 //            tmp+=" ("+i[0]+","+i[1]+") ";
 //        }
         double t0=System.nanoTime();
-        List<int[]> res_edges=new ArrayList<int[]>();
+        Vector<int[]> res_edges=new Vector<int[]>();
         IntArrayCompartor_According_Symbol comparator = new IntArrayCompartor_According_Symbol();
 //        tmp+="\nedge_before before sort\n";
 //        for(int[] i:new_edge_before){
