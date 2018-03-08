@@ -45,8 +45,6 @@ object test extends utils.Para{
       * 输出参数设置
       */
 
-
-
     /**
       * Spark 设置
       */
@@ -58,8 +56,9 @@ object test extends utils.Para{
       conf.setMaster("local")
     }
     val sc = new SparkContext(conf)
-    val rdd_array=sc.parallelize(List((Vector(1,1)),(Vector(2,2)),(Vector(1,1))))
-    println(rdd_array.distinct().collect().mkString(","))
+
+    val rdd1=sc.parallelize(List((1,Array(1,2)),(2,Array(2,3)))).flatMap(s=>Array((s._1,s._2),(s._1,s._2)))
+    println(rdd1.collect().mkString(","))
 //    deleteDir.deletedir(islocal,master,output)
 //    Graspan_OP.processLinux(sc,input_graph,input_grammar,output)
   }

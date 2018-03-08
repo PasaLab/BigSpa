@@ -1,9 +1,12 @@
 package utils
 
+import java.util
+
 import org.apache.spark.{HashPartitioner, RangePartitioner, SparkContext}
 import org.apache.spark.rdd.RDD
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileUtil, Path}
+
 import scala.collection.JavaConversions._
 
 /**
@@ -801,9 +804,9 @@ object Graspan_OP extends Para {
   /**
     * java int[]
     */
-  def computeInPartition_completely_flat_java(step:Int,index:Int,
-                                              mid_adj:Iterator[(VertexId,((Iterable[Vector[Int]],Iterable[Vector[Int]]),
-                                                (Iterable[Vector[Int]],Iterable[Vector[Int]])))],
+  def computeInPartition_completely_flat_java_Array(step:Int,index:Int,
+                                              mid_adj:Iterator[(VertexId,((Array[Array[Int]],Array[Array[Int]]),
+                                                (Array[Array[Int]],Array[Array[Int]])))],
                                               symbol_num:Int,
                                               grammar:List[((EdgeLabel,EdgeLabel),EdgeLabel)],
                                               nodes_num_bitsize:Int,symbol_num_bitsize:Int,
@@ -814,19 +817,19 @@ object Graspan_OP extends Para {
                                               htable_nodes_interval:Int,
                                               Hbase_interval:Int,
                                               default_split:String)
-  :Iterator[(Iterable[Vector[Int]],List[String],Long)]={
+  :Iterator[(Array[Array[Int]],List[String],Long)]={
     var t0=System.nanoTime():Double
     var t1=System.nanoTime():Double
     var recording:List[String]=List()
-    var res_edges_array:Vector[Vector[Int]]=Vector()
+    var res_edges_array=Array[Array[Int]]()
     var coarest_num=0L
     mid_adj.foreach(s=>{
       val res=Graspan_OP_java.join_flat(s._1,
-        s._2._1._1.toArray.map(x=>x.toArray),
-        s._2._1._2.toArray.map(x=>x.toArray),
-        s._2._2._1.toArray.map(x=>x.toArray),
-        s._2._2._2.toArray.map(x=>x.toArray),
-        grammar.toArray.map(x=>Array(x._1._1,x._1._2,x._2)),symbol_num)
+        s._2._1._1//.toArray.map(x=>x.toArray)
+        ,s._2._1._2//.toArray.map(x=>x.toArray)
+        ,s._2._2._1//.toArray.map(x=>x.toArray)
+        ,s._2._2._2//.toArray.map(x=>x.toArray)
+        ,grammar.toArray.map(x=>Array(x._1._1,x._1._2,x._2)),symbol_num)
 //      coarest_num += res.length
 //      recording :+="*******************************"
 //      recording :+="mid: "+s._1+"\n"
@@ -835,16 +838,16 @@ object Graspan_OP extends Para {
 //      recording :+="res: "+res.toList.map(x=>"("+"("+x(0)+","+x(1)+"),"+x(2)+")").mkString(", ")+"\n"
 //      recording :+="*******************************"
       coarest_num +=res.size()
-      res_edges_array =res_edges_array.++( res.toVector.map(x=>x.toVector).distinct)
+      res_edges_array ++=res
     })
 
     //    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
     println("At STEP "+step+", partition "+index)
     recording:+="At STEP "+step+", partition "+index
 
-    val add_edges=res_edges_array.filter(s=>directadd.contains(s(2))).map(s=>(Vector(s(0),s(1),directadd
+    val add_edges=res_edges_array.filter(s=>directadd.contains(s(2))).map(s=>(Array(s(0),s(1),directadd
       .getOrElse(s(2),-1))))
-    res_edges_array=(res_edges_array ++ add_edges).distinct
+    res_edges_array=(res_edges_array ++ add_edges)
     t1=System.nanoTime():Double
     val toolong={
       if((t1-t0) /1000000000.0<10) "normal"
@@ -919,7 +922,7 @@ object Graspan_OP extends Para {
     t0=System.nanoTime():Double
     val len=res_edges_array.length
     val res_edges= {
-      HBase_OP.queryHbase_inPartition_java_flat(res_edges_array,nodes_num_bitsize,
+      HBase_OP.queryHbase_inPartition_java_flat_Array(res_edges_array,nodes_num_bitsize,
         symbol_num_bitsize,
         htable_name,
         htable_split_Map,
@@ -936,4 +939,7 @@ object Graspan_OP extends Para {
     List((res_edges,recording,coarest_num)).toIterator
 //    List((res_edges_array.toList,recording,coarest_num)).toIterator
   }
+
+
+
 }

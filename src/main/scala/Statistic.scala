@@ -29,7 +29,7 @@ object Statistic {
       .saveAsTextFile(output)
   }
   def sample(sc:SparkContext,input:String,internal:Int,output:String): Unit ={
-    val data=sc.textFile(input).filter(s=> !s.trim.equals("")).zipWithIndex().filter(s=>s._2%internal==0).map(s=>s
+    val data=sc.textFile(input).filter(s=> !s.trim.equals("")).zipWithIndex().filter(s=>s._2<=1000000).map(s=>s
       ._1).repartition(1).saveAsTextFile(output)
   }
 
@@ -47,8 +47,7 @@ object Statistic {
     var islocal: Boolean = true
     var master: String = "local"
 
-//    var input_graph: String = "H:/Graspan资料/Graspan_sorce/data/InputGraph/Apache_Httpd_2.2
-// .18_Points-to/Apache_httpd_2.2.18_pointsto_graph"
+    var input_graph: String = "H:/Graspan资料/Graspan数据和源代码/Apache_Httpd_2.2.18_Points-to/Apache_httpd_2.2.18_pointsto_graph"
     var input_grammar: String = "H:/Graspan资料/Graspan数据和源代码/Grammar_Files/rules_pointsto"
 
     var input:String="data/PQSL_df.log"
@@ -65,37 +64,38 @@ object Statistic {
     }
 
     val sc = new SparkContext(conf)
-
-    var targetLine:String="clousure compute take time"
-    deleteDir.deletedir(islocal,master,output+targetLine)
-    selectLine(sc,input,targetLine,output+targetLine)
-
-    targetLine="newedges_dup"
-    deleteDir.deletedir(islocal,master,output+targetLine)
-    selectLine(sc,input,targetLine,output+targetLine)
-
-    targetLine="newedges_removedup"
-    deleteDir.deletedir(islocal,master,output+targetLine)
-    selectLine(sc,input,targetLine,output+targetLine)
-
-    targetLine="distinct take time"
-    deleteDir.deletedir(islocal,master,output+targetLine)
-    selectLine(sc,input,targetLine,output+targetLine)
-
-    targetLine="update Hbase take time"
-    deleteDir.deletedir(islocal,master,output+targetLine)
-    selectLine(sc,input,targetLine,output+targetLine)
-
-    targetLine="all edges sum to"
-    deleteDir.deletedir(islocal,master,output+targetLine)
-    selectLine(sc,input,targetLine,output+targetLine)
-
-    targetLine="step"
-    deleteDir.deletedir(islocal,master,output+targetLine)
-    selectLine(sc,input,targetLine,output+targetLine)
-
-    deleteDir.deletedir(islocal,master,output+"step_clean")
-    removestar(sc,output+"step/part-00000",output+"step_clean")
+    deleteDir.deletedir(islocal,master,output)
+    sample(sc,input_graph,0,output)
+//    var targetLine:String="clousure compute take time"
+//    deleteDir.deletedir(islocal,master,output+targetLine)
+//    selectLine(sc,input,targetLine,output+targetLine)
+//
+//    targetLine="newedges_dup"
+//    deleteDir.deletedir(islocal,master,output+targetLine)
+//    selectLine(sc,input,targetLine,output+targetLine)
+//
+//    targetLine="newedges_removedup"
+//    deleteDir.deletedir(islocal,master,output+targetLine)
+//    selectLine(sc,input,targetLine,output+targetLine)
+//
+//    targetLine="distinct take time"
+//    deleteDir.deletedir(islocal,master,output+targetLine)
+//    selectLine(sc,input,targetLine,output+targetLine)
+//
+//    targetLine="update Hbase take time"
+//    deleteDir.deletedir(islocal,master,output+targetLine)
+//    selectLine(sc,input,targetLine,output+targetLine)
+//
+//    targetLine="all edges sum to"
+//    deleteDir.deletedir(islocal,master,output+targetLine)
+//    selectLine(sc,input,targetLine,output+targetLine)
+//
+//    targetLine="step"
+//    deleteDir.deletedir(islocal,master,output+targetLine)
+//    selectLine(sc,input,targetLine,output+targetLine)
+//
+//    deleteDir.deletedir(islocal,master,output+"step_clean")
+//    removestar(sc,output+"step/part-00000",output+"step_clean")
   }
 }
 
