@@ -41,8 +41,9 @@ object Graspan_improve extends Para{
     var error_rate:Double=0.1
 
     var htable_name:String="edges"
-    var queryHBase_interval:Int=2
+    var queryHBase_interval:Int=50000
     var HRegion_splitnum:Int=36
+    var Batch_QueryHbase:Boolean=true
 
     var is_complete_loop:Boolean=false
     var max_complete_loop_turn:Int=5
@@ -71,6 +72,7 @@ object Graspan_improve extends Para{
         case "htable_name"=>htable_name=argvalue
         case "queryHBase_interval"=>queryHBase_interval=argvalue.toInt
         case "HRegion_splitnum"=>HRegion_splitnum=argvalue.toInt
+        case "Batch_QueryHbase"=>Batch_QueryHbase=argvalue.toBoolean
 
         case "is_complete_loop"=>is_complete_loop=argvalue.toBoolean
         case "max_complete_loop_turn"=>max_complete_loop_turn=argvalue.toInt
@@ -148,7 +150,7 @@ object Graspan_improve extends Para{
     println("nodes_num_bitsize:  \t" + nodes_num_bitsize)
     println("------------------------------------------------------------------")
     println
-    val htable_nodes_interval: Int = nodes_totalnum / HRegion_splitnum + 1
+
     val (htable_split_Map, default_split) = HBase_OP.createHBase_Table(htable_name, HRegion_splitnum)
 
     /**
@@ -157,7 +159,7 @@ object Graspan_improve extends Para{
     //    println("graph Partitions: "+graph.partitions.length)
     deleteDir.deletedir(islocal, master, hbase_output)
     HBase_OP.updateHbase(graph, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
-      htable_split_Map, htable_nodes_interval, default_split)
+      htable_split_Map, HRegion_splitnum, default_split)
 
     deleteDir.deletedir(islocal, master, output)
 
@@ -188,14 +190,16 @@ object Graspan_improve extends Para{
       /**
         * 计算
         */
+        println("current partitions num:         \t"+oldedges.getNumPartitions)
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
           Graspan_OP.computeInPartition_completely_flat_java_Array(step,
             index, s,
             symbol_num,grammar,
             nodes_num_bitsize,
-            symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, htable_name, htable_split_Map,
-            htable_nodes_interval, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_ONLY_SER)
+            symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, Batch_QueryHbase,htable_name,
+            htable_split_Map,
+            HRegion_splitnum, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_ONLY_SER)
       /**
         * 记录各分区情况
         */
@@ -228,6 +232,7 @@ object Graspan_improve extends Para{
       /**
         * 更新旧边和新边
         */
+
       oldedges = {
         if(newnum>=100000&&step<=40&&step%step_interval==1&&change_par==false){
           change_par=true
@@ -260,7 +265,7 @@ object Graspan_improve extends Para{
                   ==flag).map(u=>Array(u(2),u(0))),new_part.filter(u=>u(0)==flag).map(u=>Array(u(2),u(1))))))
               })
             })
-//            .repartition((step/10+1)*defaultpar)
+//            .repartition(smallpar)
             .persist(StorageLevel.MEMORY_ONLY_SER)
         }
       }
@@ -273,18 +278,19 @@ object Graspan_improve extends Para{
       deleteDir.deletedir(islocal, master, hbase_output)
       HBase_OP.updateHbase_java_flat(newedges, nodes_num_bitsize, symbol_num_bitsize, htable_name,
         hbase_output,
-        htable_split_Map, htable_nodes_interval, default_split)
+        htable_split_Map, HRegion_splitnum, default_split)
       val t1_hb = System.nanoTime(): Double
       println("update Hbase take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
       t1 = System.nanoTime(): Double
       println("*step: step " + step + " take time: \t " + ((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
       println
       continue = newnum != 0
-      val scan = new Scanner(System.in)
-      scan.next()
+//      val scan = new Scanner(System.in)
+//      scan.next()
 
     }
-    println("final edges count:             \t" + oldedges.map(s => (s._2._1._1.length)).sum().toLong)
+    println("final edges count:             \t" + oldedges.mapValues(s => (s._1._1.length)).reduce((x,y)=>((1,x._2+y
+      ._2)))._2)
     sc.stop();
   }
 
