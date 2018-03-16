@@ -31,9 +31,11 @@ object Graspan_improve extends Para{
     var input_graph:String="data/test_graph"
     var output: String = "data/result/" //除去ip地址
     var hbase_output:String="data/result/hbase/hbhfile/"
+    var checkpoint_output:String="data/checkpoint"
     var defaultpar:Int=352
-    var smallpar:Int=96
-    var step_interval:Int=8
+    var clusterpar:Int=352
+    var newnum_interval:Int=40000000
+    var checkpoint_interval:Int=10
     var newedges_interval:Int=40000000
 
     var openBloomFilter:Boolean=false
@@ -49,6 +51,9 @@ object Graspan_improve extends Para{
     var max_complete_loop_turn:Int=5
     var max_delta:Int=10000
 
+    var file_index_f:Int= -1
+    var file_index_b:Int= -1
+
 
     for (arg <- args) {
       val argname = arg.split(",")(0)
@@ -61,7 +66,7 @@ object Graspan_improve extends Para{
         case "input_graph"=>input_graph=argvalue
         case "output" => output = argvalue
         case "hbase_output"=>hbase_output=argvalue
-        case "smallpar"=>smallpar=argvalue.toInt
+        case "clusterpar"=>clusterpar=argvalue.toInt
         case "defaultpar"=>defaultpar=argvalue.toInt
         case "newedges_interval"=>newedges_interval=argvalue.toInt
 
@@ -78,7 +83,11 @@ object Graspan_improve extends Para{
         case "max_complete_loop_turn"=>max_complete_loop_turn=argvalue.toInt
         case "max_delta"=>max_delta=argvalue.toInt
 
-        case "step_interval"=>step_interval=argvalue.toInt
+        case "newnum_interval"=>newnum_interval=argvalue.toInt
+        case "checkpoint_interval"=>checkpoint_interval=argvalue.toInt
+        case "checkpoint_output"=>checkpoint_output=argvalue
+        case "file_index_f"=>file_index_f=argvalue.toInt
+        case "file_index_b"=>file_index_b=argvalue.toInt
         case _ => {}
       }
     }
@@ -100,15 +109,14 @@ object Graspan_improve extends Para{
       conf.setMaster("local")
     }
     val sc = new SparkContext(conf)
+    sc.setCheckpointDir(checkpoint_output)
     //    try {
     println("------------Spark and HBase settings--------------------------------")
     println("spark.driver.memory:          \t" + conf.get("spark.driver.memory"))
     println("spark.executor.memory:        \t" + conf.get("spark.executor.memory"))
     println("spark.executor.cores:         \t" + conf.get("spark.executor.cores"))
-    //      println("spark.storage.memoryFraction: \t" + conf.get("spark.storage.memoryFraction"))
-    //      println("spark.shuffle.memoryFraction: \t" + conf.get("spark.shuffle.memoryFraction"))
     println("default partition num: \t" + defaultpar)
-    println("samll partition num:  \t" + smallpar)
+    println("cluster partition num:  \t" + clusterpar)
     println("queryHBase_interval:  \t" + queryHBase_interval)
     println("HRegion_splitnum:     \t" + HRegion_splitnum)
     println("--------------------------------------------------------------------")
@@ -140,7 +148,9 @@ object Graspan_improve extends Para{
     /**
       * Graph相关设置
       */
-    val (graph, nodes_num_bitsize, nodes_totalnum) = Graspan_OP.processGraph(sc, input_graph, input_grammar, symbol_Map, loop,
+    val (graph, nodes_num_bitsize, nodes_totalnum) = Graspan_OP.processGraph(sc, input_graph, file_index_f,file_index_b,
+      input_grammar,
+      symbol_Map, loop,
       directadd, defaultpar)
 
     println("------------Graph INFO--------------------------------------------")
@@ -180,6 +190,7 @@ object Graspan_improve extends Para{
     var change_par=true
     var continue: Boolean = true
     var newnum: Long = graph.count()
+    var oldnum: Long = newnum
     /**
       * 开始迭代
       */
@@ -190,7 +201,7 @@ object Graspan_improve extends Para{
       /**
         * 计算
         */
-        println("current partitions num:         \t"+oldedges.getNumPartitions)
+      println("current partitions num:         \t"+oldedges.getNumPartitions)
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
           Graspan_OP.computeInPartition_completely_flat_java_Array(step,
@@ -206,8 +217,27 @@ object Graspan_improve extends Para{
       val par_INFO = new_edges_str.map(s=>s._2)
       deleteDir.deletedir(islocal, master, output + "/par_INFO/step" + step)
       par_INFO.repartition(1).saveAsTextFile(output + "/par_INFO/step" + step)
+
+      val par_time_JOIN=par_INFO.map(s=>s.split("REPARJOIN")(1).trim.toDouble.toInt).collect().sorted
+      println("Join take time Situation")
+      println("Min Task take time              \t"+par_time_JOIN(0))
+      println("25% Task take time              \t"+par_time_JOIN((par_time_JOIN.length * 0.25).toInt))
+      println("50% Task take time              \t"+par_time_JOIN((par_time_JOIN.length * 0.5).toInt))
+      println("75% Task take time              \t"+par_time_JOIN((par_time_JOIN.length * 0.75).toInt))
+      println("Max Task take time              \t"+par_time_JOIN(par_time_JOIN.length - 1))
+
+      val par_time_HB=par_INFO.map(s=>s.split("REPARHBASE")(1).trim.toDouble.toInt).collect().sorted
+      println("HBase take time Situation")
+      println("Min Task take time              \t"+par_time_HB(0))
+      println("25% Task take time              \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
+      println("50% Task take time              \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
+      println("75% Task take time              \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
+      println("Max Task take time              \t"+par_time_HB(par_time_HB.length - 1))
+
+
       val coarest_num=new_edges_str.map(s=>s._3).sum
-      println("coarest_num:                    \t"+coarest_num.toLong)
+      println("old num:                        \t"+oldnum)
+      println("coarest num:                    \t"+coarest_num.toLong)
       /**
         * 新边去重
         */
@@ -215,6 +245,7 @@ object Graspan_improve extends Para{
       val newedges = new_edges_str.flatMap(s=>s._1).mapPartitions(s=>s.map(_.toVector)).distinct
         .mapPartitions(s=>s.map(_.toArray)).persist(StorageLevel.MEMORY_ONLY_SER)
       newnum = newedges.count()
+      oldnum += newnum
       println("newedges:                       \t" + newnum)
       println("distinct take time:             \t" + ((System.nanoTime()-t0_distinct)/1000000000.0).formatted("%" +
         ".3f")+" secs")
@@ -234,8 +265,9 @@ object Graspan_improve extends Para{
         */
 
       oldedges = {
-        if(newnum>=100000&&step<=40&&step%step_interval==1&&change_par==false){
-          change_par=true
+        val cur_par=oldedges.getNumPartitions
+        val need_par=(newnum/newnum_interval)*352
+        if(need_par>cur_par){
           (oldedges cogroup
             newedges.flatMap(s=>(Array((s(0),Array(s)),(s(1),Array(s))))).reduceByKey(_ ++ _) )
             .mapPartitions(s =>{
@@ -248,11 +280,28 @@ object Graspan_improve extends Para{
                   ==flag).map(u=>Array(u(2),u(0))),new_part.filter(u=>u(0)==flag).map(u=>Array(u(2),u(1))))))
               })
             })
-            .repartition((step/step_interval+1)*defaultpar)
+            .repartition(need_par.toInt)
+            .persist(StorageLevel.MEMORY_ONLY_SER)
+        }
+        else if(par_time_JOIN((par_time_JOIN.length * 0.75).toInt)*3 < par_time_JOIN(par_time_JOIN.length - 1)
+          &&par_time_JOIN(par_time_JOIN.length-1)>30) {
+          println("need repar")
+          (oldedges cogroup
+            newedges.flatMap(s=>(Array((s(0),Array(s)),(s(1),Array(s))))).reduceByKey(_ ++ _) )
+            .mapPartitions(s =>{
+              s.map(x=>{
+                val flag=x._1
+                val old_part=x._2._1.headOption.getOrElse(((Array[Array[Int]](),Array[Array[Int]]()),(Array[Array[Int]]
+                  (),Array[Array[Int]]())))
+                val new_part=x._2._2.headOption.getOrElse(Array[Array[Int]]())
+                (flag,((old_part._1._1 ++ old_part._2._1,old_part._1._2 ++ old_part._2._2),(new_part.filter(u=>u(1)
+                  ==flag).map(u=>Array(u(2),u(0))),new_part.filter(u=>u(0)==flag).map(u=>Array(u(2),u(1))))))
+              })
+            })
+            .repartition(cur_par)
             .persist(StorageLevel.MEMORY_ONLY_SER)
         }
         else{
-          change_par=false
           (oldedges cogroup
             newedges.flatMap(s=>(Array((s(0),Array(s)),(s(1),Array(s))))).reduceByKey(_ ++ _) )
             .mapPartitions(s =>{
@@ -270,6 +319,11 @@ object Graspan_improve extends Para{
         }
       }
 
+      if(step % checkpoint_interval==0) {
+        val t0_cp=System.nanoTime()
+        oldedges.checkpoint()
+        println("checkpoint take time:         \t"+((System.nanoTime()-t0_cp)/1000000000.0).formatted("%.3f")+" sec")
+      }
 
       /**
         * Update HBase
@@ -289,9 +343,12 @@ object Graspan_improve extends Para{
 //      scan.next()
 
     }
-    println("final edges count:             \t" + oldedges.mapValues(s => (s._1._1.length)).reduce((x,y)=>((1,x._2+y
+    println("final edges count(oldedges reduce):             \t" + oldedges.mapValues(s => (s._1._1.length)).reduce((x,
+                                                                                                                  y)=>((1,x._2+y
       ._2)))._2)
-    sc.stop();
+    println("final edges count(oldedges sum):                \t" + oldedges.map(s => (s._2._1._1.length)).sum())
+    sc.stop()
+    println("final edges count():")
   }
 
 }

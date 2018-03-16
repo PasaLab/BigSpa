@@ -134,7 +134,8 @@ object Graspan_UDFP extends Para{
       /**
         * Graph相关设置
         */
-      val (graph, nodes_num_bitsize, nodes_totalnum) = Graspan_OP.processGraph(sc, input_graph, input_grammar, symbol_Map, loop,
+      val (graph, nodes_num_bitsize, nodes_totalnum) = Graspan_OP.processGraph(sc, input_graph, 0,0,input_grammar,
+        symbol_Map, loop,
         directadd, defaultpar)
 
       println("------------Graph INFO--------------------------------------------")
@@ -204,7 +205,7 @@ object Graspan_UDFP extends Para{
           println("compute par take time:       \t"+((System.nanoTime()-t0_par)/1000000000.0).formatted("%.3f")+" secs")
           (tmp_rdd join node_par).map(s=>(s._2._2,(s._1,s._2._1))).partitionBy(new UDFPartitioner(all_par_num.toInt))
           //        .partitionBy(compute_Partitioner)
-          .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_3(step, index, s, grammar,
+          .mapPartitionsWithIndex((index, s) => Graspan_OP.computeInPartition_completely_UDFP(step, index, s, grammar,
           htable_name, nodes_num_bitsize,
           symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, htable_split_Map,
           htable_nodes_interval, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_AND_DISK)

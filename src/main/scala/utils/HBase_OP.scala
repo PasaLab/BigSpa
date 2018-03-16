@@ -97,7 +97,7 @@ object HBase_OP extends Para{
     //creating table descriptor
     val h_tableDesc = new HTableDescriptor(Bytes.toBytes(htable_name))
     //creating column family descriptor
-    val family = new HColumnDescriptor(Bytes.toBytes("edges"),1,"NONE",false,true,Int.MaxValue,"ROW")
+    val family = new HColumnDescriptor(Bytes.toBytes("e"),1,"NONE",false,true,Int.MaxValue,"ROW")
     //adding coloumn family to HTable
     h_tableDesc.addFamily(family)
     /**
@@ -115,6 +115,7 @@ object HBase_OP extends Para{
     println("table "+htable_name+" created!")
     (split_str.zipWithIndex.map(s=>s.swap).toMap,default_split)
   }
+
 
   def queryHbase_inPartition(res_edges_maynotin:List[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
                              symbol_num_bitsize:Int,htable_name:String,
@@ -174,7 +175,7 @@ object HBase_OP extends Para{
     val h_conf = HBaseConfiguration.create()
     h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
     //    println("hbase ipc.server.max.callqueue.size:\t"+h_conf.get("hbase ipc.server.max.callqueue.size"))
-    h_conf.set("hbase ipc.server.max.callqueue.size","5368709120")
+    h_conf.set("hbase.ipc.server.max.callqueue.size","5368709120")
     //    println(h_conf.get("hbase ipc.server.max.callqueue.size"))
     h_conf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
     val h_table = new HTable(h_conf, htable_name)
@@ -231,6 +232,65 @@ object HBase_OP extends Para{
     res
   }
 
+  def queryHbase_inPartition_same_client(res_edges_maynotin:Array[Array[Int]],nodes_num_bitsize:Int,
+                                       symbol_num_bitsize:Int,
+                                       Batch_QueryHbase:Boolean,
+                                         h_table:HTable,
+                                       htable_split_Map:Map[Int,String],HRegion_splitnum:Int,queryHbase_interval:Int,
+                                       default_split:String)
+  :Array[Array[Int]]={
+    println("queryHbase inPartition same client with same client")
+    val get_list_java = res_edges_maynotin.map(x => {
+      val get = new Get(Bytes.toBytes(Array2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
+        HRegion_splitnum,default_split)))
+      get.setCheckExistenceOnly(true)
+      get
+    }).toList
+    val res={
+      Batch_QueryHbase match{
+        case true => {
+          /**
+            * Query interval
+            */
+          var res_all:List[Boolean]=List()
+          for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
+            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
+            val res_java = h_table.get(sublist)
+            res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
+          }
+          (res_edges_maynotin zip res_all).filter(s => s._2 == false).map(s => s._1)
+        }
+        case false => {
+          /**
+            * Query all
+            */
+          val get_list = res_edges_maynotin.map(x => {
+            //      val rk = Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,HRegion_splitnum,default_split)
+            val get = new Get(Bytes.toBytes(Array2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
+              HRegion_splitnum,default_split)))
+            get.setCheckExistenceOnly(true)
+            get
+          })
+          val get_list_java: java.util.List[Get] = get_list.toList
+          val res_java = h_table.get(get_list_java)
+          val res_list = res_java.map(x => x.getExists.booleanValue()).toList
+          (res_edges_maynotin zip res_list).filter(s => s._2 == false).map(s => s._1)
+        }
+        case _ =>{
+          var res_all:List[Boolean]=List()
+          for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
+            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
+            val res_java = h_table.get(sublist)
+            res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
+          }
+          (res_edges_maynotin zip res_all).filter(s => s._2 == false).map(s => s._1)
+        }
+      }
+    }
+//    h_table.close()
+    res
+  }
+
   def updateHbase(edge_processed:RDD[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
                   symbol_num_bitsize:Int,htable_name:String,output:String,htable_split_Map:Map[Int,String],
                   HRegion_splitnum:Int,default_split:String)= {
@@ -248,7 +308,7 @@ object HBase_OP extends Para{
     edge_processed.map(s => {
       val final_string = Edge2String(s,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map, HRegion_splitnum,default_split)
       val final_rowkey = Bytes.toBytes(final_string)
-      val kv: KeyValue = new KeyValue(final_rowkey, "edges".getBytes, "contents".getBytes, Bytes.toBytes('1'))
+      val kv: KeyValue = new KeyValue(final_rowkey, "e".getBytes, "c".getBytes, Bytes.toBytes('1'))
       (final_string, (new ImmutableBytesWritable(final_rowkey), kv))
     }).sortByKey().map(s => s._2)
       .saveAsNewAPIHadoopFile(output, classOf[ImmutableBytesWritable],
@@ -280,7 +340,7 @@ object HBase_OP extends Para{
       val final_string = Array2String(s,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map, HRegion_splitnum,
         default_split)
       val final_rowkey = Bytes.toBytes(final_string)
-      val kv: KeyValue = new KeyValue(final_rowkey, "edges".getBytes, "contents".getBytes, Bytes.toBytes('1'))
+      val kv: KeyValue = new KeyValue(final_rowkey, "e".getBytes, "c".getBytes, Bytes.toBytes('1'))
       (final_string, (new ImmutableBytesWritable(final_rowkey), kv))
     }).sortByKey().map(s => s._2)
       .saveAsNewAPIHadoopFile(output, classOf[ImmutableBytesWritable],
@@ -290,6 +350,35 @@ object HBase_OP extends Para{
     val bulkLoader = new LoadIncrementalHFiles(h_job.getConfiguration())
     bulkLoader.doBulkLoad(new Path(output), h_table)
     h_table.close()
+  }
+
+  def updateHbase_same_client(edge_processed:RDD[Array[Int]],nodes_num_bitsize:Int,
+                            symbol_num_bitsize:Int,
+                              h_conf:HBaseConfiguration,
+                              h_table:HTable,
+                              output:String,htable_split_Map:Map[Int,String],
+                            HRegion_splitnum:Int,default_split:String)= {
+    println("Update HBase Using BulkLoad with same client")
+
+    val h_job = Job.getInstance(h_conf)
+    h_job.setMapOutputKeyClass (classOf[ImmutableBytesWritable])
+    h_job.setMapOutputValueClass (classOf[KeyValue])
+    HFileOutputFormat.configureIncrementalLoad(h_job, h_table)
+
+    edge_processed.map(s => {
+      val final_string = Array2String(s,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map, HRegion_splitnum,
+        default_split)
+      val final_rowkey = Bytes.toBytes(final_string)
+      val kv: KeyValue = new KeyValue(final_rowkey, "e".getBytes, "c".getBytes, Bytes.toBytes('1'))
+      (final_string, (new ImmutableBytesWritable(final_rowkey), kv))
+    }).sortByKey().map(s => s._2)
+      .saveAsNewAPIHadoopFile(output, classOf[ImmutableBytesWritable],
+        classOf[KeyValue],
+        classOf[HFileOutputFormat], h_job.getConfiguration())
+
+    val bulkLoader = new LoadIncrementalHFiles(h_job.getConfiguration())
+    bulkLoader.doBulkLoad(new Path(output), h_table)
+//    h_table.close()
   }
 
   def updateHbase_batch(edge_processed:RDD[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
@@ -309,7 +398,7 @@ object HBase_OP extends Para{
         val p_l = list.subList(i, Math.min(i + Hbase_interval, list.length)).map(x => {
           val p: Put = new Put(Bytes.toBytes(Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
             HRegion_splitnum,default_split)))
-          p.add("edges".getBytes(), "contents".getBytes, Bytes.toBytes("1"))
+          p.add("e".getBytes(), "c".getBytes, Bytes.toBytes("1"))
         })
         h_table.put(p_l)
       }
