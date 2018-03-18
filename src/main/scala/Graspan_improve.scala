@@ -115,10 +115,10 @@ object Graspan_improve extends Para{
     println("spark.driver.memory:          \t" + conf.get("spark.driver.memory"))
     println("spark.executor.memory:        \t" + conf.get("spark.executor.memory"))
     println("spark.executor.cores:         \t" + conf.get("spark.executor.cores"))
-    println("default partition num: \t" + defaultpar)
-    println("cluster partition num:  \t" + clusterpar)
-    println("queryHBase_interval:  \t" + queryHBase_interval)
-    println("HRegion_splitnum:     \t" + HRegion_splitnum)
+    println("default partition num:        \t" + defaultpar)
+    println("cluster partition num:        \t" + clusterpar)
+    println("queryHBase_interval:          \t" + queryHBase_interval)
+    println("HRegion_splitnum:             \t" + HRegion_splitnum)
     println("--------------------------------------------------------------------")
     println
     /**
@@ -174,7 +174,10 @@ object Graspan_improve extends Para{
     deleteDir.deletedir(islocal, master, output)
 
     var oldedges: RDD[(VertexId, ((Array[Array[Int]],Array[Array[Int]]),(Array[Array[Int]],Array[Array[Int]])))] =
-      graph.flatMap(s => Array((s._1,Array(Array(s._1,s._2,s._3))), (s._2, Array(Array(s._1,s._2,s._3)))))
+      graph.flatMap(s => {
+        if(s._1!=s._2) Array((s._1,Array(Array(s._1,s._2,s._3))), (s._2, Array(Array(s._1,s._2,s._3))))
+        else Array((s._1,Array(Array(s._1,s._2,s._3))))
+      })
         .reduceByKey((x,y)=>(x ++ y))
         .repartition(defaultpar)
         .mapPartitions(s=>{
@@ -202,48 +205,64 @@ object Graspan_improve extends Para{
         * 计算
         */
       println("current partitions num:         \t"+oldedges.getNumPartitions)
+      val useHBase={
+        if(newnum<0) false
+        else true
+      }
+      println("Use HBase:                      \t"+useHBase)
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
           Graspan_OP.computeInPartition_completely_flat_java_Array(step,
             index, s,
             symbol_num,grammar,
             nodes_num_bitsize,
-            symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, Batch_QueryHbase,htable_name,
+            symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta, useHBase,
+            Batch_QueryHbase,
+            htable_name,
             htable_split_Map,
             HRegion_splitnum, queryHBase_interval, default_split)).persist(StorageLevel.MEMORY_ONLY_SER)
       /**
         * 记录各分区情况
         */
-      val par_INFO = new_edges_str.map(s=>s._2)
+      val par_INFO = new_edges_str.map(s=>s._2._2)
       deleteDir.deletedir(islocal, master, output + "/par_INFO/step" + step)
       par_INFO.repartition(1).saveAsTextFile(output + "/par_INFO/step" + step)
 
       val par_time_JOIN=par_INFO.map(s=>s.split("REPARJOIN")(1).trim.toDouble.toInt).collect().sorted
       println("Join take time Situation")
-      println("Min Task take time              \t"+par_time_JOIN(0))
-      println("25% Task take time              \t"+par_time_JOIN((par_time_JOIN.length * 0.25).toInt))
-      println("50% Task take time              \t"+par_time_JOIN((par_time_JOIN.length * 0.5).toInt))
-      println("75% Task take time              \t"+par_time_JOIN((par_time_JOIN.length * 0.75).toInt))
-      println("Max Task take time              \t"+par_time_JOIN(par_time_JOIN.length - 1))
+      println("Join Min Task take time         \t"+par_time_JOIN(0))
+      println("Join 25% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.25).toInt))
+      println("Join 50% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.5).toInt))
+      println("Join 75% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.75).toInt))
+      println("Join Max Task take time         \t"+par_time_JOIN(par_time_JOIN.length - 1))
 
       val par_time_HB=par_INFO.map(s=>s.split("REPARHBASE")(1).trim.toDouble.toInt).collect().sorted
       println("HBase take time Situation")
-      println("Min Task take time              \t"+par_time_HB(0))
-      println("25% Task take time              \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
-      println("50% Task take time              \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
-      println("75% Task take time              \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
-      println("Max Task take time              \t"+par_time_HB(par_time_HB.length - 1))
+      println("HBase Min Task take time        \t"+par_time_HB(0))
+      println("HBase 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
+      println("HBase 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
+      println("HBase 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
+      println("HBase Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
 
 
-      val coarest_num=new_edges_str.map(s=>s._3).sum
+      val coarest_num=new_edges_str.map(s=>s._2._3).sum
       println("old num:                        \t"+oldnum)
+//      println("oldedges_f num:                 \t"+ oldedges.map(s => (s._2._1._1.length)).sum().toLong)
       println("coarest num:                    \t"+coarest_num.toLong)
       /**
         * 新边去重
         */
       val t0_distinct=System.nanoTime():Double
-      val newedges = new_edges_str.flatMap(s=>s._1).mapPartitions(s=>s.map(_.toVector)).distinct
-        .mapPartitions(s=>s.map(_.toArray)).persist(StorageLevel.MEMORY_ONLY_SER)
+      val newedges={
+        val newedges0 = new_edges_str.flatMapValues(s=>s._1).map(s=>s._2.toVector).distinct()
+          .mapPartitions(s=>s.map(_.toArray)).persist(StorageLevel.MEMORY_ONLY_SER)
+        if(useHBase) newedges0
+        else newedges0.subtract(oldedges.flatMap(s=>s._2._1._1.map(x=>(Array(x(1),s._1,x(0))))++s._2._2._1.map(x=>
+          (Array(x
+        (1),s
+          ._1,x(0))))))
+      }
+
       newnum = newedges.count()
       oldnum += newnum
       println("newedges:                       \t" + newnum)
@@ -269,7 +288,11 @@ object Graspan_improve extends Para{
         val need_par=(newnum/newnum_interval)*352
         if(need_par>cur_par){
           (oldedges cogroup
-            newedges.flatMap(s=>(Array((s(0),Array(s)),(s(1),Array(s))))).reduceByKey(_ ++ _) )
+            newedges.flatMap(s => {
+              if(s(0)!=s(1)) Array((s(0),Array(s)),(s(1),Array(s)))
+              else Array((s(0),Array(s)))
+            })
+              .reduceByKey(_ ++ _) )
             .mapPartitions(s =>{
               s.map(x=>{
                 val flag=x._1
@@ -287,7 +310,10 @@ object Graspan_improve extends Para{
           &&par_time_JOIN(par_time_JOIN.length-1)>30) {
           println("need repar")
           (oldedges cogroup
-            newedges.flatMap(s=>(Array((s(0),Array(s)),(s(1),Array(s))))).reduceByKey(_ ++ _) )
+            newedges.flatMap(s => {
+              if(s(0)!=s(1)) Array((s(0),Array(s)),(s(1),Array(s)))
+              else Array((s(0),Array(s)))
+            }).reduceByKey(_ ++ _) )
             .mapPartitions(s =>{
               s.map(x=>{
                 val flag=x._1
@@ -298,12 +324,15 @@ object Graspan_improve extends Para{
                   ==flag).map(u=>Array(u(2),u(0))),new_part.filter(u=>u(0)==flag).map(u=>Array(u(2),u(1))))))
               })
             })
-            .repartition(cur_par)
+              .coalesce(cur_par.toInt,false)
             .persist(StorageLevel.MEMORY_ONLY_SER)
         }
         else{
           (oldedges cogroup
-            newedges.flatMap(s=>(Array((s(0),Array(s)),(s(1),Array(s))))).reduceByKey(_ ++ _) )
+            newedges.flatMap(s => {
+              if(s(0)!=s(1)) Array((s(0),Array(s)),(s(1),Array(s)))
+              else Array((s(0),Array(s)))
+            }).reduceByKey(_ ++ _) )
             .mapPartitions(s =>{
               s.map(x=>{
                 val flag=x._1
@@ -343,9 +372,7 @@ object Graspan_improve extends Para{
 //      scan.next()
 
     }
-    println("final edges count(oldedges reduce):             \t" + oldedges.mapValues(s => (s._1._1.length)).reduce((x,
-                                                                                                                  y)=>((1,x._2+y
-      ._2)))._2)
+
     println("final edges count(oldedges sum):                \t" + oldedges.map(s => (s._2._1._1.length)).sum())
     sc.stop()
     println("final edges count():")

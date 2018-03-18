@@ -8,7 +8,10 @@ import org.apache.commons.collections.functors.ExceptionFactory
 import org.apache.spark.rdd.RDD
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
-import utils.{Graspan_OP,deleteDir}
+import utils.{Graspan_OP, deleteDir}
+
+import scala.collection.mutable.ArrayBuffer
+import scala.util.Random
 
 object test extends utils.Para{
   def main(args: Array[String]): Unit = {
@@ -48,20 +51,16 @@ object test extends utils.Para{
     /**
       * Spark 设置
       */
-    val conf = new SparkConf().set("spark.kryoserializer.buffer.max", "1024")
-    if (islocal) {
-      //test location can be adjusted or not
-      conf.setAppName("Graspan")
-      System.setProperty("hadoop.home.dir", "F:/hadoop-2.6.0/")
-      conf.setMaster("local")
-    }
-    val sc = new SparkContext(conf)
-    sc.setLogLevel("ERROR")
-    val a=Array(1,2,3,4)
-    for(i <-5 to 5) println("i: "+a(i))
-//    deleteDir.deletedir(islocal,master,output)
-//    Graspan_OP.processLinux(sc,input_graph,input_grammar,output,defaultpar)
-//    deleteDir.deletedir(islocal,master,output)
-//    Graspan_OP.processLinux(sc,input_graph,input_grammar,output)
+//    val conf = new SparkConf().set("spark.kryoserializer.buffer.max", "1024")
+//    if (islocal) {
+//      //test location can be adjusted or not
+//      conf.setAppName("Graspan")
+//      System.setProperty("hadoop.home.dir", "F:/hadoop-2.6.0/")
+//      conf.setMaster("local")
+//    }
+//    val sc = new SparkContext(conf)
+//    sc.setLogLevel("ERROR")
+
+
   }
 }

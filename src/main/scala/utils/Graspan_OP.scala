@@ -8,6 +8,7 @@ import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileUtil, Path}
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ArrayBuffer
 
 /**
   * Created by cycy on 2018/1/29.
@@ -620,6 +621,38 @@ object Graspan_OP extends Para {
   /**
     * java int[]
     */
+  def merge(newedges:Array[(Int,Array[Int])],oldedges:Array[(Int,((Array[Array[Int]],Array[Array[Int]]),(Array[Array[Int]],Array[Array[Int]])))])
+  :Array[(Int,((Array[Array[Int]],Array[Array[Int]]), (Array[Array[Int]], Array[Array[Int]])))]={
+    var res:ArrayBuffer[(Int,((Array[Array[Int]],Array[Array[Int]]), (Array[Array[Int]], Array[Array[Int]])))
+      ]=ArrayBuffer()
+    var index_new=0
+    var index_old=0
+    while(index_new<newedges.length){
+      val start=index_new
+      val flag=newedges(start)._1
+      var new_ele:(ArrayBuffer[Array[Int]],ArrayBuffer[Array[Int]])=(ArrayBuffer(),ArrayBuffer())
+      while(index_new<newedges.length&&newedges(index_new)._1==flag){
+        if(newedges(index_new)._2(1)==flag) new_ele._1 += Array(newedges(index_new)._2(2),newedges(index_new)._2(0))
+        if(newedges(index_new)._2(0)==flag) new_ele._2 += Array(newedges(index_new)._2(2),newedges(index_new)._2(1))
+        index_new+=1
+      }
+      while(index_old<oldedges.length&&oldedges(index_old)._1<flag){
+        res += ((oldedges(index_old)._1,(oldedges(index_old)._2._1,(Array[Array[Int]](),Array[Array[Int]]()))))
+        index_old+=1
+      }
+      if(index_old<oldedges.length&&oldedges(index_old)._1==flag){
+        res += ((flag,(oldedges(index_old)._2._1,(new_ele._1.toArray,new_ele._2.toArray))))
+        index_old+=1
+      }
+      else{
+        res +=((flag,((Array[Array[Int]](),Array[Array[Int]]()),(new_ele._1.toArray,new_ele._2.toArray))))
+      }
+    }
+    if(index_old<oldedges.length){
+      res = res ++ oldedges.slice(index_old,oldedges.length)
+    }
+    res.toArray
+  }
   def computeInPartition_completely_flat_java_Array(step:Int,index:Int,
                                               mid_adj:Iterator[(VertexId,((Array[Array[Int]],Array[Array[Int]]),
                                                 (Array[Array[Int]],Array[Array[Int]])))],
@@ -628,100 +661,166 @@ object Graspan_OP extends Para {
                                               nodes_num_bitsize:Int,symbol_num_bitsize:Int,
                                               directadd:Map[EdgeLabel,EdgeLabel],
                                               is_complete_loop:Boolean,max_complete_loop_turn:Int,max_delta:Int,
+                                                    useHBase:Boolean,
                                               Batch_QueryHbase:Boolean,
                                               htable_name:String,
                                               htable_split_Map:Map[Int,String],
                                               htable_nodes_interval:Int,
                                               queryHbase_interval:Int,
                                               default_split:String)
-  :Iterator[(Array[Array[Int]],String,Long)]={
+  :Iterator[(Int,(Array[Array[Int]],String,Long))]={
     var t0=System.nanoTime():Double
     var t1=System.nanoTime():Double
     var recording=""
     var res_edges_array=Array[Array[Int]]()
     var coarest_num=0L
-    mid_adj.foreach(s=>{
-      val res=Graspan_OP_java.join_flat(s._1,
-        s._2._1._1//.toArray.map(x=>x.toArray)
-        ,s._2._1._2//.toArray.map(x=>x.toArray)
-        ,s._2._2._1//.toArray.map(x=>x.toArray)
-        ,s._2._2._2//.toArray.map(x=>x.toArray)
-        ,grammar.toArray.map(x=>Array(x._1._1,x._1._2,x._2)),symbol_num)
-//      coarest_num += res.length
-//      recording :+="*******************************"
-//      recording :+="mid: "+s._1+"\n"
-//      recording :+="old: "+s._2._1.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
-//      recording :+="new: "+s._2._2.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
-//      recording :+="res: "+res.toList.map(x=>"("+"("+x(0)+","+x(1)+"),"+x(2)+")").mkString(", ")+"\n"
-//      recording :+="*******************************"
-      coarest_num +=res.size()
-      res_edges_array ++=res
-    })
+    if(is_complete_loop==false){
+      mid_adj.foreach(s=>{
+        val res=Graspan_OP_java.join_flat(s._1,
+          s._2._1._1//.toArray.map(x=>x.toArray)
+          ,s._2._1._2//.toArray.map(x=>x.toArray)
+          ,s._2._2._1//.toArray.map(x=>x.toArray)
+          ,s._2._2._2//.toArray.map(x=>x.toArray)
+          ,grammar.toArray.map(x=>Array(x._1._1,x._1._2,x._2)),symbol_num)
+        //      coarest_num += res.length
+        //      recording :+="*******************************"
+        //      recording :+="mid: "+s._1+"\n"
+        //      recording :+="old: "+s._2._1.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
+        //      recording :+="new: "+s._2._2.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
+        //      recording :+="res: "+res.toList.map(x=>"("+"("+x(0)+","+x(1)+"),"+x(2)+")").mkString(", ")+"\n"
+        //      recording :+="*******************************"
+        coarest_num +=res.size()
+        res_edges_array ++=res
+      })
 
-    //    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
-    println("At STEP "+step+", partition "+index)
-    recording +="At STEP "+step+", partition "+index
+      //    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
+      println("At STEP "+step+", partition "+index)
+      recording +="At STEP "+step+", partition "+index
 
-    val add_edges=res_edges_array.filter(s=>directadd.contains(s(2))).map(s=>(Array(s(0),s(1),directadd
-      .getOrElse(s(2),-1))))
-    res_edges_array=(res_edges_array ++ add_edges)
-    t1=System.nanoTime():Double
-    val toolong={
-      if((t1-t0) /1000000000.0<10) "normal"
-      else if((t1-t0) /1000000000.0 <100) "longer than 10"
-      else "longer than 100"
+      val add_edges=res_edges_array.filter(s=>directadd.contains(s(2))).map(s=>(Array(s(0),s(1),directadd
+        .getOrElse(s(2),-1))))
+      res_edges_array=(res_edges_array ++ add_edges)
+      t1=System.nanoTime():Double
+      val toolong={
+        if((t1-t0) /1000000000.0<10) "normal"
+        else if((t1-t0) /1000000000.0 <100) "longer than 10"
+        else "longer than 100"
+      }
+      println()
+      println("||"
+        +" origin_formedges: "+coarest_num
+        +",\tadd_newedges: "+add_edges.length
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", "+((t1-t0) /1000000000.0)+" secs")
+      recording +=("|| "
+        +"origin_formedges: "+coarest_num
+        +",\tadd_newedges: "+add_edges.length
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", REPARJOIN"+((t1-t0) /1000000000.0)+"REPARJOIN secs")
     }
-    println()
-    println("||"
-      +" origin_formedges: "+coarest_num
-      +",\tadd_newedges: "+add_edges.length
-      +",\tdistinct newedges: " +res_edges_array.length+" ||"
-      +"join take time: "+toolong+", "+((t1-t0) /1000000000.0)+" secs")
-    recording +=("|| "
-      +"origin_formedges: "+coarest_num
-      +",\tadd_newedges: "+add_edges.length
-      +",\tdistinct newedges: " +res_edges_array.length+" ||"
-      +"join take time: "+toolong+", REPARJOIN"+((t1-t0) /1000000000.0)+"REPARJOIN secs")
-    /**
-      * form clousure
-      * only focused on edges from key inpartition or to key inpartition
-      */
-//        if(is_complete_loop){
-//          val key_Set=mid_adj_list.map(s=>s._1).toSet
-//          var continue:Boolean=is_complete_loop
-//          var oldedges:List[(VertexId,VertexId,EdgeLabel,Boolean)]=old_edges.map(s=>(s._1,s._2,s._3,false))
-//          var newedges:List[(VertexId,VertexId,EdgeLabel,Boolean)]=res_edges.map(s=>(s._1,s._2,s._3,true))
-//          val first_new_num=newedges.length
-//          val max_loop=max_complete_loop_turn
-//          var turn=0
-//          while(continue){
-//            println("start loop ")
-//            tmp_str+="start loop "
-//            val t0=System.nanoTime():Double
-//            turn+=1
-//            val m_a_l=(oldedges ++ newedges).flatMap(s=>List((s._1,((s._1,s._2),s._3,s._4)),(s._2,((s._1,s._2),s._3,s._4)))
-//            ).groupBy(_._1).toList.map(s=>(s._1,s._2.map(x=>x._2)))
-//            val edges_before=(oldedges ++ newedges).map(s=>(s._1,s._2,s._3))
-//            val (tmp_edges,tmp_str_inloop)=join(m_a_l,grammar,directadd)
-//            tmp_str+=tmp_str_inloop
-//            //      tmp_str+="bfore filter: "+tmp.length
-//            oldedges=oldedges ++newedges.map(s=>(s._1,s._2,s._3,false))
-//            //过滤新边，只保留与本partition有关的新边
-//            newedges=tmp_edges.filter(s=>(key_Set.contains(s._1)||key_Set.contains(s._2))&&edges_before.contains(s)==false)
-//              .map(s=>(s._1,s._2,s._3,true))
-//            continue= (turn<max_loop && !newedges.isEmpty && oldedges.length-first_new_num<max_delta)
-//            val t1=System.nanoTime():Double
-//            println("complete_loop take time: "+((t1-t0)/ 1000000000.0/60).formatted("%.3f") + " min")
-//            if(continue==false){
-//              println("end loop")
-//              tmp_str+="end loop"
-//              recording:+=tmp_str
-//              res_edges=oldedges.map(s=>(s._1,s._2,s._3))
-//              println("after complete loop, res_edges= "+res_edges.length)
-//              recording:+="after complete loop, res_edges= "+res_edges.length
-//            }
-//          }
-//        }
+    else {
+      val mid_adj_Array = mid_adj.toArray
+      mid_adj_Array.foreach(s => {
+        val res = Graspan_OP_java.join_flat(s._1,
+          s._2._1._1 //.toArray.map(x=>x.toArray)
+          , s._2._1._2 //.toArray.map(x=>x.toArray)
+          , s._2._2._1 //.toArray.map(x=>x.toArray)
+          , s._2._2._2 //.toArray.map(x=>x.toArray)
+          , grammar.toArray.map(x => Array(x._1._1, x._1._2, x._2)), symbol_num)
+        //      coarest_num += res.length
+        //      recording :+="*******************************"
+        //      recording :+="mid: "+s._1+"\n"
+        //      recording :+="old: "+s._2._1.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
+        //      recording :+="new: "+s._2._2.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
+        //      recording :+="res: "+res.toList.map(x=>"("+"("+x(0)+","+x(1)+"),"+x(2)+")").mkString(", ")+"\n"
+        //      recording :+="*******************************"
+        coarest_num += res.size()
+        res_edges_array ++= res
+      })
+
+      //    var old_edges:List[(VertexId,VertexId,EdgeLabel)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2))
+      println("At STEP " + step + ", partition " + index)
+      recording += "At STEP " + step + ", partition " + index
+
+      val add_edges = res_edges_array.filter(s => directadd.contains(s(2))).map(s => (Array(s(0), s(1), directadd
+        .getOrElse(s(2), -1))))
+      res_edges_array = (res_edges_array ++ add_edges)
+      t1 = System.nanoTime(): Double
+      val toolong = {
+        if ((t1 - t0) / 1000000000.0 < 10) "normal"
+        else if ((t1 - t0) / 1000000000.0 < 100) "longer than 10"
+        else "longer than 100"
+      }
+      println()
+      println("||"
+        + " origin_formedges: " + coarest_num
+        + ",\tadd_newedges: " + add_edges.length
+        + ",\tdistinct newedges: " + res_edges_array.length + " ||"
+        + "join take time: " + toolong + ", " + ((t1 - t0) / 1000000000.0) + " secs")
+      recording += ("|| "
+        + "origin_formedges: " + coarest_num
+        + ",\tadd_newedges: " + add_edges.length
+        + ",\tdistinct newedges: " + res_edges_array.length + " ||"
+        + "join take time: " + toolong + ", REPARJOIN" + ((t1 - t0) / 1000000000.0) + "REPARJOIN secs")
+
+      /**
+        * form clousure
+        * only focused on edges from key inpartition or to key inpartition
+        */
+        println("start closure")
+        res_edges_array = res_edges_array.map(_.toVector).distinct.map(_.toArray)
+        var oldedges_sort = mid_adj_Array.map(s => (s._1, ((s._2._1._1 ++ s._2._2._1, s._2._1._2 ++ s._2._2._2),
+          (Array[Array[Int]](), Array[Array[Int]]())))).sortWith(_._1 < _._1)
+        var newedges_sort: Array[(Int, Array[Int])] = res_edges_array
+          .flatMap(s => {
+            if (s(0) == s(1)) Array((s(0), s))
+            else Array((s(0), s), (s(1), s))
+          }).sortWith(_._1 < _._1)
+        var i = 0
+        var continue = true
+        while (i < max_complete_loop_turn && continue) {
+          i += 1
+          oldedges_sort = merge(newedges_sort, oldedges_sort)
+          //            println("In closure nodes "+oldedges_sort.length)
+          //            println("In closure old f "+oldedges_sort.map(s=>s._2._1._1.length).sum)
+          //            println("In closure old b "+oldedges_sort.map(s=>s._2._1._2.length).sum)
+          //            println("In closure new f "+oldedges_sort.map(s=>s._2._2._1.length).sum)
+          //            println("In closure new b "+oldedges_sort.map(s=>s._2._2._2.length).sum)
+          var res_edges_mid = Array[Array[Int]]()
+          var coarest_num = 0L
+          oldedges_sort.foreach(s => {
+            val res = Graspan_OP_java.join_flat(s._1,
+              s._2._1._1 //.toArray.map(x=>x.toArray)
+              , s._2._1._2 //.toArray.map(x=>x.toArray)
+              , s._2._2._1 //.toArray.map(x=>x.toArray)
+              , s._2._2._2 //.toArray.map(x=>x.toArray)
+              , grammar.toArray.map(x => Array(x._1._1, x._1._2, x._2)), symbol_num)
+            //      coarest_num += res.length
+            //      recording :+="*******************************"
+            //      recording :+="mid: "+s._1+"\n"
+            //      recording :+="old: "+s._2._1.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
+            //      recording :+="new: "+s._2._2.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
+            //      recording :+="res: "+res.toList.map(x=>"("+"("+x(0)+","+x(1)+"),"+x(2)+")").mkString(", ")+"\n"
+            //      recording :+="*******************************"
+            coarest_num += res.size()
+            res_edges_mid ++= res
+          })
+          res_edges_mid = res_edges_mid.map(_.toVector).distinct.map(_.toArray)
+          val add_edges_mid = res_edges_mid.filter(s => directadd.contains(s(2))).map(s => (Array(s(0), s(1),
+            directadd
+            .getOrElse(s(2), -1))))
+          res_edges_mid = (res_edges_mid ++ add_edges_mid)
+          coarest_num += res_edges_mid.length
+          println("closure produce " + res_edges_mid.length)
+          res_edges_array = res_edges_array ++ res_edges_mid
+          oldedges_sort = oldedges_sort.map(s => (s._1, ((s._2._1._1 ++ s._2._2._1, s._2._1._2 ++ s._2._2._2),
+            (Array[Array[Int]](), Array[Array[Int]]())))).sortWith(_._1 < _._1)
+          newedges_sort = res_edges_mid.flatMap(s => {
+            if (s(0) == s(1)) Array((s(0), s))
+            else Array((s(0), s), (s(1), s))
+          }).sortWith(_._1 < _._1)
+        }
+    }
     /**
       * 多线程开启
       */
@@ -739,13 +838,15 @@ object Graspan_OP extends Para {
     t0=System.nanoTime():Double
     val len=res_edges_array.length
     val res_edges= {
-      HBase_OP.queryHbase_inPartition_java_flat(res_edges_array,nodes_num_bitsize,
+      if(useHBase)
+        HBase_OP.queryHbase_inPartition_java_flat(res_edges_array,nodes_num_bitsize,
         symbol_num_bitsize,
         Batch_QueryHbase,
         htable_name,
         htable_split_Map,
         htable_nodes_interval,
         queryHbase_interval,default_split)
+      else res_edges_array
     }
     t1=System.nanoTime():Double
     println("Query Hbase for edges: \t"+len
@@ -754,7 +855,7 @@ object Graspan_OP extends Para {
     recording +=("Query Hbase for edges: \t"+len
       +",\ttake time: \tREPARHBASE"+((t1-t0)/ 1000000000.0).formatted("%.3f") + "REPARHBASE sec"
       +", \tres_edges:             \t"+res_edges.length+"\n")
-    List((res_edges,recording,coarest_num)).toIterator
+    List((index,(res_edges,recording,coarest_num))).toIterator
 //    List((res_edges_array.toList,recording,coarest_num)).toIterator
   }
 
