@@ -221,4 +221,146 @@ public class Graspan_OP_java {
     }
 
 
+    public static  List<int[]> join_fully_compressed(int flag,int[] all_edges,int old_f_end,int old_b_end,int
+            new_f_end,int[][] grammar,int symbol_num){
+        List<int[]> res_edges=new ArrayList<int[]>();
+        IntArrayCompartor_According_Symbol comparator = new IntArrayCompartor_According_Symbol();
+
+        int[][] old_edge_before=new int[(old_f_end-0+1)/2][2];
+        int[][] old_edge_after=new int[(old_b_end-old_f_end)/2][2];
+        int[][] new_edge_before=new int[(new_f_end-old_b_end)/2][2];
+        int[][] new_edge_after=new int[(all_edges.length-new_f_end)/2][2];
+
+        int len=old_edge_before.length;
+        for(int i=0;i<len;i++){
+            old_edge_before[i]=new int[2];
+            old_edge_before[i][0]=all_edges[i*2];
+            old_edge_before[i][1]=all_edges[i*2+1];
+        }
+        len=old_edge_after.length;
+        for(int i=0;i<len;i++){
+            old_edge_after[i]=new int[2];
+            old_edge_after[i][0]=all_edges[i*2+1+old_f_end];
+            old_edge_after[i][1]=all_edges[i*2+2+old_f_end];
+        }
+        len=new_edge_before.length;
+        for(int i=0;i<len;i++){
+            new_edge_before[i]=new int[2];
+            new_edge_before[i][0]=all_edges[i*2+1+old_b_end];
+            new_edge_before[i][1]=all_edges[i*2+2+old_b_end];
+        }
+        len=new_edge_after.length;
+        for(int i=0;i<len;i++){
+            new_edge_after[i]=new int[2];
+            new_edge_after[i][0]=all_edges[i*2+1+new_f_end];
+            new_edge_after[i][1]=all_edges[i*2+2+new_f_end];
+        }
+        Arrays.sort(new_edge_before,comparator);
+        Arrays.sort(new_edge_after,comparator);
+        Arrays.sort(old_edge_before,comparator);
+        Arrays.sort(old_edge_after,comparator);
+
+        int[][] new_edge_before_symbol_index_range=get_symbol_index_range(new_edge_before,symbol_num);
+        int[][] new_edge_after_symbol_index_range=get_symbol_index_range(new_edge_after,symbol_num);
+        int[][] old_edge_before_symbol_index_range=get_symbol_index_range(old_edge_before,symbol_num);
+        int[][] old_edge_after_symbol_index_range=get_symbol_index_range(old_edge_after,symbol_num);
+
+        for(int[] gram:grammar){
+            int f=gram[0];
+            int b=gram[1];
+            int res_label=gram[2];
+            /**
+             * 1、新边之间的两两连接
+             */
+            if(new_edge_before_symbol_index_range[f][0]!=-1&&new_edge_after_symbol_index_range[b][0]!=-1) {
+                if((new_edge_before_symbol_index_range[f][1]-new_edge_before_symbol_index_range[f][0
+                        ]-new_edge_after_symbol_index_range[b][1]+new_edge_after_symbol_index_range[b][0])<0){
+                    for (int j = new_edge_before_symbol_index_range[f][0]; j <= new_edge_before_symbol_index_range[f][1]; j++) {
+                        for (int k = new_edge_after_symbol_index_range[b][0]; k <= new_edge_after_symbol_index_range[b][1]; k++) {
+                            int[] ele = new int[3];
+                            ele[0] = new_edge_before[j][1];
+                            ele[1] = new_edge_after[k][1];
+                            ele[2] = res_label;
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+                else{
+                    for (int k = new_edge_after_symbol_index_range[b][0]; k <= new_edge_after_symbol_index_range[b][1]; k++) {
+                        for (int j = new_edge_before_symbol_index_range[f][0]; j <= new_edge_before_symbol_index_range[f][1]; j++) {
+                            int[] ele = new int[3];
+                            ele[0] = new_edge_before[j][1];
+                            ele[1] = new_edge_after[k][1];
+                            ele[2] = res_label;
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+
+            }
+            /**
+             * 新边与旧边之间的两两连接
+             */
+            //新边在前，旧边在后
+            if(new_edge_before_symbol_index_range[f][0]!=-1&&old_edge_after_symbol_index_range[b][0]!=-1){
+                if((new_edge_before_symbol_index_range[f][1]-new_edge_before_symbol_index_range[f][0
+                        ]-old_edge_after_symbol_index_range[b][1]+old_edge_after_symbol_index_range[b][0])<0) {
+                    for(int j=new_edge_before_symbol_index_range[f][0];j<=new_edge_before_symbol_index_range[f][1];j++){
+                        for(int k=old_edge_after_symbol_index_range[b][0];k<=old_edge_after_symbol_index_range[b][1];
+                            k++){
+                            int[] ele=new int[3];
+                            ele[0]=new_edge_before[j][1];
+                            ele[1]=old_edge_after[k][1];
+                            ele[2]=res_label;
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+                else{
+                    for(int k=old_edge_after_symbol_index_range[b][0];k<=old_edge_after_symbol_index_range[b][1];
+                        k++){
+                        for(int j=new_edge_before_symbol_index_range[f][0];j<=new_edge_before_symbol_index_range[f][1];j++){
+                            int[] ele=new int[3];
+                            ele[0]=new_edge_before[j][1];
+                            ele[1]=old_edge_after[k][1];
+                            ele[2]=res_label;
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+
+            }
+            //旧边在前，新边在后
+            if(old_edge_before_symbol_index_range[f][0]!=-1&&new_edge_after_symbol_index_range[b][0]!=-1){
+                if((old_edge_before_symbol_index_range[f][1]-old_edge_before_symbol_index_range[f][0
+                        ]-new_edge_after_symbol_index_range[b][1]+new_edge_after_symbol_index_range[b][0])<0){
+                    for(int j=old_edge_before_symbol_index_range[f][0];j<=old_edge_before_symbol_index_range[f][1];j++){
+                        for(int k=new_edge_after_symbol_index_range[b][0];k<=new_edge_after_symbol_index_range[b][1];
+                            k++){
+                            int [] ele=new int[3];
+                            ele[0]=old_edge_before[j][1];
+                            ele[1]=new_edge_after[k][1];
+                            ele[2]=res_label;
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+                else{
+                    for(int k=new_edge_after_symbol_index_range[b][0];k<=new_edge_after_symbol_index_range[b][1];
+                        k++){
+                        for(int j=old_edge_before_symbol_index_range[f][0];j<=old_edge_before_symbol_index_range[f][1];j++){
+                            int [] ele=new int[3];
+                            ele[0]=old_edge_before[j][1];
+                            ele[1]=new_edge_after[k][1];
+                            ele[2]=res_label;
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+
+            }
+        }
+//        System.out.println(tmp);
+        return res_edges;
+    }
 }

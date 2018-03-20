@@ -61,6 +61,18 @@ object test extends utils.Para{
 //    val sc = new SparkContext(conf)
 //    sc.setLogLevel("ERROR")
 
+val scan=new Scanner(System.in)
+val a=scan.nextLine()
+    val b=a.split("\\s+").map(_.toLong).zipWithIndex
+    val b_0=b.filter(x=>x._2%3==0).map(x=>x._1)
+    val b_1=b.filter(x=>x._2%3==1).map(x=>x._1)
+    val number=(b_0++b_1).distinct.sorted
+    println(number.length)
+    println(number(0))
+    println(number.last)
+
+
+
 
   }
 }
