@@ -11,6 +11,7 @@ import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
 import utils.{Graspan_OP, deleteDir}
 
 import scala.collection.mutable.ArrayBuffer
+import scala.io.Source
 import scala.util.Random
 
 object test extends utils.Para{
@@ -21,7 +22,7 @@ object test extends utils.Para{
     var master: String = "local"
 
     var input_grammar: String = "data/GrammarFiles/test_grammar"
-    var input_graph:String="data/InputGraph/test_graph"
+    var input_graph:String="H:\\Graspan资料\\Graspan数据和源代码\\Apache_Httpd_2.2.18_Points-to\\Apache_httpd_2.2.18_pointsto_graph"
     var output: String = "data/result/" //除去ip地址
     var hbase_output:String="data/result/hbase/hbhfile/"
     var defaultpar:Int=352
@@ -37,6 +38,7 @@ object test extends utils.Para{
         case "input_grammar" => input_grammar = argvalue
         case "input_graph"=>input_graph=argvalue
         case "output" => output = argvalue
+        case "defaultpar"=>defaultpar=argvalue.toInt
         case "hbase_output"=>hbase_output=argvalue
         case "smallpar"=>smallpar=argvalue.toInt
 
@@ -51,7 +53,7 @@ object test extends utils.Para{
     /**
       * Spark 设置
       */
-//    val conf = new SparkConf().set("spark.kryoserializer.buffer.max", "1024")
+//    val conf = new SparkConf()
 //    if (islocal) {
 //      //test location can be adjusted or not
 //      conf.setAppName("Graspan")
@@ -60,19 +62,15 @@ object test extends utils.Para{
 //    }
 //    val sc = new SparkContext(conf)
 //    sc.setLogLevel("ERROR")
+//    Graspan_OP.processDF(sc,input_graph,output,defaultpar)
 
-val scan=new Scanner(System.in)
-val a=scan.nextLine()
-    val b=a.split("\\s+").map(_.toLong).zipWithIndex
-    val b_0=b.filter(x=>x._2%3==0).map(x=>x._1)
-    val b_1=b.filter(x=>x._2%3==1).map(x=>x._1)
-    val number=(b_0++b_1).distinct.sorted
-    println(number.length)
-    println(number(0))
-    println(number.last)
+    val str=""
+    println(str.trim=="")
 
+//    val data=sc.textFile(input_graph).filter(s=>s.trim!="").map(s=>s.split("\\s+")).map(s=>(s(0).toInt,s(1).toInt,s
+//(2))).filter(s=>s._1==s._2&&s._3=="MAs")
+//    println(data.count())
+//    println(data.first())
 
-
-
-  }
+    }
 }

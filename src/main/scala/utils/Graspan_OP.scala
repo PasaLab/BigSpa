@@ -109,6 +109,11 @@ object Graspan_OP extends Para {
     (graph,nodes_num_bitsize,nodes_totalnum)
   }
 
+  def processDF(sc:SparkContext,input_graph:String,output:String,par:Int):Unit={
+    val graph=sc.textFile(input_graph,par).filter(s=>s.trim!="").map(s=>s.split("\\s+").map(_.trim))
+    graph.filter(_(2)=="e").map(s=>s(0)+"\t"+s(1)+"\t1").repartition(1).saveAsTextFile(output+"/e")
+    graph.filter(_(2)=="n").map(s=>s(0)+"\t"+s(1)+"\t0").repartition(1).saveAsTextFile(output+"/n")
+  }
   /**
     * Join操作一
     */
@@ -868,7 +873,6 @@ object Graspan_OP extends Para {
                                                     nodes_num_bitsize:Int,symbol_num_bitsize:Int,
                                                     directadd:Map[EdgeLabel,EdgeLabel],
                                                     is_complete_loop:Boolean,max_complete_loop_turn:Int,max_delta:Int,
-                                                    useHBase:Boolean,
                                                     Batch_QueryHbase:Boolean,
                                                     htable_name:String,
                                                     htable_split_Map:Map[Int,String],
@@ -896,7 +900,7 @@ object Graspan_OP extends Para {
         //      recording :+="new: "+s._2._2.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
         //      recording :+="res: "+res.toList.map(x=>"("+"("+x(0)+","+x(1)+"),"+x(2)+")").mkString(", ")+"\n"
         //      recording :+="*******************************"
-        coarest_num +=res.size()
+//        coarest_num +=res.size()
         res_edges_array ++=res
       })
 
@@ -928,6 +932,7 @@ object Graspan_OP extends Para {
     else{
 
     }
+    coarest_num=res_edges_array.length
     /**
       * 多线程开启
       */
@@ -944,8 +949,8 @@ object Graspan_OP extends Para {
       */
     t0=System.nanoTime():Double
     val len=res_edges_array.length
-    val res_edges= {
-      if(useHBase)
+//    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "Target Exist!"
+    val res_edges=
         HBase_OP.queryHbase_inPartition_java_flat(res_edges_array,nodes_num_bitsize,
           symbol_num_bitsize,
           Batch_QueryHbase,
@@ -953,8 +958,8 @@ object Graspan_OP extends Para {
           htable_split_Map,
           htable_nodes_interval,
           queryHbase_interval,default_split)
-      else res_edges_array
-    }
+
+//    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "After HBAse Filter Target Exist!"
     t1=System.nanoTime():Double
     println("Query Hbase for edges: \t"+len
       +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
@@ -965,4 +970,304 @@ object Graspan_OP extends Para {
     List((index,(res_edges,recording,coarest_num))).toIterator
     //    List((res_edges_array.toList,recording,coarest_num)).toIterator
   }
+
+  def computeInPartition_fully_compressed_df(step:Int,index:Int,
+                                          mid_adj:Iterator[(VertexId,Array[Int])],
+                                             e_edges:Array[(Int,Array[Int])],
+                                          nodes_num_bitsize:Int,symbol_num_bitsize:Int,
+                                          is_complete_loop:Boolean,max_complete_loop_turn:Int,max_delta:Int,
+                                          Batch_QueryHbase:Boolean,
+                                          htable_name:String,
+                                          htable_split_Map:Map[Int,String],
+                                          htable_nodes_interval:Int,
+                                          queryHbase_interval:Int,
+                                          default_split:String)
+  :Iterator[(Int,(Array[Array[Int]],String,Long))]={
+    var t0=System.nanoTime():Double
+    var t1=System.nanoTime():Double
+    var recording=""
+    println("At STEP " + step + ", partition " + index)
+    recording += "At STEP " + step + ", partition " + index
+    println("get e: "+e_edges.length)
+    var res_edges_array=Array[Array[Int]]()
+    var coarest_num=0L
+    val n=mid_adj.toArray.sortBy(_._1)
+    var index_e=0
+    var index_n=0
+    val len_e=e_edges.length
+    var len_n=n.length
+    while(index_e<len_e&&index_n<len_n){
+      if(e_edges(index_e)._1==n(index_n)._1){
+        val res = Graspan_OP_java.join_fully_compressed_df(e_edges(index_e)._1,n(index_n)._2,e_edges(index_e)._2)
+        res_edges_array ++= res
+        index_e+=1
+        index_n+=1
+      }
+      else if(e_edges(index_e)._1>n(index_n)._1){
+        while(index_n<len_n && e_edges(index_e)._1>n(index_n)._1) index_n+=1
+      }
+      else{
+        while(index_e<len_e && e_edges(index_e)._1<n(index_n)._1) index_e+=1
+      }
+    }
+    coarest_num=res_edges_array.size
+    if(is_complete_loop==false){
+      t1=System.nanoTime():Double
+      val toolong={
+        if((t1-t0) /1000000000.0<10) "normal"
+        else if((t1-t0) /1000000000.0 <100) "longer than 10"
+        else "longer than 100"
+      }
+      println()
+      println("||"
+        +" origin_formedges: "+coarest_num
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", "+((t1-t0) /1000000000.0)+" secs")
+      recording +=("|| "
+        +"origin_formedges: "+coarest_num
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", REPARJOIN"+((t1-t0) /1000000000.0)+"REPARJOIN secs")
+    }
+    else{
+      index_e=0
+      index_n=0
+      var new_n=res_edges_array.map(_.toVector).distinct.sortBy(_(1))
+      res_edges_array=new_n.map(_.toArray)
+      len_n=new_n.length
+      var turn=0
+      while(turn<max_complete_loop_turn){
+        var res_mid:Array[Vector[Int]]=Array()
+        while(index_e<len_e && index_n<len_n){
+          if(e_edges(index_e)._1==new_n(index_n)(1)){
+            val f=new_n(index_n)(0)
+            res_mid =res_mid ++ e_edges(index_e)._2.map(s=>Vector(f,s,0))
+            if(index_n==len_n-1||new_n(index_n+1)(1)!=e_edges(index_e)._1){
+              index_n+=1
+              index_e+=1
+            }
+            else{
+              index_n+=1
+            }
+          }
+          else if(e_edges(index_e)._1>new_n(index_n)(1)){
+            while(index_n<len_n && e_edges(index_e)._1>new_n(index_n)(1)) index_n+=1
+          }
+          else{
+            while(index_e<len_e && e_edges(index_e)._1<new_n(index_n)(1)) index_e+=1
+          }
+        }
+        new_n=res_mid.distinct.sortBy(_(1))
+//        println("turn: "+turn+", find new edges"+new_n.length)
+//        println("is all in res_edges_array ? "+new_n.toSet.subsetOf(res_edges_array.map(_.toVector).toSet))
+        res_edges_array=res_edges_array ++ new_n.map(_.toArray)
+        len_n=new_n.length
+        index_e=0
+        index_n=0
+        turn +=1
+      }
+      t1=System.nanoTime():Double
+      val toolong={
+        if((t1-t0) /1000000000.0<10) "normal"
+        else if((t1-t0) /1000000000.0 <100) "longer than 10"
+        else "longer than 100"
+      }
+      println()
+      println("||"
+        +" origin_formedges: "+coarest_num
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", "+((t1-t0) /1000000000.0)+" secs")
+      recording +=("|| "
+        +"origin_formedges: "+coarest_num
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", REPARJOIN"+((t1-t0) /1000000000.0)+"REPARJOIN secs")
+    }
+    coarest_num=res_edges_array.length
+    /**
+      * 多线程开启
+      */
+    //    val executors = Executors.newCachedThreadPool()
+    //    val thread = new MyThread
+    //    class MyThread extends Thread{
+    //      override def run(): Unit = {
+    //
+    //      }
+    //    }
+    //    executors.submit(thread)
+    /**
+      * Hbase过滤
+      */
+    t0=System.nanoTime():Double
+    val len=res_edges_array.length
+    //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "Target Exist!"
+    val res_edges=
+    HBase_OP.queryHbase_inPartition_java_flat(res_edges_array,nodes_num_bitsize,
+      symbol_num_bitsize,
+      Batch_QueryHbase,
+      htable_name,
+      htable_split_Map,
+      htable_nodes_interval,
+      queryHbase_interval,default_split)
+
+    //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "After HBAse Filter Target Exist!"
+    t1=System.nanoTime():Double
+    println("Query Hbase for edges: \t"+len
+      +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
+    recording +=("Query Hbase for edges: \t"+len
+      +",\ttake time: \tREPARHBASE"+((t1-t0)/ 1000000000.0).formatted("%.3f") + "REPARHBASE sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
+    List((index,(res_edges,recording,coarest_num))).toIterator
+    //    List((res_edges_array.toList,recording,coarest_num)).toIterator
+  }
+
+
+  def computeInPartition_fully_compressed_df_Singleton(step:Int,index:Int,
+                                             mid_adj:Iterator[(VertexId,Array[Int])], master:String,input_e_nomaster:String,
+                                             nodes_num_bitsize:Int,symbol_num_bitsize:Int,
+                                             is_complete_loop:Boolean,max_complete_loop_turn:Int,max_delta:Int,
+                                             Batch_QueryHbase:Boolean,
+                                             htable_name:String,
+                                             htable_split_Map:Map[Int,String],
+                                             htable_nodes_interval:Int,
+                                             queryHbase_interval:Int,
+                                             default_split:String)
+  :Iterator[(Int,(Array[Array[Int]],String,Long))]={
+    var t0=System.nanoTime():Double
+    var t1=System.nanoTime():Double
+    var recording=""
+    println("At STEP " + step + ", partition " + index)
+    recording += "At STEP " + step + ", partition " + index
+    val e_edges=Dataflow_e_formation.get_e(master,input_e_nomaster,index)
+    println("get e: "+e_edges.length)
+    var res_edges_array=Array[Array[Int]]()
+    var coarest_num=0L
+    val n=mid_adj.toArray.sortBy(_._1)
+    var index_e=0
+    var index_n=0
+    val len_e=e_edges.length
+    var len_n=n.length
+    while(index_e<len_e&&index_n<len_n){
+      if(e_edges(index_e)._1==n(index_n)._1){
+        val res = Graspan_OP_java.join_fully_compressed_df(e_edges(index_e)._1,n(index_n)._2,e_edges(index_e)._2)
+        res_edges_array ++= res
+        index_e+=1
+        index_n+=1
+      }
+      else if(e_edges(index_e)._1>n(index_n)._1){
+        while(index_n<len_n && e_edges(index_e)._1>n(index_n)._1) index_n+=1
+      }
+      else{
+        while(index_e<len_e && e_edges(index_e)._1<n(index_n)._1) index_e+=1
+      }
+    }
+    coarest_num=res_edges_array.size
+    if(is_complete_loop==false){
+      t1=System.nanoTime():Double
+      val toolong={
+        if((t1-t0) /1000000000.0<10) "normal"
+        else if((t1-t0) /1000000000.0 <100) "longer than 10"
+        else "longer than 100"
+      }
+      println()
+      println("||"
+        +" origin_formedges: "+coarest_num
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", "+((t1-t0) /1000000000.0)+" secs")
+      recording +=("|| "
+        +"origin_formedges: "+coarest_num
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", REPARJOIN"+((t1-t0) /1000000000.0)+"REPARJOIN secs")
+    }
+    else{
+      index_e=0
+      index_n=0
+      var new_n=res_edges_array.map(_.toVector).distinct.sortBy(_(1))
+      res_edges_array=new_n.map(_.toArray)
+      len_n=new_n.length
+      var turn=0
+      while(turn<max_complete_loop_turn){
+        var res_mid:Array[Vector[Int]]=Array()
+        while(index_e<len_e && index_n<len_n){
+          if(e_edges(index_e)._1==new_n(index_n)(1)){
+            val f=new_n(index_n)(0)
+            res_mid =res_mid ++ e_edges(index_e)._2.map(s=>Vector(f,s,0))
+            if(index_n==len_n-1||new_n(index_n+1)(1)!=e_edges(index_e)._1){
+              index_n+=1
+              index_e+=1
+            }
+            else{
+              index_n+=1
+            }
+          }
+          else if(e_edges(index_e)._1>new_n(index_n)(1)){
+            while(index_n<len_n && e_edges(index_e)._1>new_n(index_n)(1)) index_n+=1
+          }
+          else{
+            while(index_e<len_e && e_edges(index_e)._1<new_n(index_n)(1)) index_e+=1
+          }
+        }
+        new_n=res_mid.distinct.sortBy(_(1))
+        //        println("turn: "+turn+", find new edges"+new_n.length)
+        //        println("is all in res_edges_array ? "+new_n.toSet.subsetOf(res_edges_array.map(_.toVector).toSet))
+        res_edges_array=res_edges_array ++ new_n.map(_.toArray)
+        len_n=new_n.length
+        index_e=0
+        index_n=0
+        turn +=1
+      }
+      t1=System.nanoTime():Double
+      val toolong={
+        if((t1-t0) /1000000000.0<10) "normal"
+        else if((t1-t0) /1000000000.0 <100) "longer than 10"
+        else "longer than 100"
+      }
+      println()
+      println("||"
+        +" origin_formedges: "+coarest_num
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", "+((t1-t0) /1000000000.0)+" secs")
+      recording +=("|| "
+        +"origin_formedges: "+coarest_num
+        +",\tdistinct newedges: " +res_edges_array.length+" ||"
+        +"join take time: "+toolong+", REPARJOIN"+((t1-t0) /1000000000.0)+"REPARJOIN secs")
+    }
+    coarest_num=res_edges_array.length
+    /**
+      * 多线程开启
+      */
+    //    val executors = Executors.newCachedThreadPool()
+    //    val thread = new MyThread
+    //    class MyThread extends Thread{
+    //      override def run(): Unit = {
+    //
+    //      }
+    //    }
+    //    executors.submit(thread)
+    /**
+      * Hbase过滤
+      */
+    t0=System.nanoTime():Double
+    val len=res_edges_array.length
+    //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "Target Exist!"
+    val res_edges=
+    HBase_OP.queryHbase_inPartition_java_flat(res_edges_array,nodes_num_bitsize,
+      symbol_num_bitsize,
+      Batch_QueryHbase,
+      htable_name,
+      htable_split_Map,
+      htable_nodes_interval,
+      queryHbase_interval,default_split)
+
+    //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "After HBAse Filter Target Exist!"
+    t1=System.nanoTime():Double
+    println("Query Hbase for edges: \t"+len
+      +",\ttake time: \t"+((t1-t0)/ 1000000000.0).formatted("%.3f") + " sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
+    recording +=("Query Hbase for edges: \t"+len
+      +",\ttake time: \tREPARHBASE"+((t1-t0)/ 1000000000.0).formatted("%.3f") + "REPARHBASE sec"
+      +", \tres_edges:             \t"+res_edges.length+"\n")
+    List((index,(res_edges,recording,coarest_num))).toIterator
+    //    List((res_edges_array.toList,recording,coarest_num)).toIterator
+  }
+
 }

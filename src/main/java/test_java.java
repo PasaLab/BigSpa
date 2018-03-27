@@ -8,5 +8,6 @@ public class test_java {
     public static void main(String[] args){
         int [][] a=new int[0][2];
         out.println(a.length);
+        out.println(-1%2);
     }
 }

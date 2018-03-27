@@ -18,6 +18,10 @@ import scala.collection.JavaConversions._
   */
 object HBase_OP extends Para{
 
+  val colum:String="e"
+  val family:String="c"
+  val value:String="1"
+
   def filling0(origin:Int,len:Int):String="0"*(len-origin.toString.length)+origin
 
   def getIntBit(a:Int):Int={
@@ -37,7 +41,7 @@ object HBase_OP extends Para{
     val src_str = filling0(edge._1, nodes_num_bitsize)
     val dst_str = filling0(edge._2, nodes_num_bitsize)
     val label_str = filling0(edge._3, symbol_num_bitsize)
-    htable_split_Map.getOrElse(edge._1 % HRegion_splitnum,default_split)+src_str + dst_str + label_str
+    htable_split_Map.getOrElse((edge._1+edge._2) % HRegion_splitnum,default_split)+src_str + dst_str + label_str
     //    src_str + dst_str + label_str
   }
 
@@ -48,7 +52,7 @@ object HBase_OP extends Para{
     val src_str = filling0(edge(0), nodes_num_bitsize)
     val dst_str = filling0(edge(1), nodes_num_bitsize)
     val label_str = filling0(edge(2), symbol_num_bitsize)
-    htable_split_Map.getOrElse(edge(0) % HRegion_splitnum,default_split)+src_str + dst_str + label_str
+    htable_split_Map.getOrElse((edge(0)+edge(1))% HRegion_splitnum,default_split)+src_str + dst_str + label_str
     //    src_str + dst_str + label_str
   }
 
@@ -59,7 +63,7 @@ object HBase_OP extends Para{
     val src_str = filling0(edge(0), nodes_num_bitsize)
     val dst_str = filling0(edge(1), nodes_num_bitsize)
     val label_str = filling0(edge(2), symbol_num_bitsize)
-    htable_split_Map.getOrElse(edge(0)%HRegion_splitnum,default_split)+src_str + dst_str + label_str
+    htable_split_Map.getOrElse((edge(0)+edge(1)) % HRegion_splitnum,default_split)+src_str + dst_str + label_str
     //    src_str + dst_str + label_str
   }
 
@@ -70,7 +74,7 @@ object HBase_OP extends Para{
     val src_str = filling0(edge(0), nodes_num_bitsize)
     val dst_str = filling0(edge(1), nodes_num_bitsize)
     val label_str = filling0(edge(2), symbol_num_bitsize)
-    htable_split_Map.getOrElse(edge(0) % HRegion_splitnum,default_split)+src_str + dst_str + label_str
+    htable_split_Map.getOrElse((edge(0)+edge(1)) % HRegion_splitnum,default_split)+src_str + dst_str + label_str
     //    src_str + dst_str + label_str
   }
 
@@ -97,7 +101,7 @@ object HBase_OP extends Para{
     //creating table descriptor
     val h_tableDesc = new HTableDescriptor(Bytes.toBytes(htable_name))
     //creating column family descriptor
-    val family = new HColumnDescriptor(Bytes.toBytes("e"),1,"NONE",false,true,Int.MaxValue,"ROW")
+    val family = new HColumnDescriptor(Bytes.toBytes(colum),1,"NONE",false,true,Int.MaxValue,"ROW")
     //adding coloumn family to HTable
     h_tableDesc.addFamily(family)
     /**
@@ -308,7 +312,7 @@ object HBase_OP extends Para{
     edge_processed.map(s => {
       val final_string = Edge2String(s,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map, HRegion_splitnum,default_split)
       val final_rowkey = Bytes.toBytes(final_string)
-      val kv: KeyValue = new KeyValue(final_rowkey, "e".getBytes, "c".getBytes, Bytes.toBytes('1'))
+      val kv: KeyValue = new KeyValue(final_rowkey, colum.getBytes, family.getBytes, Bytes.toBytes(value))
       (final_string, (new ImmutableBytesWritable(final_rowkey), kv))
     }).sortByKey().map(s => s._2)
       .saveAsNewAPIHadoopFile(output, classOf[ImmutableBytesWritable],
@@ -326,6 +330,7 @@ object HBase_OP extends Para{
                             symbol_num_bitsize:Int,htable_name:String,output:String,htable_split_Map:Map[Int,String],
                             HRegion_splitnum:Int,default_split:String)= {
     println("Update HBase Using BulkLoad")
+    var e:Exception=new Exception
     val h_conf = HBaseConfiguration.create()
     h_conf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
     h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
@@ -340,15 +345,23 @@ object HBase_OP extends Para{
       val final_string = Array2String(s,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map, HRegion_splitnum,
         default_split)
       val final_rowkey = Bytes.toBytes(final_string)
-      val kv: KeyValue = new KeyValue(final_rowkey, "e".getBytes, "c".getBytes, Bytes.toBytes('1'))
+      val kv: KeyValue = new KeyValue(final_rowkey, colum.getBytes, family.getBytes, Bytes.toBytes(value))
       (final_string, (new ImmutableBytesWritable(final_rowkey), kv))
     }).sortByKey().map(s => s._2)
       .saveAsNewAPIHadoopFile(output, classOf[ImmutableBytesWritable],
         classOf[KeyValue],
         classOf[HFileOutputFormat], h_job.getConfiguration())
 
-    val bulkLoader = new LoadIncrementalHFiles(h_job.getConfiguration())
-    bulkLoader.doBulkLoad(new Path(output), h_table)
+    println("Bulkload")
+    try {
+      val bulkLoader = new LoadIncrementalHFiles(h_job.getConfiguration())
+      bulkLoader.doBulkLoad(new Path(output), h_table)
+    } catch {
+      case e : Exception => {
+        e.printStackTrace()
+        throw new RuntimeException(e)
+      }
+    }
     h_table.close()
   }
 
@@ -369,7 +382,7 @@ object HBase_OP extends Para{
       val final_string = Array2String(s,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map, HRegion_splitnum,
         default_split)
       val final_rowkey = Bytes.toBytes(final_string)
-      val kv: KeyValue = new KeyValue(final_rowkey, "e".getBytes, "c".getBytes, Bytes.toBytes('1'))
+      val kv: KeyValue = new KeyValue(final_rowkey, colum.getBytes, family.getBytes, Bytes.toBytes(value))
       (final_string, (new ImmutableBytesWritable(final_rowkey), kv))
     }).sortByKey().map(s => s._2)
       .saveAsNewAPIHadoopFile(output, classOf[ImmutableBytesWritable],
@@ -398,7 +411,7 @@ object HBase_OP extends Para{
         val p_l = list.subList(i, Math.min(i + Hbase_interval, list.length)).map(x => {
           val p: Put = new Put(Bytes.toBytes(Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
             HRegion_splitnum,default_split)))
-          p.add("e".getBytes(), "c".getBytes, Bytes.toBytes("1"))
+          p.add(colum.getBytes(), family.getBytes, Bytes.toBytes(value))
         })
         h_table.put(p_l)
       }

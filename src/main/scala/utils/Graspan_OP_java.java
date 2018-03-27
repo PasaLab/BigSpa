@@ -1,6 +1,9 @@
 package utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -68,7 +71,7 @@ public class Graspan_OP_java {
      * @return
      */
     public static List<int[]> join_flat(int flag,int[][] old_edge_before,int[][] old_edge_after,
-                                          int[][] new_edge_before,int[][] new_edge_after,
+                                        int[][] new_edge_before,int[][] new_edge_after,
                                         int[][] grammar,int symbol_num){
 //        String tmp="XXX mid= "+flag+"\n";
 //        for(int[] i:new_array){
@@ -221,40 +224,42 @@ public class Graspan_OP_java {
     }
 
 
-    public static  List<int[]> join_fully_compressed(int flag,int[] all_edges,int old_f_end,int old_b_end,int
-            new_f_end,int[][] grammar,int symbol_num){
+    public static  List<int[]> join_fully_compressed(int flag,int[] all_edges,int old_f_end,int new_f_end,int
+            old_b_end,int[][] grammar,int symbol_num){
         List<int[]> res_edges=new ArrayList<int[]>();
         IntArrayCompartor_According_Symbol comparator = new IntArrayCompartor_According_Symbol();
 
-        int[][] old_edge_before=new int[(old_f_end-0+1)/2][2];
-        int[][] old_edge_after=new int[(old_b_end-old_f_end)/2][2];
-        int[][] new_edge_before=new int[(new_f_end-old_b_end)/2][2];
-        int[][] new_edge_after=new int[(all_edges.length-new_f_end)/2][2];
+        int[][] old_edge_before = new int[(old_f_end - 0 + 1) / 2][2];
+        int[][] old_edge_after = new int[(old_b_end - new_f_end) / 2][2];
+        int[][] new_edge_before = new int[(new_f_end - old_f_end) / 2][2];
+        int[][] new_edge_after = new int[(all_edges.length - old_b_end - 1) / 2][2];
 
-        int len=old_edge_before.length;
-        for(int i=0;i<len;i++){
-            old_edge_before[i]=new int[2];
-            old_edge_before[i][0]=all_edges[i*2];
-            old_edge_before[i][1]=all_edges[i*2+1];
+        int len = old_edge_before.length;
+        for (int i = 0; i < len; i++) {
+            old_edge_before[i] = new int[2];
+            old_edge_before[i][0] = all_edges[i * 2];
+            old_edge_before[i][1] = all_edges[i * 2 + 1];
         }
-        len=old_edge_after.length;
-        for(int i=0;i<len;i++){
-            old_edge_after[i]=new int[2];
-            old_edge_after[i][0]=all_edges[i*2+1+old_f_end];
-            old_edge_after[i][1]=all_edges[i*2+2+old_f_end];
+        len = old_edge_after.length;
+        for (int i = 0; i < len; i++) {
+            old_edge_after[i] = new int[2];
+            old_edge_after[i][0] = all_edges[i * 2 + 1 + new_f_end];
+            old_edge_after[i][1] = all_edges[i * 2 + 2 + new_f_end];
         }
-        len=new_edge_before.length;
-        for(int i=0;i<len;i++){
-            new_edge_before[i]=new int[2];
-            new_edge_before[i][0]=all_edges[i*2+1+old_b_end];
-            new_edge_before[i][1]=all_edges[i*2+2+old_b_end];
+        len = new_edge_before.length;
+        for (int i = 0; i < len; i++) {
+            new_edge_before[i] = new int[2];
+            new_edge_before[i][0] = all_edges[i * 2 + 1 + old_f_end];
+            new_edge_before[i][1] = all_edges[i * 2 + 2 + old_f_end];
         }
-        len=new_edge_after.length;
-        for(int i=0;i<len;i++){
-            new_edge_after[i]=new int[2];
-            new_edge_after[i][0]=all_edges[i*2+1+new_f_end];
-            new_edge_after[i][1]=all_edges[i*2+2+new_f_end];
+        len = new_edge_after.length;
+        for (int i = 0; i < len; i++) {
+            new_edge_after[i] = new int[2];
+            new_edge_after[i][0] = all_edges[i * 2 + 1 + old_b_end];
+            new_edge_after[i][1] = all_edges[i * 2 + 2 + old_b_end];
         }
+
+
         Arrays.sort(new_edge_before,comparator);
         Arrays.sort(new_edge_after,comparator);
         Arrays.sort(old_edge_before,comparator);
@@ -358,6 +363,23 @@ public class Graspan_OP_java {
                     }
                 }
 
+            }
+        }
+//        System.out.println(tmp);
+        return res_edges;
+    }
+
+    public static  List<int[]> join_fully_compressed_df(int flag,int[] n_edges,int[] e_edge_after){
+        List<int[]> res_edges=new ArrayList<int[]>();
+        /**
+         * n与e之间的两两连接
+         */
+        int res_label=0;
+        //n在前，e在后
+        for(int i=0;i<n_edges.length;i++){
+            for(int j=0;j<e_edge_after.length;j++){
+                int[] ele={n_edges[i],e_edge_after[j],res_label};
+                res_edges.add(ele);
             }
         }
 //        System.out.println(tmp);
