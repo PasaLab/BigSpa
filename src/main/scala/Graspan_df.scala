@@ -43,7 +43,6 @@ object Graspan_df extends Para{
 
     var input_e:String="data/test_graph"
     var input_n:String="data/test_graph"
-    var input_e_nomaster:String=""
     var output: String = "data/result/" //除去ip地址
     var hbase_output:String="data/result/hbase/hbhfile/"
     var checkpoint_output:String="data/checkpoint"
@@ -64,7 +63,7 @@ object Graspan_df extends Para{
 
     var is_complete_loop:Boolean=false
     var max_complete_loop_turn:Int=5
-    var max_delta:Int=10000
+    var max_convergence_loop:Int=100
 
     var file_index_f:Int= -1
     var file_index_b:Int= -1
@@ -81,7 +80,6 @@ object Graspan_df extends Para{
 
         case "input_e"=>input_e=argvalue
         case "input_n"=>input_n=argvalue
-        case "input_e_nomaster"=>input_e_nomaster=argvalue
         case "output" => output = argvalue
         case "hbase_output"=>hbase_output=argvalue
         case "clusterpar"=>clusterpar=argvalue.toInt
@@ -99,7 +97,7 @@ object Graspan_df extends Para{
 
         case "is_complete_loop"=>is_complete_loop=argvalue.toBoolean
         case "max_complete_loop_turn"=>max_complete_loop_turn=argvalue.toInt
-        case "max_delta"=>max_delta=argvalue.toInt
+        case "max_convergence_loop"=>max_convergence_loop=argvalue.toInt
 
         case "newnum_interval"=>newnum_interval=argvalue.toInt
         case "checkpoint_interval"=>checkpoint_interval=argvalue.toInt
@@ -145,8 +143,22 @@ object Graspan_df extends Para{
       * Graph相关设置
       */
 
-    val e=sc.textFile(input_e,defaultpar).map(s=>s.split("\\s+").map(_.toInt))
-    val n=sc.textFile(input_n,defaultpar).map(s=>s.split("\\s+").map(_.toInt))
+    val (e_str,n_str)={
+      if(input_e.contains("Linux_dataflow_e")){
+        println("getinput_EandN")
+        Graspan_OP.getinput_EandN(input_e,input_n,file_index_f,file_index_b,master)
+      }
+      else{
+        (input_e,input_n)
+      }
+    }
+
+
+    val e=sc.textFile(e_str,defaultpar).flatMap(s=>{
+      val flag=s.split(":")(0).toInt
+      s.split(":")(1).split("\\s+").map(x=>Array(flag,x.toInt,1))
+    })
+    val n=sc.textFile(n_str,defaultpar).map(s=>s.split("\\s+").map(_.toInt))
     println("e counts : "+e.filter(s=>s(2)==1).count())
     println("n counts : "+n.filter(s=>s(2)==0).count())
     val nodes_totalnum=(e.flatMap(s=>Array(s(0),s(1))) ++ n.flatMap(s=>Array(s(0),s(1)))).distinct().count()
@@ -157,6 +169,8 @@ object Graspan_df extends Para{
     println("processed n:        \t" + n.count())
     println("nodes_totoalnum:    \t" + nodes_totalnum)
     println("nodes_num_bitsize:  \t" + nodes_num_bitsize)
+    println("max_loop_turn:      \t" + max_complete_loop_turn)
+    println("convergence_turn:   \t" +max_convergence_loop)
     println("------------------------------------------------------------------")
     println
 
@@ -179,20 +193,20 @@ object Graspan_df extends Para{
       * 得到所有e的边
       */
     val e_bc={
-        val e_edges=e.map(s=>(s(0),s(1))).groupByKey().mapValues(_.toArray).sortBy(_._1).collect()
+      val e_edges=e.map(s=>(s(0),s(1))).groupByKey().mapValues(_.toArray).sortBy(_._1).collect()
       if(isSingleton==false){
         sc.broadcast(e_edges)
       }
       else {
-//        Dataflow_e_formation.form_e(master,input_e_nomaster)
+        //        Dataflow_e_formation.form_e(master,input_e_nomaster)
         sc.broadcast(Array[(Int,Array[Int])]())
       }
     }
 
 
     var n_edges=n.map(s=>(s(1),s(0))).groupByKey().mapValues(_.toArray)
-        .partitionBy(new HashPartitioner(defaultpar))
-        .persist(StorageLevel.MEMORY_ONLY_SER)
+      .partitionBy(new HashPartitioner(defaultpar))
+      .persist(StorageLevel.MEMORY_ONLY_SER)
     //    oldedges.count()
 
     //    println("check oldedges")
@@ -220,27 +234,30 @@ object Graspan_df extends Para{
         if(isSingleton==false){
           n_edges
             .mapPartitionsWithIndex((index, s) =>
-              Graspan_OP.computeInPartition_fully_compressed_df(step,
+              Graspan_OP.computeInPartition_fully_compressed_df_braodcast_e(step,
                 index, s,e_bc.value.asInstanceOf[Array[(Int,Array[Int])]],
                 nodes_num_bitsize,
-                symbol_num_bitsize, is_complete_loop, max_complete_loop_turn, max_delta,
+                symbol_num_bitsize, is_complete_loop, max_complete_loop_turn,10,
                 Batch_QueryHbase,
                 htable_name,
                 htable_split_Map,
                 HRegion_splitnum, queryHBase_interval, default_split),true).setName("newedge-before-distinct-" + step)
         }
         else{
+          val tmp_max_complete_loop_turn={
+            if(newnum<10000) max_convergence_loop
+            else max_complete_loop_turn
+          }
           n_edges
             .mapPartitionsWithIndex((index, s) =>
-              Graspan_OP.computeInPartition_fully_compressed_df_Singleton(step,
-                index, s,master,input_e_nomaster,
+              Graspan_OP.computeInPartition_fully_compressed_df_HDFSRead_E(step,
+                index, s,master,e_str,
                 nodes_num_bitsize,
-                symbol_num_bitsize, is_complete_loop, max_complete_loop_turn, max_delta,
+                symbol_num_bitsize, is_complete_loop, tmp_max_complete_loop_turn,
                 Batch_QueryHbase,
                 htable_name,
                 htable_split_Map,
                 HRegion_splitnum, queryHBase_interval, default_split),true).setName("newedge-before-distinct-" + step)
-
         }
       }.persist (StorageLevel.MEMORY_ONLY_SER)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
@@ -342,7 +359,7 @@ object Graspan_df extends Para{
       println("*step: step " + step + " take time: \t " + ((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec")
       println
       continue = newnum != 0
-//      scan.next()
+      //      scan.next()
     }
 
     sc.stop()

@@ -23,27 +23,53 @@ object Dataflow_e_formation {
       this.synchronized{
         if(e_edges==null){
           println("Partition "+parId+" form e!!!")
-          val e: ArrayBuffer[(Int, Int)] = ArrayBuffer()
-          val fileSystem = FileSystem.get(new URI(master), new Configuration())
-          // 调用open方法进行下载，参数HDFS路径
-          val in = fileSystem.open(new Path(input_e_nomaster))
-          val scanner = new Scanner(in)
-          var tmp: String = null
-          while (scanner.hasNextLine) {
-            tmp=scanner.nextLine()
-//            println("tmp: "+tmp)
-            if (!tmp.trim.equals("")) {
-//                println("valid tmp: "+tmp)
-                val strs = tmp.split("\\s+")
-//                println(strs.mkString(","))
-                e.append((strs(0).toInt, strs(1).toInt))
+          e_edges={
+            val e: ArrayBuffer[(Int, Array[Int])] = ArrayBuffer()
+            val fileSystem = FileSystem.get(new URI(master), new Configuration())
+            // 调用open方法进行下载，参数HDFS路径
+            if(input_e_nomaster.contains(",")==false) {
+              val in = fileSystem.open(new Path(input_e_nomaster))
+              val scanner = new Scanner(in)
+              var tmp: String = null
+              while (scanner.hasNextLine) {
+                tmp = scanner.nextLine()
+                //            println("tmp: "+tmp)
+                if (!tmp.trim.equals("")) {
+                  //                println("valid tmp: "+tmp)
+                  val strs = tmp.split(":")
+                  val flag=strs(0).toInt
+                  val targets=strs(1).split("\\s+").map(_.toInt)
+                  //                println(strs.mkString(","))
+                  e.append((flag, targets))
+                }
+              }
+              in.close()
+            }
+            else{
+              val files=input_e_nomaster.split(",")
+              for(file<-files){
+                val in = fileSystem.open(new Path(file))
+                val scanner = new Scanner(in)
+                var tmp: String = null
+                while (scanner.hasNextLine) {
+                  tmp = scanner.nextLine()
+                  //            println("tmp: "+tmp)
+                  if (!tmp.trim.equals("")) {
+                    //                println("valid tmp: "+tmp)
+                    val strs = tmp.split(":")
+                    val flag=strs(0).toInt
+                    val targets=strs(1).split("\\s+").map(_.toInt)
+                    e.append((flag, targets))
+                  }
+                }
+                in.close()
               }
             }
-//          val scan=new Scanner(System.in)
-//          scan.next()
-          e_edges=e.groupBy(_._1).toArray.sortBy(_._1).map(s => (s._1, s._2.map(x => x._2).toArray))
-          in.close()
-          println("end form e, e length "+e_edges.length)
+            //          val scan=new Scanner(System.in)
+            //          scan.next()
+            println("end form e, e length "+e.length)
+            e.toArray
+          }
         }
       }
     }
