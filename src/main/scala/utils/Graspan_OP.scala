@@ -49,8 +49,8 @@ object Graspan_OP extends Para {
   }
   def processDF(sc:SparkContext,input_graph:String,output:String,par:Int):Unit={
     val graph=sc.textFile(input_graph,par).filter(s=>s.trim!="").map(s=>s.split("\\s+").map(_.trim))
-    graph.filter(_(2)=="e").map(s=>(s(0).toInt,s(1).toInt)).groupByKey().sortByKey().map(s=>(s._1+":"+s._2.mkString("\t")))
-      .repartition(1).saveAsTextFile(output+"/e")
+    graph.filter(_(2)=="e").map(s=>(s(0).toInt,s(1).toInt)).groupByKey().repartition(1).sortByKey().map(s=>(s._1+":"+s._2.mkString("\t")))
+      .saveAsTextFile(output+"/e")
 //    graph.filter(_(2)=="e").map(s=>s(0)+"\t"+s(1)+"\t1").repartition(1).saveAsTextFile(output+"/e")
     graph.filter(_(2)=="n").map(s=>s(0)+"\t"+s(1)+"\t0").repartition(1).saveAsTextFile(output+"/n")
   }
