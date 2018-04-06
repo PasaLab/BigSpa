@@ -369,6 +369,86 @@ public class Graspan_OP_java {
         return res_edges;
     }
 
+    public static  List<int[]> join_fully_compressed_presort(int flag,int[] all_edges,int[] old_f_index_list,int[]
+            new_f_index_list,int[] old_b_index_list,int[] new_b_index_list,int[][] grammar,int symbol_num){
+        List<int[]> res_edges=new ArrayList<int[]>();
+
+        for(int[] gram:grammar){
+            int f=gram[0];
+            int b=gram[1];
+            int res_label=gram[2];
+        /**
+            * 判断f和b谁长，决定以谁为主forloop，避免空转
+        */
+            int new_f_length=-1;
+            int new_b_length=-1;
+            int old_f_length=-1;
+            int old_b_length=-1;
+            if(f==0) {
+                old_f_length=old_f_index_list[f]+1;
+                new_f_length=new_f_index_list[f]-old_f_index_list[symbol_num-1];
+            }
+            else {
+                old_f_length=old_f_index_list[f]-old_f_index_list[f-1];
+                new_f_length=new_f_index_list[f]-new_f_index_list[f-1];
+            }
+            if(b==0){
+                old_b_length=old_b_index_list[b]-new_f_index_list[symbol_num-1];
+                new_b_length=new_b_index_list[b]-old_b_index_list[symbol_num-1];
+            }
+            else {
+                old_b_length=old_b_index_list[b]-old_b_index_list[b-1];
+                new_b_length=new_b_index_list[b]-new_b_index_list[b-1];
+            }
+            /**
+             * 1、新边之间的两两连接
+             */
+
+            if(new_f_length>0&&new_b_length>0) {
+                    for (int j = new_f_index_list[f]-new_f_length+1; j <= new_f_index_list[f]; j++) {
+                        for (int k = new_b_index_list[b]-new_b_length+1; k <= new_b_index_list[b]; k++) {
+                            int[] ele = new int[3];
+                            ele[0] = all_edges[j];
+                            ele[1] = all_edges[k];
+                            ele[2] = res_label;
+                            res_edges.add(ele);
+                        }
+                    }
+            }
+            /**
+             * 新边与旧边之间的两两连接
+             */
+            //新边在前，旧边在后
+            if(new_f_length>0&&old_b_length>0){
+                    for(int j=new_f_index_list[f]-new_f_length+1;j<=new_f_index_list[f];j++){
+                        for(int k=old_b_index_list[b]-old_b_length+1;k<=old_b_index_list[b];k++){
+                            int[] ele=new int[3];
+                            ele[0]=all_edges[j];
+                            ele[1]=all_edges[k];
+                            ele[2]=res_label;
+                            res_edges.add(ele);
+                        }
+                    }
+            }
+            //旧边在前，新边在后
+            if(old_f_length>0&&new_b_length>0){
+                    for(int j=old_f_index_list[f]-old_f_length+1;j<=old_f_index_list[f];j++){
+                        for(int k=new_b_index_list[b]-new_b_length+1;k<=new_b_index_list[b];k++){
+                            int [] ele=new int[3];
+                            ele[0]=all_edges[j];
+                            ele[1]=all_edges[k];
+                            ele[2]=res_label;
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+        }
+//        System.out.println(tmp);
+        return res_edges;
+    }
+
+
+
     public static  List<int[]> join_fully_compressed_df(int flag,int[] n_edges,int[] e_edge_after){
         List<int[]> res_edges=new ArrayList<int[]>();
         /**

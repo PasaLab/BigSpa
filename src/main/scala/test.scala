@@ -65,14 +65,5 @@ object test extends utils.Para{
     deleteDir.deletedir(islocal,master,output)
     Graspan_OP.processDF(sc,input_graph,output,defaultpar)
 
-//    val str="hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/PostgreSQL_8.3.9_Dataflow/e/part-00000"
-//    val master0="hdfs://slave001:9001/"
-//    println(str.indexOf(master0))
-//    println(str.substring(master0.length-1))
-//    val data=sc.textFile(input_graph).filter(s=>s.trim!="").map(s=>s.split("\\s+")).map(s=>(s(0).toInt,s(1).toInt,s
-//(2))).filter(s=>s._1==s._2&&s._3=="MAs")
-//    println(data.count())
-//    println(data.first())
-
     }
 }

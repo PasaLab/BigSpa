@@ -47,12 +47,12 @@ object Statistic {
     var input_graph: String = "H:/Graspan资料/Graspan数据和源代码/Apache_Httpd_2.2.18_Points-to/Apache_httpd_2.2.18_pointsto_graph"
     var input_grammar: String = "H:/Graspan资料/Graspan数据和源代码/Grammar_Files/rules_pointsto"
 
-    var input:String="H:\\Graspan_noBF\\data\\PSQL_df_16g_debug.log"
+    var input:String="H:\\Graspan_noBF\\data\\PSQL_pt_16g_presort.log"
     var output: String = "data/result/" //除去ip地址
 
     var par: Int = 4
 
-    val conf = new SparkConf().set("spark.kryoserializer.buffer.max", "128")
+    val conf = new SparkConf()//.set("spark.kryoserializer.buffer.max", "128")
     if (islocal) {
       //test location can be adjusted or not
       conf.setAppName("Graspan")
@@ -81,7 +81,7 @@ object Statistic {
     deleteDir.deletedir(islocal,master,output+targetLine)
     selectLine(sc,input,targetLine,output+targetLine)
 
-    targetLine="newedges:"
+    targetLine="newedges_a"
     deleteDir.deletedir(islocal,master,output+targetLine)
     selectLine(sc,input,targetLine,output+targetLine)
 

@@ -69,7 +69,7 @@ object Graspan_df extends Para{
     var file_index_b:Int= -1
 
     var check_edge:Boolean=false
-    var isSingleton:Boolean=false
+    var convergence_threshold:Int=10000
 
     for (arg <- args) {
       val argname = arg.split(",")(0)
@@ -106,7 +106,7 @@ object Graspan_df extends Para{
         case "file_index_b"=>file_index_b=argvalue.toInt
 
         case "check_edge"=>check_edge=argvalue.toBoolean
-        case "isSingleton"=>isSingleton=argvalue.toBoolean
+        case "convergence_threshold"=>convergence_threshold=argvalue.toInt
         case _ => {}
       }
     }
@@ -189,20 +189,6 @@ object Graspan_df extends Para{
     //    scan.next()
     deleteDir.deletedir(islocal, master, output)
 
-    /**
-      * 得到所有e的边
-      */
-    val e_bc={
-      val e_edges=e.map(s=>(s(0),s(1))).groupByKey().mapValues(_.toArray).sortBy(_._1).collect()
-      if(isSingleton==false){
-        sc.broadcast(e_edges)
-      }
-      else {
-        //        Dataflow_e_formation.form_e(master,input_e_nomaster)
-        sc.broadcast(Array[(Int,Array[Int])]())
-      }
-    }
-
 
     var n_edges=n.map(s=>(s(1),s(0))).groupByKey().mapValues(_.toArray)
       .partitionBy(new HashPartitioner(defaultpar))
@@ -231,21 +217,8 @@ object Graspan_df extends Para{
 
       val t0_ge = System.nanoTime()
       val new_edges_str = {
-        if(isSingleton==false){
-          n_edges
-            .mapPartitionsWithIndex((index, s) =>
-              Graspan_OP.computeInPartition_fully_compressed_df_braodcast_e(step,
-                index, s,e_bc.value.asInstanceOf[Array[(Int,Array[Int])]],
-                nodes_num_bitsize,
-                symbol_num_bitsize, is_complete_loop, max_complete_loop_turn,10,
-                Batch_QueryHbase,
-                htable_name,
-                htable_split_Map,
-                HRegion_splitnum, queryHBase_interval, default_split),true).setName("newedge-before-distinct-" + step)
-        }
-        else{
           val tmp_max_complete_loop_turn={
-            if(newnum<10000) max_convergence_loop
+            if(newnum<=convergence_threshold) max_convergence_loop
             else max_complete_loop_turn
           }
           n_edges
@@ -258,7 +231,6 @@ object Graspan_df extends Para{
                 htable_name,
                 htable_split_Map,
                 HRegion_splitnum, queryHBase_interval, default_split),true).setName("newedge-before-distinct-" + step)
-        }
       }.persist (StorageLevel.MEMORY_ONLY_SER)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
       val t1_ge = System.nanoTime()

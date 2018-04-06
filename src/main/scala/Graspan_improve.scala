@@ -23,17 +23,39 @@ import scala.collection.mutable.ArrayBuffer
 
 object Graspan_improve extends Para{
 
-  def check_edge_RDD(edges:RDD[(Int,(Array[Int],Int,Int,Int))]):RDD[String]={
+  def check_edge_RDD(edges:RDD[(Int,(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int]))]):RDD[String]={
     edges.map(s=>{
       val len=s._2._1.length
-      val old_f_end=s._2._2
-      val new_f_end=s._2._3
-      val old_b_end=s._2._4
-      if(old_f_end<=new_f_end && new_f_end<=old_b_end && old_b_end<len && len%2==0 && old_f_end%2!=0 && new_f_end%2!=0
-        && old_b_end%2!=0 ) "OK"
-      else "edges: "+len+","+old_f_end+","+new_f_end+","+old_b_end+
-        s"  is 4 part index error: ${old_f_end<=new_f_end && new_f_end<=old_b_end && old_b_end<len}"+
-      s" is fill array error: ${len%2==0 && old_f_end%2!=0 && new_f_end%2!=0 && old_b_end%2!=0}"
+      val old_f_list=s._2._2
+      val new_f_list=s._2._3
+      val old_b_list=s._2._4
+      val new_b_list=s._2._5
+      val symbol_num=old_f_list.length
+      var correct_old_f_inner=true
+      var correct_new_f_inner=true
+      var correct_old_b_inner=true
+      var correct_new_b_inner=true
+      var correct_old_f_outer=true
+      var correct_new_f_outer=true
+      var correct_old_b_outer=true
+      var correct_new_b_outer=true
+      for(i <-1 until symbol_num){
+        if(old_f_list(i)<old_f_list(i-1)) correct_old_f_inner=false
+        if(new_f_list(i)<new_f_list(i-1)) correct_new_f_inner=false
+        if(old_b_list(i)<old_b_list(i-1)) correct_old_b_inner=false
+        if(new_b_list(i)<new_b_list(i-1)) correct_new_b_inner=false
+      }
+      if(old_f_list.last>new_f_list(0)||old_f_list.last>=len) correct_old_f_outer=false
+      if(new_f_list.last>old_b_list(0)||new_f_list.last>=len) correct_new_f_outer=false
+      if(old_b_list.last>new_b_list(0)||old_b_list.last>=len) correct_old_b_outer=false
+      if(new_b_list.last>=len) correct_new_b_outer=false
+      if(correct_old_f_inner&&correct_old_f_outer&&correct_new_f_inner&&correct_new_f_outer&&correct_old_b_inner
+        &&correct_old_b_outer&&correct_new_b_inner&&correct_new_b_outer)
+        "OK"
+      else "edges: "+len+"\n"+
+        old_f_list.mkString("\t")+"\n"+new_f_list.mkString("\t")+"\n"+old_b_list.mkString("\t") +"\n"+ new_b_list.mkString("\t")+"\n"+
+        s"  is inner index error: ${correct_old_f_inner&&correct_new_f_inner&&correct_old_b_inner&&correct_new_b_inner}"+
+      s" is outer index error: ${correct_old_f_outer&&correct_new_f_outer&&correct_old_b_outer&&correct_new_b_outer}"
     })
   }
   def main(args: Array[String]): Unit = {
@@ -193,46 +215,33 @@ object Graspan_improve extends Para{
 //    scan.next()
     deleteDir.deletedir(islocal, master, output)
 
-    var oldedges: RDD[(VertexId, (Array[Int],Int,Int,Int))] =
+    var oldedges: RDD[(VertexId,(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int]))] =
       graph.flatMap(s => {
-        if(s._1!=s._2) Array((s._1,Array(Array(s._1,s._2,s._3))), (s._2, Array(Array(s._1,s._2,s._3))))
-        else Array((s._1,Array(Array(s._1,s._2,s._3))))
+        if(s._1!=s._2) Array((s._1,Array(s._1,s._2,s._3)), (s._2, Array(s._1,s._2,s._3)))
+        else Array((s._1,Array(s._1,s._2,s._3)))
       })
-        .reduceByKey((x,y)=>(x ++ y))
+        .groupByKey()
+        .map(s=>(s._1,({
+          val old_f_list=new Array[Int](symbol_num)
+          val new_f_list=new Array[Int](symbol_num)
+          val old_b_list=new Array[Int](symbol_num)
+          val new_b_list=new Array[Int](symbol_num)
+          for(i <-0 until symbol_num){
+            old_f_list(i)= -1
+            new_f_list(i)= -1
+            old_b_list(i)= -1
+            new_b_list(i)= -1
+          }
+          Iterable((Array[Int](),old_f_list,new_f_list,old_b_list,new_b_list))
+        },Iterable(s._2.toArray))))
         .partitionBy(new HashPartitioner(defaultpar))
-        .mapPartitions(s=>{
-          s.map(u=>{
-            val flag=u._1
-            val new_f=new ArrayBuffer[Int](u._2.length*2)
-            val new_b=new ArrayBuffer[Int](u._2.length*2)
-            var index=0
-            while(index<u._2.length){
-              val ele=u._2(index)
-              if(ele(1)==flag){
-                new_f.append(ele(2))
-                new_f.append(ele(0))
-              }
-              if(ele(0)==flag){
-                new_b.append(ele(2))
-                new_b.append(ele(1))
-              }
-              index+=1
-            }
-            val index_new_f_end={
-              if(new_f.length>0) new_f.length-1
-              else -1
-            }
-            new_f.appendAll(new_b)
-            (u._1,(new_f.toArray,-1,index_new_f_end,index_new_f_end))
-          })
-        })
+        .mapPartitions(s=>Graspan_OP.Union_old_new(s,symbol_num))
         .partitionBy(new HashPartitioner(defaultpar))
         .persist(StorageLevel.MEMORY_ONLY_SER)
     //    oldedges.count()
-    println(s"oldedges.partitioner:${oldedges.partitioner}")
 
-//    println("check oldedges")
-//    println(check_edge_RDD(oldedges).filter(s=> !s.contains("OK")).top(10).mkString("\n"))
+    println("check oldedges")
+    println(check_edge_RDD(oldedges).filter(s=> !s.contains("OK")).top(10).mkString("\n"))
     var step = 0
     var change_par=true
     var continue: Boolean = true
@@ -254,11 +263,11 @@ object Graspan_improve extends Para{
       val t0_ge = System.nanoTime()
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
-          Graspan_OP.computeInPartition_fully_compressed(step,
+          Graspan_OP.computeInPartition_fully_compressed_presort(step,
             index, s,
             symbol_num,grammar,
             nodes_num_bitsize,
-            symbol_num_bitsize, directadd, is_complete_loop, max_complete_loop_turn, max_delta,
+            symbol_num_bitsize, directadd,
             Batch_QueryHbase,
             htable_name,
             htable_split_Map,
@@ -274,7 +283,7 @@ object Graspan_improve extends Para{
       /**
         * 记录各分区情况
         */
-      val par_INFO = new_edges_str.map(s=>s._2._2)
+      val par_INFO = new_edges_str.map(s=>s._2._2).cache()
       deleteDir.deletedir(islocal, master, output + "/par_INFO/step" + step)
       par_INFO.repartition(1).saveAsTextFile(output + "/par_INFO/step" + step)
 
@@ -301,6 +310,12 @@ object Graspan_improve extends Para{
       val newedges=new_edges_str.flatMapValues(s=>s._1).map(s=>s._2.toVector).distinct()
           .mapPartitions(s=>s.map(_.toArray)).setName("newedges-after-distinct-" + step).persist(StorageLevel
           .MEMORY_ONLY_SER)
+//      for(i<-symbol_Map){
+//        val symbol=i._1
+//        val symbol_num=i._2
+//        println(symbol+"自环:                    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)==s(1)).count())
+//        println(symbol+"非自:                    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)!=s(1)).count())
+//      }
 
       newnum = newedges.count()
       oldnum += newnum
@@ -373,208 +388,18 @@ object Graspan_improve extends Para{
         })
         oldedges_cogroup.count
         println("oldedges_cogroup take time:            \t"+((System.nanoTime()-t0_old_cogroup)/1000000000.0).formatted("%.3f")+" sec")
+        val tmp_oldedges=oldedges_cogroup.mapPartitions(v=>Graspan_OP.Union_old_new(v,symbol_num))
         if(need_par>cur_par){
           println("edges num is increasing, add Tasks")
-          oldedges_cogroup.mapPartitions(v=>{
-            val t0_old_map_array=System.nanoTime()
-            v.map(x=>{
-              val flag = x._1
-              if(!x._2._1.isEmpty&&x._2._2.isEmpty){//没新边，只有旧边，只需要修改指针
-                (flag,(x._2._1.head._1,x._2._1.head._3,x._2._1.head._3,x._2._1.head._1.length-1))
-              }
-              else if(x._2._1.isEmpty&& ! x._2._2.isEmpty){//没旧边，只有新边
-              val new_part=x._2._2.head
-                val new_f=new ArrayBuffer[Int](new_part.length*2)
-                val new_b=new ArrayBuffer[Int](new_part.length*2)
-                var index=0
-                while(index<new_part.length){
-                  val ele=new_part(index)
-                  if(ele(1)==flag){
-                    new_f.append(ele(2))
-                    new_f.append(ele(0))
-                  }
-                  if(ele(0)==flag){
-                    new_b.append(ele(2))
-                    new_b.append(ele(1))
-                  }
-                  index+=1
-                }
-                val index_new_f_end={
-                  if(new_f.length>0) new_f.length-1
-                  else -1
-                }
-                new_f.appendAll(new_b)
-                (flag,(new_f.toArray,-1,index_new_f_end,index_new_f_end))
-              }
-              else{//新旧都有
-              val old_part=x._2._1.head
-                val new_part=x._2._2.head
-                val new_f=new ArrayBuffer[Int](new_part.length*2)
-                val new_b=new ArrayBuffer[Int](new_part.length*2)
-                var index=0
-                while(index<new_part.length){
-                  val ele=new_part(index)
-                  if(ele(1)==flag){
-                    new_f.append(ele(2))
-                    new_f.append(ele(0))
-                  }
-                  if(ele(0)==flag){
-                    new_b.append(ele(2))
-                    new_b.append(ele(1))
-                  }
-                  index+=1
-                }
-                val new_f_array:Array[Int]=new_f.toArray
-                val new_b_array:Array[Int]=new_b.toArray
-                val index_old_f_end=old_part._3
-                val index_new_f_end=index_old_f_end+new_f_array.length
-                val index_old_b_end=old_part._1.length-old_part._3-1+index_new_f_end
-                val array:Array[Int]=old_part._1.slice(0,old_part._3+1) ++ new_f_array ++
-                  old_part._1.slice(old_part._3+1,old_part._1.length) ++ new_b_array
-                if(array.length%2 !=0) System.exit(0)
-                (flag,(array,
-                  index_old_f_end,
-                  index_new_f_end,
-                  index_old_b_end))
-              }
-            })
-          })
-            .partitionBy(new HashPartitioner(need_par.toInt))
+          tmp_oldedges.partitionBy(new HashPartitioner(need_par.toInt))
         }
         else if(par_time_JOIN((par_time_JOIN.length * 0.75).toInt)*3 < par_time_JOIN(par_time_JOIN.length - 1)
           &&par_time_JOIN(par_time_JOIN.length-1)>30){
           println("Not Balance,repar")
-          oldedges_cogroup.mapPartitions(v=>{
-            val t0_old_map_array=System.nanoTime()
-            v.map(x=>{
-              val flag = x._1
-              if(!x._2._1.isEmpty&&x._2._2.isEmpty){//没新边，只有旧边，只需要修改指针
-                (flag,(x._2._1.head._1,x._2._1.head._3,x._2._1.head._3,x._2._1.head._1.length-1))
-              }
-              else if(x._2._1.isEmpty&& ! x._2._2.isEmpty){//没旧边，只有新边
-              val new_part=x._2._2.head
-                val new_f=new ArrayBuffer[Int](new_part.length*2)
-                val new_b=new ArrayBuffer[Int](new_part.length*2)
-                var index=0
-                while(index<new_part.length){
-                  val ele=new_part(index)
-                  if(ele(1)==flag){
-                    new_f.append(ele(2))
-                    new_f.append(ele(0))
-                  }
-                  if(ele(0)==flag){
-                    new_b.append(ele(2))
-                    new_b.append(ele(1))
-                  }
-                  index+=1
-                }
-                val index_new_f_end={
-                  if(new_f.length>0) new_f.length-1
-                  else -1
-                }
-                new_f.appendAll(new_b)
-                (flag,(new_f.toArray,-1,index_new_f_end,index_new_f_end))
-              }
-              else{//新旧都有
-              val old_part=x._2._1.head
-                val new_part=x._2._2.head
-                val new_f=new ArrayBuffer[Int](new_part.length*2)
-                val new_b=new ArrayBuffer[Int](new_part.length*2)
-                var index=0
-                while(index<new_part.length){
-                  val ele=new_part(index)
-                  if(ele(1)==flag){
-                    new_f.append(ele(2))
-                    new_f.append(ele(0))
-                  }
-                  if(ele(0)==flag){
-                    new_b.append(ele(2))
-                    new_b.append(ele(1))
-                  }
-                  index+=1
-                }
-                val new_f_array:Array[Int]=new_f.toArray
-                val new_b_array:Array[Int]=new_b.toArray
-                val index_old_f_end=old_part._3
-                val index_new_f_end=index_old_f_end+new_f_array.length
-                val index_old_b_end=old_part._1.length-old_part._3-1+index_new_f_end
-                val array:Array[Int]=old_part._1.slice(0,old_part._3+1) ++ new_f_array ++
-                  old_part._1.slice(old_part._3+1,old_part._1.length) ++ new_b_array
-                if(array.length%2 !=0) System.exit(0)
-                (flag,(array,
-                  index_old_f_end,
-                  index_new_f_end,
-                  index_old_b_end))
-              }
-            })
-          })
-            .partitionBy(new HashPartitioner(cur_par))
+          tmp_oldedges.partitionBy(new HashPartitioner(cur_par))
         }
         else{
-          oldedges_cogroup.mapPartitions(v=>{
-            val t0_old_map_array=System.nanoTime()
-            v.map(x=>{
-              val flag = x._1
-              if(!x._2._1.isEmpty&&x._2._2.isEmpty){//没新边，只有旧边，只需要修改指针
-                (flag,(x._2._1.head._1,x._2._1.head._3,x._2._1.head._3,x._2._1.head._1.length-1))
-              }
-              else if(x._2._1.isEmpty&& ! x._2._2.isEmpty){//没旧边，只有新边
-                val new_part=x._2._2.head
-                val new_f=new ArrayBuffer[Int](new_part.length*2)
-                val new_b=new ArrayBuffer[Int](new_part.length*2)
-                var index=0
-                while(index<new_part.length){
-                  val ele=new_part(index)
-                  if(ele(1)==flag){
-                    new_f.append(ele(2))
-                    new_f.append(ele(0))
-                  }
-                  if(ele(0)==flag){
-                    new_b.append(ele(2))
-                    new_b.append(ele(1))
-                  }
-                  index+=1
-                }
-                val index_new_f_end={
-                  if(new_f.length>0) new_f.length-1
-                  else -1
-                }
-                new_f.appendAll(new_b)
-                (flag,(new_f.toArray,-1,index_new_f_end,index_new_f_end))
-              }
-              else{//新旧都有
-                val old_part=x._2._1.head
-                val new_part=x._2._2.head
-                val new_f=new ArrayBuffer[Int](new_part.length*2)
-                val new_b=new ArrayBuffer[Int](new_part.length*2)
-                var index=0
-                while(index<new_part.length){
-                  val ele=new_part(index)
-                  if(ele(1)==flag){
-                    new_f.append(ele(2))
-                    new_f.append(ele(0))
-                  }
-                  if(ele(0)==flag){
-                    new_b.append(ele(2))
-                    new_b.append(ele(1))
-                  }
-                  index+=1
-                }
-                val new_f_array:Array[Int]=new_f.toArray
-                val new_b_array:Array[Int]=new_b.toArray
-                val index_old_f_end=old_part._3
-                val index_new_f_end=index_old_f_end+new_f_array.length
-                val index_old_b_end=old_part._1.length-old_part._3-1+index_new_f_end
-                val array:Array[Int]=old_part._1.slice(0,old_part._3+1) ++ new_f_array ++
-                  old_part._1.slice(old_part._3+1,old_part._1.length) ++ new_b_array
-                if(array.length%2 !=0) System.exit(0)
-                (flag,(array,
-                  index_old_f_end,
-                  index_new_f_end,
-                  index_old_b_end))
-              }
-            })
-          })
+          tmp_oldedges
       }
     }.setName("unioned-edges-" + step).persist(StorageLevel.MEMORY_ONLY_SER)
 //      accum_old.value
@@ -602,8 +427,8 @@ object Graspan_improve extends Para{
 
       if(check_edge){
               println("check oldedges")
-              println(check_edge_RDD(oldedges).filter(s=> !s.contains("OK")).top(100).mkString("\n"))
-//        scan.next()
+              println(check_edge_RDD(oldedges).filter(s=> !s.contains("OK")).top(10).mkString("\n"))
+        scan.next()
       }
 
 
