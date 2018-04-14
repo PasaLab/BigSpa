@@ -1,5 +1,5 @@
 /**
-  * Created by cycy on 2018/2/3.
+  * Created by cycy on 2018/4/9.
   */
 
 import java.text.SimpleDateFormat
@@ -22,43 +22,8 @@ import utils.{Graspan_OP, HBase_OP, Para, deleteDir}
 
 import scala.collection.mutable.ArrayBuffer
 
-object Graspan_improve extends Para{
+object Graspan_directlink extends Para{
 
-  def check_edge_RDD(edges:RDD[(Int,(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int]))]):RDD[String]={
-    edges.map(s=>{
-      val len=s._2._1.length
-      val old_f_list=s._2._2
-      val new_f_list=s._2._3
-      val old_b_list=s._2._4
-      val new_b_list=s._2._5
-      val symbol_num=old_f_list.length
-      var correct_old_f_inner=true
-      var correct_new_f_inner=true
-      var correct_old_b_inner=true
-      var correct_new_b_inner=true
-      var correct_old_f_outer=true
-      var correct_new_f_outer=true
-      var correct_old_b_outer=true
-      var correct_new_b_outer=true
-      for(i <-1 until symbol_num){
-        if(old_f_list(i)<old_f_list(i-1)) correct_old_f_inner=false
-        if(new_f_list(i)<new_f_list(i-1)) correct_new_f_inner=false
-        if(old_b_list(i)<old_b_list(i-1)) correct_old_b_inner=false
-        if(new_b_list(i)<new_b_list(i-1)) correct_new_b_inner=false
-      }
-      if(old_f_list.last>new_f_list(0)||old_f_list.last>=len) correct_old_f_outer=false
-      if(new_f_list.last>old_b_list(0)||new_f_list.last>=len) correct_new_f_outer=false
-      if(old_b_list.last>new_b_list(0)||old_b_list.last>=len) correct_old_b_outer=false
-      if(new_b_list.last>=len) correct_new_b_outer=false
-      if(correct_old_f_inner&&correct_old_f_outer&&correct_new_f_inner&&correct_new_f_outer&&correct_old_b_inner
-        &&correct_old_b_outer&&correct_new_b_inner&&correct_new_b_outer)
-        "OK"
-      else "edges: "+len+"\n"+
-        old_f_list.mkString("\t")+"\n"+new_f_list.mkString("\t")+"\n"+old_b_list.mkString("\t") +"\n"+ new_b_list.mkString("\t")+"\n"+
-        s"  is inner index error: ${correct_old_f_inner&&correct_new_f_inner&&correct_old_b_inner&&correct_new_b_inner}"+
-        s" is outer index error: ${correct_old_f_outer&&correct_new_f_outer&&correct_old_b_outer&&correct_new_b_outer}"
-    })
-  }
   def main(args: Array[String]): Unit = {
     val df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     println()
@@ -234,41 +199,37 @@ object Graspan_improve extends Para{
     //    scan.next()
     deleteDir.deletedir(islocal, master, output)
 
-    /**
-      * 初始化oldedges
-      */
-    var newnum: Long = graph.count()
-    var oldnum: Long = newnum
-    var oldedges: RDD[(VertexId,(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int]))] =
+    val accum_tmp_newcopytime=sc.longAccumulator("initial accum new_copy_time")
+    val accum_tmp_newedges=sc.longAccumulator("initial accum newedges")
+    val accum_tmp_nodenum=sc.longAccumulator("initial accum node num")
+    val accum_all_eachnode_tmp=sc.longAccumulator("initial eachnode time ")
+    println("Start Old Edges Initialization")
+    scan.next()
+    var oldedges: RDD[(VertexId,(Array[Int],Array[Int]))] =
       graph.flatMap(s => {
         if(s(0)!=s(1)) Array((s(0),s), (s(1),s))
         else Array((s(0),s))
       })
         .groupByKey()
-        .map(s=>(s._1,({
-          val old_f_list=new Array[Int](symbol_num)
-          val new_f_list=new Array[Int](symbol_num)
-          val old_b_list=new Array[Int](symbol_num)
-          val new_b_list=new Array[Int](symbol_num)
-          for(i <-0 until symbol_num){
-            old_f_list(i)= -1
-            new_f_list(i)= -1
-            old_b_list(i)= -1
-            new_b_list(i)= -1
-          }
-          Iterable((Array[Int](),old_f_list,new_f_list,old_b_list,new_b_list))
-        },Iterable(s._2.toArray))))
+        .map(s=>(s._1,(Iterable((Array[Int](),Array[Int]())),Iterable(s._2.toArray))))
         .partitionBy(new HashPartitioner(defaultpar))
-        .mapPartitions(s=>Graspan_OP.Union_old_new_improve(s,symbol_num))
+        .mapPartitions(s=>Graspan_OP.Union_old_new_directlink(s,symbol_num,
+          accum_all_eachnode_tmp,
+          accum_tmp_newcopytime,
+          accum_tmp_newedges,
+          accum_tmp_nodenum))
         .partitionBy(new HashPartitioner(defaultpar))
         .persist(StorageLevel.MEMORY_ONLY_SER)
-    oldedges.count()
-    graph.unpersist()
+    println(oldedges.count())
+    scan.next()
+
     //    println("check oldedges")
     //    println(check_edge_RDD(oldedges).filter(s=> !s.contains("OK")).top(10).mkString("\n"))
     var step = 0
     var change_par=true
     var continue: Boolean = true
+    var newnum: Long = graph.count()
+    var oldnum: Long = newnum
     println()
     println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     print("@@  \t")
@@ -290,7 +251,7 @@ object Graspan_improve extends Para{
       val t0_ge = System.nanoTime()
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
-          Graspan_OP.computeInPartition_fully_compressed_presort(step,
+          Graspan_OP.computeInPartition_fully_compressed_directlink(step,
             index, s,
             symbol_num,grammar,
             nodes_num_bitsize,
@@ -299,8 +260,7 @@ object Graspan_improve extends Para{
             htable_name,
             htable_split_Map,
             HRegion_splitnum, queryHBase_interval, default_split)).setName("newedge-before-distinct-" + step)
-        .persist (StorageLevel
-          .MEMORY_ONLY_SER)
+        .persist (StorageLevel.MEMORY_ONLY_SER)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
       val t1_ge = System.nanoTime()
       println("old num:                        \t"+oldnum)
@@ -410,7 +370,13 @@ object Graspan_improve extends Para{
         println("oldedges_cogroup take time:            \t"+((System.nanoTime()-t0_old_cogroup)/1000000000.0).formatted("%.3f")+" sec")
 
         t0_oldedges_compute_inner=System.nanoTime()
-        val tmp_oldedges=oldedges_cogroup.mapPartitions(v=>Graspan_OP.Union_old_new_improve(v,symbol_num))
+        val accum_alltime_partition=sc.longAccumulator("all_time_partition")
+        val accum_alltime_eachnode=sc.longAccumulator("all_time_eachnode")
+        val accum_newcopytime=sc.longAccumulator("newedges_copy_time")
+        val accum_newedges=sc.longAccumulator("newedges_num")
+        val accum_nodenum=sc.longAccumulator("nodenum")
+        val tmp_oldedges=oldedges_cogroup.mapPartitions(v=>Graspan_OP.Union_old_new_directlink(v,symbol_num,
+          accum_alltime_eachnode,accum_newcopytime,accum_newedges,accum_nodenum))
         if(need_par>cur_par){
           println("edges num is increasing, add Tasks")
           tmp_oldedges.partitionBy(new HashPartitioner(need_par.toInt))
@@ -438,14 +404,6 @@ object Graspan_improve extends Para{
           +" sec")
       }
       oldedges.count()
-//      val nodenum=oldedges.count()
-//      val edgesnum=oldedges.map(s=>s._2._1.length).sum().toLong
-
-//      val alledges=oldedges.map(s=>s._2._1.length).sum().toLong
-//      println(s"EachNode average edges:           \t" + edgesnum.toLong/nodenum)
-//      println(s"EachPartition has nodes:          \t"+nodenum/oldedges.getNumPartitions)
-//      println(s"EachPartition has edges:          \t"+edgesnum/oldedges.getNumPartitions)
-
       println(s"oldedges compute inner take time: \t${((System.nanoTime() - t0_oldedges_compute_inner)/1000000000.0)
         .formatted("%.3f")} sec")
       println(s"union time take time:            \t${((System.nanoTime() - t0_union)/1000000000.0).formatted("%.3f")}" +
@@ -458,8 +416,6 @@ object Graspan_improve extends Para{
       continue = newnum != 0
 
       if(check_edge){
-//        println("check oldedges")
-//        println(check_edge_RDD(oldedges).filter(s=> !s.contains("OK")).top(10).mkString("\n"))
         scan.next()
       }
     }

@@ -5,6 +5,8 @@ package utils
   */
 import org.apache.hadoop.hbase.HBaseConfiguration
 import org.apache.hadoop.hbase.client._
+import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp
+import org.apache.hadoop.hbase.filter.{RegexStringComparator, RowFilter, SingleColumnValueFilter}
 import org.apache.hadoop.hbase.mapred.TableOutputFormat
 import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.hadoop.hbase.protobuf.ProtobufUtil
@@ -30,6 +32,8 @@ object SparkReadHbase {
     var htable_name:String="edges"
     var HRegion_splitnum:Int=1000
 
+    var check_symbol:String="14"
+
     for (arg <- args) {
       val argname = arg.split(",")(0)
       val argvalue = arg.split(",")(1)
@@ -46,6 +50,7 @@ object SparkReadHbase {
         case "htable_name"=>htable_name=argvalue
         case "HRegion_splitnum"=>HRegion_splitnum=argvalue.toInt
 
+        case "check_symbol"=>check_symbol=argvalue
         case _ => {}
       }
     }
@@ -65,8 +70,11 @@ object SparkReadHbase {
     //设置查询的表名
     h_conf.set(TableInputFormat.INPUT_TABLE, htable_name)
 
-    //添加过滤条件，年龄大于 18 岁
+    //添加过滤条件
     val scan = new Scan()
+    val comp = new RegexStringComparator(check_symbol); // 以 you 开头的字符串
+    val filter = new RowFilter(CompareOp.EQUAL, comp)
+    scan.setFilter(filter)
     h_conf.set(TableInputFormat.SCAN,convertScanToString(scan))
 
     val usersRDD = sc.newAPIHadoopRDD(h_conf, classOf[TableInputFormat],
@@ -77,13 +85,13 @@ object SparkReadHbase {
     println("Users RDD Count:" + count)
     usersRDD.cache()
 
-    deleteDir.deletedir(islocal,master,output)
-    val split_length=utils.HBase_OP.getIntBit(HRegion_splitnum)
-    usersRDD.map(s=>{
-      val str=Bytes.toString(s._2.getRow)
-      (str.substring(split_length,split_length+7).toInt+"\t"+str.substring(split_length+7,split_length+14)
-        .toInt+"\t"+str.substring(split_length+14,split_length+16).toInt)
-    }).repartition(1).saveAsTextFile(output)
+//    deleteDir.deletedir(islocal,master,output)
+//    val split_length=utils.HBase_OP.getIntBit(HRegion_splitnum)
+//    usersRDD.map(s=>{
+//      val str=Bytes.toString(s._2.getRow)
+//      (str.substring(split_length,split_length+7).toInt+"\t"+str.substring(split_length+7,split_length+14)
+//        .toInt+"\t"+str.substring(split_length+14,split_length+16).toInt)
+//    }).repartition(1).saveAsTextFile(output)
     // =================================
   }
 }

@@ -53,17 +53,21 @@ object test extends utils.Para{
     /**
       * Spark 设置
       */
-    val conf = new SparkConf()
-    if (islocal) {
-      //test location can be adjusted or not
-      conf.setAppName("Graspan")
-      System.setProperty("hadoop.home.dir", "F:/hadoop-2.6.0/")
-      conf.setMaster("local")
-    }
-    val sc = new SparkContext(conf)
-    sc.setLogLevel("ERROR")
-    deleteDir.deletedir(islocal,master,output)
-    Graspan_OP.processDF(sc,input_graph,output,defaultpar)
+//    val conf = new SparkConf()
+//    if (islocal) {
+//      //test location can be adjusted or not
+//      conf.setAppName("Graspan")
+//      System.setProperty("hadoop.home.dir", "F:/hadoop-2.6.0/")
+//      conf.setMaster("local")
+//    }
+//    val sc = new SparkContext(conf)
+//    sc.setLogLevel("ERROR")
+//    deleteDir.deletedir(islocal,master,output)
+
+    val a=Array(1,2,3)
+    val b=new Array[Int](4)
+    System.arraycopy(a,0,b,0,0)
+    println(b.mkString(","))
 
     }
 }

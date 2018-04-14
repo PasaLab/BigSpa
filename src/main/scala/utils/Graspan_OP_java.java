@@ -1,9 +1,6 @@
 package utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -369,17 +366,27 @@ public class Graspan_OP_java {
         return res_edges;
     }
 
-    public static  List<int[]> join_fully_compressed_presort(int flag,int[] all_edges,int[] old_f_index_list,int[]
-            new_f_index_list,int[] old_b_index_list,int[] new_b_index_list,int[][] grammar,int symbol_num){
+    public static  List<int[]> join_fully_compressed_presort(int flag, int[] all_edges, int[] old_f_index_list, int[]
+            new_f_index_list, int[] old_b_index_list, int[] new_b_index_list, int[][] grammar, int symbol_num,
+                                                             int[][] directadd0){
+//        int all_len=all_edges.length/2;
+//        int old_f_len=(old_f_index_list[symbol_num-1]-old_f_index_list[0])/2;
+//        int new_f_len=(new_f_index_list[symbol_num-1]-new_f_index_list[0])/2;
+//        int old_b_len=(old_b_index_list[symbol_num-1]-old_b_index_list[0])/2;
+//        int new_b_len=(new_b_index_list[symbol_num-1]-new_b_index_list[0])/2;
+        //new_f_len*new_b_len+old_f_len*new_b_len+new_f_len*old_b_len
         List<int[]> res_edges=new ArrayList<int[]>();
+        Map<Integer,Integer> directadd=new HashMap<Integer, Integer>();
+        for(int[] i:directadd0) directadd.put(i[0],i[1]);
 
         for(int[] gram:grammar){
             int f=gram[0];
             int b=gram[1];
             int res_label=gram[2];
-        /**
-            * 判断f和b谁长，决定以谁为主forloop，避免空转
-        */
+
+            /**
+             * 判断f和b谁长，决定以谁为主forloop，避免空转
+             */
             int new_f_length=-1;
             int new_b_length=-1;
             int old_f_length=-1;
@@ -400,48 +407,97 @@ public class Graspan_OP_java {
                 old_b_length=old_b_index_list[b]-old_b_index_list[b-1];
                 new_b_length=new_b_index_list[b]-new_b_index_list[b-1];
             }
-            /**
-             * 1、新边之间的两两连接
-             */
 
-            if(new_f_length>0&&new_b_length>0) {
-                    for (int j = new_f_index_list[f]-new_f_length+1; j <= new_f_index_list[f]; j++) {
-                        for (int k = new_b_index_list[b]-new_b_length+1; k <= new_b_index_list[b]; k++) {
-                            int[] ele = new int[3];
-                            ele[0] = all_edges[j];
-                            ele[1] = all_edges[k];
-                            ele[2] = res_label;
+            if(directadd.containsKey(res_label)){//需添加额外label
+                int directadd_symbol=directadd.get(res_label);
+                /**
+                 * 1、新边之间的两两连接
+                 */
+                if(new_f_length>0&&new_b_length>0) {
+                    int j_end=new_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
+                        for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
                             res_edges.add(ele);
+
+                            int[] ele_add = {all_edges[j],all_edges[k],directadd_symbol};
+                            res_edges.add(ele_add);
                         }
                     }
-            }
-            /**
-             * 新边与旧边之间的两两连接
-             */
-            //新边在前，旧边在后
-            if(new_f_length>0&&old_b_length>0){
-                    for(int j=new_f_index_list[f]-new_f_length+1;j<=new_f_index_list[f];j++){
-                        for(int k=old_b_index_list[b]-old_b_length+1;k<=old_b_index_list[b];k++){
-                            int[] ele=new int[3];
-                            ele[0]=all_edges[j];
-                            ele[1]=all_edges[k];
-                            ele[2]=res_label;
+                }
+                /**
+                 * 新边与旧边之间的两两连接
+                 */
+                //新边在前，旧边在后
+                if(new_f_length>0&&old_b_length>0){
+                    int j_end=new_f_index_list[f];
+                    int k_end=old_b_index_list[b];
+                    for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
+                        for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
                             res_edges.add(ele);
+
+                            int[] ele_add = {all_edges[j],all_edges[k],directadd_symbol};
+                            res_edges.add(ele_add);
                         }
                     }
+                }
+                //旧边在前，新边在后
+                if(old_f_length>0&&new_b_length>0){
+                    int j_end=old_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
+                        for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
+                            res_edges.add(ele);
+
+                            int[] ele_add = {all_edges[j],all_edges[k],directadd_symbol};
+                            res_edges.add(ele_add);
+                        }
+                    }
+                }
             }
-            //旧边在前，新边在后
-            if(old_f_length>0&&new_b_length>0){
-                    for(int j=old_f_index_list[f]-old_f_length+1;j<=old_f_index_list[f];j++){
-                        for(int k=new_b_index_list[b]-new_b_length+1;k<=new_b_index_list[b];k++){
-                            int [] ele=new int[3];
-                            ele[0]=all_edges[j];
-                            ele[1]=all_edges[k];
-                            ele[2]=res_label;
+            else{//仅添加当前label
+                /**
+                 * 1、新边之间的两两连接
+                 */
+                if(new_f_length>0&&new_b_length>0) {
+                    int j_end=new_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
+                        for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
                             res_edges.add(ele);
                         }
                     }
                 }
+                /**
+                 * 新边与旧边之间的两两连接
+                 */
+                //新边在前，旧边在后
+                if(new_f_length>0&&old_b_length>0){
+                    int j_end=new_f_index_list[f];
+                    int k_end=old_b_index_list[b];
+                    for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
+                        for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+                //旧边在前，新边在后
+                if(old_f_length>0&&new_b_length>0){
+                    int j_end=old_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
+                        for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+            }
         }
 //        System.out.println(tmp);
         return res_edges;
@@ -456,13 +512,455 @@ public class Graspan_OP_java {
          */
         int res_label=0;
         //n在前，e在后
-        for(int i=0;i<n_edges.length;i++){
-            for(int j=0;j<e_edge_after.length;j++){
+        int i_end=n_edges.length;
+        int j_end=e_edge_after.length;
+        for(int i=0;i<i_end;i++){
+            for(int j=0;j<j_end;j++){
                 int[] ele={n_edges[i],e_edge_after[j],res_label};
                 res_edges.add(ele);
             }
         }
 //        System.out.println(tmp);
+        return res_edges;
+    }
+
+
+
+    public static  List<int[]> join_fully_compressed_presort_improve(int flag, int[] all_edges, int[] old_f_index_list,
+                                                                 int[]
+            new_f_index_list, int[] old_b_index_list, int[] new_b_index_list, int[][] grammar, int symbol_num,
+                                                             int[][] directadd0){
+//        int all_len=all_edges.length/2;
+//        int old_f_len=(old_f_index_list[symbol_num-1]-old_f_index_list[0])/2;
+//        int new_f_len=(new_f_index_list[symbol_num-1]-new_f_index_list[0])/2;
+//        int old_b_len=(old_b_index_list[symbol_num-1]-old_b_index_list[0])/2;
+//        int new_b_len=(new_b_index_list[symbol_num-1]-new_b_index_list[0])/2;
+        //new_f_len*new_b_len+old_f_len*new_b_len+new_f_len*old_b_len
+        List<int[]> res_edges=new ArrayList<int[]>();
+        Map<Integer,Integer> directadd=new HashMap<Integer, Integer>();
+        for(int[] i:directadd0) directadd.put(i[0],i[1]);
+
+        for(int[] gram:grammar){
+            int f=gram[0];
+            int b=gram[1];
+            int res_label=gram[2];
+
+            /**
+             * 判断f和b谁长，决定以谁为主forloop，避免空转
+             */
+            int new_f_length=-1;
+            int new_b_length=-1;
+            int old_f_length=-1;
+            int old_b_length=-1;
+            if(f==0) {
+                old_f_length=old_f_index_list[f]+1;
+                new_f_length=new_f_index_list[f]-old_f_index_list[f];
+            }
+            else {
+                old_f_length=old_f_index_list[f]-new_f_index_list[f-1];
+                new_f_length=new_f_index_list[f]-old_f_index_list[f];
+            }
+            if(b==0){
+                old_b_length=old_b_index_list[b]-new_f_index_list[symbol_num-1];
+                new_b_length=new_b_index_list[b]-old_b_index_list[b];
+            }
+            else {
+                old_b_length=old_b_index_list[b]-new_b_index_list[b-1];
+                new_b_length=new_b_index_list[b]-old_b_index_list[b];
+            }
+
+            if(directadd.containsKey(res_label)){//需添加额外label
+                int directadd_symbol=directadd.get(res_label);
+                /**
+                 * 1、新边之间的两两连接
+                 */
+                if(new_f_length>0&&new_b_length>0) {
+                    int j_end=new_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
+                        for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
+                            res_edges.add(ele);
+
+                            int[] ele_add = {all_edges[j],all_edges[k],directadd_symbol};
+                            res_edges.add(ele_add);
+                        }
+                    }
+                }
+                /**
+                 * 新边与旧边之间的两两连接
+                 */
+                //新边在前，旧边在后
+                if(new_f_length>0&&old_b_length>0){
+                    int j_end=new_f_index_list[f];
+                    int k_end=old_b_index_list[b];
+                    for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
+                        for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
+                            res_edges.add(ele);
+
+                            int[] ele_add = {all_edges[j],all_edges[k],directadd_symbol};
+                            res_edges.add(ele_add);
+                        }
+                    }
+                }
+                //旧边在前，新边在后
+                if(old_f_length>0&&new_b_length>0){
+                    int j_end=old_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
+                        for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
+                            res_edges.add(ele);
+
+                            int[] ele_add = {all_edges[j],all_edges[k],directadd_symbol};
+                            res_edges.add(ele_add);
+                        }
+                    }
+                }
+            }
+            else{//仅添加当前label
+                /**
+                 * 1、新边之间的两两连接
+                 */
+                if(new_f_length>0&&new_b_length>0) {
+                    int j_end=new_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
+                        for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+                /**
+                 * 新边与旧边之间的两两连接
+                 */
+                //新边在前，旧边在后
+                if(new_f_length>0&&old_b_length>0){
+                    int j_end=new_f_index_list[f];
+                    int k_end=old_b_index_list[b];
+                    for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
+                        for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+                //旧边在前，新边在后
+                if(old_f_length>0&&new_b_length>0){
+                    int j_end=old_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
+                        for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
+                            int[] ele = {all_edges[j],all_edges[k],res_label};
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+            }
+        }
+//        System.out.println(tmp);
+        return res_edges;
+    }
+
+    public static  int[] join_fully_compressed_presort_improve_compress(int flag, int[] all_edges, int[]
+            old_f_index_list, int[] new_f_index_list, int[] old_b_index_list, int[] new_b_index_list, int[][] grammar, int symbol_num,
+                                                                     int[][] directadd0){
+//        int all_len=all_edges.length/2;
+        int old_f_len_sum=(old_f_index_list[symbol_num-1]-old_f_index_list[0])/2;
+        int new_f_len_sum=(new_f_index_list[symbol_num-1]-new_f_index_list[0])/2;
+        int old_b_len_sum=(old_b_index_list[symbol_num-1]-old_b_index_list[0])/2;
+        int new_b_len_sum=(new_b_index_list[symbol_num-1]-new_b_index_list[0])/2;
+        int estimate_len=new_f_len_sum*new_b_len_sum+old_f_len_sum*new_b_len_sum+new_f_len_sum*old_b_len_sum;
+        int[] res=new int[estimate_len*6];
+        Map<Integer,Integer> directadd=new HashMap<Integer, Integer>();
+        for(int[] i:directadd0) directadd.put(i[0],i[1]);
+
+        int lenofres=0;
+        for(int[] gram:grammar){
+            int f=gram[0];
+            int b=gram[1];
+            int res_label=gram[2];
+
+            /**
+             * 判断f和b谁长，决定以谁为主forloop，避免空转
+             */
+            int new_f_length=-1;
+            int new_b_length=-1;
+            int old_f_length=-1;
+            int old_b_length=-1;
+            if(f==0) {
+                old_f_length=old_f_index_list[f]+1;
+                new_f_length=new_f_index_list[f]-old_f_index_list[f];
+            }
+            else {
+                old_f_length=old_f_index_list[f]-new_f_index_list[f-1];
+                new_f_length=new_f_index_list[f]-old_f_index_list[f];
+            }
+            if(b==0){
+                old_b_length=old_b_index_list[b]-new_f_index_list[symbol_num-1];
+                new_b_length=new_b_index_list[b]-old_b_index_list[b];
+            }
+            else {
+                old_b_length=old_b_index_list[b]-new_b_index_list[b-1];
+                new_b_length=new_b_index_list[b]-old_b_index_list[b];
+            }
+
+            if(directadd.containsKey(res_label)){//需添加额外label
+                int directadd_symbol=directadd.get(res_label);
+                /**
+                 * 1、新边之间的两两连接
+                 */
+                if(new_f_length>0&&new_b_length>0) {
+                    int j_end=new_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
+                        for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
+                            res[lenofres++]=all_edges[j];
+                            res[lenofres++]=all_edges[k];
+                            res[lenofres++]=res_label;
+
+                            res[lenofres++]=all_edges[j];
+                            res[lenofres++]=all_edges[k];
+                            res[lenofres++]=directadd_symbol;
+                        }
+                    }
+                }
+                /**
+                 * 新边与旧边之间的两两连接
+                 */
+                //新边在前，旧边在后
+                if(new_f_length>0&&old_b_length>0){
+                    int j_end=new_f_index_list[f];
+                    int k_end=old_b_index_list[b];
+                    for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
+                        for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
+                            res[lenofres++]=all_edges[j];
+                            res[lenofres++]=all_edges[k];
+                            res[lenofres++]=res_label;
+
+                            res[lenofres++]=all_edges[j];
+                            res[lenofres++]=all_edges[k];
+                            res[lenofres++]=directadd_symbol;
+                        }
+                    }
+                }
+                //旧边在前，新边在后
+                if(old_f_length>0&&new_b_length>0){
+                    int j_end=old_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
+                        for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
+                            res[lenofres++]=all_edges[j];
+                            res[lenofres++]=all_edges[k];
+                            res[lenofres++]=res_label;
+
+                            res[lenofres++]=all_edges[j];
+                            res[lenofres++]=all_edges[k];
+                            res[lenofres++]=directadd_symbol;
+                        }
+                    }
+                }
+            }
+            else{//仅添加当前label
+                /**
+                 * 1、新边之间的两两连接
+                 */
+                if(new_f_length>0&&new_b_length>0) {
+                    int j_end=new_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
+                        for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
+                            res[lenofres++]=all_edges[j];
+                            res[lenofres++]=all_edges[k];
+                            res[lenofres++]=res_label;
+
+                        }
+                    }
+                }
+                /**
+                 * 新边与旧边之间的两两连接
+                 */
+                //新边在前，旧边在后
+                if(new_f_length>0&&old_b_length>0){
+                    int j_end=new_f_index_list[f];
+                    int k_end=old_b_index_list[b];
+                    for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
+                        for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
+                            res[lenofres++]=all_edges[j];
+                            res[lenofres++]=all_edges[k];
+                            res[lenofres++]=res_label;
+                        }
+                    }
+                }
+                //旧边在前，新边在后
+                if(old_f_length>0&&new_b_length>0){
+                    int j_end=old_f_index_list[f];
+                    int k_end=new_b_index_list[b];
+                    for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
+                        for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
+                            res[lenofres++]=all_edges[j];
+                            res[lenofres++]=all_edges[k];
+                            res[lenofres++]=res_label;
+                        }
+                    }
+                }
+            }
+        }
+//        System.out.println(tmp);
+        int[] final_res=new int[lenofres];
+        System.arraycopy(res,0,final_res,0,lenofres);
+        return final_res;
+    }
+
+
+    public static  List<int[]> join_fully_compressed_directadd(int flag, int[] all_edges, int[] index_list ,
+                                                                       int[][] grammar, int symbol_num,
+                                                                     int[][] directadd0) {
+
+        List<int[]> res_edges = new ArrayList<int[]>();
+        Map<Integer, Integer> directadd = new HashMap<Integer, Integer>();
+        for (int[] i : directadd0) directadd.put(i[0], i[1]);
+        int index_len = index_list.length;
+        if (index_list[index_len - 1] == -1) return res_edges;
+        int old_layer = index_len / (symbol_num * 2) - 1;
+        int new_edges_start;
+        int new_index_start = index_len - symbol_num * 2;
+        if (index_len == symbol_num * 2) new_edges_start = 0;
+        else new_edges_start = index_list[new_index_start - 1] + 1;
+
+        for (int[] gram : grammar) {
+            int f = gram[0];
+            int b = gram[1];
+            int res_label = gram[2];
+
+            /**
+             * 判断f和b谁长，决定以谁为主forloop，避免空转
+             */
+            int new_f_length = -1;
+            int new_b_length = -1;
+            if (f == 0) {
+                new_f_length = index_list[new_index_start + f] - new_edges_start + 1;
+            } else {
+                new_f_length = index_list[new_index_start + f] - index_list[new_index_start + f - 1];
+            }
+            new_b_length = index_list[new_index_start + b + symbol_num] -
+                    index_list[new_index_start + b + symbol_num - 1];
+
+            if (directadd.containsKey(res_label)) {//需添加额外label
+                int directadd_symbol = directadd.get(res_label);
+                /**
+                 * 1、新边之间的两两连接
+                 */
+                if (new_f_length > 0 && new_b_length > 0) {
+                    int j_end = index_list[new_index_start + f];
+                    int k_end = index_list[new_index_start + b + symbol_num];
+                    for (int j = index_list[new_index_start + f] - new_f_length + 1; j <= j_end; j++) {
+                        for (int k = index_list[new_index_start + b + symbol_num] - new_b_length + 1; k <= k_end; k++) {
+                            int[] ele = {all_edges[j], all_edges[k], res_label};
+                            res_edges.add(ele);
+
+                            int[] ele_add = {all_edges[j], all_edges[k], directadd_symbol};
+                            res_edges.add(ele_add);
+                        }
+                    }
+                }
+                /**
+                 * 新边与旧边之间的两两连接
+                 */
+                //新边在前，旧边在后
+                if (new_f_length > 0) {
+                    for (int i = 0; i < old_layer; i++) {
+                        int old_index_start = i * symbol_num * 2;
+                        int old_b_length = index_list[old_index_start + b + symbol_num]
+                                - index_list[old_index_start + b + symbol_num - 1];
+                        int j_end = index_list[new_index_start + f];
+                        int k_end = index_list[old_index_start + b + symbol_num];
+                        for (int j = index_list[new_index_start + f] - new_f_length + 1; j <= j_end; j++) {
+                            for (int k = index_list[old_index_start + b + symbol_num] - old_b_length + 1; k <= k_end; k++) {
+                                int[] ele = {all_edges[j], all_edges[k], res_label};
+                                res_edges.add(ele);
+
+                                int[] ele_add = {all_edges[j], all_edges[k], directadd_symbol};
+                                res_edges.add(ele_add);
+                            }
+                        }
+                    }
+                }
+                //旧边在前，新边在后
+                if (new_b_length > 0) {
+                    for (int i = 0; i < old_layer; i++) {
+                        int old_index_start = i * symbol_num * 2;
+                        int old_f_length;
+                        if (i == 0 && f == 0) old_f_length = index_list[0] + 1;
+                        else old_f_length = index_list[old_index_start + f] - index_list[old_index_start + f - 1];
+                        int j_end = index_list[old_index_start + f];
+                        int k_end = index_list[new_index_start + b + symbol_num];
+                        for (int j = index_list[old_index_start + f] - old_f_length + 1; j <= j_end; j++) {
+                            for (int k = index_list[new_index_start + b + symbol_num] - new_b_length + 1; k <= k_end; k++) {
+                                int[] ele = {all_edges[j], all_edges[k], res_label};
+                                res_edges.add(ele);
+
+                                int[] ele_add = {all_edges[j], all_edges[k], directadd_symbol};
+                                res_edges.add(ele_add);
+                            }
+                        }
+                    }
+                }
+            }
+            else {//仅添加当前label
+                /**
+                 * 1、新边之间的两两连接
+                 */
+                if (new_f_length > 0 && new_b_length > 0) {
+                    int j_end = index_list[new_index_start + f];
+                    int k_end = index_list[new_index_start + b + symbol_num];
+                    for (int j = index_list[new_index_start + f] - new_f_length + 1; j <= j_end; j++) {
+                        for (int k = index_list[new_index_start + b + symbol_num] - new_b_length + 1; k <= k_end; k++) {
+                            int[] ele = {all_edges[j], all_edges[k], res_label};
+                            res_edges.add(ele);
+                        }
+                    }
+                }
+                /**
+                 * 新边与旧边之间的两两连接
+                 */
+                //新边在前，旧边在后
+                if (new_f_length > 0) {
+                    for (int i = 0; i < old_layer; i++) {
+                        int old_index_start = i * symbol_num * 2;
+                        int old_b_length = index_list[old_index_start + b + symbol_num]
+                                - index_list[old_index_start + b + symbol_num - 1];
+                        int j_end = index_list[new_index_start + f];
+                        int k_end = index_list[old_index_start + b + symbol_num];
+                        for (int j = index_list[new_index_start + f] - new_f_length + 1; j <= j_end; j++) {
+                            for (int k = index_list[old_index_start + b + symbol_num] - old_b_length + 1; k <= k_end; k++) {
+                                int[] ele = {all_edges[j], all_edges[k], res_label};
+                                res_edges.add(ele);
+                            }
+                        }
+                    }
+                }
+                //旧边在前，新边在后
+                if (new_b_length > 0) {
+                    for (int i = 0; i < old_layer; i++) {
+                        int old_index_start = i * symbol_num * 2;
+                        int old_f_length;
+                        if (i == 0 && f == 0) old_f_length = index_list[0] + 1;
+                        else old_f_length = index_list[old_index_start + f] - index_list[old_index_start + f - 1];
+                        int j_end = index_list[old_index_start + f];
+                        int k_end = index_list[new_index_start + b + symbol_num];
+                        for (int j = index_list[old_index_start + f] - old_f_length + 1; j <= j_end; j++) {
+                            for (int k = index_list[new_index_start + b + symbol_num] - new_b_length + 1; k <= k_end; k++) {
+                                int[] ele = {all_edges[j], all_edges[k], res_label};
+                                res_edges.add(ele);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return res_edges;
     }
 }

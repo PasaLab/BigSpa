@@ -1,4 +1,5 @@
-import static java.lang.System.out;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cycy on 2018/3/20.
@@ -6,8 +7,16 @@ import static java.lang.System.out;
 public class test_java {
 
     public static void main(String[] args){
-        int [][] a=new int[0][2];
-        out.println(a.length);
-        out.println(-1%2);
+        List<int[]> a=new ArrayList<int[]>();
+        int len=100;
+        double t0=System.nanoTime();
+        for(int i=0;i<len;i++){
+            int[] ele=new int[3];
+            ele[0]=0;
+            ele[1]=1;
+            ele[2]=2;
+            a.add(ele);
+        }
+
     }
 }
