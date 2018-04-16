@@ -8,25 +8,26 @@ import org.apache.commons.collections.functors.ExceptionFactory
 import org.apache.spark.rdd.RDD
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
-import utils.{Graspan_OP, deleteDir}
+import utils.{Graspan_OP, Graspan_OP_java, deleteDir}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import scala.util.Random
-
-object test extends utils.Para{
+import it.unimi.dsi.fastutil.ints._
+import it.unimi.dsi.fastutil.longs.{LongArrayList, LongComparator, LongOpenHashSet}
+object test extends utils.Para {
   def main(args: Array[String]): Unit = {
-    var t0=System.nanoTime():Double
-    var t1=System.nanoTime():Double
+    var t0 = System.nanoTime(): Double
+    var t1 = System.nanoTime(): Double
     var islocal: Boolean = true
     var master: String = "local"
 
     var input_grammar: String = "data/GrammarFiles/test_grammar"
-    var input_graph:String="H:\\Graspan资料\\Graspan数据和源代码\\Apache_Httpd_2.2.18_Points-to\\Apache_httpd_2.2.18_pointsto_graph"
+    var input_graph: String = "H:\\Graspan资料\\Graspan数据和源代码\\Apache_Httpd_2.2.18_Points-to\\Apache_httpd_2.2.18_pointsto_graph"
     var output: String = "data/result/" //除去ip地址
-    var hbase_output:String="data/result/hbase/hbhfile/"
-    var defaultpar:Int=64
-    var smallpar:Int=64
+    var hbase_output: String = "data/result/hbase/hbhfile/"
+    var defaultpar: Int = 64
+    var smallpar: Int = 64
 
     for (arg <- args) {
       val argname = arg.split(",")(0)
@@ -36,11 +37,11 @@ object test extends utils.Para{
         case "master" => master = argvalue
 
         case "input_grammar" => input_grammar = argvalue
-        case "input_graph"=>input_graph=argvalue
+        case "input_graph" => input_graph = argvalue
         case "output" => output = argvalue
-        case "defaultpar"=>defaultpar=argvalue.toInt
-        case "hbase_output"=>hbase_output=argvalue
-        case "smallpar"=>smallpar=argvalue.toInt
+        case "defaultpar" => defaultpar = argvalue.toInt
+        case "hbase_output" => hbase_output = argvalue
+        case "smallpar" => smallpar = argvalue.toInt
 
         case _ => {}
       }
@@ -53,21 +54,36 @@ object test extends utils.Para{
     /**
       * Spark 设置
       */
-//    val conf = new SparkConf()
-//    if (islocal) {
-//      //test location can be adjusted or not
-//      conf.setAppName("Graspan")
-//      System.setProperty("hadoop.home.dir", "F:/hadoop-2.6.0/")
-//      conf.setMaster("local")
-//    }
-//    val sc = new SparkContext(conf)
-//    sc.setLogLevel("ERROR")
-//    deleteDir.deletedir(islocal,master,output)
+    //    val conf = new SparkConf()
+    //    if (islocal) {
+    //      //test location can be adjusted or not
+    //      conf.setAppName("Graspan")
+    //      System.setProperty("hadoop.home.dir", "F:/hadoop-2.6.0/")
+    //      conf.setMaster("local")
+    //    }
+    //    val sc = new SparkContext(conf)
+    //    sc.setLogLevel("ERROR")
+    //    deleteDir.deletedir(islocal,master,output)
 
-    val a=Array(1,2,3)
-    val b=new Array[Int](4)
-    System.arraycopy(a,0,b,0,0)
-    println(b.mkString(","))
-
+    val new_n = new LongArrayList()
+    new_n.add(1)
+    new_n.add(1)
+    new_n.add(2)
+    new_n.add(0)
+    val long_tocheck=new LongArrayList()
+    var new_n_array = {
+      val tmp = new LongOpenHashSet(new_n)
+      tmp.toLongArray.sorted
     }
+    long_tocheck.addElements(long_tocheck.size(),new_n_array)
+    println(new_n_array.mkString(","))
+    println(long_tocheck.getLong(1))
+  }
+
+  }
+
+class Long_Comparator extends LongComparator {
+  def compare(a1: Long, a2: Long): Int = if (a1 < a2) -1
+  else if (a1 > a2) 1
+  else 0
 }

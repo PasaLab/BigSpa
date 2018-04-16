@@ -13,6 +13,7 @@ import org.apache.hadoop.mapreduce.Job
 import org.apache.spark.rdd.RDD
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ArrayBuffer
 /**
   * Created by cycy on 2018/1/22.
   */
@@ -32,6 +33,15 @@ object HBase_OP extends Para{
       num+=1
     }
     num
+  }
+
+  def Triple2String(src:Int,dst:Int,edgelabel:Int,nodes_num_bitsize:Int,symbol_num_bitsize:Int,htable_split_Map:Map[Int,String],
+                    HRegion_splitnum:Int,default_split:String):String={
+    val src_str = filling0(src, nodes_num_bitsize)
+    val dst_str = filling0(dst, nodes_num_bitsize)
+    val label_str = filling0(edgelabel, symbol_num_bitsize)
+    htable_split_Map.getOrElse((src+dst) % HRegion_splitnum,default_split)+src_str + dst_str + label_str
+    //    src_str + dst_str + label_str
   }
 
   def Edge2String(edge:(VertexId,VertexId,EdgeLabel),
@@ -302,65 +312,83 @@ object HBase_OP extends Para{
 //    res
 //  }
 
-  def queryHbase_inPartition_same_client(res_edges_maynotin:Array[Array[Int]],nodes_num_bitsize:Int,
-                                       symbol_num_bitsize:Int,
-                                       Batch_QueryHbase:Boolean,
-                                         h_table:HTable,
-                                       htable_split_Map:Map[Int,String],HRegion_splitnum:Int,queryHbase_interval:Int,
-                                       default_split:String)
-  :Array[Array[Int]]={
-    println("queryHbase inPartition same client with same client")
-    val get_list_java = res_edges_maynotin.map(x => {
-      val get = new Get(Bytes.toBytes(Array2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
-        HRegion_splitnum,default_split)))
-      get.setCheckExistenceOnly(true)
-      get
-    }).toList
-    val res={
+
+  def queryHbase_compressnew_df(n:Array[Long],nodes_num_bitsize:Int, symbol_num_bitsize:Int,
+                                Batch_QueryHbase:Boolean,htable_name:String,
+                                htable_split_Map:Map[Int,String],HRegion_splitnum:Int,queryHbase_interval:Int,
+                                default_split:String):Array[Array[Int]] ={
+    val h_conf = HBaseConfiguration.create()
+    h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
+    //    println("hbase ipc.server.max.callqueue.size:\t"+h_conf.get("hbase ipc.server.max.callqueue.size"))
+    h_conf.set("hbase.ipc.server.max.callqueue.size","5368709120")
+    //    println(h_conf.get("hbase ipc.server.max.callqueue.size"))
+    h_conf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
+    val h_table = new HTable(h_conf, htable_name)
+
+    val res:ArrayBuffer[Array[Int]]=new ArrayBuffer[Array[Int]](n.length*3)
+    val get_list_java = {
+      val tem=new Array[String](n.length)
+      var i=0
+      while(i<n.length){
+        tem(i)=Triple2String((n(i) & 0xffffffffL).toInt,(n(i)>>>32).toInt, 0, nodes_num_bitsize,symbol_num_bitsize,
+          htable_split_Map,HRegion_splitnum,default_split)
+        i+=1
+      }
+      tem.map(s=>{
+        val get = new Get(Bytes.toBytes(s))
+        get.setCheckExistenceOnly(true)
+        get
+      }).toList
+    }
+
       Batch_QueryHbase match{
         case true => {
           /**
             * Query interval
             */
           var res_all:List[Boolean]=List()
-          for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
-            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
+          for(i:Int<-0 until (n.length,queryHbase_interval)){
+            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,n.length))
             val res_java = h_table.get(sublist)
             res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
           }
-          (res_edges_maynotin zip res_all).filter(s => s._2 == false).map(s => s._1)
+          var i=0
+          val lenofres=res_all.length
+          while(i<lenofres){
+            if(res_all(i)==false) res.append(Array((n(i) & 0xffffffffL).toInt,(n(i)>>>32).toInt, 0))
+            i+=1
+          }
         }
         case false => {
           /**
             * Query all
             */
-          val get_list = res_edges_maynotin.map(x => {
-            //      val rk = Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,HRegion_splitnum,default_split)
-            val get = new Get(Bytes.toBytes(Array2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
-              HRegion_splitnum,default_split)))
-            get.setCheckExistenceOnly(true)
-            get
-          })
-          val get_list_java: java.util.List[Get] = get_list.toList
+
           val res_java = h_table.get(get_list_java)
           val res_list = res_java.map(x => x.getExists.booleanValue()).toList
-          (res_edges_maynotin zip res_list).filter(s => s._2 == false).map(s => s._1)
-        }
-        case _ =>{
-          var res_all:List[Boolean]=List()
-          for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
-            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
-            val res_java = h_table.get(sublist)
-            res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
+          var i=0
+          val lenofres=res_list.length
+          while(i<lenofres){
+            if(res_list(i)==false) res.append(Array((n(i) & 0xffffffffL).toInt,(n(i)>>>32).toInt, 0))
+            i+=1
           }
-          (res_edges_maynotin zip res_all).filter(s => s._2 == false).map(s => s._1)
         }
       }
-    }
-//    h_table.close()
-    res
+    h_table.close()
+    res.toArray
   }
 
+  /**
+    *
+    * @param edge_processed
+    * @param nodes_num_bitsize
+    * @param symbol_num_bitsize
+    * @param htable_name
+    * @param output
+    * @param htable_split_Map
+    * @param HRegion_splitnum
+    * @param default_split
+    */
   def updateHbase(edge_processed:RDD[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
                   symbol_num_bitsize:Int,htable_name:String,output:String,htable_split_Map:Map[Int,String],
                   HRegion_splitnum:Int,default_split:String)= {

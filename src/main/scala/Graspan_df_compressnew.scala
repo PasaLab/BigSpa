@@ -1,12 +1,12 @@
 /**
-  * Created by cycy on 2018/3/22.
+  * Created by cycy on 2018/4/14.
   */
-
 import java.text.SimpleDateFormat
 import java.util
 import java.util.Scanner
 import java.util.concurrent.Executors
 
+import cn.edu.nju.pasalab.db.ShardedRedisClusterClient
 import org.apache.hadoop.conf.Configuration
 import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
@@ -22,19 +22,11 @@ import utils._
 
 import scala.collection.mutable.ArrayBuffer
 
-object Graspan_df extends Para{
+object Graspan_df_compressnew extends Para{
 
-  def check_edge_RDD(edges:RDD[(Int,(Array[Int],Int))]):RDD[String]={
-    edges.map(s=>{
-      val len=s._2._1.length
-      val index_f_end=s._2._2
-      if(index_f_end<len && len%2==0 && index_f_end%2!=0 ) "OK"
-      else "edges: "+len+","+index_f_end+
-        s"  is 4 part index error: ${index_f_end<len}"+
-        s" is fill array error: ${len%2==0 && index_f_end%2!=0}"
-    })
-  }
   def main(args: Array[String]): Unit = {
+    val scan = new Scanner(System.in)
+
     val df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     println()
     println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
@@ -42,8 +34,6 @@ object Graspan_df extends Para{
     println("Graspan Begin at "+df.format(System.currentTimeMillis())+"  \t@@")
     println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     println()
-    val scan = new Scanner(System.in)
-
     var islocal: Boolean = true
     var master: String = "local"
 
@@ -58,14 +48,8 @@ object Graspan_df extends Para{
     var checkpoint_interval:Int=10
     var newedges_interval:Int=40000000
 
-    var openBloomFilter:Boolean=false
-    var edges_totalnum:Int=1
-    var error_rate:Double=0.1
-
-    var htable_name:String="edges"
-    var queryHBase_interval:Int=50000
-    var HRegion_splitnum:Int=36
-    var Batch_QueryHbase:Boolean=true
+    var updateRedis_interval:Int=50000
+    var queryRedis_interval:Int=50000
 
     var is_complete_loop:Boolean=false
     var max_complete_loop_turn:Int=5
@@ -92,14 +76,8 @@ object Graspan_df extends Para{
         case "defaultpar"=>defaultpar=argvalue.toInt
         case "newedges_interval"=>newedges_interval=argvalue.toInt
 
-        case "openBloomFilter"=>openBloomFilter=argvalue.toBoolean
-        case "edges_totalnum"=>edges_totalnum=argvalue.toInt
-        case "error_rate"=>error_rate=argvalue.toDouble
-
-        case "htable_name"=>htable_name=argvalue
-        case "queryHBase_interval"=>queryHBase_interval=argvalue.toInt
-        case "HRegion_splitnum"=>HRegion_splitnum=argvalue.toInt
-        case "Batch_QueryHbase"=>Batch_QueryHbase=argvalue.toBoolean
+        case "queryRedis_interval"=>queryRedis_interval=argvalue.toInt
+        case "updateRedis_interval"=>updateRedis_interval=argvalue.toInt
 
         case "is_complete_loop"=>is_complete_loop=argvalue.toBoolean
         case "max_complete_loop_turn"=>max_complete_loop_turn=argvalue.toInt
@@ -137,8 +115,8 @@ object Graspan_df extends Para{
     println("spark.executor.cores:         \t" + conf.get("spark.executor.cores"))
     println("default partition num:        \t" + defaultpar)
     println("cluster partition num:        \t" + clusterpar)
-    println("queryHBase_interval:          \t" + queryHBase_interval)
-    println("HRegion_splitnum:             \t" + HRegion_splitnum)
+    println("queryRedis_interval:          \t" + queryRedis_interval)
+    println("updateRedis_interval:         \t" + updateRedis_interval)
     println("--------------------------------------------------------------------")
     println
     /**
@@ -180,21 +158,18 @@ object Graspan_df extends Para{
     println("------------------------------------------------------------------")
     println
 
-    val (htable_split_Map, default_split) = HBase_OP.createHBase_Table(htable_name, HRegion_splitnum)
-
     /**
-      * 原边集存入Hbase
+      * 原边集存入Redis
       */
-    //    println("graph Partitions: "+graph.partitions.length)
-    deleteDir.deletedir(islocal, master, hbase_output)
-    HBase_OP.updateHbase_java_flat(e, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
-      htable_split_Map, HRegion_splitnum, default_split)
-    deleteDir.deletedir(islocal, master, hbase_output)
-    HBase_OP.updateHbase_java_flat(n, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
-      htable_split_Map, HRegion_splitnum, default_split)
+    ShardedRedisClusterClient.getProcessLevelClient.clearDB()
+    val t0_redis=System.nanoTime()
+    e.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval,nodes_num_bitsize,symbol_num_bitsize))
+    n.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval,nodes_num_bitsize,symbol_num_bitsize))
+    println("Origin Update Redis take time:        \t"+((System.nanoTime()-t0_redis)/1000000000.0).formatted
+    ("%.3f")+ "sec" )
     //    scan.next()
-    deleteDir.deletedir(islocal, master, output)
 
+    deleteDir.deletedir(islocal, master, output)
 
     var n_edges=n.map(s=>(s(1),s(0))).groupByKey().mapValues(_.toArray)
       .partitionBy(new HashPartitioner(defaultpar))
@@ -208,6 +183,8 @@ object Graspan_df extends Para{
     var continue: Boolean = true
     var newnum: Long = e.count()+n.count()
     var oldnum: Long = newnum
+    val init_e=n_edges.mapPartitionsWithIndex((index,s)=>Graspan_OP.init_e(index,s,master,e_str))
+    println("Init e in "+init_e.count()+"Partitions")
 
     println()
     println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
@@ -231,20 +208,16 @@ object Graspan_df extends Para{
 
       val t0_ge = System.nanoTime()
       val new_edges_str = {
-          val tmp_max_complete_loop_turn={
-            if(newnum<=convergence_threshold) max_convergence_loop
-            else max_complete_loop_turn
-          }
-          n_edges
-            .mapPartitionsWithIndex((index, s) =>
-              Graspan_OP.computeInPartition_fully_compressed_df_HDFSRead_E(step,
-                index, s,master,e_str,
-                nodes_num_bitsize,
-                symbol_num_bitsize, is_complete_loop, tmp_max_complete_loop_turn,
-                Batch_QueryHbase,
-                htable_name,
-                htable_split_Map,
-                HRegion_splitnum, queryHBase_interval, default_split),true).setName("newedge-before-distinct-" + step)
+        val tmp_max_complete_loop_turn={
+          if(newnum<=convergence_threshold) max_convergence_loop
+          else max_complete_loop_turn
+        }
+        n_edges
+          .mapPartitionsWithIndex((index, s) =>
+            Graspan_OP.computeInPartition_df_compressnew_Redis(step,
+              index, s,master,e_str,
+              nodes_num_bitsize,
+              symbol_num_bitsize, is_complete_loop, tmp_max_complete_loop_turn),true).setName("newedge-before-distinct-" + step)
       }.persist (StorageLevel.MEMORY_ONLY_SER)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
       val t1_ge = System.nanoTime()
@@ -267,13 +240,13 @@ object Graspan_df extends Para{
       println("Join 75% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.75).toInt))
       println("Join Max Task take time         \t"+par_time_JOIN(par_time_JOIN.length - 1))
 
-      val par_time_HB=par_INFO.map(s=>s.split("REPARHBASE")(1).trim.toDouble.toInt).collect().sorted
-      println("HBase take time Situation")
-      println("HBase Min Task take time        \t"+par_time_HB(0))
-      println("HBase 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
-      println("HBase 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
-      println("HBase 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
-      println("HBase Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
+      val par_time_HB=par_INFO.map(s=>s.split("REPARREDIS")(1).trim.toDouble.toInt).collect().sorted
+      println("Redis take time Situation")
+      println("Redis Min Task take time        \t"+par_time_HB(0))
+      println("Redis 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
+      println("Redis 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
+      println("Redis 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
+      println("Redis Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
 
       /**
         * 新边去重
@@ -304,9 +277,7 @@ object Graspan_df extends Para{
         */
       val t0_hb = System.nanoTime(): Double
       deleteDir.deletedir(islocal, master, hbase_output)
-      HBase_OP.updateHbase_java_flat(newedges, nodes_num_bitsize, symbol_num_bitsize, htable_name,
-        hbase_output,
-        htable_split_Map, HRegion_splitnum, default_split)
+      newedges.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval,nodes_num_bitsize,symbol_num_bitsize))
       val t1_hb = System.nanoTime(): Double
       println("update Hbase take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
 
@@ -346,7 +317,7 @@ object Graspan_df extends Para{
         ".3f") + " sec")
       println
       continue = newnum != 0
-      if(check_edge) scan.next()
+      if(check_edge)  scan.next()
     }
 
     sc.stop()
@@ -357,6 +328,7 @@ object Graspan_df extends Para{
     println("compute take time " +(System.nanoTime()-t0_all)/1000000000.0+ " sec")
     println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     println()
+
   }
 
 }

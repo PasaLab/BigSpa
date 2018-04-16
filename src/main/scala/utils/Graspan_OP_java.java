@@ -33,6 +33,9 @@ class IntArrayCompartor_Distinguish_Direction implements Comparator
 
 }
 
+
+
+
 public class Graspan_OP_java {
     public static int[][] get_symbol_index_range(int[][] list,int symbol_num){
         int[][] result=new int[symbol_num][2];
@@ -529,7 +532,7 @@ public class Graspan_OP_java {
     public static  List<int[]> join_fully_compressed_presort_improve(int flag, int[] all_edges, int[] old_f_index_list,
                                                                  int[]
             new_f_index_list, int[] old_b_index_list, int[] new_b_index_list, int[][] grammar, int symbol_num,
-                                                             int[][] directadd0){
+                                                                     int[][] directadd0){
 //        int all_len=all_edges.length/2;
 //        int old_f_len=(old_f_index_list[symbol_num-1]-old_f_index_list[0])/2;
 //        int new_f_len=(new_f_index_list[symbol_num-1]-new_f_index_list[0])/2;
@@ -664,20 +667,57 @@ public class Graspan_OP_java {
         return res_edges;
     }
 
-    public static  int[] join_fully_compressed_presort_improve_compress(int flag, int[] all_edges, int[]
+    public static int getCorrectLength(int[][] grammar,Map<Integer,Integer> directadd, int symbol_num,
+                                       int[] old_f_index_list, int[] new_f_index_list, int[] old_b_index_list, int[] new_b_index_list){
+        int sum_length=0;
+        for(int[] gram:grammar){
+            int f=gram[0];
+            int b=gram[1];
+            int res_label=gram[2];
+            /**
+             * 判断f和b谁长，决定以谁为主forloop，避免空转
+             */
+            int new_f_length=-1;
+            int new_b_length=-1;
+            int old_f_length=-1;
+            int old_b_length=-1;
+            if(f==0) {
+                old_f_length=old_f_index_list[f]+1;
+                new_f_length=new_f_index_list[f]-old_f_index_list[f];
+            }
+            else {
+                old_f_length=old_f_index_list[f]-new_f_index_list[f-1];
+                new_f_length=new_f_index_list[f]-old_f_index_list[f];
+            }
+            if(b==0){
+                old_b_length=old_b_index_list[b]-new_f_index_list[symbol_num-1];
+                new_b_length=new_b_index_list[b]-old_b_index_list[b];
+            }
+            else {
+                old_b_length=old_b_index_list[b]-new_b_index_list[b-1];
+                new_b_length=new_b_index_list[b]-old_b_index_list[b];
+            }
+
+            if(directadd.containsKey(res_label)){//需添加额外label
+                sum_length+=2*( new_f_length*new_b_length + new_f_length*old_b_length + old_f_length*new_b_length);
+            }
+            else{//仅添加当前label
+                sum_length+=( new_f_length*new_b_length + new_f_length*old_b_length + old_f_length*new_b_length);
+            }
+        }
+        return sum_length;
+    }
+    public static  int[] join_compressnew(int flag, int[] all_edges, int[]
             old_f_index_list, int[] new_f_index_list, int[] old_b_index_list, int[] new_b_index_list, int[][] grammar, int symbol_num,
-                                                                     int[][] directadd0){
-//        int all_len=all_edges.length/2;
-        int old_f_len_sum=(old_f_index_list[symbol_num-1]-old_f_index_list[0])/2;
-        int new_f_len_sum=(new_f_index_list[symbol_num-1]-new_f_index_list[0])/2;
-        int old_b_len_sum=(old_b_index_list[symbol_num-1]-old_b_index_list[0])/2;
-        int new_b_len_sum=(new_b_index_list[symbol_num-1]-new_b_index_list[0])/2;
-        int estimate_len=new_f_len_sum*new_b_len_sum+old_f_len_sum*new_b_len_sum+new_f_len_sum*old_b_len_sum;
-        int[] res=new int[estimate_len*6];
+                                           int[][] directadd0){
+
         Map<Integer,Integer> directadd=new HashMap<Integer, Integer>();
         for(int[] i:directadd0) directadd.put(i[0],i[1]);
 
-        int lenofres=0;
+        int lenofres=getCorrectLength(grammar,directadd,symbol_num,old_f_index_list,new_f_index_list,
+                old_b_index_list,new_b_index_list)*3;
+        int[] res=new int[lenofres];
+        int indexofres=0;
         for(int[] gram:grammar){
             int f=gram[0];
             int b=gram[1];
@@ -717,13 +757,13 @@ public class Graspan_OP_java {
                     int k_end=new_b_index_list[b];
                     for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
                         for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
-                            res[lenofres++]=all_edges[j];
-                            res[lenofres++]=all_edges[k];
-                            res[lenofres++]=res_label;
+                            res[indexofres++]=all_edges[j];
+                            res[indexofres++]=all_edges[k];
+                            res[indexofres++]=res_label;
 
-                            res[lenofres++]=all_edges[j];
-                            res[lenofres++]=all_edges[k];
-                            res[lenofres++]=directadd_symbol;
+                            res[indexofres++]=all_edges[j];
+                            res[indexofres++]=all_edges[k];
+                            res[indexofres++]=directadd_symbol;
                         }
                     }
                 }
@@ -736,13 +776,13 @@ public class Graspan_OP_java {
                     int k_end=old_b_index_list[b];
                     for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
                         for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
-                            res[lenofres++]=all_edges[j];
-                            res[lenofres++]=all_edges[k];
-                            res[lenofres++]=res_label;
+                            res[indexofres++]=all_edges[j];
+                            res[indexofres++]=all_edges[k];
+                            res[indexofres++]=res_label;
 
-                            res[lenofres++]=all_edges[j];
-                            res[lenofres++]=all_edges[k];
-                            res[lenofres++]=directadd_symbol;
+                            res[indexofres++]=all_edges[j];
+                            res[indexofres++]=all_edges[k];
+                            res[indexofres++]=directadd_symbol;
                         }
                     }
                 }
@@ -752,13 +792,13 @@ public class Graspan_OP_java {
                     int k_end=new_b_index_list[b];
                     for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
                         for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
-                            res[lenofres++]=all_edges[j];
-                            res[lenofres++]=all_edges[k];
-                            res[lenofres++]=res_label;
+                            res[indexofres++]=all_edges[j];
+                            res[indexofres++]=all_edges[k];
+                            res[indexofres++]=res_label;
 
-                            res[lenofres++]=all_edges[j];
-                            res[lenofres++]=all_edges[k];
-                            res[lenofres++]=directadd_symbol;
+                            res[indexofres++]=all_edges[j];
+                            res[indexofres++]=all_edges[k];
+                            res[indexofres++]=directadd_symbol;
                         }
                     }
                 }
@@ -772,9 +812,9 @@ public class Graspan_OP_java {
                     int k_end=new_b_index_list[b];
                     for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
                         for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
-                            res[lenofres++]=all_edges[j];
-                            res[lenofres++]=all_edges[k];
-                            res[lenofres++]=res_label;
+                            res[indexofres++]=all_edges[j];
+                            res[indexofres++]=all_edges[k];
+                            res[indexofres++]=res_label;
 
                         }
                     }
@@ -788,9 +828,9 @@ public class Graspan_OP_java {
                     int k_end=old_b_index_list[b];
                     for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
                         for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
-                            res[lenofres++]=all_edges[j];
-                            res[lenofres++]=all_edges[k];
-                            res[lenofres++]=res_label;
+                            res[indexofres++]=all_edges[j];
+                            res[indexofres++]=all_edges[k];
+                            res[indexofres++]=res_label;
                         }
                     }
                 }
@@ -800,20 +840,60 @@ public class Graspan_OP_java {
                     int k_end=new_b_index_list[b];
                     for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
                         for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
-                            res[lenofres++]=all_edges[j];
-                            res[lenofres++]=all_edges[k];
-                            res[lenofres++]=res_label;
+                            res[indexofres++]=all_edges[j];
+                            res[indexofres++]=all_edges[k];
+                            res[indexofres++]=res_label;
                         }
                     }
                 }
             }
         }
-//        System.out.println(tmp);
-        int[] final_res=new int[lenofres];
-        System.arraycopy(res,0,final_res,0,lenofres);
-        return final_res;
+        return res;
     }
 
+    public static  long[] join_df_compressnew(int flag,int[] n_edges,int[] e_edge_after){
+        long[] res_edges=new long[n_edges.length*e_edge_after.length];
+        /**
+         * n与e之间的两两连接
+         */
+        int lenofres=0;
+        int res_label=0;
+        //n在前，e在后
+        int i_end=n_edges.length;
+        int j_end=e_edge_after.length;
+        for(int i=0;i<i_end;i++){
+            for(int j=0;j<j_end;j++){
+                res_edges[lenofres++]=(((long)e_edge_after[j])<<32) + (long)n_edges[i];
+            }
+        }
+        return res_edges;
+    }
+
+    public static  long[] join_df_compressnew_loop(int flag, long[] n_edges, int[] e_edge_after, int n_start,int[]
+            n_end){
+
+        int end=n_start;
+        long[] res_edges=new long[(n_edges.length-n_start)*e_edge_after.length];
+        /**
+         * n与e之间的两两连接
+         */
+        int lenofres=0;
+        int res_label=0;
+        //n在前，e在后
+        int i_end=n_edges.length;
+        int j_end=e_edge_after.length;
+        int i=n_start;
+       while(i<i_end&&( (n_edges[i]>>>32) ==flag)){
+            for(int j=0;j<j_end;j++){
+                res_edges[lenofres++]=(((long)e_edge_after[j])<<32) + (n_edges[i]&0xffffffffL);
+            }
+            i++;
+        }
+        n_end[0]=i;
+        long[] final_res=new long[lenofres];
+        System.arraycopy(res_edges,0,final_res,0,lenofres);
+        return final_res;
+    }
 
     public static  List<int[]> join_fully_compressed_directadd(int flag, int[] all_edges, int[] index_list ,
                                                                        int[][] grammar, int symbol_num,
