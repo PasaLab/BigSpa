@@ -1179,7 +1179,7 @@ object Graspan_OP extends Para {
     val len=res_edges_array.length
     //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "Target Exist!"
     val res_edges=
-    Redis_OP.queryRedis(res_edges_array,nodes_num_bitsize,symbol_num_bitsize)
+    Redis_OP.queryRedis(res_edges_array)
 
     //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "After HBAse Filter Target Exist!"
     t1=System.nanoTime():Double
@@ -1713,7 +1713,7 @@ object Graspan_OP extends Para {
     println("long_tocheck: "+len)
     //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "Target Exist!"
     val res_edges=
-    Redis_OP.queryRedis_compressed_df(long_tocheck.toLongArray(),nodes_num_bitsize, symbol_num_bitsize)
+    Redis_OP.queryRedis_compressed_df(long_tocheck.toLongArray())
 
     //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "After HBAse Filter Target Exist!"
     t1=System.nanoTime():Double
@@ -1801,7 +1801,7 @@ object Graspan_OP extends Para {
     val len=res_edges_list.length/3
     //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "Target Exist!"
     val res_edges=
-    Redis_OP.queryRedis_compressed(res_edges_list.toIntArray(),nodes_num_bitsize,symbol_num_bitsize)
+    Redis_OP.queryRedis_compressed(res_edges_list.toIntArray())
 
     //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "After HBAse Filter Target Exist!"
     t1=System.nanoTime():Double

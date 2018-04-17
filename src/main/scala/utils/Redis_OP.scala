@@ -9,43 +9,48 @@ import scala.collection.mutable.ArrayBuffer
   */
 object Redis_OP {
 
-  def  intToByteArray(a:Int) : Array[Byte]={
-    Array(
-       ((a >> 24) & 0xFF).toByte,
-      ((a >> 16) & 0xFF).toByte,
-      ((a >> 8) & 0xFF).toByte,
-      (a & 0xFF).toByte
-    )
-  }
-  def filling0(origin:Int,len:Int):String="0"*(len-origin.toString.length)+origin
+  def Array2ByteArray(edge:Array[Int]):Array[Byte]={
+    val res=new Array[Byte](12)
+    res(0)=((edge(0) >> 24) & 0xFF).toByte
+    res(1)=((edge(0) >> 16) & 0xFF).toByte
+    res(2)=((edge(0) >> 8) & 0xFF).toByte
+    res(3)=(edge(0) & 0xFF).toByte
 
-  def getIntBit(a:Int):Int={
-    var tmp=a
-    var num=0
-    while(tmp>0){
-      tmp/=10
-      num+=1
-    }
-    num
-  }
-  def Array2ByteArray(edge:Array[Int],nodes_num_bitsize:Int,symbol_num_bitsize:Int):Array[Byte]={
-    val src_str = filling0(edge(0), nodes_num_bitsize)
-    val dst_str = filling0(edge(1), nodes_num_bitsize)
-    val label_str = filling0(edge(2), symbol_num_bitsize)
-    (src_str + dst_str + label_str).getBytes()
-    //    src_str + dst_str + label_str
+    res(4)=((edge(1) >> 24) & 0xFF).toByte
+    res(5)=((edge(1) >> 16) & 0xFF).toByte
+    res(6)=((edge(1) >> 8) & 0xFF).toByte
+    res(7)=(edge(1) & 0xFF).toByte
+
+    res(8)=((edge(2) >> 24) & 0xFF).toByte
+    res(9)=((edge(2) >> 16) & 0xFF).toByte
+    res(10)=((edge(2) >> 8) & 0xFF).toByte
+    res(11)=(edge(2) & 0xFF).toByte
+
+    res
   }
 
-  def Triple2String(src:Int,dst:Int,edgelabel:Int,nodes_num_bitsize:Int,symbol_num_bitsize:Int):Array[Byte]={
-    val src_str = filling0(src, nodes_num_bitsize)
-    val dst_str = filling0(dst, nodes_num_bitsize)
-    val label_str = filling0(edgelabel, symbol_num_bitsize)
-    (src_str + dst_str + label_str).getBytes()
-    //    src_str + dst_str + label_str
+  def Triple2String(src:Int,dst:Int,edgelabel:Int):Array[Byte]={
+    val res=new Array[Byte](12)
+    res(0)=((src >> 24) & 0xFF).toByte
+    res(1)=((src >> 16) & 0xFF).toByte
+    res(2)=((src >> 8) & 0xFF).toByte
+    res(3)=(src & 0xFF).toByte
+
+    res(4)=((dst >> 24) & 0xFF).toByte
+    res(5)=((dst >> 16) & 0xFF).toByte
+    res(6)=((dst >> 8) & 0xFF).toByte
+    res(7)=(dst & 0xFF).toByte
+
+    res(8)=((edgelabel >> 24) & 0xFF).toByte
+    res(9)=((edgelabel >> 16) & 0xFF).toByte
+    res(10)=((edgelabel >> 8) & 0xFF).toByte
+    res(11)=(edgelabel & 0xFF).toByte
+
+    res
   }
 
   @throws[Exception]
-  def updateRedis_inPartition(edges: Iterator[Array[Int]], updateRedis_interval: Int,nodes_num_bitsize:Int,symbol_num_bitsize:Int) {
+  def updateRedis_inPartition(edges: Iterator[Array[Int]], updateRedis_interval: Int) {
     val items = edges.toArray
     try{
       val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
@@ -56,7 +61,7 @@ object Redis_OP {
       var i: Int = 0
       while (i < items.size) {
         {
-          keys(i) = Array2ByteArray(items(i),nodes_num_bitsize,symbol_num_bitsize)
+          keys(i) = Array2ByteArray(items(i))
           values(i) ="1".getBytes()
         }
         {
@@ -73,7 +78,7 @@ object Redis_OP {
   }
 
   @throws[Exception]
-  def queryRedis_compressed(compressed_edges: Array[Int],nodes_num_bitsize:Int,symbol_num_bitsize:Int): Array[Array[Int]] = {
+  def queryRedis_compressed(compressed_edges: Array[Int]): Array[Array[Int]] = {
     val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
     val all_edges_num: Int = compressed_edges.length / 3
     val keys: Array[Array[Byte]] = new Array[Array[Byte]](all_edges_num)
@@ -81,8 +86,7 @@ object Redis_OP {
     var i: Int = 0
     while (i < all_edges_num) {
       {
-        keys(i) =Triple2String(compressed_edges(i * 3), compressed_edges(i * 3 + 1), compressed_edges(i * 3 + 2),
-          nodes_num_bitsize,symbol_num_bitsize)
+        keys(i) =Triple2String(compressed_edges(i * 3), compressed_edges(i * 3 + 1), compressed_edges(i * 3 + 2))
       }
       {
         i += 1
@@ -98,7 +102,7 @@ object Redis_OP {
   }
 
   @throws[Exception]
-  def queryRedis_compressed_df(compressed_edges: Array[Long],nodes_num_bitsize:Int,symbol_num_bitsize:Int):
+  def queryRedis_compressed_df(compressed_edges: Array[Long]):
   Array[Array[Int]] = {
     val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
     val all_edges_num: Int = compressed_edges.length
@@ -106,8 +110,7 @@ object Redis_OP {
     val res:ArrayBuffer[Array[Int]]=new ArrayBuffer[Array[Int]](all_edges_num*3)
     var i: Int = 0
     while (i < all_edges_num) {
-        keys(i) =Triple2String((compressed_edges(i) & 0xffffffffL).toInt,(compressed_edges(i)>>>32).toInt, 0,
-          nodes_num_bitsize,symbol_num_bitsize)
+        keys(i) =Triple2String((compressed_edges(i) & 0xffffffffL).toInt,(compressed_edges(i)>>>32).toInt, 0)
         i += 1
     }
     val values: Array[Array[Byte]] = client.getAll(keys)
@@ -119,14 +122,14 @@ object Redis_OP {
     res.toArray
   }
 
-  def queryRedis(edges: Array[Array[Int]],nodes_bitnum:Int,symbol_bitnum:Int): Array[Array[Int]] = {
+  def queryRedis(edges: Array[Array[Int]]): Array[Array[Int]] = {
     val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
     val all_edges_num: Int = edges.length
     val keys: Array[Array[Byte]] = new Array[Array[Byte]](all_edges_num)
     var i: Int = 0
     while (i < all_edges_num) {
       {
-        keys(i) = Array2ByteArray(edges(i),nodes_bitnum,symbol_bitnum)
+        keys(i) = Array2ByteArray(edges(i))
       }
       {
         i += 1

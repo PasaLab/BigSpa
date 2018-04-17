@@ -216,7 +216,7 @@ object Graspan_compressnew extends Para{
       */
     ShardedRedisClusterClient.getProcessLevelClient.clearDB()
     val t0_redis=System.nanoTime()
-    graph.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval,nodes_num_bitsize,symbol_num_bitsize))
+    graph.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval))
     println("Origin Update Redis take time:        \t"+((System.nanoTime()-t0_redis)/1000000000.0).formatted
     ("%.3f")+ "sec" )
     //    scan.next()
@@ -342,7 +342,7 @@ object Graspan_compressnew extends Para{
         */
       val t0_hb = System.nanoTime(): Double
       deleteDir.deletedir(islocal, master, hbase_output)
-      newedges.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval,nodes_num_bitsize,symbol_num_bitsize))
+      newedges.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval))
       val t1_hb = System.nanoTime(): Double
       println("update Redis take time:          \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
 
