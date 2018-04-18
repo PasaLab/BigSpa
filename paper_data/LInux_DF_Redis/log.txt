@@ -1,0 +1,1690 @@
+
+[experiment@slave001 Graspan]$ spark-submit \
+> --master yarn \
+> --deploy-mode client \
+> --name JiangXi_Linux_df_Redis \
+> --class Bigspa_df_getdatacode \
+> --num-executors 16 \
+> --executor-cores 24 \
+> --executor-memory 12G \
+> --driver-memory 16G \
+> --conf spark.storage.unrollMemoryThreshold=10000000 \
+> --conf spark.locality.wait.node=1ms \
+> --files pasa.conf.prop \
+> --driver-class-path /home/experiment/jiangxi/res/ \
+>  \
+> Graspan_noBF-1.0-SNAPSHOT-jar-with-dependencies.jar \
+>  \
+> islocal,false \
+> master,hdfs://slave001:9001/ \
+> input_grammar,/jiangxi/Graspan/data/GrammarFiles/rules_dataflow \
+> input_e,/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/ \
+> input_n,/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/ \
+> isSingleton,true \
+>  \
+> output,/jiangxi/Graspan/result/httpd_df_Redis \
+> checkpoint_output,hdfs://slave001:9001/jiangxi/Graspan/checkpoint_hardcode \
+> hbase_output,/jiangxi/Graspan/result/pt/hbhfile_hardcode \
+>  \
+> updateRedis_interval,500000 \
+> queryRedis_interval,50000 \
+>  \
+> is_complete_loop,true \
+> max_complete_loop_turn,5 \
+> max_convergence_loop,100 \
+>  \
+> defaultpar,768 \
+> clusterpar,384 \
+> newnum_interval,20000000 \
+> checkpoint_interval,5 \
+>  \
+> file_index_f,0 \
+> file_index_b,12 \
+>  \
+> check_edge,false \
+> convergence_threshold,10000 \
+> output_Par_INFO,false
+log4j:WARN No such property [append] in org.apache.log4j.ConsoleAppender.
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@      Graspan Begin at 2018-04-18 20:04:59    @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+18/04/18 20:04:59.981 main WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+18/04/18 20:05:00.070 main WARN SparkConf: In Spark 1.0 and later spark.local.dir will be overridden by the value set by the cluster manager (via SPARK_LOCAL_DIRS in mesos/standalone and LOCAL_DIRS in YARN).
+------------Spark and HBase settings--------------------------------
+spark.driver.memory:            16G
+spark.executor.memory:          12G
+spark.executor.cores:           24
+default partition num:          768
+cluster partition num:          384
+queryRedis_interval:            50000
+updateRedis_interval:           500000
+--------------------------------------------------------------------
+
+getinput_EandN
+get input e
+/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_arch_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_block_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_crypto_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_drivers_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_fs_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_init_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_ipc_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_kernel_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_lib_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_mm_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_net_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_security_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/lnx_sound_df
+get input n
+/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_arch_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_block_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_crypto_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_drivers_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_fs_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_init_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_ipc_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_kernel_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_lib_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_mm_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_net_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_security_df
+hdfs://slave001:9001/jiangxi/Graspan/data/InputGraph/Linux_dataflow_n/lnx_sound_df
+e counts : 68610373
+n counts : 797509
+------------Graph INFO--------------------------------------------
+input graph:            /jiangxi/Graspan/data/InputGraph/Linux_dataflow_e/
+processed e:            68610373
+processed n:            797509
+nodes_totoalnum:        65210684
+nodes_num_bitsize:      8
+max_loop_turn:          5
+convergence_turn:       100
+------------------------------------------------------------------
+
+Load configuration done!
+Origin Update Redis take time:          16.734sec
+Init e in 0Partitions
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@      Compute Begin AT 2018-04-18 20:12:22    @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Please confirm to start compute!
+0
+
+************During step 1************
+old num:                                69407882
+coarest num:                            4711759
+generate new edges time:                 49.318 sec
+pure_newedges:                          4520848
+distinct take time:                     26.687 secs
+compute take time:                      76.603 secs
+update Redis take time:                 1.690 sec
+Start UNION
+n_edges time take time:                 1.915 sec
+End UNION
+*step: step 1 take time:         80.246 sec
+
+
+************During step 2************
+old num:                                73928730
+coarest num:                            26850469
+generate new edges time:                 5.472 sec
+pure_newedges:                          5040922
+distinct take time:                     3.020 secs
+compute take time:                      8.953 secs
+update Redis take time:                 1.956 sec
+Start UNION
+n_edges time take time:                 1.685 sec
+End UNION
+*step: step 2 take time:         12.605 sec
+
+
+************During step 3************
+old num:                                78969652
+coarest num:                            31293570
+generate new edges time:                 6.531 sec
+pure_newedges:                          4988254
+distinct take time:                     3.217 secs
+compute take time:                      10.211 secs
+update Redis take time:                 2.265 sec
+Start UNION
+n_edges time take time:                 1.609 sec
+End UNION
+*step: step 3 take time:         14.096 sec
+
+
+************During step 4************
+old num:                                83957906
+coarest num:                            29127009
+generate new edges time:                 5.736 sec
+pure_newedges:                          3859120
+distinct take time:                     3.371 secs
+compute take time:                      9.557 secs
+update Redis take time:                 1.946 sec
+Start UNION
+n_edges time take time:                 1.663 sec
+End UNION
+*step: step 4 take time:         13.177 sec
+
+
+************During step 5************
+old num:                                87817026
+coarest num:                            23793183
+generate new edges time:                 4.956 sec
+pure_newedges:                          3769692
+distinct take time:                     3.406 secs
+compute take time:                      8.679 secs
+update Redis take time:                 2.229 sec
+Start UNION
+n_edges time take time:                 5.563 sec
+End UNION
+*step: step 5 take time:         16.483 sec
+
+
+************During step 6************
+old num:                                91586718
+coarest num:                            24474654
+generate new edges time:                 3.584 sec
+pure_newedges:                          3457551
+distinct take time:                     2.041 secs
+compute take time:                      5.907 secs
+update Redis take time:                 0.666 sec
+Start UNION
+n_edges time take time:                 1.515 sec
+End UNION
+*step: step 6 take time:         8.098 sec
+
+
+************During step 7************
+old num:                                95044269
+coarest num:                            23494685
+generate new edges time:                 3.306 sec
+pure_newedges:                          3169530
+distinct take time:                     2.185 secs
+compute take time:                      5.765 secs
+update Redis take time:                 0.951 sec
+Start UNION
+n_edges time take time:                 1.520 sec
+End UNION
+*step: step 7 take time:         8.248 sec
+
+
+************During step 8************
+old num:                                98213799
+coarest num:                            21157030
+generate new edges time:                 3.374 sec
+pure_newedges:                          2900358
+distinct take time:                     2.601 secs
+compute take time:                      6.263 secs
+update Redis take time:                 1.267 sec
+Start UNION
+n_edges time take time:                 1.612 sec
+End UNION
+*step: step 8 take time:         9.154 sec
+
+
+************During step 9************
+old num:                                101114157
+coarest num:                            20115202
+generate new edges time:                 3.511 sec
+pure_newedges:                          3080431
+distinct take time:                     2.833 secs
+compute take time:                      6.681 secs
+update Redis take time:                 1.517 sec
+Start UNION
+n_edges time take time:                 1.576 sec
+End UNION
+*step: step 9 take time:         9.786 sec
+
+
+************During step 10************
+old num:                                104194588
+coarest num:                            20760713
+generate new edges time:                 3.913 sec
+pure_newedges:                          3113034
+distinct take time:                     3.067 secs
+compute take time:                      7.324 secs
+update Redis take time:                 2.305 sec
+Start UNION
+n_edges time take time:                 4.210 sec
+End UNION
+*step: step 10 take time:        13.853 sec
+
+
+************During step 11************
+old num:                                107307622
+coarest num:                            20317696
+generate new edges time:                 2.764 sec
+pure_newedges:                          2806704
+distinct take time:                     1.922 secs
+compute take time:                      4.963 secs
+update Redis take time:                 0.585 sec
+Start UNION
+n_edges time take time:                 1.433 sec
+End UNION
+*step: step 11 take time:        6.994 sec
+
+
+************During step 12************
+old num:                                110114326
+coarest num:                            18267420
+generate new edges time:                 2.614 sec
+pure_newedges:                          2434500
+distinct take time:                     2.055 secs
+compute take time:                      4.957 secs
+update Redis take time:                 0.836 sec
+Start UNION
+n_edges time take time:                 1.508 sec
+End UNION
+*step: step 12 take time:        7.313 sec
+
+
+************During step 13************
+old num:                                112548826
+coarest num:                            16224646
+generate new edges time:                 2.667 sec
+pure_newedges:                          2111380
+distinct take time:                     2.507 secs
+compute take time:                      5.607 secs
+update Redis take time:                 1.043 sec
+Start UNION
+n_edges time take time:                 1.499 sec
+End UNION
+*step: step 13 take time:        8.161 sec
+
+
+************During step 14************
+old num:                                114660206
+coarest num:                            14352996
+generate new edges time:                 2.790 sec
+pure_newedges:                          2108183
+distinct take time:                     2.619 secs
+compute take time:                      5.918 secs
+update Redis take time:                 1.345 sec
+Start UNION
+n_edges time take time:                 1.501 sec
+End UNION
+*step: step 14 take time:        8.779 sec
+
+
+************During step 15************
+old num:                                116768389
+coarest num:                            14421162
+generate new edges time:                 3.007 sec
+pure_newedges:                          2175353
+distinct take time:                     2.963 secs
+compute take time:                      6.279 secs
+update Redis take time:                 1.641 sec
+Start UNION
+n_edges time take time:                 4.531 sec
+End UNION
+*step: step 15 take time:        12.467 sec
+
+
+************During step 16************
+old num:                                118943742
+coarest num:                            14900334
+generate new edges time:                 1.971 sec
+pure_newedges:                          2128803
+distinct take time:                     1.752 secs
+compute take time:                      3.935 secs
+update Redis take time:                 0.481 sec
+Start UNION
+n_edges time take time:                 1.472 sec
+End UNION
+*step: step 16 take time:        6.294 sec
+
+
+************During step 17************
+old num:                                121072545
+coarest num:                            14681894
+generate new edges time:                 2.187 sec
+pure_newedges:                          2045392
+distinct take time:                     2.015 secs
+compute take time:                      4.431 secs
+update Redis take time:                 0.732 sec
+Start UNION
+n_edges time take time:                 1.583 sec
+End UNION
+*step: step 17 take time:        6.761 sec
+
+
+************During step 18************
+old num:                                123117937
+coarest num:                            14047807
+generate new edges time:                 2.350 sec
+pure_newedges:                          1987356
+distinct take time:                     2.496 secs
+compute take time:                      5.159 secs
+update Redis take time:                 1.209 sec
+Start UNION
+n_edges time take time:                 1.512 sec
+End UNION
+*step: step 18 take time:        7.935 sec
+
+
+************During step 19************
+old num:                                125105293
+coarest num:                            13667077
+generate new edges time:                 2.959 sec
+pure_newedges:                          1917483
+distinct take time:                     2.630 secs
+compute take time:                      5.877 secs
+update Redis take time:                 2.025 sec
+Start UNION
+n_edges time take time:                 1.514 sec
+End UNION
+*step: step 19 take time:        9.432 sec
+
+
+************During step 20************
+old num:                                127022776
+coarest num:                            13149601
+generate new edges time:                 3.339 sec
+pure_newedges:                          1754249
+distinct take time:                     2.741 secs
+compute take time:                      6.399 secs
+update Redis take time:                 2.256 sec
+Start UNION
+n_edges time take time:                 4.568 sec
+End UNION
+*step: step 20 take time:        13.239 sec
+
+
+************During step 21************
+old num:                                128777025
+coarest num:                            11933298
+generate new edges time:                 2.166 sec
+pure_newedges:                          1523054
+distinct take time:                     1.645 secs
+compute take time:                      4.036 secs
+update Redis take time:                 0.617 sec
+Start UNION
+n_edges time take time:                 1.431 sec
+End UNION
+*step: step 21 take time:        6.109 sec
+
+
+************During step 22************
+old num:                                130300079
+coarest num:                            10246061
+generate new edges time:                 2.127 sec
+pure_newedges:                          1244460
+distinct take time:                     1.883 secs
+compute take time:                      4.273 secs
+update Redis take time:                 0.865 sec
+Start UNION
+n_edges time take time:                 1.410 sec
+End UNION
+*step: step 22 take time:        6.568 sec
+
+
+************During step 23************
+old num:                                131544539
+coarest num:                            8409204
+generate new edges time:                 2.042 sec
+pure_newedges:                          1000821
+distinct take time:                     2.210 secs
+compute take time:                      4.943 secs
+update Redis take time:                 0.968 sec
+Start UNION
+n_edges time take time:                 1.341 sec
+End UNION
+*step: step 23 take time:        7.275 sec
+
+
+************During step 24************
+old num:                                132545360
+coarest num:                            6878470
+generate new edges time:                 2.400 sec
+pure_newedges:                          849162
+distinct take time:                     2.495 secs
+compute take time:                      5.185 secs
+update Redis take time:                 1.326 sec
+Start UNION
+n_edges time take time:                 1.347 sec
+End UNION
+*step: step 24 take time:        8.123 sec
+
+
+************During step 25************
+old num:                                133394522
+coarest num:                            5805630
+generate new edges time:                 2.324 sec
+pure_newedges:                          755044
+distinct take time:                     2.763 secs
+compute take time:                      5.574 secs
+update Redis take time:                 1.586 sec
+Start UNION
+n_edges time take time:                 4.066 sec
+End UNION
+*step: step 25 take time:        11.242 sec
+
+
+************During step 26************
+old num:                                134149566
+coarest num:                            5237315
+generate new edges time:                 1.532 sec
+pure_newedges:                          686219
+distinct take time:                     1.448 secs
+compute take time:                      3.222 secs
+update Redis take time:                 0.309 sec
+Start UNION
+n_edges time take time:                 1.134 sec
+End UNION
+*step: step 26 take time:        4.684 sec
+
+
+************During step 27************
+old num:                                134835785
+coarest num:                            4837004
+generate new edges time:                 1.819 sec
+pure_newedges:                          594818
+distinct take time:                     1.905 secs
+compute take time:                      3.973 secs
+update Redis take time:                 0.608 sec
+Start UNION
+n_edges time take time:                 1.094 sec
+End UNION
+*step: step 27 take time:        5.696 sec
+
+
+************During step 28************
+old num:                                135430603
+coarest num:                            4081185
+generate new edges time:                 1.500 sec
+pure_newedges:                          474560
+distinct take time:                     2.037 secs
+compute take time:                      3.804 secs
+update Redis take time:                 0.977 sec
+Start UNION
+n_edges time take time:                 1.120 sec
+End UNION
+*step: step 28 take time:        5.921 sec
+
+
+************During step 29************
+old num:                                135905163
+coarest num:                            3192186
+generate new edges time:                 1.579 sec
+pure_newedges:                          369756
+distinct take time:                     2.328 secs
+compute take time:                      4.184 secs
+update Redis take time:                 1.146 sec
+Start UNION
+n_edges time take time:                 0.956 sec
+End UNION
+*step: step 29 take time:        6.313 sec
+
+
+************During step 30************
+old num:                                136274919
+coarest num:                            2514623
+generate new edges time:                 1.785 sec
+pure_newedges:                          291030
+distinct take time:                     2.597 secs
+compute take time:                      4.733 secs
+update Redis take time:                 1.443 sec
+Start UNION
+n_edges time take time:                 3.184 sec
+End UNION
+*step: step 30 take time:        9.388 sec
+
+
+************During step 31************
+old num:                                136565949
+coarest num:                            1981267
+generate new edges time:                 20.746 sec
+pure_newedges:                          213588
+distinct take time:                     1.160 secs
+compute take time:                      22.170 secs
+update Redis take time:                 0.157 sec
+Start UNION
+n_edges time take time:                 0.669 sec
+End UNION
+*step: step 31 take time:        23.016 sec
+
+
+************During step 32************
+old num:                                136779537
+coarest num:                            1441700
+generate new edges time:                 0.707 sec
+pure_newedges:                          144950
+distinct take time:                     1.437 secs
+compute take time:                      2.389 secs
+update Redis take time:                 0.402 sec
+Start UNION
+n_edges time take time:                 0.606 sec
+End UNION
+*step: step 32 take time:        3.418 sec
+
+
+************During step 33************
+old num:                                136924487
+coarest num:                            991519
+generate new edges time:                 0.886 sec
+pure_newedges:                          100732
+distinct take time:                     1.302 secs
+compute take time:                      2.445 secs
+update Redis take time:                 0.650 sec
+Start UNION
+n_edges time take time:                 0.534 sec
+End UNION
+*step: step 33 take time:        3.652 sec
+
+
+************During step 34************
+old num:                                137025219
+coarest num:                            675299
+generate new edges time:                 0.918 sec
+pure_newedges:                          73097
+distinct take time:                     1.531 secs
+compute take time:                      2.727 secs
+update Redis take time:                 0.828 sec
+Start UNION
+n_edges time take time:                 0.396 sec
+End UNION
+*step: step 34 take time:        3.973 sec
+
+
+************During step 35************
+old num:                                137098316
+coarest num:                            469058
+generate new edges time:                 1.034 sec
+pure_newedges:                          52439
+distinct take time:                     1.543 secs
+compute take time:                      2.872 secs
+update Redis take time:                 0.979 sec
+Start UNION
+n_edges time take time:                 2.515 sec
+End UNION
+*step: step 35 take time:        6.390 sec
+
+
+************During step 36************
+old num:                                137150755
+coarest num:                            329560
+generate new edges time:                 0.542 sec
+pure_newedges:                          37415
+distinct take time:                     0.647 secs
+compute take time:                      1.448 secs
+update Redis take time:                 0.140 sec
+Start UNION
+n_edges time take time:                 0.290 sec
+End UNION
+*step: step 36 take time:        1.898 sec
+
+
+************During step 37************
+old num:                                137188170
+coarest num:                            239730
+generate new edges time:                 0.328 sec
+pure_newedges:                          27257
+distinct take time:                     0.583 secs
+compute take time:                      1.138 secs
+update Redis take time:                 0.304 sec
+Start UNION
+n_edges time take time:                 0.295 sec
+End UNION
+*step: step 37 take time:        1.758 sec
+
+
+************During step 38************
+old num:                                137215427
+coarest num:                            172554
+generate new edges time:                 0.379 sec
+pure_newedges:                          20358
+distinct take time:                     0.568 secs
+compute take time:                      1.617 secs
+update Redis take time:                 0.322 sec
+Start UNION
+n_edges time take time:                 0.297 sec
+End UNION
+*step: step 38 take time:        2.258 sec
+
+
+************During step 39************
+old num:                                137235785
+coarest num:                            128054
+generate new edges time:                 0.471 sec
+pure_newedges:                          15821
+distinct take time:                     0.645 secs
+compute take time:                      1.430 secs
+update Redis take time:                 0.363 sec
+Start UNION
+n_edges time take time:                 0.265 sec
+End UNION
+*step: step 39 take time:        2.087 sec
+
+
+************During step 40************
+old num:                                137251606
+coarest num:                            96828
+generate new edges time:                 0.502 sec
+pure_newedges:                          12850
+distinct take time:                     0.645 secs
+compute take time:                      1.408 secs
+update Redis take time:                 0.435 sec
+Start UNION
+n_edges time take time:                 1.791 sec
+End UNION
+*step: step 40 take time:        3.660 sec
+
+
+************During step 41************
+old num:                                137264456
+coarest num:                            80598
+generate new edges time:                 0.534 sec
+pure_newedges:                          11544
+distinct take time:                     0.396 secs
+compute take time:                      1.173 secs
+update Redis take time:                 0.130 sec
+Start UNION
+n_edges time take time:                 0.210 sec
+End UNION
+*step: step 41 take time:        1.538 sec
+
+
+************During step 42************
+old num:                                137276000
+coarest num:                            75799
+generate new edges time:                 0.207 sec
+pure_newedges:                          10801
+distinct take time:                     0.380 secs
+compute take time:                      0.833 secs
+update Redis take time:                 0.153 sec
+Start UNION
+n_edges time take time:                 0.312 sec
+End UNION
+*step: step 42 take time:        1.324 sec
+
+
+************During step 43************
+old num:                                137286801
+coarest num:                            72757
+generate new edges time:                 0.242 sec
+pure_newedges:                          10144
+distinct take time:                     0.503 secs
+compute take time:                      0.989 secs
+update Redis take time:                 0.215 sec
+Start UNION
+n_edges time take time:                 0.254 sec
+End UNION
+*step: step 43 take time:        1.482 sec
+
+
+************During step 44************
+old num:                                137296945
+coarest num:                            69512
+generate new edges time:                 0.280 sec
+pure_newedges:                          9588
+distinct take time:                     0.439 secs
+compute take time:                      0.995 secs
+update Redis take time:                 0.257 sec
+Start UNION
+n_edges time take time:                 0.267 sec
+End UNION
+*step: step 44 take time:        1.549 sec
+
+
+************During step 45************
+old num:                                137306533
+coarest num:                            27974750
+generate new edges time:                 3.371 sec
+pure_newedges:                          70181
+distinct take time:                     1.825 secs
+compute take time:                      5.515 secs
+update Redis take time:                 0.333 sec
+Start UNION
+n_edges time take time:                 2.055 sec
+End UNION
+*step: step 45 take time:        7.927 sec
+
+
+************During step 46************
+old num:                                137376714
+coarest num:                            513521
+generate new edges time:                 0.561 sec
+pure_newedges:                          1101
+distinct take time:                     0.343 secs
+compute take time:                      1.131 secs
+update Redis take time:                 0.102 sec
+Start UNION
+n_edges time take time:                 0.200 sec
+End UNION
+*step: step 46 take time:        1.458 sec
+
+
+************During step 47************
+old num:                                137377815
+coarest num:                            1259714
+generate new edges time:                 0.257 sec
+pure_newedges:                          15081
+distinct take time:                     0.563 secs
+compute take time:                      1.200 secs
+update Redis take time:                 0.127 sec
+Start UNION
+n_edges time take time:                 0.312 sec
+End UNION
+*step: step 47 take time:        1.665 sec
+
+
+************During step 48************
+old num:                                137392896
+coarest num:                            92537
+generate new edges time:                 0.322 sec
+pure_newedges:                          645
+distinct take time:                     0.311 secs
+compute take time:                      0.937 secs
+update Redis take time:                 0.209 sec
+Start UNION
+n_edges time take time:                 0.248 sec
+End UNION
+*step: step 48 take time:        1.421 sec
+
+
+************During step 49************
+old num:                                137393541
+coarest num:                            95028
+generate new edges time:                 0.281 sec
+pure_newedges:                          10635
+distinct take time:                     0.492 secs
+compute take time:                      1.021 secs
+update Redis take time:                 0.247 sec
+Start UNION
+n_edges time take time:                 0.345 sec
+End UNION
+*step: step 49 take time:        1.644 sec
+
+
+************During step 50************
+old num:                                137404176
+coarest num:                            53417
+generate new edges time:                 0.387 sec
+pure_newedges:                          505
+distinct take time:                     0.400 secs
+compute take time:                      1.049 secs
+update Redis take time:                 0.283 sec
+Start UNION
+n_edges time take time:                 1.020 sec
+End UNION
+*step: step 50 take time:        2.495 sec
+
+
+************During step 51************
+old num:                                137404681
+coarest num:                            51584
+generate new edges time:                 0.595 sec
+pure_newedges:                          9331
+distinct take time:                     0.418 secs
+compute take time:                      1.249 secs
+update Redis take time:                 0.111 sec
+Start UNION
+n_edges time take time:                 0.297 sec
+End UNION
+*step: step 51 take time:        1.687 sec
+
+
+************During step 52************
+old num:                                137414012
+coarest num:                            926467
+generate new edges time:                 0.339 sec
+pure_newedges:                          9376
+distinct take time:                     1.070 secs
+compute take time:                      1.636 secs
+update Redis take time:                 0.166 sec
+Start UNION
+n_edges time take time:                 0.269 sec
+End UNION
+*step: step 52 take time:        2.100 sec
+
+
+************During step 53************
+old num:                                137423388
+coarest num:                            1510211
+generate new edges time:                 0.574 sec
+pure_newedges:                          5773
+distinct take time:                     1.296 secs
+compute take time:                      2.114 secs
+update Redis take time:                 0.335 sec
+Start UNION
+n_edges time take time:                 0.219 sec
+End UNION
+*step: step 53 take time:        2.696 sec
+
+
+************During step 54************
+old num:                                137429161
+coarest num:                            330155
+generate new edges time:                 0.659 sec
+pure_newedges:                          1560
+distinct take time:                     0.918 secs
+compute take time:                      1.834 secs
+update Redis take time:                 0.493 sec
+Start UNION
+n_edges time take time:                 0.263 sec
+End UNION
+*step: step 54 take time:        2.619 sec
+
+
+************During step 55************
+old num:                                137430721
+coarest num:                            151770
+generate new edges time:                 0.684 sec
+pure_newedges:                          1500
+distinct take time:                     0.921 secs
+compute take time:                      1.911 secs
+update Redis take time:                 0.570 sec
+Start UNION
+n_edges time take time:                 1.416 sec
+End UNION
+*step: step 55 take time:        3.926 sec
+
+
+************During step 56************
+old num:                                137432221
+coarest num:                            150000
+generate new edges time:                 0.629 sec
+pure_newedges:                          1500
+distinct take time:                     0.389 secs
+compute take time:                      1.363 secs
+update Redis take time:                 0.097 sec
+Start UNION
+n_edges time take time:                 0.188 sec
+End UNION
+*step: step 56 take time:        1.674 sec
+
+
+************During step 57************
+old num:                                137433721
+coarest num:                            150000
+generate new edges time:                 0.230 sec
+pure_newedges:                          1500
+distinct take time:                     0.602 secs
+compute take time:                      1.066 secs
+update Redis take time:                 0.147 sec
+Start UNION
+n_edges time take time:                 0.214 sec
+End UNION
+*step: step 57 take time:        1.453 sec
+
+
+************During step 58************
+old num:                                137435221
+coarest num:                            149790
+generate new edges time:                 0.255 sec
+pure_newedges:                          1480
+distinct take time:                     0.502 secs
+compute take time:                      1.009 secs
+update Redis take time:                 0.215 sec
+Start UNION
+n_edges time take time:                 0.264 sec
+End UNION
+*step: step 58 take time:        1.526 sec
+
+
+************During step 59************
+old num:                                137436701
+coarest num:                            144850
+generate new edges time:                 0.359 sec
+pure_newedges:                          1132
+distinct take time:                     0.666 secs
+compute take time:                      1.280 secs
+update Redis take time:                 0.256 sec
+Start UNION
+n_edges time take time:                 0.265 sec
+End UNION
+*step: step 59 take time:        1.830 sec
+
+
+************During step 60************
+old num:                                137437833
+coarest num:                            105748
+generate new edges time:                 0.340 sec
+pure_newedges:                          800
+distinct take time:                     0.524 secs
+compute take time:                      1.190 secs
+update Redis take time:                 0.306 sec
+Start UNION
+n_edges time take time:                 1.075 sec
+End UNION
+*step: step 60 take time:        2.603 sec
+
+
+************During step 61************
+old num:                                137438633
+coarest num:                            80000
+generate new edges time:                 0.649 sec
+pure_newedges:                          800
+distinct take time:                     0.505 secs
+compute take time:                      1.391 secs
+update Redis take time:                 0.098 sec
+Start UNION
+n_edges time take time:                 0.229 sec
+End UNION
+*step: step 61 take time:        1.783 sec
+
+
+************During step 62************
+old num:                                137439433
+coarest num:                            80000
+generate new edges time:                 0.230 sec
+pure_newedges:                          800
+distinct take time:                     0.330 secs
+compute take time:                      0.784 secs
+update Redis take time:                 0.140 sec
+Start UNION
+n_edges time take time:                 0.247 sec
+End UNION
+*step: step 62 take time:        1.202 sec
+
+
+************During step 63************
+old num:                                137440233
+coarest num:                            80000
+generate new edges time:                 0.194 sec
+pure_newedges:                          800
+distinct take time:                     0.479 secs
+compute take time:                      0.914 secs
+update Redis take time:                 0.166 sec
+Start UNION
+n_edges time take time:                 0.212 sec
+End UNION
+*step: step 63 take time:        1.329 sec
+
+
+************During step 64************
+old num:                                137441033
+coarest num:                            80000
+generate new edges time:                 0.209 sec
+pure_newedges:                          800
+distinct take time:                     0.567 secs
+compute take time:                      1.037 secs
+update Redis take time:                 0.200 sec
+Start UNION
+n_edges time take time:                 0.267 sec
+End UNION
+*step: step 64 take time:        1.532 sec
+
+
+************During step 65************
+old num:                                137441833
+coarest num:                            80000
+generate new edges time:                 0.279 sec
+pure_newedges:                          800
+distinct take time:                     0.525 secs
+compute take time:                      1.063 secs
+update Redis take time:                 0.231 sec
+Start UNION
+n_edges time take time:                 1.686 sec
+End UNION
+*step: step 65 take time:        3.010 sec
+
+
+************During step 66************
+old num:                                137442633
+coarest num:                            80000
+generate new edges time:                 0.638 sec
+pure_newedges:                          800
+distinct take time:                     0.302 secs
+compute take time:                      1.249 secs
+update Redis take time:                 0.100 sec
+Start UNION
+n_edges time take time:                 0.186 sec
+End UNION
+*step: step 66 take time:        1.561 sec
+
+
+************During step 67************
+old num:                                137443433
+coarest num:                            80000
+generate new edges time:                 0.156 sec
+pure_newedges:                          800
+distinct take time:                     0.578 secs
+compute take time:                      0.960 secs
+update Redis take time:                 0.133 sec
+Start UNION
+n_edges time take time:                 0.201 sec
+End UNION
+*step: step 67 take time:        1.365 sec
+
+
+************During step 68************
+old num:                                137444233
+coarest num:                            80000
+generate new edges time:                 0.170 sec
+pure_newedges:                          800
+distinct take time:                     0.423 secs
+compute take time:                      0.844 secs
+update Redis take time:                 0.179 sec
+Start UNION
+n_edges time take time:                 0.202 sec
+End UNION
+*step: step 68 take time:        1.252 sec
+
+
+************During step 69************
+old num:                                137445033
+coarest num:                            80000
+generate new edges time:                 0.233 sec
+pure_newedges:                          800
+distinct take time:                     0.487 secs
+compute take time:                      0.963 secs
+update Redis take time:                 0.255 sec
+Start UNION
+n_edges time take time:                 0.360 sec
+End UNION
+*step: step 69 take time:        1.607 sec
+
+
+************During step 70************
+old num:                                137445833
+coarest num:                            80000
+generate new edges time:                 0.236 sec
+pure_newedges:                          800
+distinct take time:                     0.511 secs
+compute take time:                      1.003 secs
+update Redis take time:                 0.226 sec
+Start UNION
+n_edges time take time:                 19.725 sec
+End UNION
+*step: step 70 take time:        20.985 sec
+
+
+************During step 71************
+old num:                                137446633
+coarest num:                            80000
+generate new edges time:                 0.577 sec
+pure_newedges:                          800
+distinct take time:                     0.396 secs
+compute take time:                      1.192 secs
+update Redis take time:                 0.142 sec
+Start UNION
+n_edges time take time:                 0.202 sec
+End UNION
+*step: step 71 take time:        1.565 sec
+
+
+************During step 72************
+old num:                                137447433
+coarest num:                            80000
+generate new edges time:                 0.206 sec
+pure_newedges:                          800
+distinct take time:                     0.335 secs
+compute take time:                      0.783 secs
+update Redis take time:                 0.132 sec
+Start UNION
+n_edges time take time:                 0.201 sec
+End UNION
+*step: step 72 take time:        1.143 sec
+
+
+************During step 73************
+old num:                                137448233
+coarest num:                            80000
+generate new edges time:                 0.284 sec
+pure_newedges:                          800
+distinct take time:                     0.408 secs
+compute take time:                      0.975 secs
+update Redis take time:                 0.157 sec
+Start UNION
+n_edges time take time:                 0.240 sec
+End UNION
+*step: step 73 take time:        1.400 sec
+
+
+************During step 74************
+old num:                                137449033
+coarest num:                            80000
+generate new edges time:                 0.215 sec
+pure_newedges:                          800
+distinct take time:                     17.976 secs
+compute take time:                      18.456 secs
+update Redis take time:                 0.198 sec
+Start UNION
+n_edges time take time:                 0.258 sec
+End UNION
+*step: step 74 take time:        18.941 sec
+
+
+************During step 75************
+old num:                                137449833
+coarest num:                            80000
+generate new edges time:                 0.304 sec
+pure_newedges:                          800
+distinct take time:                     0.536 secs
+compute take time:                      1.089 secs
+update Redis take time:                 0.236 sec
+Start UNION
+n_edges time take time:                 0.963 sec
+End UNION
+*step: step 75 take time:        2.317 sec
+
+
+************During step 76************
+old num:                                137450633
+coarest num:                            80000
+generate new edges time:                 0.590 sec
+pure_newedges:                          800
+distinct take time:                     0.311 secs
+compute take time:                      1.135 secs
+update Redis take time:                 0.097 sec
+Start UNION
+n_edges time take time:                 0.209 sec
+End UNION
+*step: step 76 take time:        1.471 sec
+
+
+************During step 77************
+old num:                                137451433
+coarest num:                            80000
+generate new edges time:                 0.160 sec
+pure_newedges:                          800
+distinct take time:                     0.295 secs
+compute take time:                      0.681 secs
+update Redis take time:                 0.254 sec
+Start UNION
+n_edges time take time:                 0.282 sec
+End UNION
+*step: step 77 take time:        1.267 sec
+
+
+************During step 78************
+old num:                                137452233
+coarest num:                            80000
+generate new edges time:                 0.209 sec
+pure_newedges:                          800
+distinct take time:                     0.438 secs
+compute take time:                      0.893 secs
+update Redis take time:                 0.174 sec
+Start UNION
+n_edges time take time:                 0.238 sec
+End UNION
+*step: step 78 take time:        1.333 sec
+
+
+************During step 79************
+old num:                                137453033
+coarest num:                            80000
+generate new edges time:                 0.219 sec
+pure_newedges:                          800
+distinct take time:                     0.392 secs
+compute take time:                      0.895 secs
+update Redis take time:                 0.193 sec
+Start UNION
+n_edges time take time:                 0.286 sec
+End UNION
+*step: step 79 take time:        1.405 sec
+
+
+************During step 80************
+old num:                                137453833
+coarest num:                            80000
+generate new edges time:                 0.264 sec
+pure_newedges:                          800
+distinct take time:                     0.496 secs
+compute take time:                      1.005 secs
+update Redis take time:                 0.234 sec
+Start UNION
+n_edges time take time:                 1.004 sec
+End UNION
+*step: step 80 take time:        2.273 sec
+
+
+************During step 81************
+old num:                                137454633
+coarest num:                            80000
+generate new edges time:                 0.528 sec
+pure_newedges:                          800
+distinct take time:                     0.270 secs
+compute take time:                      1.117 secs
+update Redis take time:                 0.093 sec
+Start UNION
+n_edges time take time:                 0.194 sec
+End UNION
+*step: step 81 take time:        1.433 sec
+
+
+************During step 82************
+old num:                                137455433
+coarest num:                            80000
+generate new edges time:                 0.287 sec
+pure_newedges:                          800
+distinct take time:                     0.336 secs
+compute take time:                      0.951 secs
+update Redis take time:                 0.146 sec
+Start UNION
+n_edges time take time:                 0.220 sec
+End UNION
+*step: step 82 take time:        1.343 sec
+
+
+************During step 83************
+old num:                                137456233
+coarest num:                            80000
+generate new edges time:                 0.224 sec
+pure_newedges:                          800
+distinct take time:                     0.468 secs
+compute take time:                      0.930 secs
+update Redis take time:                 0.168 sec
+Start UNION
+n_edges time take time:                 0.213 sec
+End UNION
+*step: step 83 take time:        1.338 sec
+
+
+************During step 84************
+old num:                                137457033
+coarest num:                            80000
+generate new edges time:                 0.237 sec
+pure_newedges:                          800
+distinct take time:                     0.443 secs
+compute take time:                      0.920 secs
+update Redis take time:                 0.209 sec
+Start UNION
+n_edges time take time:                 0.213 sec
+End UNION
+*step: step 84 take time:        1.369 sec
+
+
+************During step 85************
+old num:                                137457833
+coarest num:                            80000
+generate new edges time:                 0.245 sec
+pure_newedges:                          800
+distinct take time:                     0.500 secs
+compute take time:                      0.997 secs
+update Redis take time:                 0.238 sec
+Start UNION
+n_edges time take time:                 0.982 sec
+End UNION
+*step: step 85 take time:        2.247 sec
+
+
+************During step 86************
+old num:                                137458633
+coarest num:                            80000
+generate new edges time:                 0.627 sec
+pure_newedges:                          800
+distinct take time:                     0.334 secs
+compute take time:                      1.186 secs
+update Redis take time:                 0.099 sec
+Start UNION
+n_edges time take time:                 0.205 sec
+End UNION
+*step: step 86 take time:        1.526 sec
+
+
+************During step 87************
+old num:                                137459433
+coarest num:                            80000
+generate new edges time:                 0.263 sec
+pure_newedges:                          800
+distinct take time:                     0.349 secs
+compute take time:                      0.917 secs
+update Redis take time:                 0.129 sec
+Start UNION
+n_edges time take time:                 0.325 sec
+End UNION
+*step: step 87 take time:        1.415 sec
+
+
+************During step 88************
+old num:                                137460233
+coarest num:                            80000
+generate new edges time:                 0.210 sec
+pure_newedges:                          800
+distinct take time:                     0.352 secs
+compute take time:                      0.833 secs
+update Redis take time:                 0.182 sec
+Start UNION
+n_edges time take time:                 0.200 sec
+End UNION
+*step: step 88 take time:        1.245 sec
+
+
+************During step 89************
+old num:                                137461033
+coarest num:                            80000
+generate new edges time:                 0.285 sec
+pure_newedges:                          800
+distinct take time:                     0.426 secs
+compute take time:                      0.955 secs
+update Redis take time:                 0.296 sec
+Start UNION
+n_edges time take time:                 0.224 sec
+End UNION
+*step: step 89 take time:        1.507 sec
+
+
+************During step 90************
+old num:                                137461833
+coarest num:                            80000
+generate new edges time:                 0.262 sec
+pure_newedges:                          800
+distinct take time:                     0.393 secs
+compute take time:                      0.959 secs
+update Redis take time:                 0.276 sec
+Start UNION
+n_edges time take time:                 1.017 sec
+End UNION
+*step: step 90 take time:        2.295 sec
+
+
+************During step 91************
+old num:                                137462633
+coarest num:                            80000
+generate new edges time:                 0.570 sec
+pure_newedges:                          800
+distinct take time:                     0.347 secs
+compute take time:                      1.140 secs
+update Redis take time:                 0.103 sec
+Start UNION
+n_edges time take time:                 0.183 sec
+End UNION
+*step: step 91 take time:        1.467 sec
+
+
+************During step 92************
+old num:                                137463433
+coarest num:                            80000
+generate new edges time:                 0.150 sec
+pure_newedges:                          800
+distinct take time:                     0.416 secs
+compute take time:                      0.819 secs
+update Redis take time:                 0.172 sec
+Start UNION
+n_edges time take time:                 0.251 sec
+End UNION
+*step: step 92 take time:        1.284 sec
+
+
+************During step 93************
+old num:                                137464233
+coarest num:                            80000
+generate new edges time:                 0.188 sec
+pure_newedges:                          800
+distinct take time:                     0.413 secs
+compute take time:                      0.842 secs
+update Redis take time:                 0.180 sec
+Start UNION
+n_edges time take time:                 0.196 sec
+End UNION
+*step: step 93 take time:        1.248 sec
+
+
+************During step 94************
+old num:                                137465033
+coarest num:                            80000
+generate new edges time:                 0.213 sec
+pure_newedges:                          800
+distinct take time:                     0.467 secs
+compute take time:                      0.935 secs
+update Redis take time:                 0.217 sec
+Start UNION
+n_edges time take time:                 0.211 sec
+End UNION
+*step: step 94 take time:        1.391 sec
+
+
+************During step 95************
+old num:                                137465833
+coarest num:                            80000
+generate new edges time:                 0.294 sec
+pure_newedges:                          800
+distinct take time:                     0.464 secs
+compute take time:                      1.022 secs
+update Redis take time:                 0.242 sec
+Start UNION
+n_edges time take time:                 0.986 sec
+End UNION
+*step: step 95 take time:        2.279 sec
+
+
+************During step 96************
+old num:                                137466633
+coarest num:                            80000
+generate new edges time:                 0.560 sec
+pure_newedges:                          800
+distinct take time:                     0.323 secs
+compute take time:                      1.107 secs
+update Redis take time:                 0.102 sec
+Start UNION
+n_edges time take time:                 0.182 sec
+End UNION
+*step: step 96 take time:        1.422 sec
+
+
+************During step 97************
+old num:                                137467433
+coarest num:                            80000
+generate new edges time:                 0.151 sec
+pure_newedges:                          800
+distinct take time:                     0.450 secs
+compute take time:                      0.834 secs
+update Redis take time:                 0.141 sec
+Start UNION
+n_edges time take time:                 0.209 sec
+End UNION
+*step: step 97 take time:        1.219 sec
+
+
+************During step 98************
+old num:                                137468233
+coarest num:                            80000
+generate new edges time:                 0.220 sec
+pure_newedges:                          800
+distinct take time:                     0.616 secs
+compute take time:                      1.077 secs
+update Redis take time:                 0.190 sec
+Start UNION
+n_edges time take time:                 0.259 sec
+End UNION
+*step: step 98 take time:        1.557 sec
+
+
+************During step 99************
+old num:                                137469033
+coarest num:                            80000
+generate new edges time:                 0.218 sec
+pure_newedges:                          800
+distinct take time:                     0.387 secs
+compute take time:                      0.857 secs
+update Redis take time:                 0.198 sec
+Start UNION
+n_edges time take time:                 0.220 sec
+End UNION
+*step: step 99 take time:        1.305 sec
+
+
+************During step 100************
+old num:                                137469833
+coarest num:                            80000
+generate new edges time:                 0.333 sec
+pure_newedges:                          800
+distinct take time:                     0.412 secs
+compute take time:                      0.992 secs
+update Redis take time:                 0.243 sec
+Start UNION
+n_edges time take time:                 1.016 sec
+End UNION
+*step: step 100 take time:       2.281 sec
+
+
+************During step 101************
+old num:                                137470633
+coarest num:                            80000
+generate new edges time:                 0.545 sec
+pure_newedges:                          800
+distinct take time:                     0.314 secs
+compute take time:                      1.083 secs
+update Redis take time:                 0.153 sec
+Start UNION
+n_edges time take time:                 0.202 sec
+End UNION
+*step: step 101 take time:       1.490 sec
+
+
+************During step 102************
+old num:                                137471433
+coarest num:                            80000
+generate new edges time:                 0.177 sec
+pure_newedges:                          800
+distinct take time:                     0.420 secs
+compute take time:                      0.822 secs
+update Redis take time:                 0.130 sec
+Start UNION
+n_edges time take time:                 0.199 sec
+End UNION
+*step: step 102 take time:       1.179 sec
+
+
+************During step 103************
+old num:                                137472233
+coarest num:                            80000
+generate new edges time:                 0.220 sec
+pure_newedges:                          800
+distinct take time:                     0.345 secs
+compute take time:                      0.791 secs
+update Redis take time:                 0.169 sec
+Start UNION
+n_edges time take time:                 0.212 sec
+End UNION
+*step: step 103 take time:       1.199 sec
+
+
+************During step 104************
+old num:                                137473033
+coarest num:                            80000
+generate new edges time:                 0.211 sec
+pure_newedges:                          800
+distinct take time:                     0.363 secs
+compute take time:                      0.818 secs
+update Redis take time:                 0.225 sec
+Start UNION
+n_edges time take time:                 0.365 sec
+End UNION
+*step: step 104 take time:       1.442 sec
+
+
+************During step 105************
+old num:                                137473833
+coarest num:                            80000
+generate new edges time:                 0.248 sec
+pure_newedges:                          800
+distinct take time:                     0.461 secs
+compute take time:                      0.960 secs
+update Redis take time:                 0.240 sec
+Start UNION
+n_edges time take time:                 1.038 sec
+End UNION
+*step: step 105 take time:       2.267 sec
+
+
+************During step 106************
+old num:                                137474633
+coarest num:                            80000
+generate new edges time:                 0.562 sec
+pure_newedges:                          800
+distinct take time:                     0.268 secs
+compute take time:                      1.059 secs
+update Redis take time:                 0.112 sec
+Start UNION
+n_edges time take time:                 0.193 sec
+End UNION
+*step: step 106 take time:       1.396 sec
+
+
+************During step 107************
+old num:                                137475433
+coarest num:                            80000
+generate new edges time:                 0.198 sec
+pure_newedges:                          800
+distinct take time:                     0.334 secs
+compute take time:                      0.753 secs
+update Redis take time:                 0.134 sec
+Start UNION
+n_edges time take time:                 0.251 sec
+End UNION
+*step: step 107 take time:       1.168 sec
+
+
+************During step 108************
+old num:                                137476233
+coarest num:                            80000
+generate new edges time:                 0.203 sec
+pure_newedges:                          800
+distinct take time:                     0.422 secs
+compute take time:                      0.974 secs
+update Redis take time:                 0.164 sec
+Start UNION
+n_edges time take time:                 0.220 sec
+End UNION
+*step: step 108 take time:       1.387 sec
+
+
+************During step 109************
+old num:                                137477033
+coarest num:                            80000
+generate new edges time:                 0.210 sec
+pure_newedges:                          800
+distinct take time:                     0.478 secs
+compute take time:                      0.959 secs
+update Redis take time:                 0.211 sec
+Start UNION
+n_edges time take time:                 0.218 sec
+End UNION
+*step: step 109 take time:       1.416 sec
+
+
+************During step 110************
+old num:                                137477833
+coarest num:                            80000
+generate new edges time:                 0.243 sec
+pure_newedges:                          800
+distinct take time:                     0.479 secs
+compute take time:                      0.967 secs
+update Redis take time:                 0.235 sec
+Start UNION
+n_edges time take time:                 0.995 sec
+End UNION
+*step: step 110 take time:       2.233 sec
+
+
+************During step 111************
+old num:                                137478633
+coarest num:                            103132
+generate new edges time:                 0.598 sec
+pure_newedges:                          630
+distinct take time:                     0.360 secs
+compute take time:                      1.246 secs
+update Redis take time:                 0.109 sec
+Start UNION
+n_edges time take time:                 0.175 sec
+End UNION
+*step: step 111 take time:       1.555 sec
+
+
+************During step 112************
+old num:                                137479263
+coarest num:                            65433
+generate new edges time:                 0.179 sec
+pure_newedges:                          0
+distinct take time:                     0.235 secs
+compute take time:                      0.634 secs
+update Redis take time:                 0.136 sec
+Start UNION
+n_edges time take time:                 0.179 sec
+End UNION
+*step: step 112 take time:       0.976 sec
+
+final edges count():                            137479263
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@      Graspan End at 2018-04-18 20:23:19      @@
+compute take time 657.500310859 sec
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Please confirm to end compute!

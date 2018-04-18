@@ -1,0 +1,1536 @@
+At STEP 12, partition 0|| origin_formedges: 42874 ||join take time: normal, REPARJOIN0.032305749REPARJOIN secsQuery Redis for edges: 	42874,	take time: 	REPARREDIS1.653REPARREDIS sec, 	res_edges:             	42394
+
+At STEP 12, partition 16|| origin_formedges: 38822 ||join take time: normal, REPARJOIN0.02955894REPARJOIN secsQuery Redis for edges: 	38822,	take time: 	REPARREDIS0.607REPARREDIS sec, 	res_edges:             	38182
+
+At STEP 12, partition 32|| origin_formedges: 39085 ||join take time: normal, REPARJOIN0.030372275REPARJOIN secsQuery Redis for edges: 	39085,	take time: 	REPARREDIS1.870REPARREDIS sec, 	res_edges:             	37773
+
+At STEP 12, partition 48|| origin_formedges: 37353 ||join take time: normal, REPARJOIN0.030951868REPARJOIN secsQuery Redis for edges: 	37353,	take time: 	REPARREDIS3.477REPARREDIS sec, 	res_edges:             	36402
+
+At STEP 12, partition 64|| origin_formedges: 38587 ||join take time: normal, REPARJOIN0.03016093REPARJOIN secsQuery Redis for edges: 	38587,	take time: 	REPARREDIS3.518REPARREDIS sec, 	res_edges:             	37721
+
+At STEP 12, partition 80|| origin_formedges: 37285 ||join take time: normal, REPARJOIN0.039381589REPARJOIN secsQuery Redis for edges: 	37285,	take time: 	REPARREDIS1.630REPARREDIS sec, 	res_edges:             	36991
+
+At STEP 12, partition 11|| origin_formedges: 32824 ||join take time: normal, REPARJOIN0.042491743REPARJOIN secsQuery Redis for edges: 	32824,	take time: 	REPARREDIS3.363REPARREDIS sec, 	res_edges:             	32266
+
+At STEP 12, partition 96|| origin_formedges: 43857 ||join take time: normal, REPARJOIN0.030751976REPARJOIN secsQuery Redis for edges: 	43857,	take time: 	REPARREDIS3.419REPARREDIS sec, 	res_edges:             	43433
+
+At STEP 12, partition 27|| origin_formedges: 38399 ||join take time: normal, REPARJOIN0.034907688REPARJOIN secsQuery Redis for edges: 	38399,	take time: 	REPARREDIS0.615REPARREDIS sec, 	res_edges:             	38144
+
+At STEP 12, partition 112|| origin_formedges: 43453 ||join take time: normal, REPARJOIN0.030482865REPARJOIN secsQuery Redis for edges: 	43453,	take time: 	REPARREDIS3.480REPARREDIS sec, 	res_edges:             	43293
+
+At STEP 12, partition 43|| origin_formedges: 42143 ||join take time: normal, REPARJOIN0.039572468REPARJOIN secsQuery Redis for edges: 	42143,	take time: 	REPARREDIS2.634REPARREDIS sec, 	res_edges:             	41513
+
+At STEP 12, partition 6|| origin_formedges: 39121 ||join take time: normal, REPARJOIN0.036217187REPARJOIN secsQuery Redis for edges: 	39121,	take time: 	REPARREDIS2.421REPARREDIS sec, 	res_edges:             	38717
+
+At STEP 12, partition 128|| origin_formedges: 46966 ||join take time: normal, REPARJOIN0.0314457REPARJOIN secsQuery Redis for edges: 	46966,	take time: 	REPARREDIS3.479REPARREDIS sec, 	res_edges:             	46666
+
+At STEP 12, partition 144|| origin_formedges: 45032 ||join take time: normal, REPARJOIN0.0304618REPARJOIN secsQuery Redis for edges: 	45032,	take time: 	REPARREDIS3.419REPARREDIS sec, 	res_edges:             	44180
+
+At STEP 12, partition 22|| origin_formedges: 40778 ||join take time: normal, REPARJOIN0.035306035REPARJOIN secsQuery Redis for edges: 	40778,	take time: 	REPARREDIS1.813REPARREDIS sec, 	res_edges:             	40443
+
+At STEP 12, partition 59|| origin_formedges: 36194 ||join take time: normal, REPARJOIN0.043079244REPARJOIN secsQuery Redis for edges: 	36194,	take time: 	REPARREDIS2.818REPARREDIS sec, 	res_edges:             	35918
+
+At STEP 12, partition 38|| origin_formedges: 38973 ||join take time: normal, REPARJOIN0.034644137REPARJOIN secsQuery Redis for edges: 	38973,	take time: 	REPARREDIS3.415REPARREDIS sec, 	res_edges:             	38082
+
+At STEP 12, partition 54|| origin_formedges: 38943 ||join take time: normal, REPARJOIN0.034655042REPARJOIN secsQuery Redis for edges: 	38943,	take time: 	REPARREDIS3.475REPARREDIS sec, 	res_edges:             	35823
+
+At STEP 12, partition 70|| origin_formedges: 37845 ||join take time: normal, REPARJOIN0.035297218REPARJOIN secsQuery Redis for edges: 	37845,	take time: 	REPARREDIS3.363REPARREDIS sec, 	res_edges:             	35922
+
+At STEP 12, partition 86|| origin_formedges: 33791 ||join take time: normal, REPARJOIN0.034600441REPARJOIN secsQuery Redis for edges: 	33791,	take time: 	REPARREDIS0.612REPARREDIS sec, 	res_edges:             	33315
+
+At STEP 12, partition 102|| origin_formedges: 43728 ||join take time: normal, REPARJOIN0.035018669REPARJOIN secsQuery Redis for edges: 	43728,	take time: 	REPARREDIS2.838REPARREDIS sec, 	res_edges:             	42653
+
+At STEP 12, partition 160|| origin_formedges: 47742 ||join take time: normal, REPARJOIN0.032321243REPARJOIN secsQuery Redis for edges: 	47742,	take time: 	REPARREDIS3.405REPARREDIS sec, 	res_edges:             	46644
+
+At STEP 12, partition 118|| origin_formedges: 41642 ||join take time: normal, REPARJOIN0.034770164REPARJOIN secsQuery Redis for edges: 	41642,	take time: 	REPARREDIS3.361REPARREDIS sec, 	res_edges:             	41298
+
+At STEP 12, partition 134|| origin_formedges: 39198 ||join take time: normal, REPARJOIN0.034472533REPARJOIN secsQuery Redis for edges: 	39198,	take time: 	REPARREDIS0.653REPARREDIS sec, 	res_edges:             	38654
+
+At STEP 12, partition 150|| origin_formedges: 41886 ||join take time: normal, REPARJOIN0.035145633REPARJOIN secsQuery Redis for edges: 	41886,	take time: 	REPARREDIS2.681REPARREDIS sec, 	res_edges:             	41613
+
+At STEP 12, partition 176|| origin_formedges: 39088 ||join take time: normal, REPARJOIN0.030345131REPARJOIN secsQuery Redis for edges: 	39088,	take time: 	REPARREDIS3.421REPARREDIS sec, 	res_edges:             	38000
+
+At STEP 12, partition 166|| origin_formedges: 40164 ||join take time: normal, REPARJOIN0.035140362REPARJOIN secsQuery Redis for edges: 	40164,	take time: 	REPARREDIS1.268REPARREDIS sec, 	res_edges:             	39797
+
+At STEP 12, partition 182|| origin_formedges: 38043 ||join take time: normal, REPARJOIN0.034573466REPARJOIN secsQuery Redis for edges: 	38043,	take time: 	REPARREDIS0.612REPARREDIS sec, 	res_edges:             	37397
+
+At STEP 12, partition 5|| origin_formedges: 34407 ||join take time: normal, REPARJOIN0.032648019REPARJOIN secsQuery Redis for edges: 	34407,	take time: 	REPARREDIS0.616REPARREDIS sec, 	res_edges:             	34089
+
+At STEP 12, partition 192|| origin_formedges: 36083 ||join take time: normal, REPARJOIN0.030022367REPARJOIN secsQuery Redis for edges: 	36083,	take time: 	REPARREDIS0.617REPARREDIS sec, 	res_edges:             	33193
+
+At STEP 12, partition 198|| origin_formedges: 39650 ||join take time: normal, REPARJOIN0.034889379REPARJOIN secsQuery Redis for edges: 	39650,	take time: 	REPARREDIS0.612REPARREDIS sec, 	res_edges:             	39030
+
+At STEP 12, partition 21|| origin_formedges: 37278 ||join take time: normal, REPARJOIN0.038778817REPARJOIN secsQuery Redis for edges: 	37278,	take time: 	REPARREDIS3.277REPARREDIS sec, 	res_edges:             	36427
+
+At STEP 12, partition 37|| origin_formedges: 43802 ||join take time: normal, REPARJOIN0.034580647REPARJOIN secsQuery Redis for edges: 	43802,	take time: 	REPARREDIS3.412REPARREDIS sec, 	res_edges:             	43209
+
+At STEP 12, partition 53|| origin_formedges: 36935 ||join take time: normal, REPARJOIN0.033926188REPARJOIN secsQuery Redis for edges: 	36935,	take time: 	REPARREDIS2.147REPARREDIS sec, 	res_edges:             	36320
+
+At STEP 12, partition 214|| origin_formedges: 33758 ||join take time: normal, REPARJOIN0.034753226REPARJOIN secsQuery Redis for edges: 	33758,	take time: 	REPARREDIS0.611REPARREDIS sec, 	res_edges:             	33167
+
+At STEP 12, partition 230|| origin_formedges: 37863 ||join take time: normal, REPARJOIN0.035133158REPARJOIN secsQuery Redis for edges: 	37863,	take time: 	REPARREDIS0.632REPARREDIS sec, 	res_edges:             	37206
+
+At STEP 12, partition 69|| origin_formedges: 41701 ||join take time: normal, REPARJOIN0.033809769REPARJOIN secsQuery Redis for edges: 	41701,	take time: 	REPARREDIS2.146REPARREDIS sec, 	res_edges:             	41242
+
+At STEP 12, partition 85|| origin_formedges: 35497 ||join take time: normal, REPARJOIN0.033344045REPARJOIN secsQuery Redis for edges: 	35497,	take time: 	REPARREDIS2.144REPARREDIS sec, 	res_edges:             	34914
+
+At STEP 12, partition 246|| origin_formedges: 37748 ||join take time: normal, REPARJOIN0.035016757REPARJOIN secsQuery Redis for edges: 	37748,	take time: 	REPARREDIS3.475REPARREDIS sec, 	res_edges:             	37610
+
+At STEP 12, partition 101|| origin_formedges: 35886 ||join take time: normal, REPARJOIN0.034041391REPARJOIN secsQuery Redis for edges: 	35886,	take time: 	REPARREDIS1.866REPARREDIS sec, 	res_edges:             	35553
+
+At STEP 12, partition 117|| origin_formedges: 40987 ||join take time: normal, REPARJOIN0.033906349REPARJOIN secsQuery Redis for edges: 	40987,	take time: 	REPARREDIS3.360REPARREDIS sec, 	res_edges:             	40590
+
+At STEP 12, partition 262|| origin_formedges: 36943 ||join take time: normal, REPARJOIN0.034928704REPARJOIN secsQuery Redis for edges: 	36943,	take time: 	REPARREDIS2.422REPARREDIS sec, 	res_edges:             	35665
+
+At STEP 12, partition 278|| origin_formedges: 40573 ||join take time: normal, REPARJOIN0.035027444REPARJOIN secsQuery Redis for edges: 	40573,	take time: 	REPARREDIS0.654REPARREDIS sec, 	res_edges:             	40049
+
+At STEP 12, partition 133|| origin_formedges: 42816 ||join take time: normal, REPARJOIN0.033941361REPARJOIN secsQuery Redis for edges: 	42816,	take time: 	REPARREDIS3.472REPARREDIS sec, 	res_edges:             	42056
+
+At STEP 12, partition 294|| origin_formedges: 45859 ||join take time: normal, REPARJOIN0.049093096REPARJOIN secsQuery Redis for edges: 	45859,	take time: 	REPARREDIS3.502REPARREDIS sec, 	res_edges:             	42836
+
+At STEP 12, partition 149|| origin_formedges: 44159 ||join take time: normal, REPARJOIN0.034533947REPARJOIN secsQuery Redis for edges: 	44159,	take time: 	REPARREDIS3.413REPARREDIS sec, 	res_edges:             	43007
+
+At STEP 12, partition 310|| origin_formedges: 50107 ||join take time: normal, REPARJOIN0.036227547REPARJOIN secsQuery Redis for edges: 	50107,	take time: 	REPARREDIS3.363REPARREDIS sec, 	res_edges:             	48287
+
+At STEP 12, partition 326|| origin_formedges: 42235 ||join take time: normal, REPARJOIN0.037109738REPARJOIN secsQuery Redis for edges: 	42235,	take time: 	REPARREDIS2.417REPARREDIS sec, 	res_edges:             	39711
+
+At STEP 12, partition 342|| origin_formedges: 40994 ||join take time: normal, REPARJOIN0.035595507REPARJOIN secsQuery Redis for edges: 	40994,	take time: 	REPARREDIS2.683REPARREDIS sec, 	res_edges:             	40397
+
+At STEP 12, partition 2|| origin_formedges: 40134 ||join take time: normal, REPARJOIN0.03894563REPARJOIN secsQuery Redis for edges: 	40134,	take time: 	REPARREDIS0.649REPARREDIS sec, 	res_edges:             	39766
+
+At STEP 12, partition 18|| origin_formedges: 39873 ||join take time: normal, REPARJOIN0.051560191REPARJOIN secsQuery Redis for edges: 	39873,	take time: 	REPARREDIS3.266REPARREDIS sec, 	res_edges:             	38947
+
+At STEP 12, partition 34|| origin_formedges: 40928 ||join take time: normal, REPARJOIN0.057719468REPARJOIN secsQuery Redis for edges: 	40928,	take time: 	REPARREDIS3.147REPARREDIS sec, 	res_edges:             	40146
+
+At STEP 12, partition 358|| origin_formedges: 39187 ||join take time: normal, REPARJOIN0.036141972REPARJOIN secsQuery Redis for edges: 	39187,	take time: 	REPARREDIS3.514REPARREDIS sec, 	res_edges:             	39005
+
+At STEP 12, partition 75|| origin_formedges: 44111 ||join take time: normal, REPARJOIN0.053223387REPARJOIN secsQuery Redis for edges: 	44111,	take time: 	REPARREDIS3.499REPARREDIS sec, 	res_edges:             	41686
+
+At STEP 12, partition 91|| origin_formedges: 29771 ||join take time: normal, REPARJOIN0.054541084REPARJOIN secsQuery Redis for edges: 	29771,	take time: 	REPARREDIS3.457REPARREDIS sec, 	res_edges:             	29633
+
+At STEP 12, partition 374|| origin_formedges: 35173 ||join take time: normal, REPARJOIN0.035015094REPARJOIN secsQuery Redis for edges: 	35173,	take time: 	REPARREDIS0.612REPARREDIS sec, 	res_edges:             	34849
+
+At STEP 12, partition 107|| origin_formedges: 41854 ||join take time: normal, REPARJOIN0.043499185REPARJOIN secsQuery Redis for edges: 	41854,	take time: 	REPARREDIS3.468REPARREDIS sec, 	res_edges:             	41564
+
+At STEP 12, partition 8|| origin_formedges: 43331 ||join take time: normal, REPARJOIN0.033749598REPARJOIN secsQuery Redis for edges: 	43331,	take time: 	REPARREDIS0.650REPARREDIS sec, 	res_edges:             	42376
+
+At STEP 12, partition 123|| origin_formedges: 44455 ||join take time: normal, REPARJOIN0.049398247REPARJOIN secsQuery Redis for edges: 	44455,	take time: 	REPARREDIS3.453REPARREDIS sec, 	res_edges:             	44273
+
+At STEP 12, partition 555|| origin_formedges: 41840 ||join take time: normal, REPARJOIN0.029576789REPARJOIN secsQuery Redis for edges: 	41840,	take time: 	REPARREDIS0.695REPARREDIS sec, 	res_edges:             	41499
+
+At STEP 12, partition 24|| origin_formedges: 45707 ||join take time: normal, REPARJOIN0.03645171REPARJOIN secsQuery Redis for edges: 	45707,	take time: 	REPARREDIS3.482REPARREDIS sec, 	res_edges:             	45123
+
+At STEP 12, partition 40|| origin_formedges: 38690 ||join take time: normal, REPARJOIN0.033734296REPARJOIN secsQuery Redis for edges: 	38690,	take time: 	REPARREDIS3.283REPARREDIS sec, 	res_edges:             	36252
+
+At STEP 12, partition 56|| origin_formedges: 39283 ||join take time: normal, REPARJOIN0.033801882REPARJOIN secsQuery Redis for edges: 	39283,	take time: 	REPARREDIS3.281REPARREDIS sec, 	res_edges:             	35853
+
+At STEP 12, partition 72|| origin_formedges: 42636 ||join take time: normal, REPARJOIN0.03697253REPARJOIN secsQuery Redis for edges: 	42636,	take time: 	REPARREDIS3.195REPARREDIS sec, 	res_edges:             	41887
+
+At STEP 12, partition 556|| origin_formedges: 38503 ||join take time: normal, REPARJOIN0.020193341REPARJOIN secsQuery Redis for edges: 	38503,	take time: 	REPARREDIS0.670REPARREDIS sec, 	res_edges:             	38338
+
+At STEP 12, partition 12|| origin_formedges: 38532 ||join take time: normal, REPARJOIN0.028800741REPARJOIN secsQuery Redis for edges: 	38532,	take time: 	REPARREDIS0.606REPARREDIS sec, 	res_edges:             	38122
+
+At STEP 12, partition 561|| origin_formedges: 34075 ||join take time: normal, REPARJOIN0.028247678REPARJOIN secsQuery Redis for edges: 	34075,	take time: 	REPARREDIS0.661REPARREDIS sec, 	res_edges:             	33724
+
+At STEP 12, partition 139|| origin_formedges: 35287 ||join take time: normal, REPARJOIN0.041497343REPARJOIN secsQuery Redis for edges: 	35287,	take time: 	REPARREDIS3.411REPARREDIS sec, 	res_edges:             	34865
+
+At STEP 12, partition 28|| origin_formedges: 42820 ||join take time: normal, REPARJOIN0.036161592REPARJOIN secsQuery Redis for edges: 	42820,	take time: 	REPARREDIS3.511REPARREDIS sec, 	res_edges:             	42093
+
+At STEP 12, partition 50|| origin_formedges: 39410 ||join take time: normal, REPARJOIN0.041566408REPARJOIN secsQuery Redis for edges: 	39410,	take time: 	REPARREDIS3.264REPARREDIS sec, 	res_edges:             	36650
+
+At STEP 12, partition 578|| origin_formedges: 36635 ||join take time: normal, REPARJOIN0.020435899REPARJOIN secsQuery Redis for edges: 	36635,	take time: 	REPARREDIS0.550REPARREDIS sec, 	res_edges:             	36073
+
+At STEP 12, partition 9|| origin_formedges: 38397 ||join take time: normal, REPARJOIN0.040687794REPARJOIN secsQuery Redis for edges: 	38397,	take time: 	REPARREDIS3.019REPARREDIS sec, 	res_edges:             	38053
+
+At STEP 12, partition 579|| origin_formedges: 38367 ||join take time: normal, REPARJOIN0.036749175REPARJOIN secsQuery Redis for edges: 	38367,	take time: 	REPARREDIS0.652REPARREDIS sec, 	res_edges:             	37871
+
+At STEP 12, partition 88|| origin_formedges: 37006 ||join take time: normal, REPARJOIN0.021615157REPARJOIN secsQuery Redis for edges: 	37006,	take time: 	REPARREDIS0.610REPARREDIS sec, 	res_edges:             	36945
+
+At STEP 12, partition 104|| origin_formedges: 40268 ||join take time: normal, REPARJOIN0.035997863REPARJOIN secsQuery Redis for edges: 	40268,	take time: 	REPARREDIS3.359REPARREDIS sec, 	res_edges:             	39812
+
+At STEP 12, partition 581|| origin_formedges: 32987 ||join take time: normal, REPARJOIN0.017904545REPARJOIN secsQuery Redis for edges: 	32987,	take time: 	REPARREDIS0.593REPARREDIS sec, 	res_edges:             	32666
+
+At STEP 12, partition 584|| origin_formedges: 41919 ||join take time: normal, REPARJOIN0.060585574REPARJOIN secsQuery Redis for edges: 	41919,	take time: 	REPARREDIS0.743REPARREDIS sec, 	res_edges:             	41772
+
+At STEP 12, partition 590|| origin_formedges: 40240 ||join take time: normal, REPARJOIN0.057777324REPARJOIN secsQuery Redis for edges: 	40240,	take time: 	REPARREDIS0.745REPARREDIS sec, 	res_edges:             	39717
+
+At STEP 12, partition 10|| origin_formedges: 42748 ||join take time: normal, REPARJOIN0.027692758REPARJOIN secsQuery Redis for edges: 	42748,	take time: 	REPARREDIS0.636REPARREDIS sec, 	res_edges:             	41471
+
+At STEP 12, partition 3|| origin_formedges: 41711 ||join take time: normal, REPARJOIN0.025214321REPARJOIN secsQuery Redis for edges: 	41711,	take time: 	REPARREDIS3.343REPARREDIS sec, 	res_edges:             	39564
+
+At STEP 12, partition 598|| origin_formedges: 43576 ||join take time: normal, REPARJOIN0.020343676REPARJOIN secsQuery Redis for edges: 	43576,	take time: 	REPARREDIS1.403REPARREDIS sec, 	res_edges:             	41385
+
+At STEP 12, partition 26|| origin_formedges: 38670 ||join take time: normal, REPARJOIN0.029342741REPARJOIN secsQuery Redis for edges: 	38670,	take time: 	REPARREDIS3.410REPARREDIS sec, 	res_edges:             	37740
+
+At STEP 12, partition 19|| origin_formedges: 44941 ||join take time: normal, REPARJOIN0.035919909REPARJOIN secsQuery Redis for edges: 	44941,	take time: 	REPARREDIS0.650REPARREDIS sec, 	res_edges:             	43666
+
+At STEP 12, partition 42|| origin_formedges: 36961 ||join take time: normal, REPARJOIN0.022172344REPARJOIN secsQuery Redis for edges: 	36961,	take time: 	REPARREDIS3.458REPARREDIS sec, 	res_edges:             	36358
+
+At STEP 12, partition 35|| origin_formedges: 41184 ||join take time: normal, REPARJOIN0.03890909REPARJOIN secsQuery Redis for edges: 	41184,	take time: 	REPARREDIS3.283REPARREDIS sec, 	res_edges:             	40320
+
+At STEP 12, partition 600|| origin_formedges: 44606 ||join take time: normal, REPARJOIN0.020210211REPARJOIN secsQuery Redis for edges: 	44606,	take time: 	REPARREDIS1.338REPARREDIS sec, 	res_edges:             	42442
+
+At STEP 12, partition 606|| origin_formedges: 37604 ||join take time: normal, REPARJOIN0.020241191REPARJOIN secsQuery Redis for edges: 	37604,	take time: 	REPARREDIS1.111REPARREDIS sec, 	res_edges:             	37144
+
+At STEP 12, partition 58|| origin_formedges: 42448 ||join take time: normal, REPARJOIN0.029466363REPARJOIN secsQuery Redis for edges: 	42448,	take time: 	REPARREDIS3.515REPARREDIS sec, 	res_edges:             	39776
+
+At STEP 12, partition 622|| origin_formedges: 31746 ||join take time: normal, REPARJOIN0.019996098REPARJOIN secsQuery Redis for edges: 	31746,	take time: 	REPARREDIS1.053REPARREDIS sec, 	res_edges:             	31446
+
+At STEP 12, partition 155|| origin_formedges: 41339 ||join take time: normal, REPARJOIN0.03154104REPARJOIN secsQuery Redis for edges: 	41339,	take time: 	REPARREDIS0.637REPARREDIS sec, 	res_edges:             	40597
+
+At STEP 12, partition 51|| origin_formedges: 36672 ||join take time: normal, REPARJOIN0.029267039REPARJOIN secsQuery Redis for edges: 	36672,	take time: 	REPARREDIS0.617REPARREDIS sec, 	res_edges:             	36362
+
+At STEP 12, partition 67|| origin_formedges: 39394 ||join take time: normal, REPARJOIN0.017019191REPARJOIN secsQuery Redis for edges: 	39394,	take time: 	REPARREDIS0.633REPARREDIS sec, 	res_edges:             	36029
+
+At STEP 12, partition 634|| origin_formedges: 41014 ||join take time: normal, REPARJOIN0.030479981REPARJOIN secsQuery Redis for edges: 	41014,	take time: 	REPARREDIS1.276REPARREDIS sec, 	res_edges:             	40071
+
+At STEP 12, partition 44|| origin_formedges: 40668 ||join take time: normal, REPARJOIN0.03540361REPARJOIN secsQuery Redis for edges: 	40668,	take time: 	REPARREDIS3.167REPARREDIS sec, 	res_edges:             	40037
+
+At STEP 12, partition 636|| origin_formedges: 32871 ||join take time: normal, REPARJOIN0.020487743REPARJOIN secsQuery Redis for edges: 	32871,	take time: 	REPARREDIS1.109REPARREDIS sec, 	res_edges:             	32501
+
+At STEP 12, partition 25|| origin_formedges: 39133 ||join take time: normal, REPARJOIN0.02242956REPARJOIN secsQuery Redis for edges: 	39133,	take time: 	REPARREDIS0.616REPARREDIS sec, 	res_edges:             	39030
+
+At STEP 12, partition 7|| origin_formedges: 43026 ||join take time: normal, REPARJOIN0.032363087REPARJOIN secsQuery Redis for edges: 	43026,	take time: 	REPARREDIS0.657REPARREDIS sec, 	res_edges:             	42723
+
+At STEP 12, partition 23|| origin_formedges: 40948 ||join take time: normal, REPARJOIN0.032673243REPARJOIN secsQuery Redis for edges: 	40948,	take time: 	REPARREDIS2.147REPARREDIS sec, 	res_edges:             	40079
+
+At STEP 12, partition 39|| origin_formedges: 40522 ||join take time: normal, REPARJOIN0.03251666REPARJOIN secsQuery Redis for edges: 	40522,	take time: 	REPARREDIS3.024REPARREDIS sec, 	res_edges:             	40056
+
+At STEP 12, partition 652|| origin_formedges: 33900 ||join take time: normal, REPARJOIN0.02060674REPARJOIN secsQuery Redis for edges: 	33900,	take time: 	REPARREDIS1.233REPARREDIS sec, 	res_edges:             	33532
+
+At STEP 12, partition 41|| origin_formedges: 40935 ||join take time: normal, REPARJOIN0.036035286REPARJOIN secsQuery Redis for edges: 	40935,	take time: 	REPARREDIS3.479REPARREDIS sec, 	res_edges:             	40582
+
+At STEP 12, partition 55|| origin_formedges: 39075 ||join take time: normal, REPARJOIN0.034342795REPARJOIN secsQuery Redis for edges: 	39075,	take time: 	REPARREDIS1.820REPARREDIS sec, 	res_edges:             	36582
+
+At STEP 12, partition 71|| origin_formedges: 40451 ||join take time: normal, REPARJOIN0.055930648REPARJOIN secsQuery Redis for edges: 	40451,	take time: 	REPARREDIS1.845REPARREDIS sec, 	res_edges:             	37989
+
+At STEP 12, partition 87|| origin_formedges: 37973 ||join take time: normal, REPARJOIN0.032262591REPARJOIN secsQuery Redis for edges: 	37973,	take time: 	REPARREDIS3.175REPARREDIS sec, 	res_edges:             	37867
+
+At STEP 12, partition 103|| origin_formedges: 38693 ||join take time: normal, REPARJOIN0.0423376REPARJOIN secsQuery Redis for edges: 	38693,	take time: 	REPARREDIS3.153REPARREDIS sec, 	res_edges:             	38598
+
+At STEP 12, partition 657|| origin_formedges: 36520 ||join take time: normal, REPARJOIN0.020111993REPARJOIN secsQuery Redis for edges: 	36520,	take time: 	REPARREDIS1.305REPARREDIS sec, 	res_edges:             	36388
+
+At STEP 12, partition 60|| origin_formedges: 40532 ||join take time: normal, REPARJOIN0.034774785REPARJOIN secsQuery Redis for edges: 	40532,	take time: 	REPARREDIS3.518REPARREDIS sec, 	res_edges:             	37608
+
+At STEP 12, partition 74|| origin_formedges: 37796 ||join take time: normal, REPARJOIN0.029325813REPARJOIN secsQuery Redis for edges: 	37796,	take time: 	REPARREDIS3.498REPARREDIS sec, 	res_edges:             	37102
+
+At STEP 12, partition 171|| origin_formedges: 40607 ||join take time: normal, REPARJOIN0.042037633REPARJOIN secsQuery Redis for edges: 	40607,	take time: 	REPARREDIS2.648REPARREDIS sec, 	res_edges:             	39917
+
+At STEP 12, partition 659|| origin_formedges: 47888 ||join take time: normal, REPARJOIN0.018627604REPARJOIN secsQuery Redis for edges: 	47888,	take time: 	REPARREDIS1.825REPARREDIS sec, 	res_edges:             	47705
+
+At STEP 12, partition 90|| origin_formedges: 32760 ||join take time: normal, REPARJOIN0.029166334REPARJOIN secsQuery Redis for edges: 	32760,	take time: 	REPARREDIS3.477REPARREDIS sec, 	res_edges:             	32501
+
+At STEP 12, partition 83|| origin_formedges: 39376 ||join take time: normal, REPARJOIN0.040523776REPARJOIN secsQuery Redis for edges: 	39376,	take time: 	REPARREDIS3.281REPARREDIS sec, 	res_edges:             	38357
+
+At STEP 12, partition 666|| origin_formedges: 37260 ||join take time: normal, REPARJOIN0.01982738REPARJOIN secsQuery Redis for edges: 	37260,	take time: 	REPARREDIS1.560REPARREDIS sec, 	res_edges:             	37053
+
+At STEP 12, partition 99|| origin_formedges: 45971 ||join take time: normal, REPARJOIN0.047006883REPARJOIN secsQuery Redis for edges: 	45971,	take time: 	REPARREDIS3.471REPARREDIS sec, 	res_edges:             	45273
+
+At STEP 12, partition 115|| origin_formedges: 45266 ||join take time: normal, REPARJOIN0.029846938REPARJOIN secsQuery Redis for edges: 	45266,	take time: 	REPARREDIS0.658REPARREDIS sec, 	res_edges:             	44989
+
+At STEP 12, partition 131|| origin_formedges: 38904 ||join take time: normal, REPARJOIN0.046244284REPARJOIN secsQuery Redis for edges: 	38904,	take time: 	REPARREDIS3.488REPARREDIS sec, 	res_edges:             	38192
+
+At STEP 12, partition 147|| origin_formedges: 40838 ||join take time: normal, REPARJOIN0.049026658REPARJOIN secsQuery Redis for edges: 	40838,	take time: 	REPARREDIS3.273REPARREDIS sec, 	res_edges:             	39833
+
+At STEP 12, partition 120|| origin_formedges: 49164 ||join take time: normal, REPARJOIN0.034409228REPARJOIN secsQuery Redis for edges: 	49164,	take time: 	REPARREDIS3.493REPARREDIS sec, 	res_edges:             	48438
+
+At STEP 12, partition 667|| origin_formedges: 41666 ||join take time: normal, REPARJOIN0.020250226REPARJOIN secsQuery Redis for edges: 	41666,	take time: 	REPARREDIS1.036REPARREDIS sec, 	res_edges:             	41338
+
+At STEP 12, partition 163|| origin_formedges: 40860 ||join take time: normal, REPARJOIN0.047719928REPARJOIN secsQuery Redis for edges: 	40860,	take time: 	REPARREDIS3.274REPARREDIS sec, 	res_edges:             	40261
+
+At STEP 12, partition 106|| origin_formedges: 34895 ||join take time: normal, REPARJOIN0.028645983REPARJOIN secsQuery Redis for edges: 	34895,	take time: 	REPARREDIS0.614REPARREDIS sec, 	res_edges:             	34773
+
+At STEP 12, partition 668|| origin_formedges: 37598 ||join take time: normal, REPARJOIN0.019821451REPARJOIN secsQuery Redis for edges: 	37598,	take time: 	REPARREDIS1.036REPARREDIS sec, 	res_edges:             	37373
+
+At STEP 12, partition 187|| origin_formedges: 41981 ||join take time: normal, REPARJOIN0.042122934REPARJOIN secsQuery Redis for edges: 	41981,	take time: 	REPARREDIS1.446REPARREDIS sec, 	res_edges:             	41370
+
+At STEP 12, partition 76|| origin_formedges: 36899 ||join take time: normal, REPARJOIN0.0333691REPARJOIN secsQuery Redis for edges: 	36899,	take time: 	REPARREDIS3.173REPARREDIS sec, 	res_edges:             	36394
+
+At STEP 12, partition 717|| origin_formedges: 40730 ||join take time: normal, REPARJOIN0.020318523REPARJOIN secsQuery Redis for edges: 	40730,	take time: 	REPARREDIS1.030REPARREDIS sec, 	res_edges:             	40374
+
+At STEP 12, partition 136|| origin_formedges: 42274 ||join take time: normal, REPARJOIN0.034685112REPARJOIN secsQuery Redis for edges: 	42274,	take time: 	REPARREDIS3.268REPARREDIS sec, 	res_edges:             	42150
+
+At STEP 12, partition 119|| origin_formedges: 43272 ||join take time: normal, REPARJOIN0.031133588REPARJOIN secsQuery Redis for edges: 	43272,	take time: 	REPARREDIS3.165REPARREDIS sec, 	res_edges:             	42875
+
+At STEP 12, partition 152|| origin_formedges: 38136 ||join take time: normal, REPARJOIN0.042676122REPARJOIN secsQuery Redis for edges: 	38136,	take time: 	REPARREDIS3.272REPARREDIS sec, 	res_edges:             	37918
+
+At STEP 12, partition 57|| origin_formedges: 39606 ||join take time: normal, REPARJOIN0.031087043REPARJOIN secsQuery Redis for edges: 	39606,	take time: 	REPARREDIS2.656REPARREDIS sec, 	res_edges:             	36455
+
+At STEP 12, partition 718|| origin_formedges: 30273 ||join take time: normal, REPARJOIN0.036932227REPARJOIN secsQuery Redis for edges: 	30273,	take time: 	REPARREDIS0.977REPARREDIS sec, 	res_edges:             	29492
+
+At STEP 12, partition 735|| origin_formedges: 42929 ||join take time: normal, REPARJOIN0.03805352REPARJOIN secsQuery Redis for edges: 	42929,	take time: 	REPARREDIS1.017REPARREDIS sec, 	res_edges:             	42666
+
+At STEP 12, partition 179|| origin_formedges: 39087 ||join take time: normal, REPARJOIN0.040472989REPARJOIN secsQuery Redis for edges: 	39087,	take time: 	REPARREDIS3.360REPARREDIS sec, 	res_edges:             	38654
+
+At STEP 12, partition 92|| origin_formedges: 39890 ||join take time: normal, REPARJOIN0.034427476REPARJOIN secsQuery Redis for edges: 	39890,	take time: 	REPARREDIS1.265REPARREDIS sec, 	res_edges:             	37567
+
+At STEP 12, partition 66|| origin_formedges: 42741 ||join take time: normal, REPARJOIN0.044859191REPARJOIN secsQuery Redis for edges: 	42741,	take time: 	REPARREDIS3.010REPARREDIS sec, 	res_edges:             	39874
+
+At STEP 12, partition 737|| origin_formedges: 34852 ||join take time: normal, REPARJOIN0.020051451REPARJOIN secsQuery Redis for edges: 	34852,	take time: 	REPARREDIS0.963REPARREDIS sec, 	res_edges:             	34593
+
+At STEP 12, partition 82|| origin_formedges: 39360 ||join take time: normal, REPARJOIN0.045750337REPARJOIN secsQuery Redis for edges: 	39360,	take time: 	REPARREDIS3.342REPARREDIS sec, 	res_edges:             	38874
+
+At STEP 12, partition 135|| origin_formedges: 41698 ||join take time: normal, REPARJOIN0.033380802REPARJOIN secsQuery Redis for edges: 	41698,	take time: 	REPARREDIS2.267REPARREDIS sec, 	res_edges:             	41372
+
+At STEP 12, partition 98|| origin_formedges: 42725 ||join take time: normal, REPARJOIN0.045863914REPARJOIN secsQuery Redis for edges: 	42725,	take time: 	REPARREDIS2.406REPARREDIS sec, 	res_edges:             	42155
+
+At STEP 12, partition 108|| origin_formedges: 47462 ||join take time: normal, REPARJOIN0.034262808REPARJOIN secsQuery Redis for edges: 	47462,	take time: 	REPARREDIS3.491REPARREDIS sec, 	res_edges:             	47062
+
+At STEP 12, partition 14|| origin_formedges: 42696 ||join take time: normal, REPARJOIN0.038686185REPARJOIN secsQuery Redis for edges: 	42696,	take time: 	REPARREDIS2.401REPARREDIS sec, 	res_edges:             	41206
+
+At STEP 12, partition 168|| origin_formedges: 45920 ||join take time: normal, REPARJOIN0.022683493REPARJOIN secsQuery Redis for edges: 	45920,	take time: 	REPARREDIS0.638REPARREDIS sec, 	res_edges:             	45459
+
+At STEP 12, partition 203|| origin_formedges: 37314 ||join take time: normal, REPARJOIN0.041946046REPARJOIN secsQuery Redis for edges: 	37314,	take time: 	REPARREDIS1.324REPARREDIS sec, 	res_edges:             	36902
+
+At STEP 12, partition 13|| origin_formedges: 50112 ||join take time: normal, REPARJOIN0.040529629REPARJOIN secsQuery Redis for edges: 	50112,	take time: 	REPARREDIS0.676REPARREDIS sec, 	res_edges:             	47538
+
+At STEP 12, partition 29|| origin_formedges: 42814 ||join take time: normal, REPARJOIN0.034804594REPARJOIN secsQuery Redis for edges: 	42814,	take time: 	REPARREDIS0.648REPARREDIS sec, 	res_edges:             	41663
+
+At STEP 12, partition 73|| origin_formedges: 42510 ||join take time: normal, REPARJOIN0.03107118REPARJOIN secsQuery Redis for edges: 	42510,	take time: 	REPARREDIS2.272REPARREDIS sec, 	res_edges:             	39660
+
+At STEP 12, partition 114|| origin_formedges: 42025 ||join take time: normal, REPARJOIN0.045017976REPARJOIN secsQuery Redis for edges: 	42025,	take time: 	REPARREDIS3.339REPARREDIS sec, 	res_edges:             	41701
+
+At STEP 12, partition 195|| origin_formedges: 41837 ||join take time: normal, REPARJOIN0.037826551REPARJOIN secsQuery Redis for edges: 	41837,	take time: 	REPARREDIS3.279REPARREDIS sec, 	res_edges:             	39926
+
+At STEP 12, partition 130|| origin_formedges: 41217 ||join take time: normal, REPARJOIN0.043997237REPARJOIN secsQuery Redis for edges: 	41217,	take time: 	REPARREDIS1.347REPARREDIS sec, 	res_edges:             	40593
+
+At STEP 12, partition 124|| origin_formedges: 40168 ||join take time: normal, REPARJOIN0.033774731REPARJOIN secsQuery Redis for edges: 	40168,	take time: 	REPARREDIS2.146REPARREDIS sec, 	res_edges:             	39699
+
+At STEP 12, partition 89|| origin_formedges: 36316 ||join take time: normal, REPARJOIN0.030341172REPARJOIN secsQuery Redis for edges: 	36316,	take time: 	REPARREDIS3.422REPARREDIS sec, 	res_edges:             	36017
+
+At STEP 12, partition 151|| origin_formedges: 41964 ||join take time: normal, REPARJOIN0.041672153REPARJOIN secsQuery Redis for edges: 	41964,	take time: 	REPARREDIS2.630REPARREDIS sec, 	res_edges:             	41293
+
+At STEP 12, partition 184|| origin_formedges: 38309 ||join take time: normal, REPARJOIN0.034204495REPARJOIN secsQuery Redis for edges: 	38309,	take time: 	REPARREDIS3.412REPARREDIS sec, 	res_edges:             	37831
+
+At STEP 12, partition 45|| origin_formedges: 46402 ||join take time: normal, REPARJOIN0.032811885REPARJOIN secsQuery Redis for edges: 	46402,	take time: 	REPARREDIS0.651REPARREDIS sec, 	res_edges:             	45967
+
+At STEP 12, partition 211|| origin_formedges: 43329 ||join take time: normal, REPARJOIN0.037798717REPARJOIN secsQuery Redis for edges: 	43329,	take time: 	REPARREDIS3.474REPARREDIS sec, 	res_edges:             	41227
+
+At STEP 12, partition 219|| origin_formedges: 38392 ||join take time: normal, REPARJOIN0.045440702REPARJOIN secsQuery Redis for edges: 	38392,	take time: 	REPARREDIS2.632REPARREDIS sec, 	res_edges:             	37974
+
+At STEP 12, partition 146|| origin_formedges: 41187 ||join take time: normal, REPARJOIN0.044179529REPARJOIN secsQuery Redis for edges: 	41187,	take time: 	REPARREDIS1.063REPARREDIS sec, 	res_edges:             	40774
+
+At STEP 12, partition 140|| origin_formedges: 39688 ||join take time: normal, REPARJOIN0.033677456REPARJOIN secsQuery Redis for edges: 	39688,	take time: 	REPARREDIS3.494REPARREDIS sec, 	res_edges:             	39039
+
+At STEP 12, partition 167|| origin_formedges: 37929 ||join take time: normal, REPARJOIN0.020046697REPARJOIN secsQuery Redis for edges: 	37929,	take time: 	REPARREDIS0.644REPARREDIS sec, 	res_edges:             	37146
+
+At STEP 12, partition 200|| origin_formedges: 43041 ||join take time: normal, REPARJOIN0.034111943REPARJOIN secsQuery Redis for edges: 	43041,	take time: 	REPARREDIS0.649REPARREDIS sec, 	res_edges:             	40946
+
+At STEP 12, partition 61|| origin_formedges: 40352 ||join take time: normal, REPARJOIN0.040513641REPARJOIN secsQuery Redis for edges: 	40352,	take time: 	REPARREDIS3.192REPARREDIS sec, 	res_edges:             	39999
+
+At STEP 12, partition 235|| origin_formedges: 33832 ||join take time: normal, REPARJOIN0.037075764REPARJOIN secsQuery Redis for edges: 	33832,	take time: 	REPARREDIS2.405REPARREDIS sec, 	res_edges:             	33518
+
+At STEP 12, partition 156|| origin_formedges: 51585 ||join take time: normal, REPARJOIN0.034121563REPARJOIN secsQuery Redis for edges: 	51585,	take time: 	REPARREDIS3.527REPARREDIS sec, 	res_edges:             	50676
+
+At STEP 12, partition 30|| origin_formedges: 37757 ||join take time: normal, REPARJOIN0.031815771REPARJOIN secsQuery Redis for edges: 	37757,	take time: 	REPARREDIS0.614REPARREDIS sec, 	res_edges:             	37098
+
+At STEP 12, partition 183|| origin_formedges: 40423 ||join take time: normal, REPARJOIN0.050713689REPARJOIN secsQuery Redis for edges: 	40423,	take time: 	REPARREDIS2.175REPARREDIS sec, 	res_edges:             	39971
+
+At STEP 12, partition 162|| origin_formedges: 44304 ||join take time: normal, REPARJOIN0.045745261REPARJOIN secsQuery Redis for edges: 	44304,	take time: 	REPARREDIS3.160REPARREDIS sec, 	res_edges:             	43358
+
+At STEP 12, partition 105|| origin_formedges: 46247 ||join take time: normal, REPARJOIN0.030991016REPARJOIN secsQuery Redis for edges: 	46247,	take time: 	REPARREDIS3.536REPARREDIS sec, 	res_edges:             	45765
+
+At STEP 12, partition 216|| origin_formedges: 38584 ||join take time: normal, REPARJOIN0.033458869REPARJOIN secsQuery Redis for edges: 	38584,	take time: 	REPARREDIS3.477REPARREDIS sec, 	res_edges:             	37972
+
+At STEP 12, partition 46|| origin_formedges: 36833 ||join take time: normal, REPARJOIN0.043828538REPARJOIN secsQuery Redis for edges: 	36833,	take time: 	REPARREDIS3.271REPARREDIS sec, 	res_edges:             	35289
+
+At STEP 12, partition 227|| origin_formedges: 39915 ||join take time: normal, REPARJOIN0.037785641REPARJOIN secsQuery Redis for edges: 	39915,	take time: 	REPARREDIS3.410REPARREDIS sec, 	res_edges:             	39382
+
+At STEP 12, partition 199|| origin_formedges: 37648 ||join take time: normal, REPARJOIN0.031843604REPARJOIN secsQuery Redis for edges: 	37648,	take time: 	REPARREDIS0.612REPARREDIS sec, 	res_edges:             	37030
+
+At STEP 12, partition 77|| origin_formedges: 38029 ||join take time: normal, REPARJOIN0.040161145REPARJOIN secsQuery Redis for edges: 	38029,	take time: 	REPARREDIS3.277REPARREDIS sec, 	res_edges:             	37559
+
+At STEP 12, partition 243|| origin_formedges: 39834 ||join take time: normal, REPARJOIN0.029290646REPARJOIN secsQuery Redis for edges: 	39834,	take time: 	REPARREDIS0.622REPARREDIS sec, 	res_edges:             	39397
+
+At STEP 12, partition 93|| origin_formedges: 44078 ||join take time: normal, REPARJOIN0.041777299REPARJOIN secsQuery Redis for edges: 	44078,	take time: 	REPARREDIS3.278REPARREDIS sec, 	res_edges:             	43662
+
+At STEP 12, partition 172|| origin_formedges: 37340 ||join take time: normal, REPARJOIN0.033344825REPARJOIN secsQuery Redis for edges: 	37340,	take time: 	REPARREDIS2.838REPARREDIS sec, 	res_edges:             	36667
+
+At STEP 12, partition 109|| origin_formedges: 42796 ||join take time: normal, REPARJOIN0.041002178REPARJOIN secsQuery Redis for edges: 	42796,	take time: 	REPARREDIS3.277REPARREDIS sec, 	res_edges:             	42417
+
+At STEP 12, partition 121|| origin_formedges: 37759 ||join take time: normal, REPARJOIN0.029412474REPARJOIN secsQuery Redis for edges: 	37759,	take time: 	REPARREDIS0.621REPARREDIS sec, 	res_edges:             	37373
+
+At STEP 12, partition 178|| origin_formedges: 41812 ||join take time: normal, REPARJOIN0.027710704REPARJOIN secsQuery Redis for edges: 	41812,	take time: 	REPARREDIS0.636REPARREDIS sec, 	res_edges:             	40929
+
+At STEP 12, partition 62|| origin_formedges: 42861 ||join take time: normal, REPARJOIN0.03141018REPARJOIN secsQuery Redis for edges: 	42861,	take time: 	REPARREDIS1.184REPARREDIS sec, 	res_edges:             	42111
+
+At STEP 12, partition 78|| origin_formedges: 37934 ||join take time: normal, REPARJOIN0.030659198REPARJOIN secsQuery Redis for edges: 	37934,	take time: 	REPARREDIS3.474REPARREDIS sec, 	res_edges:             	37415
+
+At STEP 12, partition 188|| origin_formedges: 36825 ||join take time: normal, REPARJOIN0.033321815REPARJOIN secsQuery Redis for edges: 	36825,	take time: 	REPARREDIS3.524REPARREDIS sec, 	res_edges:             	33973
+
+At STEP 12, partition 232|| origin_formedges: 45225 ||join take time: normal, REPARJOIN0.034747465REPARJOIN secsQuery Redis for edges: 	45225,	take time: 	REPARREDIS3.283REPARREDIS sec, 	res_edges:             	42725
+
+At STEP 12, partition 125|| origin_formedges: 38493 ||join take time: normal, REPARJOIN0.039777004REPARJOIN secsQuery Redis for edges: 	38493,	take time: 	REPARREDIS3.277REPARREDIS sec, 	res_edges:             	37783
+
+At STEP 12, partition 251|| origin_formedges: 41617 ||join take time: normal, REPARJOIN0.042334085REPARJOIN secsQuery Redis for edges: 	41617,	take time: 	REPARREDIS1.662REPARREDIS sec, 	res_edges:             	40903
+
+At STEP 12, partition 194|| origin_formedges: 36832 ||join take time: normal, REPARJOIN0.044559357REPARJOIN secsQuery Redis for edges: 	36832,	take time: 	REPARREDIS3.274REPARREDIS sec, 	res_edges:             	34566
+
+At STEP 12, partition 215|| origin_formedges: 37801 ||join take time: normal, REPARJOIN0.027921895REPARJOIN secsQuery Redis for edges: 	37801,	take time: 	REPARREDIS3.165REPARREDIS sec, 	res_edges:             	37234
+
+At STEP 12, partition 248|| origin_formedges: 40506 ||join take time: normal, REPARJOIN0.034077589REPARJOIN secsQuery Redis for edges: 	40506,	take time: 	REPARREDIS0.649REPARREDIS sec, 	res_edges:             	40056
+
+At STEP 12, partition 137|| origin_formedges: 38695 ||join take time: normal, REPARJOIN0.019451193REPARJOIN secsQuery Redis for edges: 	38695,	take time: 	REPARREDIS0.617REPARREDIS sec, 	res_edges:             	38214
+
+At STEP 12, partition 259|| origin_formedges: 42400 ||join take time: normal, REPARJOIN0.034932641REPARJOIN secsQuery Redis for edges: 	42400,	take time: 	REPARREDIS3.283REPARREDIS sec, 	res_edges:             	41975
+
+At STEP 12, partition 94|| origin_formedges: 39607 ||join take time: normal, REPARJOIN0.031049715REPARJOIN secsQuery Redis for edges: 	39607,	take time: 	REPARREDIS3.416REPARREDIS sec, 	res_edges:             	37375
+
+At STEP 12, partition 210|| origin_formedges: 38011 ||join take time: normal, REPARJOIN0.04509821REPARJOIN secsQuery Redis for edges: 	38011,	take time: 	REPARREDIS2.401REPARREDIS sec, 	res_edges:             	37574
+
+At STEP 12, partition 267|| origin_formedges: 35786 ||join take time: normal, REPARJOIN0.041931267REPARJOIN secsQuery Redis for edges: 	35786,	take time: 	REPARREDIS0.625REPARREDIS sec, 	res_edges:             	35366
+
+At STEP 12, partition 231|| origin_formedges: 39453 ||join take time: normal, REPARJOIN0.032644412REPARJOIN secsQuery Redis for edges: 	39453,	take time: 	REPARREDIS3.173REPARREDIS sec, 	res_edges:             	38621
+
+At STEP 12, partition 204|| origin_formedges: 35751 ||join take time: normal, REPARJOIN0.025801306REPARJOIN secsQuery Redis for edges: 	35751,	take time: 	REPARREDIS0.608REPARREDIS sec, 	res_edges:             	34853
+
+At STEP 12, partition 275|| origin_formedges: 38352 ||join take time: normal, REPARJOIN0.016929774REPARJOIN secsQuery Redis for edges: 	38352,	take time: 	REPARREDIS0.564REPARREDIS sec, 	res_edges:             	37551
+
+At STEP 12, partition 153|| origin_formedges: 45838 ||join take time: normal, REPARJOIN0.032538234REPARJOIN secsQuery Redis for edges: 	45838,	take time: 	REPARREDIS3.494REPARREDIS sec, 	res_edges:             	45140
+
+At STEP 12, partition 141|| origin_formedges: 46511 ||join take time: normal, REPARJOIN0.035999157REPARJOIN secsQuery Redis for edges: 	46511,	take time: 	REPARREDIS3.465REPARREDIS sec, 	res_edges:             	45503
+
+At STEP 12, partition 247|| origin_formedges: 42474 ||join take time: normal, REPARJOIN0.032885098REPARJOIN secsQuery Redis for edges: 	42474,	take time: 	REPARREDIS3.022REPARREDIS sec, 	res_edges:             	42180
+
+At STEP 12, partition 226|| origin_formedges: 32913 ||join take time: normal, REPARJOIN0.043629233REPARJOIN secsQuery Redis for edges: 	32913,	take time: 	REPARREDIS2.852REPARREDIS sec, 	res_edges:             	32447
+
+At STEP 12, partition 283|| origin_formedges: 36721 ||join take time: normal, REPARJOIN0.023284247REPARJOIN secsQuery Redis for edges: 	36721,	take time: 	REPARREDIS0.560REPARREDIS sec, 	res_edges:             	35758
+
+At STEP 12, partition 220|| origin_formedges: 43257 ||join take time: normal, REPARJOIN0.033938007REPARJOIN secsQuery Redis for edges: 	43257,	take time: 	REPARREDIS3.493REPARREDIS sec, 	res_edges:             	42605
+
+At STEP 12, partition 110|| origin_formedges: 41574 ||join take time: normal, REPARJOIN0.030716711REPARJOIN secsQuery Redis for edges: 	41574,	take time: 	REPARREDIS3.516REPARREDIS sec, 	res_edges:             	40894
+
+At STEP 12, partition 299|| origin_formedges: 36689 ||join take time: normal, REPARJOIN0.029811476REPARJOIN secsQuery Redis for edges: 	36689,	take time: 	REPARREDIS0.609REPARREDIS sec, 	res_edges:             	35993
+
+At STEP 12, partition 126|| origin_formedges: 47204 ||join take time: normal, REPARJOIN0.031557743REPARJOIN secsQuery Redis for edges: 	47204,	take time: 	REPARREDIS3.476REPARREDIS sec, 	res_edges:             	46326
+
+At STEP 12, partition 169|| origin_formedges: 35410 ||join take time: normal, REPARJOIN0.030521732REPARJOIN secsQuery Redis for edges: 	35410,	take time: 	REPARREDIS2.656REPARREDIS sec, 	res_edges:             	34721
+
+At STEP 12, partition 291|| origin_formedges: 34696 ||join take time: normal, REPARJOIN0.030737664REPARJOIN secsQuery Redis for edges: 	34696,	take time: 	REPARREDIS0.609REPARREDIS sec, 	res_edges:             	33761
+
+At STEP 12, partition 236|| origin_formedges: 38848 ||join take time: normal, REPARJOIN0.033564381REPARJOIN secsQuery Redis for edges: 	38848,	take time: 	REPARREDIS1.072REPARREDIS sec, 	res_edges:             	38419
+
+At STEP 12, partition 264|| origin_formedges: 37898 ||join take time: normal, REPARJOIN0.035898283REPARJOIN secsQuery Redis for edges: 	37898,	take time: 	REPARREDIS3.491REPARREDIS sec, 	res_edges:             	37531
+
+At STEP 12, partition 185|| origin_formedges: 36955 ||join take time: normal, REPARJOIN0.025295764REPARJOIN secsQuery Redis for edges: 	36955,	take time: 	REPARREDIS0.625REPARREDIS sec, 	res_edges:             	34298
+
+At STEP 12, partition 263|| origin_formedges: 39394 ||join take time: normal, REPARJOIN0.031630258REPARJOIN secsQuery Redis for edges: 	39394,	take time: 	REPARREDIS0.614REPARREDIS sec, 	res_edges:             	38943
+
+At STEP 12, partition 242|| origin_formedges: 41386 ||join take time: normal, REPARJOIN0.044392349REPARJOIN secsQuery Redis for edges: 	41386,	take time: 	REPARREDIS1.857REPARREDIS sec, 	res_edges:             	41042
+
+At STEP 12, partition 157|| origin_formedges: 38888 ||join take time: normal, REPARJOIN0.040401399REPARJOIN secsQuery Redis for edges: 	38888,	take time: 	REPARREDIS3.269REPARREDIS sec, 	res_edges:             	37646
+
+At STEP 12, partition 279|| origin_formedges: 37654 ||join take time: normal, REPARJOIN0.032010619REPARJOIN secsQuery Redis for edges: 	37654,	take time: 	REPARREDIS0.612REPARREDIS sec, 	res_edges:             	37013
+
+At STEP 12, partition 142|| origin_formedges: 45192 ||join take time: normal, REPARJOIN0.030808726REPARJOIN secsQuery Redis for edges: 	45192,	take time: 	REPARREDIS3.414REPARREDIS sec, 	res_edges:             	44580
+
+At STEP 12, partition 252|| origin_formedges: 42000 ||join take time: normal, REPARJOIN0.03384718REPARJOIN secsQuery Redis for edges: 	42000,	take time: 	REPARREDIS3.500REPARREDIS sec, 	res_edges:             	41612
+
+At STEP 12, partition 315|| origin_formedges: 33047 ||join take time: normal, REPARJOIN0.042201699REPARJOIN secsQuery Redis for edges: 	33047,	take time: 	REPARREDIS0.609REPARREDIS sec, 	res_edges:             	32740
+
+At STEP 12, partition 307|| origin_formedges: 38126 ||join take time: normal, REPARJOIN0.043482141REPARJOIN secsQuery Redis for edges: 	38126,	take time: 	REPARREDIS2.562REPARREDIS sec, 	res_edges:             	36705
+
+At STEP 12, partition 173|| origin_formedges: 35467 ||join take time: normal, REPARJOIN0.041219356REPARJOIN secsQuery Redis for edges: 	35467,	take time: 	REPARREDIS3.268REPARREDIS sec, 	res_edges:             	34351
+
+At STEP 12, partition 165|| origin_formedges: 39041 ||join take time: normal, REPARJOIN0.034101105REPARJOIN secsQuery Redis for edges: 	39041,	take time: 	REPARREDIS3.495REPARREDIS sec, 	res_edges:             	38440
+
+At STEP 12, partition 258|| origin_formedges: 37290 ||join take time: normal, REPARJOIN0.044209393REPARJOIN secsQuery Redis for edges: 	37290,	take time: 	REPARREDIS2.829REPARREDIS sec, 	res_edges:             	36526
+
+At STEP 12, partition 181|| origin_formedges: 40857 ||join take time: normal, REPARJOIN0.034068338REPARJOIN secsQuery Redis for edges: 	40857,	take time: 	REPARREDIS2.144REPARREDIS sec, 	res_edges:             	40205
+
+At STEP 12, partition 331|| origin_formedges: 37149 ||join take time: normal, REPARJOIN0.043747516REPARJOIN secsQuery Redis for edges: 	37149,	take time: 	REPARREDIS1.070REPARREDIS sec, 	res_edges:             	35329
+
+At STEP 12, partition 197|| origin_formedges: 41970 ||join take time: normal, REPARJOIN0.033896297REPARJOIN secsQuery Redis for edges: 	41970,	take time: 	REPARREDIS3.495REPARREDIS sec, 	res_edges:             	39331
+
+At STEP 12, partition 213|| origin_formedges: 33731 ||join take time: normal, REPARJOIN0.032705019REPARJOIN secsQuery Redis for edges: 	33731,	take time: 	REPARREDIS0.614REPARREDIS sec, 	res_edges:             	33459
+
+At STEP 12, partition 158|| origin_formedges: 45203 ||join take time: normal, REPARJOIN0.031012336REPARJOIN secsQuery Redis for edges: 	45203,	take time: 	REPARREDIS2.420REPARREDIS sec, 	res_edges:             	44507
+
+At STEP 12, partition 268|| origin_formedges: 36779 ||join take time: normal, REPARJOIN0.043525117REPARJOIN secsQuery Redis for edges: 	36779,	take time: 	REPARREDIS3.485REPARREDIS sec, 	res_edges:             	36610
+
+At STEP 12, partition 280|| origin_formedges: 40461 ||join take time: normal, REPARJOIN0.034526998REPARJOIN secsQuery Redis for edges: 	40461,	take time: 	REPARREDIS3.198REPARREDIS sec, 	res_edges:             	39861
+
+At STEP 12, partition 323|| origin_formedges: 36458 ||join take time: normal, REPARJOIN0.029875107REPARJOIN secsQuery Redis for edges: 	36458,	take time: 	REPARREDIS0.606REPARREDIS sec, 	res_edges:             	35722
+
+At STEP 12, partition 201|| origin_formedges: 41132 ||join take time: normal, REPARJOIN0.032395083REPARJOIN secsQuery Redis for edges: 	41132,	take time: 	REPARREDIS3.370REPARREDIS sec, 	res_edges:             	38997
+
+At STEP 12, partition 189|| origin_formedges: 41430 ||join take time: normal, REPARJOIN0.040226786REPARJOIN secsQuery Redis for edges: 	41430,	take time: 	REPARREDIS2.930REPARREDIS sec, 	res_edges:             	40297
+
+At STEP 12, partition 274|| origin_formedges: 41125 ||join take time: normal, REPARJOIN0.043310201REPARJOIN secsQuery Redis for edges: 	41125,	take time: 	REPARREDIS0.642REPARREDIS sec, 	res_edges:             	40500
+
+At STEP 12, partition 295|| origin_formedges: 39265 ||join take time: normal, REPARJOIN0.053040018REPARJOIN secsQuery Redis for edges: 	39265,	take time: 	REPARREDIS3.005REPARREDIS sec, 	res_edges:             	38375
+
+At STEP 12, partition 217|| origin_formedges: 38662 ||join take time: normal, REPARJOIN0.029268167REPARJOIN secsQuery Redis for edges: 	38662,	take time: 	REPARREDIS3.404REPARREDIS sec, 	res_edges:             	38455
+
+At STEP 12, partition 296|| origin_formedges: 33705 ||join take time: normal, REPARJOIN0.034246929REPARJOIN secsQuery Redis for edges: 	33705,	take time: 	REPARREDIS3.360REPARREDIS sec, 	res_edges:             	33020
+
+At STEP 12, partition 122|| origin_formedges: 45257 ||join take time: normal, REPARJOIN0.029179891REPARJOIN secsQuery Redis for edges: 	45257,	take time: 	REPARREDIS2.135REPARREDIS sec, 	res_edges:             	44923
+
+At STEP 12, partition 311|| origin_formedges: 34601 ||join take time: normal, REPARJOIN0.032191349REPARJOIN secsQuery Redis for edges: 	34601,	take time: 	REPARREDIS3.164REPARREDIS sec, 	res_edges:             	34215
+
+At STEP 12, partition 347|| origin_formedges: 44232 ||join take time: normal, REPARJOIN0.025211378REPARJOIN secsQuery Redis for edges: 	44232,	take time: 	REPARREDIS0.628REPARREDIS sec, 	res_edges:             	43689
+
+At STEP 12, partition 339|| origin_formedges: 43071 ||join take time: normal, REPARJOIN0.048044282REPARJOIN secsQuery Redis for edges: 	43071,	take time: 	REPARREDIS3.485REPARREDIS sec, 	res_edges:             	42340
+
+At STEP 12, partition 284|| origin_formedges: 40995 ||join take time: normal, REPARJOIN0.029296904REPARJOIN secsQuery Redis for edges: 	40995,	take time: 	REPARREDIS0.657REPARREDIS sec, 	res_edges:             	40155
+
+At STEP 12, partition 327|| origin_formedges: 36752 ||join take time: normal, REPARJOIN0.032226014REPARJOIN secsQuery Redis for edges: 	36752,	take time: 	REPARREDIS3.402REPARREDIS sec, 	res_edges:             	36601
+
+At STEP 12, partition 138|| origin_formedges: 40977 ||join take time: normal, REPARJOIN0.029589932REPARJOIN secsQuery Redis for edges: 	40977,	take time: 	REPARREDIS1.373REPARREDIS sec, 	res_edges:             	40632
+
+At STEP 12, partition 233|| origin_formedges: 40230 ||join take time: normal, REPARJOIN0.030182712REPARJOIN secsQuery Redis for edges: 	40230,	take time: 	REPARREDIS2.421REPARREDIS sec, 	res_edges:             	38905
+
+At STEP 12, partition 154|| origin_formedges: 42888 ||join take time: normal, REPARJOIN0.021506711REPARJOIN secsQuery Redis for edges: 	42888,	take time: 	REPARREDIS0.638REPARREDIS sec, 	res_edges:             	42283
+
+At STEP 12, partition 300|| origin_formedges: 35895 ||join take time: normal, REPARJOIN0.032108747REPARJOIN secsQuery Redis for edges: 	35895,	take time: 	REPARREDIS0.614REPARREDIS sec, 	res_edges:             	34730
+
+At STEP 12, partition 170|| origin_formedges: 39902 ||join take time: normal, REPARJOIN0.029410173REPARJOIN secsQuery Redis for edges: 	39902,	take time: 	REPARREDIS3.416REPARREDIS sec, 	res_edges:             	39360
+
+At STEP 12, partition 355|| origin_formedges: 38408 ||join take time: normal, REPARJOIN0.031200576REPARJOIN secsQuery Redis for edges: 	38408,	take time: 	REPARREDIS3.278REPARREDIS sec, 	res_edges:             	37898
+
+At STEP 12, partition 186|| origin_formedges: 38997 ||join take time: normal, REPARJOIN0.024056148REPARJOIN secsQuery Redis for edges: 	38997,	take time: 	REPARREDIS0.605REPARREDIS sec, 	res_edges:             	38017
+
+At STEP 12, partition 202|| origin_formedges: 35616 ||join take time: normal, REPARJOIN0.029317422REPARJOIN secsQuery Redis for edges: 	35616,	take time: 	REPARREDIS3.478REPARREDIS sec, 	res_edges:             	35071
+
+At STEP 12, partition 316|| origin_formedges: 43784 ||join take time: normal, REPARJOIN0.033863169REPARJOIN secsQuery Redis for edges: 	43784,	take time: 	REPARREDIS3.416REPARREDIS sec, 	res_edges:             	42473
+
+At STEP 12, partition 363|| origin_formedges: 37171 ||join take time: normal, REPARJOIN0.04179656REPARJOIN secsQuery Redis for edges: 	37171,	take time: 	REPARREDIS0.609REPARREDIS sec, 	res_edges:             	36850
+
+At STEP 12, partition 371|| origin_formedges: 33438 ||join take time: normal, REPARJOIN0.035946276REPARJOIN secsQuery Redis for edges: 	33438,	take time: 	REPARREDIS3.018REPARREDIS sec, 	res_edges:             	33003
+
+At STEP 12, partition 332|| origin_formedges: 44347 ||join take time: normal, REPARJOIN0.017518827REPARJOIN secsQuery Redis for edges: 	44347,	take time: 	REPARREDIS0.632REPARREDIS sec, 	res_edges:             	43958
+
+At STEP 12, partition 1|| origin_formedges: 37937 ||join take time: normal, REPARJOIN0.032677344REPARJOIN secsQuery Redis for edges: 	37937,	take time: 	REPARREDIS3.300REPARREDIS sec, 	res_edges:             	37141
+
+At STEP 12, partition 17|| origin_formedges: 37808 ||join take time: normal, REPARJOIN0.03061562REPARJOIN secsQuery Redis for edges: 	37808,	take time: 	REPARREDIS0.594REPARREDIS sec, 	res_edges:             	36737
+
+At STEP 12, partition 249|| origin_formedges: 38659 ||join take time: normal, REPARJOIN0.030601882REPARJOIN secsQuery Redis for edges: 	38659,	take time: 	REPARREDIS3.505REPARREDIS sec, 	res_edges:             	38355
+
+At STEP 12, partition 229|| origin_formedges: 34465 ||join take time: normal, REPARJOIN0.033173675REPARJOIN secsQuery Redis for edges: 	34465,	take time: 	REPARREDIS3.413REPARREDIS sec, 	res_edges:             	34315
+
+At STEP 12, partition 343|| origin_formedges: 44673 ||join take time: normal, REPARJOIN0.03211734REPARJOIN secsQuery Redis for edges: 	44673,	take time: 	REPARREDIS0.657REPARREDIS sec, 	res_edges:             	42133
+
+At STEP 12, partition 379|| origin_formedges: 32231 ||join take time: normal, REPARJOIN0.051950912REPARJOIN secsQuery Redis for edges: 	32231,	take time: 	REPARREDIS2.058REPARREDIS sec, 	res_edges:             	31944
+
+At STEP 12, partition 33|| origin_formedges: 42124 ||join take time: normal, REPARJOIN0.035024266REPARJOIN secsQuery Redis for edges: 	42124,	take time: 	REPARREDIS2.616REPARREDIS sec, 	res_edges:             	41626
+
+At STEP 12, partition 359|| origin_formedges: 39069 ||join take time: normal, REPARJOIN0.03222616REPARJOIN secsQuery Redis for edges: 	39069,	take time: 	REPARREDIS0.613REPARREDIS sec, 	res_edges:             	38994
+
+At STEP 12, partition 49|| origin_formedges: 44488 ||join take time: normal, REPARJOIN0.035230594REPARJOIN secsQuery Redis for edges: 	44488,	take time: 	REPARREDIS3.297REPARREDIS sec, 	res_edges:             	43547
+
+At STEP 12, partition 174|| origin_formedges: 41840 ||join take time: normal, REPARJOIN0.032311331REPARJOIN secsQuery Redis for edges: 	41840,	take time: 	REPARREDIS3.480REPARREDIS sec, 	res_edges:             	41220
+
+At STEP 12, partition 348|| origin_formedges: 35828 ||join take time: normal, REPARJOIN0.032467886REPARJOIN secsQuery Redis for edges: 	35828,	take time: 	REPARREDIS0.614REPARREDIS sec, 	res_edges:             	35682
+
+At STEP 12, partition 375|| origin_formedges: 36076 ||join take time: normal, REPARJOIN0.032242047REPARJOIN secsQuery Redis for edges: 	36076,	take time: 	REPARREDIS0.613REPARREDIS sec, 	res_edges:             	35884
+
+At STEP 12, partition 65|| origin_formedges: 42500 ||join take time: normal, REPARJOIN0.032767015REPARJOIN secsQuery Redis for edges: 	42500,	take time: 	REPARREDIS2.073REPARREDIS sec, 	res_edges:             	40071
+
+At STEP 12, partition 190|| origin_formedges: 39954 ||join take time: normal, REPARJOIN0.030435056REPARJOIN secsQuery Redis for edges: 	39954,	take time: 	REPARREDIS1.871REPARREDIS sec, 	res_edges:             	37005
+
+At STEP 12, partition 81|| origin_formedges: 33989 ||join take time: normal, REPARJOIN0.046413631REPARJOIN secsQuery Redis for edges: 	33989,	take time: 	REPARREDIS3.288REPARREDIS sec, 	res_edges:             	33303
+
+At STEP 12, partition 97|| origin_formedges: 39003 ||join take time: normal, REPARJOIN0.032158725REPARJOIN secsQuery Redis for edges: 	39003,	take time: 	REPARREDIS0.623REPARREDIS sec, 	res_edges:             	38514
+
+At STEP 12, partition 290|| origin_formedges: 37232 ||join take time: normal, REPARJOIN0.043876442REPARJOIN secsQuery Redis for edges: 	37232,	take time: 	REPARREDIS0.620REPARREDIS sec, 	res_edges:             	37085
+
+At STEP 12, partition 113|| origin_formedges: 43012 ||join take time: normal, REPARJOIN0.03193847REPARJOIN secsQuery Redis for edges: 	43012,	take time: 	REPARREDIS2.356REPARREDIS sec, 	res_edges:             	42721
+
+At STEP 12, partition 206|| origin_formedges: 40783 ||join take time: normal, REPARJOIN0.031000188REPARJOIN secsQuery Redis for edges: 	40783,	take time: 	REPARREDIS3.366REPARREDIS sec, 	res_edges:             	38314
+
+At STEP 12, partition 222|| origin_formedges: 46939 ||join take time: normal, REPARJOIN0.030661617REPARJOIN secsQuery Redis for edges: 	46939,	take time: 	REPARREDIS3.517REPARREDIS sec, 	res_edges:             	45980
+
+At STEP 12, partition 265|| origin_formedges: 40099 ||join take time: normal, REPARJOIN0.030532528REPARJOIN secsQuery Redis for edges: 	40099,	take time: 	REPARREDIS2.872REPARREDIS sec, 	res_edges:             	37264
+
+At STEP 12, partition 473|| origin_formedges: 39439 ||join take time: normal, REPARJOIN0.025310814REPARJOIN secsQuery Redis for edges: 	39439,	take time: 	REPARREDIS0.665REPARREDIS sec, 	res_edges:             	38993
+
+At STEP 12, partition 306|| origin_formedges: 38172 ||join take time: normal, REPARJOIN0.043890072REPARJOIN secsQuery Redis for edges: 	38172,	take time: 	REPARREDIS0.620REPARREDIS sec, 	res_edges:             	37666
+
+At STEP 12, partition 364|| origin_formedges: 43645 ||join take time: normal, REPARJOIN0.033199382REPARJOIN secsQuery Redis for edges: 	43645,	take time: 	REPARREDIS0.654REPARREDIS sec, 	res_edges:             	43317
+
+At STEP 12, partition 238|| origin_formedges: 42715 ||join take time: normal, REPARJOIN0.03053235REPARJOIN secsQuery Redis for edges: 	42715,	take time: 	REPARREDIS2.650REPARREDIS sec, 	res_edges:             	41934
+
+At STEP 12, partition 15|| origin_formedges: 41706 ||join take time: normal, REPARJOIN0.045510491REPARJOIN secsQuery Redis for edges: 	41706,	take time: 	REPARREDIS3.407REPARREDIS sec, 	res_edges:             	41081
+
+At STEP 12, partition 322|| origin_formedges: 45168 ||join take time: normal, REPARJOIN0.04581001REPARJOIN secsQuery Redis for edges: 	45168,	take time: 	REPARREDIS2.831REPARREDIS sec, 	res_edges:             	44658
+
+At STEP 12, partition 406|| origin_formedges: 38504 ||join take time: normal, REPARJOIN0.023705684REPARJOIN secsQuery Redis for edges: 	38504,	take time: 	REPARREDIS0.374REPARREDIS sec, 	res_edges:             	38162
+
+At STEP 12, partition 31|| origin_formedges: 46961 ||join take time: normal, REPARJOIN0.033464988REPARJOIN secsQuery Redis for edges: 	46961,	take time: 	REPARREDIS3.478REPARREDIS sec, 	res_edges:             	46620
+
+At STEP 12, partition 380|| origin_formedges: 39676 ||join take time: normal, REPARJOIN0.029472214REPARJOIN secsQuery Redis for edges: 	39676,	take time: 	REPARREDIS0.617REPARREDIS sec, 	res_edges:             	39101
+
+At STEP 12, partition 407|| origin_formedges: 36370 ||join take time: normal, REPARJOIN0.036264492REPARJOIN secsQuery Redis for edges: 	36370,	take time: 	REPARREDIS0.602REPARREDIS sec, 	res_edges:             	36072
+
+At STEP 12, partition 47|| origin_formedges: 43585 ||join take time: normal, REPARJOIN0.033202143REPARJOIN secsQuery Redis for edges: 	43585,	take time: 	REPARREDIS2.421REPARREDIS sec, 	res_edges:             	42910
+
+At STEP 12, partition 281|| origin_formedges: 32252 ||join take time: normal, REPARJOIN0.030299469REPARJOIN secsQuery Redis for edges: 	32252,	take time: 	REPARREDIS3.029REPARREDIS sec, 	res_edges:             	31415
+
+At STEP 12, partition 474|| origin_formedges: 31863 ||join take time: normal, REPARJOIN0.016949243REPARJOIN secsQuery Redis for edges: 	31863,	take time: 	REPARREDIS0.530REPARREDIS sec, 	res_edges:             	31504
+
+At STEP 12, partition 338|| origin_formedges: 41170 ||join take time: normal, REPARJOIN0.044208134REPARJOIN secsQuery Redis for edges: 	41170,	take time: 	REPARREDIS0.643REPARREDIS sec, 	res_edges:             	40802
+
+At STEP 12, partition 63|| origin_formedges: 41415 ||join take time: normal, REPARJOIN0.032145654REPARJOIN secsQuery Redis for edges: 	41415,	take time: 	REPARREDIS3.417REPARREDIS sec, 	res_edges:             	39071
+
+At STEP 12, partition 297|| origin_formedges: 32312 ||join take time: normal, REPARJOIN0.030536432REPARJOIN secsQuery Redis for edges: 	32312,	take time: 	REPARREDIS0.551REPARREDIS sec, 	res_edges:             	31504
+
+At STEP 12, partition 354|| origin_formedges: 42999 ||join take time: normal, REPARJOIN0.044812043REPARJOIN secsQuery Redis for edges: 	42999,	take time: 	REPARREDIS0.643REPARREDIS sec, 	res_edges:             	40831
+
+At STEP 12, partition 79|| origin_formedges: 35123 ||join take time: normal, REPARJOIN0.028400507REPARJOIN secsQuery Redis for edges: 	35123,	take time: 	REPARREDIS3.471REPARREDIS sec, 	res_edges:             	34811
+
+At STEP 12, partition 313|| origin_formedges: 39608 ||join take time: normal, REPARJOIN0.030484646REPARJOIN secsQuery Redis for edges: 	39608,	take time: 	REPARREDIS0.621REPARREDIS sec, 	res_edges:             	37566
+
+At STEP 12, partition 95|| origin_formedges: 31602 ||join take time: normal, REPARJOIN0.032185014REPARJOIN secsQuery Redis for edges: 	31602,	take time: 	REPARREDIS3.418REPARREDIS sec, 	res_edges:             	31300
+
+At STEP 12, partition 111|| origin_formedges: 43681 ||join take time: normal, REPARJOIN0.032975439REPARJOIN secsQuery Redis for edges: 	43681,	take time: 	REPARREDIS3.026REPARREDIS sec, 	res_edges:             	43452
+
+At STEP 12, partition 370|| origin_formedges: 38110 ||join take time: normal, REPARJOIN0.044556426REPARJOIN secsQuery Redis for edges: 	38110,	take time: 	REPARREDIS0.619REPARREDIS sec, 	res_edges:             	37793
+
+At STEP 12, partition 475|| origin_formedges: 47544 ||join take time: normal, REPARJOIN0.017033328REPARJOIN secsQuery Redis for edges: 	47544,	take time: 	REPARREDIS0.723REPARREDIS sec, 	res_edges:             	47239
+
+At STEP 12, partition 127|| origin_formedges: 45936 ||join take time: normal, REPARJOIN0.03297261REPARJOIN secsQuery Redis for edges: 	45936,	take time: 	REPARREDIS3.025REPARREDIS sec, 	res_edges:             	45666
+
+At STEP 12, partition 408|| origin_formedges: 35373 ||join take time: normal, REPARJOIN0.024644962REPARJOIN secsQuery Redis for edges: 	35373,	take time: 	REPARREDIS0.600REPARREDIS sec, 	res_edges:             	35076
+
+At STEP 12, partition 497|| origin_formedges: 44045 ||join take time: normal, REPARJOIN0.017981719REPARJOIN secsQuery Redis for edges: 	44045,	take time: 	REPARREDIS0.622REPARREDIS sec, 	res_edges:             	43761
+
+At STEP 12, partition 143|| origin_formedges: 39786 ||join take time: normal, REPARJOIN0.032865472REPARJOIN secsQuery Redis for edges: 	39786,	take time: 	REPARREDIS3.520REPARREDIS sec, 	res_edges:             	39154
+
+At STEP 12, partition 409|| origin_formedges: 35805 ||join take time: normal, REPARJOIN0.024309953REPARJOIN secsQuery Redis for edges: 	35805,	take time: 	REPARREDIS0.601REPARREDIS sec, 	res_edges:             	35201
+
+At STEP 12, partition 218|| origin_formedges: 43045 ||join take time: normal, REPARJOIN0.019182898REPARJOIN secsQuery Redis for edges: 	43045,	take time: 	REPARREDIS0.623REPARREDIS sec, 	res_edges:             	41979
+
+At STEP 12, partition 159|| origin_formedges: 46184 ||join take time: normal, REPARJOIN0.033010343REPARJOIN secsQuery Redis for edges: 	46184,	take time: 	REPARREDIS3.497REPARREDIS sec, 	res_edges:             	45662
+
+At STEP 12, partition 234|| origin_formedges: 41198 ||join take time: normal, REPARJOIN0.029670432REPARJOIN secsQuery Redis for edges: 	41198,	take time: 	REPARREDIS3.409REPARREDIS sec, 	res_edges:             	40703
+
+At STEP 12, partition 476|| origin_formedges: 38265 ||join take time: normal, REPARJOIN0.017068862REPARJOIN secsQuery Redis for edges: 	38265,	take time: 	REPARREDIS0.557REPARREDIS sec, 	res_edges:             	37766
+
+At STEP 12, partition 329|| origin_formedges: 33611 ||join take time: normal, REPARJOIN0.022935985REPARJOIN secsQuery Redis for edges: 	33611,	take time: 	REPARREDIS0.531REPARREDIS sec, 	res_edges:             	33101
+
+At STEP 12, partition 208|| origin_formedges: 44825 ||join take time: normal, REPARJOIN0.028672334REPARJOIN secsQuery Redis for edges: 	44825,	take time: 	REPARREDIS3.488REPARREDIS sec, 	res_edges:             	44101
+
+At STEP 12, partition 175|| origin_formedges: 33236 ||join take time: normal, REPARJOIN0.032577043REPARJOIN secsQuery Redis for edges: 	33236,	take time: 	REPARREDIS3.031REPARREDIS sec, 	res_edges:             	32683
+
+At STEP 12, partition 224|| origin_formedges: 37526 ||join take time: normal, REPARJOIN0.03021531REPARJOIN secsQuery Redis for edges: 	37526,	take time: 	REPARREDIS0.619REPARREDIS sec, 	res_edges:             	36855
+
+At STEP 12, partition 191|| origin_formedges: 42236 ||join take time: normal, REPARJOIN0.032606976REPARJOIN secsQuery Redis for edges: 	42236,	take time: 	REPARREDIS2.652REPARREDIS sec, 	res_edges:             	41438
+
+At STEP 12, partition 240|| origin_formedges: 40172 ||join take time: normal, REPARJOIN0.030634348REPARJOIN secsQuery Redis for edges: 	40172,	take time: 	REPARREDIS0.617REPARREDIS sec, 	res_edges:             	39902
+
+At STEP 12, partition 256|| origin_formedges: 37037 ||join take time: normal, REPARJOIN0.030539314REPARJOIN secsQuery Redis for edges: 	37037,	take time: 	REPARREDIS3.533REPARREDIS sec, 	res_edges:             	36626
+
+At STEP 12, partition 207|| origin_formedges: 50502 ||join take time: normal, REPARJOIN0.033125932REPARJOIN secsQuery Redis for edges: 	50502,	take time: 	REPARREDIS2.151REPARREDIS sec, 	res_edges:             	47102
+
+At STEP 12, partition 272|| origin_formedges: 38360 ||join take time: normal, REPARJOIN0.030740269REPARJOIN secsQuery Redis for edges: 	38360,	take time: 	REPARREDIS3.477REPARREDIS sec, 	res_edges:             	38158
+
+At STEP 12, partition 477|| origin_formedges: 35687 ||join take time: normal, REPARJOIN0.024119115REPARJOIN secsQuery Redis for edges: 	35687,	take time: 	REPARREDIS0.665REPARREDIS sec, 	res_edges:             	35408
+
+At STEP 12, partition 205|| origin_formedges: 41093 ||join take time: normal, REPARJOIN0.040734045REPARJOIN secsQuery Redis for edges: 	41093,	take time: 	REPARREDIS3.356REPARREDIS sec, 	res_edges:             	40442
+
+At STEP 12, partition 221|| origin_formedges: 34002 ||join take time: normal, REPARJOIN0.039776286REPARJOIN secsQuery Redis for edges: 	34002,	take time: 	REPARREDIS0.621REPARREDIS sec, 	res_edges:             	33645
+
+At STEP 12, partition 498|| origin_formedges: 42010 ||join take time: normal, REPARJOIN0.017518174REPARJOIN secsQuery Redis for edges: 	42010,	take time: 	REPARREDIS0.546REPARREDIS sec, 	res_edges:             	41465
+
+At STEP 12, partition 237|| origin_formedges: 40487 ||join take time: normal, REPARJOIN0.031422327REPARJOIN secsQuery Redis for edges: 	40487,	take time: 	REPARREDIS0.653REPARREDIS sec, 	res_edges:             	40143
+
+At STEP 12, partition 253|| origin_formedges: 40921 ||join take time: normal, REPARJOIN0.031810559REPARJOIN secsQuery Redis for edges: 	40921,	take time: 	REPARREDIS3.276REPARREDIS sec, 	res_edges:             	39850
+
+At STEP 12, partition 345|| origin_formedges: 41377 ||join take time: normal, REPARJOIN0.030971719REPARJOIN secsQuery Redis for edges: 	41377,	take time: 	REPARREDIS2.498REPARREDIS sec, 	res_edges:             	40983
+
+At STEP 12, partition 269|| origin_formedges: 37373 ||join take time: normal, REPARJOIN0.040834347REPARJOIN secsQuery Redis for edges: 	37373,	take time: 	REPARREDIS3.276REPARREDIS sec, 	res_edges:             	36615
+
+At STEP 12, partition 4|| origin_formedges: 35749 ||join take time: normal, REPARJOIN0.033090262REPARJOIN secsQuery Redis for edges: 	35749,	take time: 	REPARREDIS0.610REPARREDIS sec, 	res_edges:             	34905
+
+At STEP 12, partition 245|| origin_formedges: 38463 ||join take time: normal, REPARJOIN0.033311025REPARJOIN secsQuery Redis for edges: 	38463,	take time: 	REPARREDIS0.612REPARREDIS sec, 	res_edges:             	37906
+
+At STEP 12, partition 20|| origin_formedges: 36603 ||join take time: normal, REPARJOIN0.033886611REPARJOIN secsQuery Redis for edges: 	36603,	take time: 	REPARREDIS3.164REPARREDIS sec, 	res_edges:             	35530
+
+At STEP 12, partition 261|| origin_formedges: 34266 ||join take time: normal, REPARJOIN0.033655499REPARJOIN secsQuery Redis for edges: 	34266,	take time: 	REPARREDIS3.511REPARREDIS sec, 	res_edges:             	33925
+
+At STEP 12, partition 36|| origin_formedges: 38652 ||join take time: normal, REPARJOIN0.034095388REPARJOIN secsQuery Redis for edges: 	38652,	take time: 	REPARREDIS1.318REPARREDIS sec, 	res_edges:             	38226
+
+At STEP 12, partition 277|| origin_formedges: 32488 ||join take time: normal, REPARJOIN0.03353009REPARJOIN secsQuery Redis for edges: 	32488,	take time: 	REPARREDIS2.416REPARREDIS sec, 	res_edges:             	31517
+
+At STEP 12, partition 410|| origin_formedges: 39014 ||join take time: normal, REPARJOIN0.022529636REPARJOIN secsQuery Redis for edges: 	39014,	take time: 	REPARREDIS0.656REPARREDIS sec, 	res_edges:             	38595
+
+At STEP 12, partition 254|| origin_formedges: 42423 ||join take time: normal, REPARJOIN0.030887548REPARJOIN secsQuery Redis for edges: 	42423,	take time: 	REPARREDIS1.076REPARREDIS sec, 	res_edges:             	42165
+
+At STEP 12, partition 293|| origin_formedges: 33688 ||join take time: normal, REPARJOIN0.033542826REPARJOIN secsQuery Redis for edges: 	33688,	take time: 	REPARREDIS0.612REPARREDIS sec, 	res_edges:             	33004
+
+At STEP 12, partition 52|| origin_formedges: 34417 ||join take time: normal, REPARJOIN0.03099472REPARJOIN secsQuery Redis for edges: 	34417,	take time: 	REPARREDIS0.610REPARREDIS sec, 	res_edges:             	31782
+
+At STEP 12, partition 309|| origin_formedges: 37720 ||join take time: normal, REPARJOIN0.033007637REPARJOIN secsQuery Redis for edges: 	37720,	take time: 	REPARREDIS0.614REPARREDIS sec, 	res_edges:             	37317
+
+At STEP 12, partition 478|| origin_formedges: 49378 ||join take time: normal, REPARJOIN0.034336481REPARJOIN secsQuery Redis for edges: 	49378,	take time: 	REPARREDIS0.798REPARREDIS sec, 	res_edges:             	49033
+
+At STEP 12, partition 325|| origin_formedges: 41280 ||join take time: normal, REPARJOIN0.03299436REPARJOIN secsQuery Redis for edges: 	41280,	take time: 	REPARREDIS0.654REPARREDIS sec, 	res_edges:             	41053
+
+At STEP 12, partition 250|| origin_formedges: 38028 ||join take time: normal, REPARJOIN0.029663275REPARJOIN secsQuery Redis for edges: 	38028,	take time: 	REPARREDIS2.644REPARREDIS sec, 	res_edges:             	37727
+
+At STEP 12, partition 266|| origin_formedges: 42688 ||join take time: normal, REPARJOIN0.025023779REPARJOIN secsQuery Redis for edges: 	42688,	take time: 	REPARREDIS0.659REPARREDIS sec, 	res_edges:             	42240
+
+At STEP 12, partition 68|| origin_formedges: 46583 ||join take time: normal, REPARJOIN0.042651234REPARJOIN secsQuery Redis for edges: 	46583,	take time: 	REPARREDIS3.272REPARREDIS sec, 	res_edges:             	43269
+
+At STEP 12, partition 282|| origin_formedges: 37186 ||join take time: normal, REPARJOIN0.029917711REPARJOIN secsQuery Redis for edges: 	37186,	take time: 	REPARREDIS1.319REPARREDIS sec, 	res_edges:             	36444
+
+At STEP 12, partition 84|| origin_formedges: 37853 ||join take time: normal, REPARJOIN0.033444003REPARJOIN secsQuery Redis for edges: 	37853,	take time: 	REPARREDIS3.359REPARREDIS sec, 	res_edges:             	37516
+
+At STEP 12, partition 341|| origin_formedges: 39832 ||join take time: normal, REPARJOIN0.033762182REPARJOIN secsQuery Redis for edges: 	39832,	take time: 	REPARREDIS0.613REPARREDIS sec, 	res_edges:             	39307
+
+At STEP 12, partition 100|| origin_formedges: 41436 ||join take time: normal, REPARJOIN0.034857057REPARJOIN secsQuery Redis for edges: 	41436,	take time: 	REPARREDIS3.168REPARREDIS sec, 	res_edges:             	41312
+
+At STEP 12, partition 357|| origin_formedges: 38990 ||join take time: normal, REPARJOIN0.033630172REPARJOIN secsQuery Redis for edges: 	38990,	take time: 	REPARREDIS1.488REPARREDIS sec, 	res_edges:             	38789
+
+At STEP 12, partition 116|| origin_formedges: 41658 ||join take time: normal, REPARJOIN0.034488554REPARJOIN secsQuery Redis for edges: 	41658,	take time: 	REPARREDIS1.171REPARREDIS sec, 	res_edges:             	40588
+
+At STEP 12, partition 373|| origin_formedges: 35158 ||join take time: normal, REPARJOIN0.033841889REPARJOIN secsQuery Redis for edges: 	35158,	take time: 	REPARREDIS0.611REPARREDIS sec, 	res_edges:             	35052
+
+At STEP 12, partition 479|| origin_formedges: 42772 ||join take time: normal, REPARJOIN0.028573109REPARJOIN secsQuery Redis for edges: 	42772,	take time: 	REPARREDIS0.762REPARREDIS sec, 	res_edges:             	42260
+
+At STEP 12, partition 432|| origin_formedges: 40845 ||join take time: normal, REPARJOIN0.023543341REPARJOIN secsQuery Redis for edges: 	40845,	take time: 	REPARREDIS0.650REPARREDIS sec, 	res_edges:             	40493
+
+At STEP 12, partition 132|| origin_formedges: 46389 ||join take time: normal, REPARJOIN0.033991155REPARJOIN secsQuery Redis for edges: 	46389,	take time: 	REPARREDIS2.836REPARREDIS sec, 	res_edges:             	45730
+
+At STEP 12, partition 436|| origin_formedges: 41431 ||join take time: normal, REPARJOIN0.031287104REPARJOIN secsQuery Redis for edges: 	41431,	take time: 	REPARREDIS0.690REPARREDIS sec, 	res_edges:             	40514
+
+At STEP 12, partition 433|| origin_formedges: 40310 ||join take time: normal, REPARJOIN0.01892865REPARJOIN secsQuery Redis for edges: 	40310,	take time: 	REPARREDIS0.616REPARREDIS sec, 	res_edges:             	39839
+
+At STEP 12, partition 148|| origin_formedges: 44750 ||join take time: normal, REPARJOIN0.025937022REPARJOIN secsQuery Redis for edges: 	44750,	take time: 	REPARREDIS0.659REPARREDIS sec, 	res_edges:             	44456
+
+At STEP 12, partition 434|| origin_formedges: 36980 ||join take time: normal, REPARJOIN0.035707324REPARJOIN secsQuery Redis for edges: 	36980,	take time: 	REPARREDIS0.653REPARREDIS sec, 	res_edges:             	36514
+
+At STEP 12, partition 164|| origin_formedges: 45576 ||join take time: normal, REPARJOIN0.034931857REPARJOIN secsQuery Redis for edges: 	45576,	take time: 	REPARREDIS3.362REPARREDIS sec, 	res_edges:             	44665
+
+At STEP 12, partition 435|| origin_formedges: 40226 ||join take time: normal, REPARJOIN0.03540995REPARJOIN secsQuery Redis for edges: 	40226,	take time: 	REPARREDIS0.655REPARREDIS sec, 	res_edges:             	40147
+
+At STEP 12, partition 437|| origin_formedges: 41158 ||join take time: normal, REPARJOIN0.026341536REPARJOIN secsQuery Redis for edges: 	41158,	take time: 	REPARREDIS0.697REPARREDIS sec, 	res_edges:             	40840
+
+At STEP 12, partition 180|| origin_formedges: 41963 ||join take time: normal, REPARJOIN0.036610659REPARJOIN secsQuery Redis for edges: 	41963,	take time: 	REPARREDIS2.052REPARREDIS sec, 	res_edges:             	41291
+
+At STEP 12, partition 438|| origin_formedges: 32060 ||join take time: normal, REPARJOIN0.044312962REPARJOIN secsQuery Redis for edges: 	32060,	take time: 	REPARREDIS0.513REPARREDIS sec, 	res_edges:             	31531
+
+At STEP 12, partition 298|| origin_formedges: 35986 ||join take time: normal, REPARJOIN0.031333146REPARJOIN secsQuery Redis for edges: 	35986,	take time: 	REPARREDIS0.615REPARREDIS sec, 	res_edges:             	34964
+
+At STEP 12, partition 446|| origin_formedges: 43939 ||join take time: normal, REPARJOIN0.018029451REPARJOIN secsQuery Redis for edges: 	43939,	take time: 	REPARREDIS0.669REPARREDIS sec, 	res_edges:             	42865
+
+At STEP 12, partition 196|| origin_formedges: 41661 ||join take time: normal, REPARJOIN0.033686032REPARJOIN secsQuery Redis for edges: 	41661,	take time: 	REPARREDIS2.834REPARREDIS sec, 	res_edges:             	39627
+
+At STEP 12, partition 448|| origin_formedges: 34985 ||join take time: normal, REPARJOIN0.030633284REPARJOIN secsQuery Redis for edges: 	34985,	take time: 	REPARREDIS0.588REPARREDIS sec, 	res_edges:             	34304
+
+At STEP 12, partition 212|| origin_formedges: 37966 ||join take time: normal, REPARJOIN0.034968421REPARJOIN secsQuery Redis for edges: 	37966,	take time: 	REPARREDIS3.361REPARREDIS sec, 	res_edges:             	37073
+
+At STEP 12, partition 449|| origin_formedges: 42956 ||join take time: normal, REPARJOIN0.035590833REPARJOIN secsQuery Redis for edges: 	42956,	take time: 	REPARREDIS0.762REPARREDIS sec, 	res_edges:             	42435
+
+At STEP 12, partition 228|| origin_formedges: 34010 ||join take time: normal, REPARJOIN0.033452894REPARJOIN secsQuery Redis for edges: 	34010,	take time: 	REPARREDIS0.609REPARREDIS sec, 	res_edges:             	33403
+
+At STEP 12, partition 452|| origin_formedges: 40561 ||join take time: normal, REPARJOIN0.033964416REPARJOIN secsQuery Redis for edges: 	40561,	take time: 	REPARREDIS0.691REPARREDIS sec, 	res_edges:             	39676
+
+At STEP 12, partition 244|| origin_formedges: 38023 ||join take time: normal, REPARJOIN0.043365596REPARJOIN secsQuery Redis for edges: 	38023,	take time: 	REPARREDIS2.132REPARREDIS sec, 	res_edges:             	37617
+
+At STEP 12, partition 453|| origin_formedges: 37082 ||join take time: normal, REPARJOIN0.018194382REPARJOIN secsQuery Redis for edges: 	37082,	take time: 	REPARREDIS0.625REPARREDIS sec, 	res_edges:             	36035
+
+At STEP 12, partition 270|| origin_formedges: 36533 ||join take time: normal, REPARJOIN0.030415333REPARJOIN secsQuery Redis for edges: 	36533,	take time: 	REPARREDIS0.613REPARREDIS sec, 	res_edges:             	36047
+
+At STEP 12, partition 454|| origin_formedges: 38773 ||join take time: normal, REPARJOIN0.028546456REPARJOIN secsQuery Redis for edges: 	38773,	take time: 	REPARREDIS1.104REPARREDIS sec, 	res_edges:             	37988
+
+At STEP 12, partition 260|| origin_formedges: 37388 ||join take time: normal, REPARJOIN0.032209588REPARJOIN secsQuery Redis for edges: 	37388,	take time: 	REPARREDIS2.835REPARREDIS sec, 	res_edges:             	36942
+
+At STEP 12, partition 455|| origin_formedges: 34132 ||join take time: normal, REPARJOIN0.021896042REPARJOIN secsQuery Redis for edges: 	34132,	take time: 	REPARREDIS1.103REPARREDIS sec, 	res_edges:             	33740
+
+At STEP 12, partition 276|| origin_formedges: 43632 ||join take time: normal, REPARJOIN0.033773134REPARJOIN secsQuery Redis for edges: 	43632,	take time: 	REPARREDIS3.282REPARREDIS sec, 	res_edges:             	42907
+
+At STEP 12, partition 456|| origin_formedges: 46628 ||join take time: normal, REPARJOIN0.017831228REPARJOIN secsQuery Redis for edges: 	46628,	take time: 	REPARREDIS1.475REPARREDIS sec, 	res_edges:             	43336
+
+At STEP 12, partition 292|| origin_formedges: 38058 ||join take time: normal, REPARJOIN0.033747174REPARJOIN secsQuery Redis for edges: 	38058,	take time: 	REPARREDIS0.626REPARREDIS sec, 	res_edges:             	37547
+
+At STEP 12, partition 457|| origin_formedges: 40330 ||join take time: normal, REPARJOIN0.018705255REPARJOIN secsQuery Redis for edges: 	40330,	take time: 	REPARREDIS1.282REPARREDIS sec, 	res_edges:             	40180
+
+At STEP 12, partition 308|| origin_formedges: 40386 ||join take time: normal, REPARJOIN0.03377121REPARJOIN secsQuery Redis for edges: 	40386,	take time: 	REPARREDIS0.652REPARREDIS sec, 	res_edges:             	39982
+
+At STEP 12, partition 458|| origin_formedges: 34651 ||join take time: normal, REPARJOIN0.027906289REPARJOIN secsQuery Redis for edges: 	34651,	take time: 	REPARREDIS1.271REPARREDIS sec, 	res_edges:             	34525
+
+At STEP 12, partition 324|| origin_formedges: 41247 ||join take time: normal, REPARJOIN0.033912679REPARJOIN secsQuery Redis for edges: 	41247,	take time: 	REPARREDIS0.651REPARREDIS sec, 	res_edges:             	40450
+
+At STEP 12, partition 459|| origin_formedges: 35244 ||join take time: normal, REPARJOIN0.019297407REPARJOIN secsQuery Redis for edges: 	35244,	take time: 	REPARREDIS1.276REPARREDIS sec, 	res_edges:             	34979
+
+At STEP 12, partition 340|| origin_formedges: 45435 ||join take time: normal, REPARJOIN0.033615865REPARJOIN secsQuery Redis for edges: 	45435,	take time: 	REPARREDIS0.650REPARREDIS sec, 	res_edges:             	45165
+
+At STEP 12, partition 465|| origin_formedges: 44038 ||join take time: normal, REPARJOIN0.025941815REPARJOIN secsQuery Redis for edges: 	44038,	take time: 	REPARREDIS1.402REPARREDIS sec, 	res_edges:             	43515
+
+At STEP 12, partition 412|| origin_formedges: 48621 ||join take time: normal, REPARJOIN0.026936859REPARJOIN secsQuery Redis for edges: 	48621,	take time: 	REPARREDIS0.816REPARREDIS sec, 	res_edges:             	47852
+
+At STEP 12, partition 500|| origin_formedges: 47046 ||join take time: normal, REPARJOIN0.017507835REPARJOIN secsQuery Redis for edges: 	47046,	take time: 	REPARREDIS0.682REPARREDIS sec, 	res_edges:             	46980
+
+At STEP 12, partition 286|| origin_formedges: 43083 ||join take time: normal, REPARJOIN0.030648136REPARJOIN secsQuery Redis for edges: 	43083,	take time: 	REPARREDIS3.366REPARREDIS sec, 	res_edges:             	42440
+
+At STEP 12, partition 361|| origin_formedges: 35021 ||join take time: normal, REPARJOIN0.03002747REPARJOIN secsQuery Redis for edges: 	35021,	take time: 	REPARREDIS0.608REPARREDIS sec, 	res_edges:             	34763
+
+At STEP 12, partition 439|| origin_formedges: 38499 ||join take time: normal, REPARJOIN0.034370914REPARJOIN secsQuery Redis for edges: 	38499,	take time: 	REPARREDIS0.649REPARREDIS sec, 	res_edges:             	38155
+
+At STEP 12, partition 377|| origin_formedges: 39161 ||join take time: normal, REPARJOIN0.030563329REPARJOIN secsQuery Redis for edges: 	39161,	take time: 	REPARREDIS3.524REPARREDIS sec, 	res_edges:             	39034
+
+At STEP 12, partition 288|| origin_formedges: 37413 ||join take time: normal, REPARJOIN0.030553489REPARJOIN secsQuery Redis for edges: 	37413,	take time: 	REPARREDIS3.521REPARREDIS sec, 	res_edges:             	36963
+
+At STEP 12, partition 542|| origin_formedges: 44627 ||join take time: normal, REPARJOIN0.016671801REPARJOIN secsQuery Redis for edges: 	44627,	take time: 	REPARREDIS0.523REPARREDIS sec, 	res_edges:             	44334
+
+At STEP 12, partition 440|| origin_formedges: 35682 ||join take time: normal, REPARJOIN0.034373572REPARJOIN secsQuery Redis for edges: 	35682,	take time: 	REPARREDIS0.641REPARREDIS sec, 	res_edges:             	35194
+
+At STEP 12, partition 304|| origin_formedges: 35913 ||join take time: normal, REPARJOIN0.030253341REPARJOIN secsQuery Redis for edges: 	35913,	take time: 	REPARREDIS0.617REPARREDIS sec, 	res_edges:             	34846
+
+At STEP 12, partition 551|| origin_formedges: 40680 ||join take time: normal, REPARJOIN0.026730224REPARJOIN secsQuery Redis for edges: 	40680,	take time: 	REPARREDIS0.556REPARREDIS sec, 	res_edges:             	40148
+
+At STEP 12, partition 312|| origin_formedges: 39943 ||join take time: normal, REPARJOIN0.033705155REPARJOIN secsQuery Redis for edges: 	39943,	take time: 	REPARREDIS0.651REPARREDIS sec, 	res_edges:             	39301
+
+At STEP 12, partition 314|| origin_formedges: 42159 ||join take time: normal, REPARJOIN0.027478938REPARJOIN secsQuery Redis for edges: 	42159,	take time: 	REPARREDIS2.418REPARREDIS sec, 	res_edges:             	41269
+
+At STEP 12, partition 320|| origin_formedges: 38843 ||join take time: normal, REPARJOIN0.033216203REPARJOIN secsQuery Redis for edges: 	38843,	take time: 	REPARREDIS2.421REPARREDIS sec, 	res_edges:             	37824
+
+At STEP 12, partition 328|| origin_formedges: 39207 ||join take time: normal, REPARJOIN0.034064433REPARJOIN secsQuery Redis for edges: 	39207,	take time: 	REPARREDIS2.815REPARREDIS sec, 	res_edges:             	36619
+
+At STEP 12, partition 336|| origin_formedges: 42475 ||join take time: normal, REPARJOIN0.029920116REPARJOIN secsQuery Redis for edges: 	42475,	take time: 	REPARREDIS0.677REPARREDIS sec, 	res_edges:             	41853
+
+At STEP 12, partition 330|| origin_formedges: 41734 ||join take time: normal, REPARJOIN0.027395701REPARJOIN secsQuery Redis for edges: 	41734,	take time: 	REPARREDIS3.411REPARREDIS sec, 	res_edges:             	38324
+
+At STEP 12, partition 344|| origin_formedges: 43408 ||join take time: normal, REPARJOIN0.034254835REPARJOIN secsQuery Redis for edges: 	43408,	take time: 	REPARREDIS3.491REPARREDIS sec, 	res_edges:             	43342
+
+At STEP 12, partition 346|| origin_formedges: 38982 ||join take time: normal, REPARJOIN0.029524446REPARJOIN secsQuery Redis for edges: 	38982,	take time: 	REPARREDIS2.139REPARREDIS sec, 	res_edges:             	38661
+
+At STEP 12, partition 352|| origin_formedges: 38490 ||join take time: normal, REPARJOIN0.030706688REPARJOIN secsQuery Redis for edges: 	38490,	take time: 	REPARREDIS0.618REPARREDIS sec, 	res_edges:             	38386
+
+At STEP 12, partition 362|| origin_formedges: 36963 ||join take time: normal, REPARJOIN0.03041157REPARJOIN secsQuery Redis for edges: 	36963,	take time: 	REPARREDIS3.477REPARREDIS sec, 	res_edges:             	36808
+
+At STEP 12, partition 368|| origin_formedges: 40754 ||join take time: normal, REPARJOIN0.017167175REPARJOIN secsQuery Redis for edges: 	40754,	take time: 	REPARREDIS0.565REPARREDIS sec, 	res_edges:             	40145
+
+At STEP 12, partition 360|| origin_formedges: 36207 ||join take time: normal, REPARJOIN0.033392843REPARJOIN secsQuery Redis for edges: 	36207,	take time: 	REPARREDIS0.609REPARREDIS sec, 	res_edges:             	35600
+
+At STEP 12, partition 649|| origin_formedges: 32338 ||join take time: normal, REPARJOIN0.016463994REPARJOIN secsQuery Redis for edges: 	32338,	take time: 	REPARREDIS0.376REPARREDIS sec, 	res_edges:             	32003
+
+At STEP 12, partition 378|| origin_formedges: 34562 ||join take time: normal, REPARJOIN0.029324014REPARJOIN secsQuery Redis for edges: 	34562,	take time: 	REPARREDIS0.615REPARREDIS sec, 	res_edges:             	33938
+
+At STEP 12, partition 376|| origin_formedges: 39472 ||join take time: normal, REPARJOIN0.032401183REPARJOIN secsQuery Redis for edges: 	39472,	take time: 	REPARREDIS0.614REPARREDIS sec, 	res_edges:             	39199
+
+At STEP 12, partition 696|| origin_formedges: 34340 ||join take time: normal, REPARJOIN0.06972109REPARJOIN secsQuery Redis for edges: 	34340,	take time: 	REPARREDIS0.627REPARREDIS sec, 	res_edges:             	34195
+
+At STEP 12, partition 480|| origin_formedges: 37090 ||join take time: normal, REPARJOIN0.015775678REPARJOIN secsQuery Redis for edges: 	37090,	take time: 	REPARREDIS0.442REPARREDIS sec, 	res_edges:             	36754
+
+At STEP 12, partition 482|| origin_formedges: 42397 ||join take time: normal, REPARJOIN0.020320067REPARJOIN secsQuery Redis for edges: 	42397,	take time: 	REPARREDIS0.770REPARREDIS sec, 	res_edges:             	41811
+
+At STEP 12, partition 481|| origin_formedges: 45330 ||join take time: normal, REPARJOIN0.02778189REPARJOIN secsQuery Redis for edges: 	45330,	take time: 	REPARREDIS0.699REPARREDIS sec, 	res_edges:             	44953
+
+At STEP 12, partition 698|| origin_formedges: 32747 ||join take time: normal, REPARJOIN0.028100112REPARJOIN secsQuery Redis for edges: 	32747,	take time: 	REPARREDIS0.568REPARREDIS sec, 	res_edges:             	32594
+
+At STEP 12, partition 487|| origin_formedges: 32257 ||join take time: normal, REPARJOIN0.014188242REPARJOIN secsQuery Redis for edges: 	32257,	take time: 	REPARREDIS0.431REPARREDIS sec, 	res_edges:             	31592
+
+At STEP 12, partition 441|| origin_formedges: 36664 ||join take time: normal, REPARJOIN0.048020757REPARJOIN secsQuery Redis for edges: 	36664,	take time: 	REPARREDIS0.713REPARREDIS sec, 	res_edges:             	36485
+
+At STEP 12, partition 700|| origin_formedges: 32357 ||join take time: normal, REPARJOIN0.016572407REPARJOIN secsQuery Redis for edges: 	32357,	take time: 	REPARREDIS0.580REPARREDIS sec, 	res_edges:             	32163
+
+At STEP 12, partition 442|| origin_formedges: 37814 ||join take time: normal, REPARJOIN0.027550169REPARJOIN secsQuery Redis for edges: 	37814,	take time: 	REPARREDIS0.641REPARREDIS sec, 	res_edges:             	37337
+
+At STEP 12, partition 701|| origin_formedges: 47442 ||join take time: normal, REPARJOIN0.018794107REPARJOIN secsQuery Redis for edges: 	47442,	take time: 	REPARREDIS0.757REPARREDIS sec, 	res_edges:             	45472
+
+At STEP 12, partition 443|| origin_formedges: 39939 ||join take time: normal, REPARJOIN0.032027902REPARJOIN secsQuery Redis for edges: 	39939,	take time: 	REPARREDIS1.017REPARREDIS sec, 	res_edges:             	39831
+
+At STEP 12, partition 702|| origin_formedges: 39801 ||join take time: normal, REPARJOIN0.03302267REPARJOIN secsQuery Redis for edges: 	39801,	take time: 	REPARREDIS0.767REPARREDIS sec, 	res_edges:             	39210
+
+At STEP 12, partition 444|| origin_formedges: 33765 ||join take time: normal, REPARJOIN0.023652357REPARJOIN secsQuery Redis for edges: 	33765,	take time: 	REPARREDIS1.156REPARREDIS sec, 	res_edges:             	32581
+
+At STEP 12, partition 483|| origin_formedges: 39754 ||join take time: normal, REPARJOIN0.032672651REPARJOIN secsQuery Redis for edges: 	39754,	take time: 	REPARREDIS1.180REPARREDIS sec, 	res_edges:             	39430
+
+At STEP 12, partition 703|| origin_formedges: 35747 ||join take time: normal, REPARJOIN0.01776454REPARJOIN secsQuery Redis for edges: 	35747,	take time: 	REPARREDIS0.628REPARREDIS sec, 	res_edges:             	35080
+
+At STEP 12, partition 129|| origin_formedges: 44477 ||join take time: normal, REPARJOIN0.033110738REPARJOIN secsQuery Redis for edges: 	44477,	take time: 	REPARREDIS3.352REPARREDIS sec, 	res_edges:             	44061
+
+At STEP 12, partition 445|| origin_formedges: 39213 ||join take time: normal, REPARJOIN0.048369847REPARJOIN secsQuery Redis for edges: 	39213,	take time: 	REPARREDIS1.248REPARREDIS sec, 	res_edges:             	38619
+
+At STEP 12, partition 710|| origin_formedges: 38064 ||join take time: normal, REPARJOIN0.032328468REPARJOIN secsQuery Redis for edges: 	38064,	take time: 	REPARREDIS0.711REPARREDIS sec, 	res_edges:             	37674
+
+At STEP 12, partition 484|| origin_formedges: 37908 ||join take time: normal, REPARJOIN0.017329925REPARJOIN secsQuery Redis for edges: 	37908,	take time: 	REPARREDIS1.159REPARREDIS sec, 	res_edges:             	37449
+
+At STEP 12, partition 447|| origin_formedges: 35402 ||join take time: normal, REPARJOIN0.025319242REPARJOIN secsQuery Redis for edges: 	35402,	take time: 	REPARREDIS1.239REPARREDIS sec, 	res_edges:             	34936
+
+At STEP 12, partition 711|| origin_formedges: 33492 ||join take time: normal, REPARJOIN0.016498418REPARJOIN secsQuery Redis for edges: 	33492,	take time: 	REPARREDIS0.665REPARREDIS sec, 	res_edges:             	33200
+
+At STEP 12, partition 715|| origin_formedges: 37271 ||join take time: normal, REPARJOIN0.017726385REPARJOIN secsQuery Redis for edges: 	37271,	take time: 	REPARREDIS1.110REPARREDIS sec, 	res_edges:             	36731
+
+At STEP 12, partition 552|| origin_formedges: 33462 ||join take time: normal, REPARJOIN0.017086923REPARJOIN secsQuery Redis for edges: 	33462,	take time: 	REPARREDIS0.570REPARREDIS sec, 	res_edges:             	33084
+
+At STEP 12, partition 450|| origin_formedges: 39199 ||join take time: normal, REPARJOIN0.025907077REPARJOIN secsQuery Redis for edges: 	39199,	take time: 	REPARREDIS1.235REPARREDIS sec, 	res_edges:             	38181
+
+At STEP 12, partition 716|| origin_formedges: 39066 ||join take time: normal, REPARJOIN0.016813694REPARJOIN secsQuery Redis for edges: 	39066,	take time: 	REPARREDIS1.111REPARREDIS sec, 	res_edges:             	36916
+
+At STEP 12, partition 720|| origin_formedges: 43192 ||join take time: normal, REPARJOIN0.017508134REPARJOIN secsQuery Redis for edges: 	43192,	take time: 	REPARREDIS1.475REPARREDIS sec, 	res_edges:             	42388
+
+At STEP 12, partition 451|| origin_formedges: 42530 ||join take time: normal, REPARJOIN0.027962074REPARJOIN secsQuery Redis for edges: 	42530,	take time: 	REPARREDIS1.428REPARREDIS sec, 	res_edges:             	39996
+
+At STEP 12, partition 502|| origin_formedges: 44195 ||join take time: normal, REPARJOIN0.01745301REPARJOIN secsQuery Redis for edges: 	44195,	take time: 	REPARREDIS0.679REPARREDIS sec, 	res_edges:             	43634
+
+At STEP 12, partition 553|| origin_formedges: 39940 ||join take time: normal, REPARJOIN0.020906511REPARJOIN secsQuery Redis for edges: 	39940,	take time: 	REPARREDIS0.629REPARREDIS sec, 	res_edges:             	39256
+
+At STEP 12, partition 485|| origin_formedges: 43191 ||join take time: normal, REPARJOIN0.017355517REPARJOIN secsQuery Redis for edges: 	43191,	take time: 	REPARREDIS1.475REPARREDIS sec, 	res_edges:             	42412
+
+At STEP 12, partition 554|| origin_formedges: 46756 ||join take time: normal, REPARJOIN0.031216278REPARJOIN secsQuery Redis for edges: 	46756,	take time: 	REPARREDIS0.703REPARREDIS sec, 	res_edges:             	45641
+
+At STEP 12, partition 486|| origin_formedges: 42512 ||join take time: normal, REPARJOIN0.016536911REPARJOIN secsQuery Redis for edges: 	42512,	take time: 	REPARREDIS1.321REPARREDIS sec, 	res_edges:             	41896
+
+At STEP 12, partition 223|| origin_formedges: 40252 ||join take time: normal, REPARJOIN0.032628504REPARJOIN secsQuery Redis for edges: 	40252,	take time: 	REPARREDIS0.659REPARREDIS sec, 	res_edges:             	39774
+
+At STEP 12, partition 557|| origin_formedges: 39065 ||join take time: normal, REPARJOIN0.027448364REPARJOIN secsQuery Redis for edges: 	39065,	take time: 	REPARREDIS0.662REPARREDIS sec, 	res_edges:             	38875
+
+At STEP 12, partition 460|| origin_formedges: 36481 ||join take time: normal, REPARJOIN0.02605737REPARJOIN secsQuery Redis for edges: 	36481,	take time: 	REPARREDIS1.238REPARREDIS sec, 	res_edges:             	36000
+
+At STEP 12, partition 559|| origin_formedges: 37229 ||join take time: normal, REPARJOIN0.031263589REPARJOIN secsQuery Redis for edges: 	37229,	take time: 	REPARREDIS0.650REPARREDIS sec, 	res_edges:             	37054
+
+At STEP 12, partition 239|| origin_formedges: 37880 ||join take time: normal, REPARJOIN0.03241985REPARJOIN secsQuery Redis for edges: 	37880,	take time: 	REPARREDIS0.618REPARREDIS sec, 	res_edges:             	37694
+
+At STEP 12, partition 503|| origin_formedges: 41121 ||join take time: normal, REPARJOIN0.017392425REPARJOIN secsQuery Redis for edges: 	41121,	take time: 	REPARREDIS0.679REPARREDIS sec, 	res_edges:             	40979
+
+At STEP 12, partition 255|| origin_formedges: 35610 ||join take time: normal, REPARJOIN0.03246281REPARJOIN secsQuery Redis for edges: 	35610,	take time: 	REPARREDIS0.616REPARREDIS sec, 	res_edges:             	35026
+
+At STEP 12, partition 560|| origin_formedges: 36236 ||join take time: normal, REPARJOIN0.022208252REPARJOIN secsQuery Redis for edges: 	36236,	take time: 	REPARREDIS0.659REPARREDIS sec, 	res_edges:             	35947
+
+At STEP 12, partition 271|| origin_formedges: 35270 ||join take time: normal, REPARJOIN0.017548297REPARJOIN secsQuery Redis for edges: 	35270,	take time: 	REPARREDIS0.618REPARREDIS sec, 	res_edges:             	34940
+
+At STEP 12, partition 504|| origin_formedges: 35584 ||join take time: normal, REPARJOIN0.036784719REPARJOIN secsQuery Redis for edges: 	35584,	take time: 	REPARREDIS0.638REPARREDIS sec, 	res_edges:             	35405
+
+At STEP 12, partition 564|| origin_formedges: 36391 ||join take time: normal, REPARJOIN0.016332343REPARJOIN secsQuery Redis for edges: 	36391,	take time: 	REPARREDIS1.033REPARREDIS sec, 	res_edges:             	36228
+
+At STEP 12, partition 287|| origin_formedges: 41687 ||join take time: normal, REPARJOIN0.03239561REPARJOIN secsQuery Redis for edges: 	41687,	take time: 	REPARREDIS3.477REPARREDIS sec, 	res_edges:             	40303
+
+At STEP 12, partition 505|| origin_formedges: 35626 ||join take time: normal, REPARJOIN0.017162162REPARJOIN secsQuery Redis for edges: 	35626,	take time: 	REPARREDIS0.637REPARREDIS sec, 	res_edges:             	35163
+
+At STEP 12, partition 461|| origin_formedges: 35093 ||join take time: normal, REPARJOIN0.025607899REPARJOIN secsQuery Redis for edges: 	35093,	take time: 	REPARREDIS1.223REPARREDIS sec, 	res_edges:             	34367
+
+At STEP 12, partition 413|| origin_formedges: 36823 ||join take time: normal, REPARJOIN0.024946061REPARJOIN secsQuery Redis for edges: 	36823,	take time: 	REPARREDIS0.650REPARREDIS sec, 	res_edges:             	36449
+
+At STEP 12, partition 506|| origin_formedges: 41000 ||join take time: normal, REPARJOIN0.017282533REPARJOIN secsQuery Redis for edges: 	41000,	take time: 	REPARREDIS0.684REPARREDIS sec, 	res_edges:             	40667
+
+At STEP 12, partition 414|| origin_formedges: 41868 ||join take time: normal, REPARJOIN0.022801701REPARJOIN secsQuery Redis for edges: 	41868,	take time: 	REPARREDIS0.701REPARREDIS sec, 	res_edges:             	40799
+
+At STEP 12, partition 508|| origin_formedges: 40806 ||join take time: normal, REPARJOIN0.017191598REPARJOIN secsQuery Redis for edges: 	40806,	take time: 	REPARREDIS1.037REPARREDIS sec, 	res_edges:             	40477
+
+At STEP 12, partition 302|| origin_formedges: 39793 ||join take time: normal, REPARJOIN0.017781368REPARJOIN secsQuery Redis for edges: 	39793,	take time: 	REPARREDIS0.618REPARREDIS sec, 	res_edges:             	38965
+
+At STEP 12, partition 415|| origin_formedges: 47628 ||join take time: normal, REPARJOIN0.023900495REPARJOIN secsQuery Redis for edges: 	47628,	take time: 	REPARREDIS1.141REPARREDIS sec, 	res_edges:             	46915
+
+At STEP 12, partition 303|| origin_formedges: 38460 ||join take time: normal, REPARJOIN0.031518312REPARJOIN secsQuery Redis for edges: 	38460,	take time: 	REPARREDIS0.617REPARREDIS sec, 	res_edges:             	37381
+
+At STEP 12, partition 416|| origin_formedges: 42962 ||join take time: normal, REPARJOIN0.024038285REPARJOIN secsQuery Redis for edges: 	42962,	take time: 	REPARREDIS1.301REPARREDIS sec, 	res_edges:             	42504
+
+At STEP 12, partition 319|| origin_formedges: 37767 ||join take time: normal, REPARJOIN0.032962234REPARJOIN secsQuery Redis for edges: 	37767,	take time: 	REPARREDIS0.616REPARREDIS sec, 	res_edges:             	37707
+
+At STEP 12, partition 335|| origin_formedges: 38601 ||join take time: normal, REPARJOIN0.032640982REPARJOIN secsQuery Redis for edges: 	38601,	take time: 	REPARREDIS0.656REPARREDIS sec, 	res_edges:             	38436
+
+At STEP 12, partition 509|| origin_formedges: 38258 ||join take time: normal, REPARJOIN0.02288347REPARJOIN secsQuery Redis for edges: 	38258,	take time: 	REPARREDIS1.192REPARREDIS sec, 	res_edges:             	38127
+
+At STEP 12, partition 462|| origin_formedges: 40320 ||join take time: normal, REPARJOIN0.03099746REPARJOIN secsQuery Redis for edges: 	40320,	take time: 	REPARREDIS1.210REPARREDIS sec, 	res_edges:             	40217
+
+At STEP 12, partition 417|| origin_formedges: 42479 ||join take time: normal, REPARJOIN0.024074172REPARJOIN secsQuery Redis for edges: 	42479,	take time: 	REPARREDIS1.343REPARREDIS sec, 	res_edges:             	41855
+
+At STEP 12, partition 285|| origin_formedges: 36737 ||join take time: normal, REPARJOIN0.040542553REPARJOIN secsQuery Redis for edges: 	36737,	take time: 	REPARREDIS3.270REPARREDIS sec, 	res_edges:             	36051
+
+At STEP 12, partition 510|| origin_formedges: 37289 ||join take time: normal, REPARJOIN0.018064777REPARJOIN secsQuery Redis for edges: 	37289,	take time: 	REPARREDIS1.117REPARREDIS sec, 	res_edges:             	37067
+
+At STEP 12, partition 301|| origin_formedges: 37602 ||join take time: normal, REPARJOIN0.037838425REPARJOIN secsQuery Redis for edges: 	37602,	take time: 	REPARREDIS0.626REPARREDIS sec, 	res_edges:             	37106
+
+At STEP 12, partition 511|| origin_formedges: 37567 ||join take time: normal, REPARJOIN0.016647038REPARJOIN secsQuery Redis for edges: 	37567,	take time: 	REPARREDIS1.112REPARREDIS sec, 	res_edges:             	37375
+
+At STEP 12, partition 317|| origin_formedges: 33515 ||join take time: normal, REPARJOIN0.039706879REPARJOIN secsQuery Redis for edges: 	33515,	take time: 	REPARREDIS0.623REPARREDIS sec, 	res_edges:             	33133
+
+At STEP 12, partition 566|| origin_formedges: 39002 ||join take time: normal, REPARJOIN0.028354424REPARJOIN secsQuery Redis for edges: 	39002,	take time: 	REPARREDIS1.183REPARREDIS sec, 	res_edges:             	38824
+
+At STEP 12, partition 466|| origin_formedges: 37956 ||join take time: normal, REPARJOIN0.024313836REPARJOIN secsQuery Redis for edges: 	37956,	take time: 	REPARREDIS1.342REPARREDIS sec, 	res_edges:             	35688
+
+At STEP 12, partition 333|| origin_formedges: 42936 ||join take time: normal, REPARJOIN0.041008399REPARJOIN secsQuery Redis for edges: 	42936,	take time: 	REPARREDIS3.458REPARREDIS sec, 	res_edges:             	42548
+
+At STEP 12, partition 349|| origin_formedges: 47849 ||join take time: normal, REPARJOIN0.039376381REPARJOIN secsQuery Redis for edges: 	47849,	take time: 	REPARREDIS2.921REPARREDIS sec, 	res_edges:             	47702
+
+At STEP 12, partition 467|| origin_formedges: 35861 ||join take time: normal, REPARJOIN0.023889196REPARJOIN secsQuery Redis for edges: 	35861,	take time: 	REPARREDIS1.301REPARREDIS sec, 	res_edges:             	35603
+
+At STEP 12, partition 512|| origin_formedges: 38644 ||join take time: normal, REPARJOIN0.017881988REPARJOIN secsQuery Redis for edges: 	38644,	take time: 	REPARREDIS1.286REPARREDIS sec, 	res_edges:             	38421
+
+At STEP 12, partition 586|| origin_formedges: 36392 ||join take time: normal, REPARJOIN0.017900763REPARJOIN secsQuery Redis for edges: 	36392,	take time: 	REPARREDIS1.504REPARREDIS sec, 	res_edges:             	36270
+
+At STEP 12, partition 513|| origin_formedges: 42546 ||join take time: normal, REPARJOIN0.017417687REPARJOIN secsQuery Redis for edges: 	42546,	take time: 	REPARREDIS1.318REPARREDIS sec, 	res_edges:             	42411
+
+At STEP 12, partition 587|| origin_formedges: 49265 ||join take time: normal, REPARJOIN0.018270757REPARJOIN secsQuery Redis for edges: 	49265,	take time: 	REPARREDIS1.312REPARREDIS sec, 	res_edges:             	48898
+
+At STEP 12, partition 499|| origin_formedges: 45783 ||join take time: normal, REPARJOIN0.01757127REPARJOIN secsQuery Redis for edges: 	45783,	take time: 	REPARREDIS1.421REPARREDIS sec, 	res_edges:             	45005
+
+At STEP 12, partition 594|| origin_formedges: 36629 ||join take time: normal, REPARJOIN0.020270913REPARJOIN secsQuery Redis for edges: 	36629,	take time: 	REPARREDIS1.284REPARREDIS sec, 	res_edges:             	36406
+
+At STEP 12, partition 514|| origin_formedges: 42050 ||join take time: normal, REPARJOIN0.018810853REPARJOIN secsQuery Redis for edges: 	42050,	take time: 	REPARREDIS1.312REPARREDIS sec, 	res_edges:             	41767
+
+At STEP 12, partition 596|| origin_formedges: 45867 ||join take time: normal, REPARJOIN0.038202515REPARJOIN secsQuery Redis for edges: 	45867,	take time: 	REPARREDIS1.282REPARREDIS sec, 	res_edges:             	45740
+
+At STEP 12, partition 567|| origin_formedges: 40162 ||join take time: normal, REPARJOIN0.016996157REPARJOIN secsQuery Redis for edges: 	40162,	take time: 	REPARREDIS1.169REPARREDIS sec, 	res_edges:             	39961
+
+At STEP 12, partition 599|| origin_formedges: 47679 ||join take time: normal, REPARJOIN0.020732232REPARJOIN secsQuery Redis for edges: 	47679,	take time: 	REPARREDIS1.293REPARREDIS sec, 	res_edges:             	43482
+
+At STEP 12, partition 515|| origin_formedges: 41717 ||join take time: normal, REPARJOIN0.019565313REPARJOIN secsQuery Redis for edges: 	41717,	take time: 	REPARREDIS1.456REPARREDIS sec, 	res_edges:             	41577
+
+At STEP 12, partition 463|| origin_formedges: 29929 ||join take time: normal, REPARJOIN0.035432073REPARJOIN secsQuery Redis for edges: 	29929,	take time: 	REPARREDIS1.135REPARREDIS sec, 	res_edges:             	29746
+
+At STEP 12, partition 601|| origin_formedges: 38221 ||join take time: normal, REPARJOIN0.017678177REPARJOIN secsQuery Redis for edges: 	38221,	take time: 	REPARREDIS1.040REPARREDIS sec, 	res_edges:             	37877
+
+At STEP 12, partition 501|| origin_formedges: 37186 ||join take time: normal, REPARJOIN0.016484456REPARJOIN secsQuery Redis for edges: 	37186,	take time: 	REPARREDIS1.324REPARREDIS sec, 	res_edges:             	36580
+
+At STEP 12, partition 602|| origin_formedges: 39422 ||join take time: normal, REPARJOIN0.023066579REPARJOIN secsQuery Redis for edges: 	39422,	take time: 	REPARREDIS1.037REPARREDIS sec, 	res_edges:             	39144
+
+At STEP 12, partition 517|| origin_formedges: 41423 ||join take time: normal, REPARJOIN0.018132305REPARJOIN secsQuery Redis for edges: 	41423,	take time: 	REPARREDIS1.299REPARREDIS sec, 	res_edges:             	41306
+
+At STEP 12, partition 528|| origin_formedges: 45610 ||join take time: normal, REPARJOIN0.017415805REPARJOIN secsQuery Redis for edges: 	45610,	take time: 	REPARREDIS1.510REPARREDIS sec, 	res_edges:             	44794
+
+At STEP 12, partition 464|| origin_formedges: 32854 ||join take time: normal, REPARJOIN0.025034431REPARJOIN secsQuery Redis for edges: 	32854,	take time: 	REPARREDIS1.111REPARREDIS sec, 	res_edges:             	32232
+
+At STEP 12, partition 727|| origin_formedges: 43275 ||join take time: normal, REPARJOIN0.027307113REPARJOIN secsQuery Redis for edges: 	43275,	take time: 	REPARREDIS1.470REPARREDIS sec, 	res_edges:             	42758
+
+At STEP 12, partition 351|| origin_formedges: 46535 ||join take time: normal, REPARJOIN0.033006935REPARJOIN secsQuery Redis for edges: 	46535,	take time: 	REPARREDIS2.841REPARREDIS sec, 	res_edges:             	46065
+
+At STEP 12, partition 529|| origin_formedges: 43709 ||join take time: normal, REPARJOIN0.016569673REPARJOIN secsQuery Redis for edges: 	43709,	take time: 	REPARREDIS1.495REPARREDIS sec, 	res_edges:             	41708
+
+At STEP 12, partition 367|| origin_formedges: 39296 ||join take time: normal, REPARJOIN0.033055412REPARJOIN secsQuery Redis for edges: 	39296,	take time: 	REPARREDIS0.656REPARREDIS sec, 	res_edges:             	38906
+
+At STEP 12, partition 732|| origin_formedges: 36138 ||join take time: normal, REPARJOIN0.016723536REPARJOIN secsQuery Redis for edges: 	36138,	take time: 	REPARREDIS1.352REPARREDIS sec, 	res_edges:             	35969
+
+At STEP 12, partition 531|| origin_formedges: 43214 ||join take time: normal, REPARJOIN0.016942339REPARJOIN secsQuery Redis for edges: 	43214,	take time: 	REPARREDIS1.426REPARREDIS sec, 	res_edges:             	42820
+
+At STEP 12, partition 733|| origin_formedges: 35359 ||join take time: normal, REPARJOIN0.027235697REPARJOIN secsQuery Redis for edges: 	35359,	take time: 	REPARREDIS1.336REPARREDIS sec, 	res_edges:             	34924
+
+At STEP 12, partition 734|| origin_formedges: 34985 ||join take time: normal, REPARJOIN0.016968616REPARJOIN secsQuery Redis for edges: 	34985,	take time: 	REPARREDIS1.323REPARREDIS sec, 	res_edges:             	34777
+
+At STEP 12, partition 145|| origin_formedges: 36360 ||join take time: normal, REPARJOIN0.032298942REPARJOIN secsQuery Redis for edges: 	36360,	take time: 	REPARREDIS3.347REPARREDIS sec, 	res_edges:             	36047
+
+At STEP 12, partition 533|| origin_formedges: 44620 ||join take time: normal, REPARJOIN0.016913495REPARJOIN secsQuery Redis for edges: 	44620,	take time: 	REPARREDIS1.381REPARREDIS sec, 	res_edges:             	44153
+
+At STEP 12, partition 161|| origin_formedges: 48381 ||join take time: normal, REPARJOIN0.033185349REPARJOIN secsQuery Redis for edges: 	48381,	take time: 	REPARREDIS0.686REPARREDIS sec, 	res_edges:             	47854
+
+At STEP 12, partition 518|| origin_formedges: 38202 ||join take time: normal, REPARJOIN0.016664843REPARJOIN secsQuery Redis for edges: 	38202,	take time: 	REPARREDIS1.237REPARREDIS sec, 	res_edges:             	37859
+
+At STEP 12, partition 177|| origin_formedges: 44976 ||join take time: normal, REPARJOIN0.03444859REPARJOIN secsQuery Redis for edges: 	44976,	take time: 	REPARREDIS3.410REPARREDIS sec, 	res_edges:             	44255
+
+At STEP 12, partition 534|| origin_formedges: 37677 ||join take time: normal, REPARJOIN0.016796513REPARJOIN secsQuery Redis for edges: 	37677,	take time: 	REPARREDIS1.099REPARREDIS sec, 	res_edges:             	36892
+
+At STEP 12, partition 193|| origin_formedges: 34625 ||join take time: normal, REPARJOIN0.035780236REPARJOIN secsQuery Redis for edges: 	34625,	take time: 	REPARREDIS1.800REPARREDIS sec, 	res_edges:             	34030
+
+At STEP 12, partition 536|| origin_formedges: 48263 ||join take time: normal, REPARJOIN0.017311361REPARJOIN secsQuery Redis for edges: 	48263,	take time: 	REPARREDIS1.132REPARREDIS sec, 	res_edges:             	47869
+
+At STEP 12, partition 519|| origin_formedges: 36055 ||join take time: normal, REPARJOIN0.017993581REPARJOIN secsQuery Redis for edges: 	36055,	take time: 	REPARREDIS1.304REPARREDIS sec, 	res_edges:             	35686
+
+At STEP 12, partition 739|| origin_formedges: 38676 ||join take time: normal, REPARJOIN0.018219438REPARJOIN secsQuery Redis for edges: 	38676,	take time: 	REPARREDIS1.690REPARREDIS sec, 	res_edges:             	38002
+
+At STEP 12, partition 488|| origin_formedges: 41653 ||join take time: normal, REPARJOIN0.024888263REPARJOIN secsQuery Redis for edges: 	41653,	take time: 	REPARREDIS0.775REPARREDIS sec, 	res_edges:             	41280
+
+At STEP 12, partition 740|| origin_formedges: 39196 ||join take time: normal, REPARJOIN0.01671421REPARJOIN secsQuery Redis for edges: 	39196,	take time: 	REPARREDIS1.665REPARREDIS sec, 	res_edges:             	38756
+
+At STEP 12, partition 489|| origin_formedges: 35891 ||join take time: normal, REPARJOIN0.028206936REPARJOIN secsQuery Redis for edges: 	35891,	take time: 	REPARREDIS0.649REPARREDIS sec, 	res_edges:             	35365
+
+At STEP 12, partition 537|| origin_formedges: 45868 ||join take time: normal, REPARJOIN0.017215285REPARJOIN secsQuery Redis for edges: 	45868,	take time: 	REPARREDIS1.059REPARREDIS sec, 	res_edges:             	45210
+
+At STEP 12, partition 490|| origin_formedges: 42221 ||join take time: normal, REPARJOIN0.030803441REPARJOIN secsQuery Redis for edges: 	42221,	take time: 	REPARREDIS0.767REPARREDIS sec, 	res_edges:             	41573
+
+At STEP 12, partition 468|| origin_formedges: 39940 ||join take time: normal, REPARJOIN0.03164871REPARJOIN secsQuery Redis for edges: 	39940,	take time: 	REPARREDIS1.084REPARREDIS sec, 	res_edges:             	38773
+
+At STEP 12, partition 491|| origin_formedges: 40688 ||join take time: normal, REPARJOIN0.016925915REPARJOIN secsQuery Redis for edges: 	40688,	take time: 	REPARREDIS0.655REPARREDIS sec, 	res_edges:             	40276
+
+At STEP 12, partition 492|| origin_formedges: 35996 ||join take time: normal, REPARJOIN0.015570919REPARJOIN secsQuery Redis for edges: 	35996,	take time: 	REPARREDIS0.652REPARREDIS sec, 	res_edges:             	34885
+
+At STEP 12, partition 383|| origin_formedges: 38266 ||join take time: normal, REPARJOIN0.033832525REPARJOIN secsQuery Redis for edges: 	38266,	take time: 	REPARREDIS3.418REPARREDIS sec, 	res_edges:             	37935
+
+At STEP 12, partition 747|| origin_formedges: 36195 ||join take time: normal, REPARJOIN0.017612094REPARJOIN secsQuery Redis for edges: 	36195,	take time: 	REPARREDIS1.663REPARREDIS sec, 	res_edges:             	35869
+
+At STEP 12, partition 493|| origin_formedges: 39126 ||join take time: normal, REPARJOIN0.015322402REPARJOIN secsQuery Redis for edges: 	39126,	take time: 	REPARREDIS1.033REPARREDIS sec, 	res_edges:             	38836
+
+At STEP 12, partition 613|| origin_formedges: 34183 ||join take time: normal, REPARJOIN0.031836996REPARJOIN secsQuery Redis for edges: 	34183,	take time: 	REPARREDIS0.601REPARREDIS sec, 	res_edges:             	33895
+
+At STEP 12, partition 754|| origin_formedges: 41092 ||join take time: normal, REPARJOIN0.016812036REPARJOIN secsQuery Redis for edges: 	41092,	take time: 	REPARREDIS1.512REPARREDIS sec, 	res_edges:             	40781
+
+At STEP 12, partition 614|| origin_formedges: 39415 ||join take time: normal, REPARJOIN0.03138885REPARJOIN secsQuery Redis for edges: 	39415,	take time: 	REPARREDIS0.661REPARREDIS sec, 	res_edges:             	38577
+
+At STEP 12, partition 209|| origin_formedges: 44359 ||join take time: normal, REPARJOIN0.034022836REPARJOIN secsQuery Redis for edges: 	44359,	take time: 	REPARREDIS1.388REPARREDIS sec, 	res_edges:             	43477
+
+At STEP 12, partition 543|| origin_formedges: 39257 ||join take time: normal, REPARJOIN0.017120349REPARJOIN secsQuery Redis for edges: 	39257,	take time: 	REPARREDIS0.909REPARREDIS sec, 	res_edges:             	39036
+
+At STEP 12, partition 225|| origin_formedges: 40873 ||join take time: normal, REPARJOIN0.032665342REPARJOIN secsQuery Redis for edges: 	40873,	take time: 	REPARREDIS2.199REPARREDIS sec, 	res_edges:             	40752
+
+At STEP 12, partition 520|| origin_formedges: 43917 ||join take time: normal, REPARJOIN0.02057235REPARJOIN secsQuery Redis for edges: 	43917,	take time: 	REPARREDIS1.308REPARREDIS sec, 	res_edges:             	43781
+
+At STEP 12, partition 356|| origin_formedges: 40830 ||join take time: normal, REPARJOIN0.033803104REPARJOIN secsQuery Redis for edges: 	40830,	take time: 	REPARREDIS0.651REPARREDIS sec, 	res_edges:             	40511
+
+At STEP 12, partition 241|| origin_formedges: 39575 ||join take time: normal, REPARJOIN0.0330296REPARJOIN secsQuery Redis for edges: 	39575,	take time: 	REPARREDIS0.591REPARREDIS sec, 	res_edges:             	38635
+
+At STEP 12, partition 372|| origin_formedges: 40595 ||join take time: normal, REPARJOIN0.033843227REPARJOIN secsQuery Redis for edges: 	40595,	take time: 	REPARREDIS2.859REPARREDIS sec, 	res_edges:             	40099
+
+At STEP 12, partition 257|| origin_formedges: 36653 ||join take time: normal, REPARJOIN0.032341725REPARJOIN secsQuery Redis for edges: 	36653,	take time: 	REPARREDIS2.354REPARREDIS sec, 	res_edges:             	36363
+
+At STEP 12, partition 418|| origin_formedges: 42343 ||join take time: normal, REPARJOIN0.037014126REPARJOIN secsQuery Redis for edges: 	42343,	take time: 	REPARREDIS1.329REPARREDIS sec, 	res_edges:             	41748
+
+At STEP 12, partition 273|| origin_formedges: 38745 ||join take time: normal, REPARJOIN0.032868472REPARJOIN secsQuery Redis for edges: 	38745,	take time: 	REPARREDIS2.774REPARREDIS sec, 	res_edges:             	37765
+
+At STEP 12, partition 419|| origin_formedges: 39614 ||join take time: normal, REPARJOIN0.037329713REPARJOIN secsQuery Redis for edges: 	39614,	take time: 	REPARREDIS1.327REPARREDIS sec, 	res_edges:             	38797
+
+At STEP 12, partition 384|| origin_formedges: 37053 ||join take time: normal, REPARJOIN0.02244214REPARJOIN secsQuery Redis for edges: 	37053,	take time: 	REPARREDIS0.554REPARREDIS sec, 	res_edges:             	36028
+
+At STEP 12, partition 420|| origin_formedges: 45294 ||join take time: normal, REPARJOIN0.025671982REPARJOIN secsQuery Redis for edges: 	45294,	take time: 	REPARREDIS1.906REPARREDIS sec, 	res_edges:             	44576
+
+At STEP 12, partition 289|| origin_formedges: 43625 ||join take time: normal, REPARJOIN0.032596025REPARJOIN secsQuery Redis for edges: 	43625,	take time: 	REPARREDIS1.806REPARREDIS sec, 	res_edges:             	42784
+
+At STEP 12, partition 422|| origin_formedges: 36329 ||join take time: normal, REPARJOIN0.034064885REPARJOIN secsQuery Redis for edges: 	36329,	take time: 	REPARREDIS1.261REPARREDIS sec, 	res_edges:             	35533
+
+At STEP 12, partition 385|| origin_formedges: 39221 ||join take time: normal, REPARJOIN0.018612292REPARJOIN secsQuery Redis for edges: 	39221,	take time: 	REPARREDIS0.559REPARREDIS sec, 	res_edges:             	38854
+
+At STEP 12, partition 305|| origin_formedges: 35271 ||join take time: normal, REPARJOIN0.032591891REPARJOIN secsQuery Redis for edges: 	35271,	take time: 	REPARREDIS0.587REPARREDIS sec, 	res_edges:             	34776
+
+At STEP 12, partition 521|| origin_formedges: 35397 ||join take time: normal, REPARJOIN0.016634693REPARJOIN secsQuery Redis for edges: 	35397,	take time: 	REPARREDIS1.041REPARREDIS sec, 	res_edges:             	35133
+
+At STEP 12, partition 386|| origin_formedges: 33981 ||join take time: normal, REPARJOIN0.018027426REPARJOIN secsQuery Redis for edges: 	33981,	take time: 	REPARREDIS0.556REPARREDIS sec, 	res_edges:             	33389
+
+At STEP 12, partition 321|| origin_formedges: 46798 ||join take time: normal, REPARJOIN0.033819764REPARJOIN secsQuery Redis for edges: 	46798,	take time: 	REPARREDIS0.626REPARREDIS sec, 	res_edges:             	46388
+
+At STEP 12, partition 387|| origin_formedges: 41725 ||join take time: normal, REPARJOIN0.017119791REPARJOIN secsQuery Redis for edges: 	41725,	take time: 	REPARREDIS0.684REPARREDIS sec, 	res_edges:             	39901
+
+At STEP 12, partition 549|| origin_formedges: 38272 ||join take time: normal, REPARJOIN0.016491567REPARJOIN secsQuery Redis for edges: 	38272,	take time: 	REPARREDIS0.908REPARREDIS sec, 	res_edges:             	38088
+
+At STEP 12, partition 337|| origin_formedges: 42192 ||join take time: normal, REPARJOIN0.032582894REPARJOIN secsQuery Redis for edges: 	42192,	take time: 	REPARREDIS0.622REPARREDIS sec, 	res_edges:             	42039
+
+At STEP 12, partition 388|| origin_formedges: 42434 ||join take time: normal, REPARJOIN0.020888069REPARJOIN secsQuery Redis for edges: 	42434,	take time: 	REPARREDIS0.772REPARREDIS sec, 	res_edges:             	39759
+
+At STEP 12, partition 353|| origin_formedges: 44732 ||join take time: normal, REPARJOIN0.034557398REPARJOIN secsQuery Redis for edges: 	44732,	take time: 	REPARREDIS3.449REPARREDIS sec, 	res_edges:             	44562
+
+At STEP 12, partition 369|| origin_formedges: 34828 ||join take time: normal, REPARJOIN0.032290733REPARJOIN secsQuery Redis for edges: 	34828,	take time: 	REPARREDIS0.589REPARREDIS sec, 	res_edges:             	34717
+
+At STEP 12, partition 389|| origin_formedges: 36926 ||join take time: normal, REPARJOIN0.018789731REPARJOIN secsQuery Redis for edges: 	36926,	take time: 	REPARREDIS0.623REPARREDIS sec, 	res_edges:             	36361
+
+At STEP 12, partition 608|| origin_formedges: 35937 ||join take time: normal, REPARJOIN0.017459139REPARJOIN secsQuery Redis for edges: 	35937,	take time: 	REPARREDIS0.637REPARREDIS sec, 	res_edges:             	35463
+
+At STEP 12, partition 550|| origin_formedges: 35185 ||join take time: normal, REPARJOIN0.017188777REPARJOIN secsQuery Redis for edges: 	35185,	take time: 	REPARREDIS0.727REPARREDIS sec, 	res_edges:             	35037
+
+At STEP 12, partition 609|| origin_formedges: 32491 ||join take time: normal, REPARJOIN0.026261687REPARJOIN secsQuery Redis for edges: 	32491,	take time: 	REPARREDIS0.575REPARREDIS sec, 	res_edges:             	32379
+
+At STEP 12, partition 365|| origin_formedges: 42951 ||join take time: normal, REPARJOIN0.041329033REPARJOIN secsQuery Redis for edges: 	42951,	take time: 	REPARREDIS3.457REPARREDIS sec, 	res_edges:             	41457
+
+At STEP 12, partition 610|| origin_formedges: 36656 ||join take time: normal, REPARJOIN0.022148454REPARJOIN secsQuery Redis for edges: 	36656,	take time: 	REPARREDIS0.647REPARREDIS sec, 	res_edges:             	36242
+
+At STEP 12, partition 390|| origin_formedges: 35900 ||join take time: normal, REPARJOIN0.03533121REPARJOIN secsQuery Redis for edges: 	35900,	take time: 	REPARREDIS0.725REPARREDIS sec, 	res_edges:             	35594
+
+At STEP 12, partition 423|| origin_formedges: 41761 ||join take time: normal, REPARJOIN0.027374208REPARJOIN secsQuery Redis for edges: 	41761,	take time: 	REPARREDIS1.899REPARREDIS sec, 	res_edges:             	41467
+
+At STEP 12, partition 612|| origin_formedges: 43419 ||join take time: normal, REPARJOIN0.023394731REPARJOIN secsQuery Redis for edges: 	43419,	take time: 	REPARREDIS0.764REPARREDIS sec, 	res_edges:             	43021
+
+At STEP 12, partition 391|| origin_formedges: 34007 ||join take time: normal, REPARJOIN0.0354418REPARJOIN secsQuery Redis for edges: 	34007,	take time: 	REPARREDIS0.726REPARREDIS sec, 	res_edges:             	33865
+
+At STEP 12, partition 318|| origin_formedges: 41118 ||join take time: normal, REPARJOIN0.029271922REPARJOIN secsQuery Redis for edges: 	41118,	take time: 	REPARREDIS0.658REPARREDIS sec, 	res_edges:             	40470
+
+At STEP 12, partition 392|| origin_formedges: 36418 ||join take time: normal, REPARJOIN0.029776779REPARJOIN secsQuery Redis for edges: 	36418,	take time: 	REPARREDIS0.636REPARREDIS sec, 	res_edges:             	35516
+
+At STEP 12, partition 605|| origin_formedges: 39407 ||join take time: normal, REPARJOIN0.016879609REPARJOIN secsQuery Redis for edges: 	39407,	take time: 	REPARREDIS0.689REPARREDIS sec, 	res_edges:             	38997
+
+At STEP 12, partition 625|| origin_formedges: 37298 ||join take time: normal, REPARJOIN0.017630638REPARJOIN secsQuery Redis for edges: 	37298,	take time: 	REPARREDIS0.723REPARREDIS sec, 	res_edges:             	37182
+
+At STEP 12, partition 523|| origin_formedges: 45930 ||join take time: normal, REPARJOIN0.018063934REPARJOIN secsQuery Redis for edges: 	45930,	take time: 	REPARREDIS1.066REPARREDIS sec, 	res_edges:             	45662
+
+At STEP 12, partition 393|| origin_formedges: 40639 ||join take time: normal, REPARJOIN0.033233687REPARJOIN secsQuery Redis for edges: 	40639,	take time: 	REPARREDIS1.180REPARREDIS sec, 	res_edges:             	40409
+
+At STEP 12, partition 628|| origin_formedges: 31415 ||join take time: normal, REPARJOIN0.035298124REPARJOIN secsQuery Redis for edges: 	31415,	take time: 	REPARREDIS0.599REPARREDIS sec, 	res_edges:             	31079
+
+At STEP 12, partition 626|| origin_formedges: 39385 ||join take time: normal, REPARJOIN0.023192683REPARJOIN secsQuery Redis for edges: 	39385,	take time: 	REPARREDIS0.602REPARREDIS sec, 	res_edges:             	39278
+
+At STEP 12, partition 394|| origin_formedges: 36819 ||join take time: normal, REPARJOIN0.0181453REPARJOIN secsQuery Redis for edges: 	36819,	take time: 	REPARREDIS1.174REPARREDIS sec, 	res_edges:             	36290
+
+At STEP 12, partition 630|| origin_formedges: 36892 ||join take time: normal, REPARJOIN0.017384368REPARJOIN secsQuery Redis for edges: 	36892,	take time: 	REPARREDIS0.554REPARREDIS sec, 	res_edges:             	36546
+
+At STEP 12, partition 524|| origin_formedges: 38523 ||join take time: normal, REPARJOIN0.017470967REPARJOIN secsQuery Redis for edges: 	38523,	take time: 	REPARREDIS1.043REPARREDIS sec, 	res_edges:             	37418
+
+At STEP 12, partition 395|| origin_formedges: 42519 ||join take time: normal, REPARJOIN0.025765095REPARJOIN secsQuery Redis for edges: 	42519,	take time: 	REPARREDIS1.237REPARREDIS sec, 	res_edges:             	42219
+
+At STEP 12, partition 633|| origin_formedges: 38524 ||join take time: normal, REPARJOIN0.031314915REPARJOIN secsQuery Redis for edges: 	38524,	take time: 	REPARREDIS0.648REPARREDIS sec, 	res_edges:             	38211
+
+At STEP 12, partition 396|| origin_formedges: 41367 ||join take time: normal, REPARJOIN0.026945481REPARJOIN secsQuery Redis for edges: 	41367,	take time: 	REPARREDIS1.221REPARREDIS sec, 	res_edges:             	40383
+
+At STEP 12, partition 648|| origin_formedges: 34048 ||join take time: normal, REPARJOIN0.018396777REPARJOIN secsQuery Redis for edges: 	34048,	take time: 	REPARREDIS0.578REPARREDIS sec, 	res_edges:             	33584
+
+At STEP 12, partition 397|| origin_formedges: 43766 ||join take time: normal, REPARJOIN0.019607038REPARJOIN secsQuery Redis for edges: 	43766,	take time: 	REPARREDIS1.473REPARREDIS sec, 	res_edges:             	43491
+
+At STEP 12, partition 672|| origin_formedges: 43185 ||join take time: normal, REPARJOIN0.016430753REPARJOIN secsQuery Redis for edges: 	43185,	take time: 	REPARREDIS0.758REPARREDIS sec, 	res_edges:             	42008
+
+At STEP 12, partition 494|| origin_formedges: 36570 ||join take time: normal, REPARJOIN0.015610859REPARJOIN secsQuery Redis for edges: 	36570,	take time: 	REPARREDIS1.032REPARREDIS sec, 	res_edges:             	36006
+
+At STEP 12, partition 469|| origin_formedges: 38994 ||join take time: normal, REPARJOIN0.025388232REPARJOIN secsQuery Redis for edges: 	38994,	take time: 	REPARREDIS0.900REPARREDIS sec, 	res_edges:             	38719
+
+At STEP 12, partition 495|| origin_formedges: 41007 ||join take time: normal, REPARJOIN0.017268254REPARJOIN secsQuery Redis for edges: 	41007,	take time: 	REPARREDIS1.278REPARREDIS sec, 	res_edges:             	40805
+
+At STEP 12, partition 673|| origin_formedges: 34526 ||join take time: normal, REPARJOIN0.018362348REPARJOIN secsQuery Redis for edges: 	34526,	take time: 	REPARREDIS0.653REPARREDIS sec, 	res_edges:             	34060
+
+At STEP 12, partition 496|| origin_formedges: 42744 ||join take time: normal, REPARJOIN0.018217987REPARJOIN secsQuery Redis for edges: 	42744,	take time: 	REPARREDIS1.458REPARREDIS sec, 	res_edges:             	42555
+
+At STEP 12, partition 676|| origin_formedges: 36814 ||join take time: normal, REPARJOIN0.017878221REPARJOIN secsQuery Redis for edges: 	36814,	take time: 	REPARREDIS1.169REPARREDIS sec, 	res_edges:             	36654
+
+At STEP 12, partition 527|| origin_formedges: 40937 ||join take time: normal, REPARJOIN0.015511902REPARJOIN secsQuery Redis for edges: 	40937,	take time: 	REPARREDIS1.270REPARREDIS sec, 	res_edges:             	40532
+
+At STEP 12, partition 470|| origin_formedges: 40539 ||join take time: normal, REPARJOIN0.028785009REPARJOIN secsQuery Redis for edges: 	40539,	take time: 	REPARREDIS0.895REPARREDIS sec, 	res_edges:             	39936
+
+At STEP 12, partition 705|| origin_formedges: 40794 ||join take time: normal, REPARJOIN0.018066701REPARJOIN secsQuery Redis for edges: 	40794,	take time: 	REPARREDIS1.186REPARREDIS sec, 	res_edges:             	40461
+
+At STEP 12, partition 535|| origin_formedges: 34756 ||join take time: normal, REPARJOIN0.022182371REPARJOIN secsQuery Redis for edges: 	34756,	take time: 	REPARREDIS1.080REPARREDIS sec, 	res_edges:             	34606
+
+At STEP 12, partition 706|| origin_formedges: 39071 ||join take time: normal, REPARJOIN0.017903558REPARJOIN secsQuery Redis for edges: 	39071,	take time: 	REPARREDIS1.114REPARREDIS sec, 	res_edges:             	38498
+
+At STEP 12, partition 525|| origin_formedges: 40740 ||join take time: normal, REPARJOIN0.01819534REPARJOIN secsQuery Redis for edges: 	40740,	take time: 	REPARREDIS0.839REPARREDIS sec, 	res_edges:             	40604
+
+At STEP 12, partition 545|| origin_formedges: 44373 ||join take time: normal, REPARJOIN0.016010824REPARJOIN secsQuery Redis for edges: 	44373,	take time: 	REPARREDIS1.435REPARREDIS sec, 	res_edges:             	43205
+
+At STEP 12, partition 627|| origin_formedges: 34019 ||join take time: normal, REPARJOIN0.017843497REPARJOIN secsQuery Redis for edges: 	34019,	take time: 	REPARREDIS0.573REPARREDIS sec, 	res_edges:             	33834
+
+At STEP 12, partition 558|| origin_formedges: 42449 ||join take time: normal, REPARJOIN0.01551425REPARJOIN secsQuery Redis for edges: 	42449,	take time: 	REPARREDIS1.413REPARREDIS sec, 	res_edges:             	42046
+
+At STEP 12, partition 709|| origin_formedges: 34207 ||join take time: normal, REPARJOIN0.018096068REPARJOIN secsQuery Redis for edges: 	34207,	take time: 	REPARREDIS0.955REPARREDIS sec, 	res_edges:             	33724
+
+At STEP 12, partition 568|| origin_formedges: 35831 ||join take time: normal, REPARJOIN0.015357089REPARJOIN secsQuery Redis for edges: 	35831,	take time: 	REPARREDIS1.350REPARREDIS sec, 	res_edges:             	35692
+
+At STEP 12, partition 645|| origin_formedges: 40743 ||join take time: normal, REPARJOIN0.016480737REPARJOIN secsQuery Redis for edges: 	40743,	take time: 	REPARREDIS0.576REPARREDIS sec, 	res_edges:             	40377
+
+At STEP 12, partition 574|| origin_formedges: 39310 ||join take time: normal, REPARJOIN0.018478584REPARJOIN secsQuery Redis for edges: 	39310,	take time: 	REPARREDIS1.329REPARREDIS sec, 	res_edges:             	38638
+
+At STEP 12, partition 398|| origin_formedges: 41139 ||join take time: normal, REPARJOIN0.017519099REPARJOIN secsQuery Redis for edges: 	41139,	take time: 	REPARREDIS1.479REPARREDIS sec, 	res_edges:             	40931
+
+At STEP 12, partition 719|| origin_formedges: 40926 ||join take time: normal, REPARJOIN0.022854001REPARJOIN secsQuery Redis for edges: 	40926,	take time: 	REPARREDIS1.309REPARREDIS sec, 	res_edges:             	40785
+
+At STEP 12, partition 399|| origin_formedges: 37581 ||join take time: normal, REPARJOIN0.018149837REPARJOIN secsQuery Redis for edges: 	37581,	take time: 	REPARREDIS1.250REPARREDIS sec, 	res_edges:             	37108
+
+At STEP 12, partition 722|| origin_formedges: 33758 ||join take time: normal, REPARJOIN0.027984172REPARJOIN secsQuery Redis for edges: 	33758,	take time: 	REPARREDIS1.110REPARREDIS sec, 	res_edges:             	32749
+
+At STEP 12, partition 334|| origin_formedges: 36224 ||join take time: normal, REPARJOIN0.030512987REPARJOIN secsQuery Redis for edges: 	36224,	take time: 	REPARREDIS0.614REPARREDIS sec, 	res_edges:             	35760
+
+At STEP 12, partition 723|| origin_formedges: 35997 ||join take time: normal, REPARJOIN0.018031542REPARJOIN secsQuery Redis for edges: 	35997,	take time: 	REPARREDIS1.240REPARREDIS sec, 	res_edges:             	35484
+
+At STEP 12, partition 650|| origin_formedges: 31336 ||join take time: normal, REPARJOIN0.016654217REPARJOIN secsQuery Redis for edges: 	31336,	take time: 	REPARREDIS0.526REPARREDIS sec, 	res_edges:             	31085
+
+At STEP 12, partition 350|| origin_formedges: 41490 ||join take time: normal, REPARJOIN0.028923259REPARJOIN secsQuery Redis for edges: 	41490,	take time: 	REPARREDIS0.661REPARREDIS sec, 	res_edges:             	40990
+
+At STEP 12, partition 724|| origin_formedges: 33357 ||join take time: normal, REPARJOIN0.025000263REPARJOIN secsQuery Redis for edges: 	33357,	take time: 	REPARREDIS1.181REPARREDIS sec, 	res_edges:             	33122
+
+At STEP 12, partition 366|| origin_formedges: 42598 ||join take time: normal, REPARJOIN0.031000651REPARJOIN secsQuery Redis for edges: 	42598,	take time: 	REPARREDIS0.656REPARREDIS sec, 	res_edges:             	41595
+
+At STEP 12, partition 424|| origin_formedges: 38217 ||join take time: normal, REPARJOIN0.035806306REPARJOIN secsQuery Redis for edges: 	38217,	take time: 	REPARREDIS1.837REPARREDIS sec, 	res_edges:             	37891
+
+At STEP 12, partition 725|| origin_formedges: 40680 ||join take time: normal, REPARJOIN0.027447668REPARJOIN secsQuery Redis for edges: 	40680,	take time: 	REPARREDIS1.268REPARREDIS sec, 	res_edges:             	40224
+
+At STEP 12, partition 382|| origin_formedges: 33712 ||join take time: normal, REPARJOIN0.029123237REPARJOIN secsQuery Redis for edges: 	33712,	take time: 	REPARREDIS0.605REPARREDIS sec, 	res_edges:             	33128
+
+At STEP 12, partition 425|| origin_formedges: 39626 ||join take time: normal, REPARJOIN0.027558258REPARJOIN secsQuery Redis for edges: 	39626,	take time: 	REPARREDIS1.865REPARREDIS sec, 	res_edges:             	37597
+
+At STEP 12, partition 726|| origin_formedges: 30702 ||join take time: normal, REPARJOIN0.017462322REPARJOIN secsQuery Redis for edges: 	30702,	take time: 	REPARREDIS0.869REPARREDIS sec, 	res_edges:             	30505
+
+At STEP 12, partition 400|| origin_formedges: 48051 ||join take time: normal, REPARJOIN0.019341619REPARJOIN secsQuery Redis for edges: 	48051,	take time: 	REPARREDIS1.443REPARREDIS sec, 	res_edges:             	47594
+
+At STEP 12, partition 728|| origin_formedges: 40200 ||join take time: normal, REPARJOIN0.017399432REPARJOIN secsQuery Redis for edges: 	40200,	take time: 	REPARREDIS1.040REPARREDIS sec, 	res_edges:             	39627
+
+At STEP 12, partition 401|| origin_formedges: 43233 ||join take time: normal, REPARJOIN0.01833645REPARJOIN secsQuery Redis for edges: 	43233,	take time: 	REPARREDIS1.535REPARREDIS sec, 	res_edges:             	42749
+
+At STEP 12, partition 729|| origin_formedges: 41588 ||join take time: normal, REPARJOIN0.019234668REPARJOIN secsQuery Redis for edges: 	41588,	take time: 	REPARREDIS1.039REPARREDIS sec, 	res_edges:             	41238
+
+At STEP 12, partition 402|| origin_formedges: 45273 ||join take time: normal, REPARJOIN0.025978916REPARJOIN secsQuery Redis for edges: 	45273,	take time: 	REPARREDIS1.526REPARREDIS sec, 	res_edges:             	44854
+
+At STEP 12, partition 731|| origin_formedges: 39526 ||join take time: normal, REPARJOIN0.017625358REPARJOIN secsQuery Redis for edges: 	39526,	take time: 	REPARREDIS1.036REPARREDIS sec, 	res_edges:             	39305
+
+At STEP 12, partition 426|| origin_formedges: 41159 ||join take time: normal, REPARJOIN0.024016159REPARJOIN secsQuery Redis for edges: 	41159,	take time: 	REPARREDIS1.824REPARREDIS sec, 	res_edges:             	40247
+
+At STEP 12, partition 651|| origin_formedges: 32649 ||join take time: normal, REPARJOIN0.016624622REPARJOIN secsQuery Redis for edges: 	32649,	take time: 	REPARREDIS0.422REPARREDIS sec, 	res_edges:             	32418
+
+At STEP 12, partition 427|| origin_formedges: 37102 ||join take time: normal, REPARJOIN0.024223785REPARJOIN secsQuery Redis for edges: 	37102,	take time: 	REPARREDIS1.653REPARREDIS sec, 	res_edges:             	36608
+
+At STEP 12, partition 428|| origin_formedges: 44858 ||join take time: normal, REPARJOIN0.023942435REPARJOIN secsQuery Redis for edges: 	44858,	take time: 	REPARREDIS1.359REPARREDIS sec, 	res_edges:             	44146
+
+At STEP 12, partition 607|| origin_formedges: 41770 ||join take time: normal, REPARJOIN0.016573662REPARJOIN secsQuery Redis for edges: 	41770,	take time: 	REPARREDIS0.571REPARREDIS sec, 	res_edges:             	41592
+
+At STEP 12, partition 429|| origin_formedges: 39660 ||join take time: normal, REPARJOIN0.023837703REPARJOIN secsQuery Redis for edges: 	39660,	take time: 	REPARREDIS1.279REPARREDIS sec, 	res_edges:             	39489
+
+At STEP 12, partition 741|| origin_formedges: 41462 ||join take time: normal, REPARJOIN0.017867056REPARJOIN secsQuery Redis for edges: 	41462,	take time: 	REPARREDIS0.988REPARREDIS sec, 	res_edges:             	40864
+
+At STEP 12, partition 403|| origin_formedges: 36860 ||join take time: normal, REPARJOIN0.019460395REPARJOIN secsQuery Redis for edges: 	36860,	take time: 	REPARREDIS1.316REPARREDIS sec, 	res_edges:             	36590
+
+At STEP 12, partition 742|| origin_formedges: 34424 ||join take time: normal, REPARJOIN0.016026442REPARJOIN secsQuery Redis for edges: 	34424,	take time: 	REPARREDIS0.970REPARREDIS sec, 	res_edges:             	33789
+
+At STEP 12, partition 404|| origin_formedges: 38901 ||join take time: normal, REPARJOIN0.021011995REPARJOIN secsQuery Redis for edges: 	38901,	take time: 	REPARREDIS1.056REPARREDIS sec, 	res_edges:             	38573
+
+At STEP 12, partition 745|| origin_formedges: 35724 ||join take time: normal, REPARJOIN0.021327644REPARJOIN secsQuery Redis for edges: 	35724,	take time: 	REPARREDIS0.825REPARREDIS sec, 	res_edges:             	35300
+
+At STEP 12, partition 575|| origin_formedges: 36120 ||join take time: normal, REPARJOIN0.015780251REPARJOIN secsQuery Redis for edges: 	36120,	take time: 	REPARREDIS1.293REPARREDIS sec, 	res_edges:             	33717
+
+At STEP 12, partition 471|| origin_formedges: 42641 ||join take time: normal, REPARJOIN0.025821684REPARJOIN secsQuery Redis for edges: 	42641,	take time: 	REPARREDIS1.049REPARREDIS sec, 	res_edges:             	42010
+
+At STEP 12, partition 580|| origin_formedges: 30415 ||join take time: normal, REPARJOIN0.015806685REPARJOIN secsQuery Redis for edges: 	30415,	take time: 	REPARREDIS1.228REPARREDIS sec, 	res_edges:             	30044
+
+At STEP 12, partition 611|| origin_formedges: 33944 ||join take time: normal, REPARJOIN0.025035431REPARJOIN secsQuery Redis for edges: 	33944,	take time: 	REPARREDIS0.602REPARREDIS sec, 	res_edges:             	33685
+
+At STEP 12, partition 472|| origin_formedges: 31824 ||join take time: normal, REPARJOIN0.028306193REPARJOIN secsQuery Redis for edges: 	31824,	take time: 	REPARREDIS0.664REPARREDIS sec, 	res_edges:             	31256
+
+At STEP 12, partition 588|| origin_formedges: 41415 ||join take time: normal, REPARJOIN0.028217651REPARJOIN secsQuery Redis for edges: 	41415,	take time: 	REPARREDIS1.273REPARREDIS sec, 	res_edges:             	40949
+
+At STEP 12, partition 751|| origin_formedges: 42573 ||join take time: normal, REPARJOIN0.03242947REPARJOIN secsQuery Redis for edges: 	42573,	take time: 	REPARREDIS0.825REPARREDIS sec, 	res_edges:             	42311
+
+At STEP 12, partition 615|| origin_formedges: 35247 ||join take time: normal, REPARJOIN0.033188803REPARJOIN secsQuery Redis for edges: 	35247,	take time: 	REPARREDIS0.660REPARREDIS sec, 	res_edges:             	35171
+
+At STEP 12, partition 591|| origin_formedges: 39623 ||join take time: normal, REPARJOIN0.029498001REPARJOIN secsQuery Redis for edges: 	39623,	take time: 	REPARREDIS1.266REPARREDIS sec, 	res_edges:             	38775
+
+At STEP 12, partition 654|| origin_formedges: 36644 ||join take time: normal, REPARJOIN0.016718057REPARJOIN secsQuery Redis for edges: 	36644,	take time: 	REPARREDIS0.465REPARREDIS sec, 	res_edges:             	36383
+
+At STEP 12, partition 592|| origin_formedges: 39987 ||join take time: normal, REPARJOIN0.015307016REPARJOIN secsQuery Redis for edges: 	39987,	take time: 	REPARREDIS0.988REPARREDIS sec, 	res_edges:             	39685
+
+At STEP 12, partition 752|| origin_formedges: 35192 ||join take time: normal, REPARJOIN0.026463546REPARJOIN secsQuery Redis for edges: 	35192,	take time: 	REPARREDIS0.817REPARREDIS sec, 	res_edges:             	34525
+
+At STEP 12, partition 405|| origin_formedges: 42199 ||join take time: normal, REPARJOIN0.018198148REPARJOIN secsQuery Redis for edges: 	42199,	take time: 	REPARREDIS1.095REPARREDIS sec, 	res_edges:             	42113
+
+At STEP 12, partition 753|| origin_formedges: 35109 ||join take time: normal, REPARJOIN0.02496988REPARJOIN secsQuery Redis for edges: 	35109,	take time: 	REPARREDIS0.807REPARREDIS sec, 	res_edges:             	34909
+
+At STEP 12, partition 597|| origin_formedges: 38005 ||join take time: normal, REPARJOIN0.015658987REPARJOIN secsQuery Redis for edges: 	38005,	take time: 	REPARREDIS0.976REPARREDIS sec, 	res_edges:             	37725
+
+At STEP 12, partition 755|| origin_formedges: 33020 ||join take time: normal, REPARJOIN0.045144541REPARJOIN secsQuery Redis for edges: 	33020,	take time: 	REPARREDIS0.785REPARREDIS sec, 	res_edges:             	32472
+
+At STEP 12, partition 430|| origin_formedges: 38215 ||join take time: normal, REPARJOIN0.023716068REPARJOIN secsQuery Redis for edges: 	38215,	take time: 	REPARREDIS1.033REPARREDIS sec, 	res_edges:             	37778
+
+At STEP 12, partition 655|| origin_formedges: 43339 ||join take time: normal, REPARJOIN0.023888533REPARJOIN secsQuery Redis for edges: 	43339,	take time: 	REPARREDIS0.462REPARREDIS sec, 	res_edges:             	42942
+
+At STEP 12, partition 616|| origin_formedges: 34813 ||join take time: normal, REPARJOIN0.019622665REPARJOIN secsQuery Redis for edges: 	34813,	take time: 	REPARREDIS0.554REPARREDIS sec, 	res_edges:             	34489
+
+At STEP 12, partition 629|| origin_formedges: 34498 ||join take time: normal, REPARJOIN0.034646758REPARJOIN secsQuery Redis for edges: 	34498,	take time: 	REPARREDIS0.689REPARREDIS sec, 	res_edges:             	34204
+
+At STEP 12, partition 431|| origin_formedges: 41718 ||join take time: normal, REPARJOIN0.02584317REPARJOIN secsQuery Redis for edges: 	41718,	take time: 	REPARREDIS1.025REPARREDIS sec, 	res_edges:             	41036
+
+At STEP 12, partition 617|| origin_formedges: 42557 ||join take time: normal, REPARJOIN0.021288641REPARJOIN secsQuery Redis for edges: 	42557,	take time: 	REPARREDIS0.703REPARREDIS sec, 	res_edges:             	42076
+
+At STEP 12, partition 635|| origin_formedges: 44129 ||join take time: normal, REPARJOIN0.026450659REPARJOIN secsQuery Redis for edges: 	44129,	take time: 	REPARREDIS0.860REPARREDIS sec, 	res_edges:             	43883
+
+At STEP 12, partition 411|| origin_formedges: 40080 ||join take time: normal, REPARJOIN0.018711367REPARJOIN secsQuery Redis for edges: 	40080,	take time: 	REPARREDIS0.907REPARREDIS sec, 	res_edges:             	39640
+
+At STEP 12, partition 644|| origin_formedges: 36389 ||join take time: normal, REPARJOIN0.017948084REPARJOIN secsQuery Redis for edges: 	36389,	take time: 	REPARREDIS1.108REPARREDIS sec, 	res_edges:             	35888
+
+At STEP 12, partition 756|| origin_formedges: 34220 ||join take time: normal, REPARJOIN0.044375105REPARJOIN secsQuery Redis for edges: 	34220,	take time: 	REPARREDIS0.786REPARREDIS sec, 	res_edges:             	33935
+
+At STEP 12, partition 569|| origin_formedges: 33125 ||join take time: normal, REPARJOIN0.034183165REPARJOIN secsQuery Redis for edges: 	33125,	take time: 	REPARREDIS1.077REPARREDIS sec, 	res_edges:             	32764
+
+At STEP 12, partition 757|| origin_formedges: 38156 ||join take time: normal, REPARJOIN0.025956389REPARJOIN secsQuery Redis for edges: 	38156,	take time: 	REPARREDIS0.805REPARREDIS sec, 	res_edges:             	37705
+
+At STEP 12, partition 653|| origin_formedges: 37198 ||join take time: normal, REPARJOIN0.017626886REPARJOIN secsQuery Redis for edges: 	37198,	take time: 	REPARREDIS1.286REPARREDIS sec, 	res_edges:             	36992
+
+At STEP 12, partition 758|| origin_formedges: 37688 ||join take time: normal, REPARJOIN0.028457044REPARJOIN secsQuery Redis for edges: 	37688,	take time: 	REPARREDIS0.636REPARREDIS sec, 	res_edges:             	37512
+
+At STEP 12, partition 570|| origin_formedges: 38813 ||join take time: normal, REPARJOIN0.017649728REPARJOIN secsQuery Redis for edges: 	38813,	take time: 	REPARREDIS1.286REPARREDIS sec, 	res_edges:             	38607
+
+At STEP 12, partition 759|| origin_formedges: 41631 ||join take time: normal, REPARJOIN0.025022289REPARJOIN secsQuery Redis for edges: 	41631,	take time: 	REPARREDIS0.643REPARREDIS sec, 	res_edges:             	39931
+
+At STEP 12, partition 571|| origin_formedges: 41532 ||join take time: normal, REPARJOIN0.017472662REPARJOIN secsQuery Redis for edges: 	41532,	take time: 	REPARREDIS1.313REPARREDIS sec, 	res_edges:             	40407
+
+At STEP 12, partition 760|| origin_formedges: 30385 ||join take time: normal, REPARJOIN0.028394463REPARJOIN secsQuery Redis for edges: 	30385,	take time: 	REPARREDIS0.618REPARREDIS sec, 	res_edges:             	29966
+
+At STEP 12, partition 576|| origin_formedges: 38260 ||join take time: normal, REPARJOIN0.028555816REPARJOIN secsQuery Redis for edges: 	38260,	take time: 	REPARREDIS1.265REPARREDIS sec, 	res_edges:             	37910
+
+At STEP 12, partition 660|| origin_formedges: 34535 ||join take time: normal, REPARJOIN0.032354663REPARJOIN secsQuery Redis for edges: 	34535,	take time: 	REPARREDIS0.441REPARREDIS sec, 	res_edges:             	34323
+
+At STEP 12, partition 577|| origin_formedges: 40458 ||join take time: normal, REPARJOIN0.016478148REPARJOIN secsQuery Redis for edges: 	40458,	take time: 	REPARREDIS1.272REPARREDIS sec, 	res_edges:             	39733
+
+At STEP 12, partition 618|| origin_formedges: 37505 ||join take time: normal, REPARJOIN0.020964977REPARJOIN secsQuery Redis for edges: 	37505,	take time: 	REPARREDIS0.657REPARREDIS sec, 	res_edges:             	36899
+
+At STEP 12, partition 582|| origin_formedges: 41328 ||join take time: normal, REPARJOIN0.017113045REPARJOIN secsQuery Redis for edges: 	41328,	take time: 	REPARREDIS1.289REPARREDIS sec, 	res_edges:             	41202
+
+At STEP 12, partition 619|| origin_formedges: 34594 ||join take time: normal, REPARJOIN0.017172374REPARJOIN secsQuery Redis for edges: 	34594,	take time: 	REPARREDIS0.624REPARREDIS sec, 	res_edges:             	33856
+
+At STEP 12, partition 603|| origin_formedges: 42614 ||join take time: normal, REPARJOIN0.018849125REPARJOIN secsQuery Redis for edges: 	42614,	take time: 	REPARREDIS1.189REPARREDIS sec, 	res_edges:             	42074
+
+At STEP 12, partition 620|| origin_formedges: 41201 ||join take time: normal, REPARJOIN0.020091439REPARJOIN secsQuery Redis for edges: 	41201,	take time: 	REPARREDIS0.766REPARREDIS sec, 	res_edges:             	38719
+
+At STEP 12, partition 604|| origin_formedges: 43736 ||join take time: normal, REPARJOIN0.020430592REPARJOIN secsQuery Redis for edges: 	43736,	take time: 	REPARREDIS1.056REPARREDIS sec, 	res_edges:             	43380
+
+At STEP 12, partition 656|| origin_formedges: 38479 ||join take time: normal, REPARJOIN0.018252778REPARJOIN secsQuery Redis for edges: 	38479,	take time: 	REPARREDIS1.254REPARREDIS sec, 	res_edges:             	38347
+
+At STEP 12, partition 621|| origin_formedges: 39023 ||join take time: normal, REPARJOIN0.015790884REPARJOIN secsQuery Redis for edges: 	39023,	take time: 	REPARREDIS1.034REPARREDIS sec, 	res_edges:             	38344
+
+At STEP 12, partition 623|| origin_formedges: 37429 ||join take time: normal, REPARJOIN0.016509238REPARJOIN secsQuery Redis for edges: 	37429,	take time: 	REPARREDIS1.194REPARREDIS sec, 	res_edges:             	36518
+
+At STEP 12, partition 624|| origin_formedges: 35677 ||join take time: normal, REPARJOIN0.016512163REPARJOIN secsQuery Redis for edges: 	35677,	take time: 	REPARREDIS1.173REPARREDIS sec, 	res_edges:             	35373
+
+At STEP 12, partition 421|| origin_formedges: 37749 ||join take time: normal, REPARJOIN0.021839896REPARJOIN secsQuery Redis for edges: 	37749,	take time: 	REPARREDIS0.898REPARREDIS sec, 	res_edges:             	37311
+
+At STEP 12, partition 661|| origin_formedges: 34153 ||join take time: normal, REPARJOIN0.018303086REPARJOIN secsQuery Redis for edges: 	34153,	take time: 	REPARREDIS1.084REPARREDIS sec, 	res_edges:             	33751
+
+At STEP 12, partition 761|| origin_formedges: 39662 ||join take time: normal, REPARJOIN0.025753369REPARJOIN secsQuery Redis for edges: 	39662,	take time: 	REPARREDIS0.626REPARREDIS sec, 	res_edges:             	38955
+
+At STEP 12, partition 664|| origin_formedges: 37153 ||join take time: normal, REPARJOIN0.018020195REPARJOIN secsQuery Redis for edges: 	37153,	take time: 	REPARREDIS1.350REPARREDIS sec, 	res_edges:             	36172
+
+At STEP 12, partition 631|| origin_formedges: 38523 ||join take time: normal, REPARJOIN0.016482486REPARJOIN secsQuery Redis for edges: 	38523,	take time: 	REPARREDIS1.175REPARREDIS sec, 	res_edges:             	38375
+
+At STEP 12, partition 665|| origin_formedges: 39544 ||join take time: normal, REPARJOIN0.020173045REPARJOIN secsQuery Redis for edges: 	39544,	take time: 	REPARREDIS1.793REPARREDIS sec, 	res_edges:             	39147
+
+At STEP 12, partition 632|| origin_formedges: 29381 ||join take time: normal, REPARJOIN0.016231541REPARJOIN secsQuery Redis for edges: 	29381,	take time: 	REPARREDIS0.851REPARREDIS sec, 	res_edges:             	29124
+
+At STEP 12, partition 637|| origin_formedges: 38103 ||join take time: normal, REPARJOIN0.016615454REPARJOIN secsQuery Redis for edges: 	38103,	take time: 	REPARREDIS1.283REPARREDIS sec, 	res_edges:             	37572
+
+At STEP 12, partition 638|| origin_formedges: 34188 ||join take time: normal, REPARJOIN0.017472822REPARJOIN secsQuery Redis for edges: 	34188,	take time: 	REPARREDIS1.281REPARREDIS sec, 	res_edges:             	33879
+
+At STEP 12, partition 663|| origin_formedges: 34524 ||join take time: normal, REPARJOIN0.03201486REPARJOIN secsQuery Redis for edges: 	34524,	take time: 	REPARREDIS0.441REPARREDIS sec, 	res_edges:             	34146
+
+At STEP 12, partition 639|| origin_formedges: 33918 ||join take time: normal, REPARJOIN0.019323193REPARJOIN secsQuery Redis for edges: 	33918,	take time: 	REPARREDIS1.086REPARREDIS sec, 	res_edges:             	32173
+
+At STEP 12, partition 646|| origin_formedges: 41450 ||join take time: normal, REPARJOIN0.018299904REPARJOIN secsQuery Redis for edges: 	41450,	take time: 	REPARREDIS1.039REPARREDIS sec, 	res_edges:             	41307
+
+At STEP 12, partition 507|| origin_formedges: 39660 ||join take time: normal, REPARJOIN0.022398739REPARJOIN secsQuery Redis for edges: 	39660,	take time: 	REPARREDIS0.828REPARREDIS sec, 	res_edges:             	39379
+
+At STEP 12, partition 669|| origin_formedges: 34832 ||join take time: normal, REPARJOIN0.03189683REPARJOIN secsQuery Redis for edges: 	34832,	take time: 	REPARREDIS0.319REPARREDIS sec, 	res_edges:             	34661
+
+At STEP 12, partition 647|| origin_formedges: 37419 ||join take time: normal, REPARJOIN0.027474998REPARJOIN secsQuery Redis for edges: 	37419,	take time: 	REPARREDIS1.010REPARREDIS sec, 	res_edges:             	36830
+
+At STEP 12, partition 516|| origin_formedges: 40114 ||join take time: normal, REPARJOIN0.016617079REPARJOIN secsQuery Redis for edges: 	40114,	take time: 	REPARREDIS0.883REPARREDIS sec, 	res_edges:             	37602
+
+At STEP 12, partition 674|| origin_formedges: 35143 ||join take time: normal, REPARJOIN0.016921895REPARJOIN secsQuery Redis for edges: 	35143,	take time: 	REPARREDIS1.026REPARREDIS sec, 	res_edges:             	34705
+
+At STEP 12, partition 681|| origin_formedges: 39866 ||join take time: normal, REPARJOIN0.032190393REPARJOIN secsQuery Redis for edges: 	39866,	take time: 	REPARREDIS0.321REPARREDIS sec, 	res_edges:             	39012
+
+At STEP 12, partition 675|| origin_formedges: 35474 ||join take time: normal, REPARJOIN0.017196034REPARJOIN secsQuery Redis for edges: 	35474,	take time: 	REPARREDIS0.967REPARREDIS sec, 	res_edges:             	34799
+
+At STEP 12, partition 686|| origin_formedges: 34605 ||join take time: normal, REPARJOIN0.016798226REPARJOIN secsQuery Redis for edges: 	34605,	take time: 	REPARREDIS0.830REPARREDIS sec, 	res_edges:             	34456
+
+At STEP 12, partition 762|| origin_formedges: 43398 ||join take time: normal, REPARJOIN0.025986414REPARJOIN secsQuery Redis for edges: 	43398,	take time: 	REPARREDIS0.476REPARREDIS sec, 	res_edges:             	43152
+
+At STEP 12, partition 670|| origin_formedges: 34092 ||join take time: normal, REPARJOIN0.018854138REPARJOIN secsQuery Redis for edges: 	34092,	take time: 	REPARREDIS1.189REPARREDIS sec, 	res_edges:             	33887
+
+At STEP 12, partition 640|| origin_formedges: 37330 ||join take time: normal, REPARJOIN0.016557533REPARJOIN secsQuery Redis for edges: 	37330,	take time: 	REPARREDIS1.247REPARREDIS sec, 	res_edges:             	34650
+
+At STEP 12, partition 671|| origin_formedges: 40472 ||join take time: normal, REPARJOIN0.017729271REPARJOIN secsQuery Redis for edges: 	40472,	take time: 	REPARREDIS1.317REPARREDIS sec, 	res_edges:             	39934
+
+At STEP 12, partition 764|| origin_formedges: 38687 ||join take time: normal, REPARJOIN0.025274263REPARJOIN secsQuery Redis for edges: 	38687,	take time: 	REPARREDIS0.466REPARREDIS sec, 	res_edges:             	38271
+
+At STEP 12, partition 677|| origin_formedges: 33193 ||join take time: normal, REPARJOIN0.017288927REPARJOIN secsQuery Redis for edges: 	33193,	take time: 	REPARREDIS1.660REPARREDIS sec, 	res_edges:             	32653
+
+At STEP 12, partition 641|| origin_formedges: 31626 ||join take time: normal, REPARJOIN0.016382013REPARJOIN secsQuery Redis for edges: 	31626,	take time: 	REPARREDIS1.130REPARREDIS sec, 	res_edges:             	31385
+
+At STEP 12, partition 679|| origin_formedges: 36361 ||join take time: normal, REPARJOIN0.017786871REPARJOIN secsQuery Redis for edges: 	36361,	take time: 	REPARREDIS1.507REPARREDIS sec, 	res_edges:             	35602
+
+At STEP 12, partition 522|| origin_formedges: 37554 ||join take time: normal, REPARJOIN0.022404452REPARJOIN secsQuery Redis for edges: 	37554,	take time: 	REPARREDIS0.724REPARREDIS sec, 	res_edges:             	37280
+
+At STEP 12, partition 682|| origin_formedges: 30309 ||join take time: normal, REPARJOIN0.021234572REPARJOIN secsQuery Redis for edges: 	30309,	take time: 	REPARREDIS1.447REPARREDIS sec, 	res_edges:             	30099
+
+At STEP 12, partition 642|| origin_formedges: 34657 ||join take time: normal, REPARJOIN0.016663845REPARJOIN secsQuery Redis for edges: 	34657,	take time: 	REPARREDIS1.509REPARREDIS sec, 	res_edges:             	34316
+
+At STEP 12, partition 643|| origin_formedges: 38348 ||join take time: normal, REPARJOIN0.016923896REPARJOIN secsQuery Redis for edges: 	38348,	take time: 	REPARREDIS1.247REPARREDIS sec, 	res_edges:             	37995
+
+At STEP 12, partition 765|| origin_formedges: 35636 ||join take time: normal, REPARJOIN0.0256853REPARJOIN secsQuery Redis for edges: 	35636,	take time: 	REPARREDIS0.330REPARREDIS sec, 	res_edges:             	34724
+
+At STEP 12, partition 683|| origin_formedges: 34479 ||join take time: normal, REPARJOIN0.01803689REPARJOIN secsQuery Redis for edges: 	34479,	take time: 	REPARREDIS1.286REPARREDIS sec, 	res_edges:             	34145
+
+At STEP 12, partition 684|| origin_formedges: 31730 ||join take time: normal, REPARJOIN0.017035738REPARJOIN secsQuery Redis for edges: 	31730,	take time: 	REPARREDIS0.324REPARREDIS sec, 	res_edges:             	31218
+
+At STEP 12, partition 690|| origin_formedges: 40736 ||join take time: normal, REPARJOIN0.017994858REPARJOIN secsQuery Redis for edges: 	40736,	take time: 	REPARREDIS1.168REPARREDIS sec, 	res_edges:             	40021
+
+At STEP 12, partition 766|| origin_formedges: 34886 ||join take time: normal, REPARJOIN0.025813544REPARJOIN secsQuery Redis for edges: 	34886,	take time: 	REPARREDIS0.325REPARREDIS sec, 	res_edges:             	34081
+
+At STEP 12, partition 689|| origin_formedges: 42519 ||join take time: normal, REPARJOIN0.020732778REPARJOIN secsQuery Redis for edges: 	42519,	take time: 	REPARREDIS1.241REPARREDIS sec, 	res_edges:             	41729
+
+At STEP 12, partition 687|| origin_formedges: 38731 ||join take time: normal, REPARJOIN0.025046395REPARJOIN secsQuery Redis for edges: 	38731,	take time: 	REPARREDIS0.318REPARREDIS sec, 	res_edges:             	38189
+
+At STEP 12, partition 692|| origin_formedges: 34047 ||join take time: normal, REPARJOIN0.016977421REPARJOIN secsQuery Redis for edges: 	34047,	take time: 	REPARREDIS1.016REPARREDIS sec, 	res_edges:             	33358
+
+At STEP 12, partition 691|| origin_formedges: 43793 ||join take time: normal, REPARJOIN0.016325902REPARJOIN secsQuery Redis for edges: 	43793,	take time: 	REPARREDIS1.058REPARREDIS sec, 	res_edges:             	42893
+
+At STEP 12, partition 708|| origin_formedges: 44573 ||join take time: normal, REPARJOIN0.016638466REPARJOIN secsQuery Redis for edges: 	44573,	take time: 	REPARREDIS1.058REPARREDIS sec, 	res_edges:             	42897
+
+At STEP 12, partition 526|| origin_formedges: 42295 ||join take time: normal, REPARJOIN0.062048688REPARJOIN secsQuery Redis for edges: 	42295,	take time: 	REPARREDIS0.562REPARREDIS sec, 	res_edges:             	42128
+
+At STEP 12, partition 738|| origin_formedges: 41595 ||join take time: normal, REPARJOIN0.016952091REPARJOIN secsQuery Redis for edges: 	41595,	take time: 	REPARREDIS1.037REPARREDIS sec, 	res_edges:             	40823
+
+At STEP 12, partition 712|| origin_formedges: 35127 ||join take time: normal, REPARJOIN0.017370492REPARJOIN secsQuery Redis for edges: 	35127,	take time: 	REPARREDIS1.037REPARREDIS sec, 	res_edges:             	34447
+
+At STEP 12, partition 767|| origin_formedges: 38740 ||join take time: normal, REPARJOIN0.025057463REPARJOIN secsQuery Redis for edges: 	38740,	take time: 	REPARREDIS0.223REPARREDIS sec, 	res_edges:             	37271
+
+At STEP 12, partition 381|| origin_formedges: 41643 ||join take time: normal, REPARJOIN0.040413617REPARJOIN secsQuery Redis for edges: 	41643,	take time: 	REPARREDIS0.645REPARREDIS sec, 	res_edges:             	40783
+
+At STEP 12, partition 530|| origin_formedges: 44222 ||join take time: normal, REPARJOIN0.062087359REPARJOIN secsQuery Redis for edges: 	44222,	take time: 	REPARREDIS0.563REPARREDIS sec, 	res_edges:             	43555
+
+At STEP 12, partition 688|| origin_formedges: 42442 ||join take time: normal, REPARJOIN0.018504971REPARJOIN secsQuery Redis for edges: 	42442,	take time: 	REPARREDIS0.340REPARREDIS sec, 	res_edges:             	42258
+
+At STEP 12, partition 532|| origin_formedges: 42107 ||join take time: normal, REPARJOIN0.061896298REPARJOIN secsQuery Redis for edges: 	42107,	take time: 	REPARREDIS0.551REPARREDIS sec, 	res_edges:             	41921
+
+At STEP 12, partition 713|| origin_formedges: 36384 ||join take time: normal, REPARJOIN0.017171572REPARJOIN secsQuery Redis for edges: 	36384,	take time: 	REPARREDIS1.036REPARREDIS sec, 	res_edges:             	36229
+
+At STEP 12, partition 693|| origin_formedges: 37718 ||join take time: normal, REPARJOIN0.01600147REPARJOIN secsQuery Redis for edges: 	37718,	take time: 	REPARREDIS0.322REPARREDIS sec, 	res_edges:             	37297
+
+At STEP 12, partition 538|| origin_formedges: 43066 ||join take time: normal, REPARJOIN0.060364059REPARJOIN secsQuery Redis for edges: 	43066,	take time: 	REPARREDIS0.553REPARREDIS sec, 	res_edges:             	41756
+
+At STEP 12, partition 707|| origin_formedges: 35040 ||join take time: normal, REPARJOIN0.016561736REPARJOIN secsQuery Redis for edges: 	35040,	take time: 	REPARREDIS0.242REPARREDIS sec, 	res_edges:             	34815
+
+At STEP 12, partition 539|| origin_formedges: 46240 ||join take time: normal, REPARJOIN0.062343458REPARJOIN secsQuery Redis for edges: 	46240,	take time: 	REPARREDIS0.599REPARREDIS sec, 	res_edges:             	45173
+
+At STEP 12, partition 714|| origin_formedges: 38200 ||join take time: normal, REPARJOIN0.018344493REPARJOIN secsQuery Redis for edges: 	38200,	take time: 	REPARREDIS0.233REPARREDIS sec, 	res_edges:             	37893
+
+At STEP 12, partition 540|| origin_formedges: 40663 ||join take time: normal, REPARJOIN0.032943733REPARJOIN secsQuery Redis for edges: 	40663,	take time: 	REPARREDIS0.532REPARREDIS sec, 	res_edges:             	40513
+
+At STEP 12, partition 736|| origin_formedges: 33070 ||join take time: normal, REPARJOIN0.018650119REPARJOIN secsQuery Redis for edges: 	33070,	take time: 	REPARREDIS0.238REPARREDIS sec, 	res_edges:             	32848
+
+At STEP 12, partition 541|| origin_formedges: 45335 ||join take time: normal, REPARJOIN0.018000896REPARJOIN secsQuery Redis for edges: 	45335,	take time: 	REPARREDIS0.543REPARREDIS sec, 	res_edges:             	45089
+
+At STEP 12, partition 744|| origin_formedges: 36501 ||join take time: normal, REPARJOIN0.017512162REPARJOIN secsQuery Redis for edges: 	36501,	take time: 	REPARREDIS0.159REPARREDIS sec, 	res_edges:             	36045
+
+At STEP 12, partition 544|| origin_formedges: 34816 ||join take time: normal, REPARJOIN0.03532722REPARJOIN secsQuery Redis for edges: 	34816,	take time: 	REPARREDIS0.488REPARREDIS sec, 	res_edges:             	34208
+
+At STEP 12, partition 748|| origin_formedges: 39343 ||join take time: normal, REPARJOIN0.016754885REPARJOIN secsQuery Redis for edges: 	39343,	take time: 	REPARREDIS0.162REPARREDIS sec, 	res_edges:             	38771
+
+At STEP 12, partition 546|| origin_formedges: 41777 ||join take time: normal, REPARJOIN0.01660375REPARJOIN secsQuery Redis for edges: 	41777,	take time: 	REPARREDIS0.455REPARREDIS sec, 	res_edges:             	40677
+
+At STEP 12, partition 763|| origin_formedges: 37496 ||join take time: normal, REPARJOIN0.017039371REPARJOIN secsQuery Redis for edges: 	37496,	take time: 	REPARREDIS0.163REPARREDIS sec, 	res_edges:             	36618
+
+At STEP 12, partition 547|| origin_formedges: 38043 ||join take time: normal, REPARJOIN0.018950004REPARJOIN secsQuery Redis for edges: 	38043,	take time: 	REPARREDIS0.421REPARREDIS sec, 	res_edges:             	37898
+
+At STEP 12, partition 548|| origin_formedges: 41665 ||join take time: normal, REPARJOIN0.020029794REPARJOIN secsQuery Redis for edges: 	41665,	take time: 	REPARREDIS0.404REPARREDIS sec, 	res_edges:             	41490
+
+At STEP 12, partition 562|| origin_formedges: 44260 ||join take time: normal, REPARJOIN0.01823764REPARJOIN secsQuery Redis for edges: 	44260,	take time: 	REPARREDIS0.405REPARREDIS sec, 	res_edges:             	43708
+
+At STEP 12, partition 563|| origin_formedges: 46157 ||join take time: normal, REPARJOIN0.018489751REPARJOIN secsQuery Redis for edges: 	46157,	take time: 	REPARREDIS0.416REPARREDIS sec, 	res_edges:             	44710
+
+At STEP 12, partition 565|| origin_formedges: 41559 ||join take time: normal, REPARJOIN0.018164766REPARJOIN secsQuery Redis for edges: 	41559,	take time: 	REPARREDIS0.220REPARREDIS sec, 	res_edges:             	41353
+
+At STEP 12, partition 572|| origin_formedges: 41412 ||join take time: normal, REPARJOIN0.018264301REPARJOIN secsQuery Redis for edges: 	41412,	take time: 	REPARREDIS0.217REPARREDIS sec, 	res_edges:             	40209
+
+At STEP 12, partition 573|| origin_formedges: 37857 ||join take time: normal, REPARJOIN0.019662109REPARJOIN secsQuery Redis for edges: 	37857,	take time: 	REPARREDIS0.280REPARREDIS sec, 	res_edges:             	37682
+
+At STEP 12, partition 583|| origin_formedges: 37387 ||join take time: normal, REPARJOIN0.020386866REPARJOIN secsQuery Redis for edges: 	37387,	take time: 	REPARREDIS0.146REPARREDIS sec, 	res_edges:             	37163
+
+At STEP 12, partition 585|| origin_formedges: 35875 ||join take time: normal, REPARJOIN0.024736574REPARJOIN secsQuery Redis for edges: 	35875,	take time: 	REPARREDIS0.137REPARREDIS sec, 	res_edges:             	35162
+
+At STEP 12, partition 589|| origin_formedges: 43115 ||join take time: normal, REPARJOIN0.030468466REPARJOIN secsQuery Redis for edges: 	43115,	take time: 	REPARREDIS0.137REPARREDIS sec, 	res_edges:             	42962
+
+At STEP 12, partition 593|| origin_formedges: 44407 ||join take time: normal, REPARJOIN0.019417121REPARJOIN secsQuery Redis for edges: 	44407,	take time: 	REPARREDIS0.207REPARREDIS sec, 	res_edges:             	44096
+
+At STEP 12, partition 595|| origin_formedges: 42505 ||join take time: normal, REPARJOIN0.028754583REPARJOIN secsQuery Redis for edges: 	42505,	take time: 	REPARREDIS0.194REPARREDIS sec, 	res_edges:             	42355
+
+At STEP 12, partition 658|| origin_formedges: 34373 ||join take time: normal, REPARJOIN0.028373649REPARJOIN secsQuery Redis for edges: 	34373,	take time: 	REPARREDIS0.125REPARREDIS sec, 	res_edges:             	33792
+
+At STEP 12, partition 662|| origin_formedges: 36202 ||join take time: normal, REPARJOIN0.024632093REPARJOIN secsQuery Redis for edges: 	36202,	take time: 	REPARREDIS0.155REPARREDIS sec, 	res_edges:             	35941
+
+At STEP 12, partition 678|| origin_formedges: 34224 ||join take time: normal, REPARJOIN0.0262646REPARJOIN secsQuery Redis for edges: 	34224,	take time: 	REPARREDIS0.087REPARREDIS sec, 	res_edges:             	33971
+
+At STEP 12, partition 680|| origin_formedges: 38809 ||join take time: normal, REPARJOIN0.031345171REPARJOIN secsQuery Redis for edges: 	38809,	take time: 	REPARREDIS0.109REPARREDIS sec, 	res_edges:             	38273
+
+At STEP 12, partition 685|| origin_formedges: 36154 ||join take time: normal, REPARJOIN0.017901935REPARJOIN secsQuery Redis for edges: 	36154,	take time: 	REPARREDIS0.067REPARREDIS sec, 	res_edges:             	35522
+
+At STEP 12, partition 694|| origin_formedges: 31519 ||join take time: normal, REPARJOIN0.01897591REPARJOIN secsQuery Redis for edges: 	31519,	take time: 	REPARREDIS0.085REPARREDIS sec, 	res_edges:             	31174
+
+At STEP 12, partition 695|| origin_formedges: 38435 ||join take time: normal, REPARJOIN0.034921604REPARJOIN secsQuery Redis for edges: 	38435,	take time: 	REPARREDIS0.089REPARREDIS sec, 	res_edges:             	37722
+
+At STEP 12, partition 697|| origin_formedges: 35858 ||join take time: normal, REPARJOIN0.025528868REPARJOIN secsQuery Redis for edges: 	35858,	take time: 	REPARREDIS0.083REPARREDIS sec, 	res_edges:             	35676
+
+At STEP 12, partition 699|| origin_formedges: 29707 ||join take time: normal, REPARJOIN0.017495692REPARJOIN secsQuery Redis for edges: 	29707,	take time: 	REPARREDIS0.099REPARREDIS sec, 	res_edges:             	29559
+
+At STEP 12, partition 704|| origin_formedges: 37562 ||join take time: normal, REPARJOIN0.021302688REPARJOIN secsQuery Redis for edges: 	37562,	take time: 	REPARREDIS0.088REPARREDIS sec, 	res_edges:             	35842
+
+At STEP 12, partition 721|| origin_formedges: 38672 ||join take time: normal, REPARJOIN0.030828904REPARJOIN secsQuery Redis for edges: 	38672,	take time: 	REPARREDIS0.076REPARREDIS sec, 	res_edges:             	38547
+
+At STEP 12, partition 730|| origin_formedges: 33762 ||join take time: normal, REPARJOIN0.030067096REPARJOIN secsQuery Redis for edges: 	33762,	take time: 	REPARREDIS0.049REPARREDIS sec, 	res_edges:             	33504
+
+At STEP 12, partition 743|| origin_formedges: 36047 ||join take time: normal, REPARJOIN0.030890812REPARJOIN secsQuery Redis for edges: 	36047,	take time: 	REPARREDIS0.059REPARREDIS sec, 	res_edges:             	35638
+
+At STEP 12, partition 746|| origin_formedges: 42700 ||join take time: normal, REPARJOIN0.033234748REPARJOIN secsQuery Redis for edges: 	42700,	take time: 	REPARREDIS0.047REPARREDIS sec, 	res_edges:             	40351
+
+At STEP 12, partition 749|| origin_formedges: 34981 ||join take time: normal, REPARJOIN0.032131625REPARJOIN secsQuery Redis for edges: 	34981,	take time: 	REPARREDIS0.037REPARREDIS sec, 	res_edges:             	34587
+
+At STEP 12, partition 750|| origin_formedges: 41653 ||join take time: normal, REPARJOIN0.033875297REPARJOIN secsQuery Redis for edges: 	41653,	take time: 	REPARREDIS0.059REPARREDIS sec, 	res_edges:             	40971
+
