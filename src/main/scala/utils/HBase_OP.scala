@@ -23,6 +23,15 @@ object HBase_OP extends Para{
   val family:String="c"
   val value:String="1"
 
+  var nodes_num_bitsize:Int=0
+  var symbol_num_bitsize:Int=0
+  var Batch_QueryHbase:Boolean=false
+  var htable_name:String="edges"
+  var htable_split_Map:Map[Int,String]=null
+  var HRegion_splitnum:Int=0
+  val queryHbase_interval:Int=0
+  val default_split:String=""
+
   def filling0(origin:Int,len:Int):String="0"*(len-origin.toString.length)+origin
 
   def getIntBit(a:Int):Int={
@@ -131,60 +140,16 @@ object HBase_OP extends Para{
   }
 
 
-  def queryHbase_inPartition(res_edges_maynotin:List[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
-                             symbol_num_bitsize:Int,htable_name:String,
-                             htable_split_Map:Map[Int,String],htable_nodes_interval:Int,queryHbase_interval:Int,
-                             default_split:String)
-  :List[(VertexId,VertexId,EdgeLabel)]={
-    val h_conf = HBaseConfiguration.create()
-    h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
-    //    println("hbase ipc.server.max.callqueue.size:\t"+h_conf.get("hbase ipc.server.max.callqueue.size"))
-    h_conf.set("hbase ipc.server.max.callqueue.size","5368709120")
-    //    println(h_conf.get("hbase ipc.server.max.callqueue.size"))
-    h_conf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
-    val h_table = new HTable(h_conf, htable_name)
-    /**
-      * Query interval
-      */
-    //        var res_all:List[(VertexId,VertexId,EdgeLabel)]=List()
-    //        for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
-    //          val sublist=res_edges_maynotin.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
-    //          val g_l=sublist.map(x=>{
-    //            val rk = Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,htable_nodes_interval,default_split)
-    //            val get = new Get(Bytes.toBytes(rk))
-    //            get.setCheckExistenceOnly(true)
-    //            get
-    //          })
-    //          val get_list_java: java.util.List[Get] = g_l
-    //          val res_java = h_table.get(get_list_java)
-    //          val res_list = res_java.map(x => x.getExists.booleanValue()).toList
-    //          val res=(sublist zip res_list).filter(s => s._2 == false).map(s => s._1)
-    //          res_all++=res
-    //        }
-    //        h_table.close()
-    //        res_all
-    /**
-      * Query all
-      */
-    val get_list = res_edges_maynotin.map(x => {
-      //      val rk = Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,htable_nodes_interval,default_split)
-      val get = new Get(Bytes.toBytes(Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,htable_nodes_interval,default_split)))
-      get.setCheckExistenceOnly(true)
-      get
-    })
-    val get_list_java: java.util.List[Get] = get_list
-    val res_java = h_table.get(get_list_java)
-    val res_list = res_java.map(x => x.getExists.booleanValue()).toList
-    val res=(res_edges_maynotin zip res_list).filter(s => s._2 == false).map(s => s._1)
-    h_table.close()
-    res
-  }
-
+  /**
+    * Query Operation
+    * @param res_edges_maynotin
+    * @return
+    */
   def queryHbase_inPartition_java_flat(res_edges_maynotin:Array[Array[Int]],nodes_num_bitsize:Int,
-                                             symbol_num_bitsize:Int,
-                                             Batch_QueryHbase:Boolean,htable_name:String,
-                                             htable_split_Map:Map[Int,String],HRegion_splitnum:Int,queryHbase_interval:Int,
-                                             default_split:String)
+                                       symbol_num_bitsize:Int,
+  Batch_QueryHbase:Boolean,htable_name:String,
+  htable_split_Map:Map[Int,String],HRegion_splitnum:Int,queryHbase_interval:Int,
+  default_split:String)
   :Array[Array[Int]]={
     val h_conf = HBaseConfiguration.create()
     h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
@@ -246,71 +211,71 @@ object HBase_OP extends Para{
     res
   }
 
-//  def queryHbase_inPartition_selfdecode(res_edges_maynotin:Array[Int],nodes_num_bitsize:Int,
-//                                       symbol_num_bitsize:Int,
-//                                       Batch_QueryHbase:Boolean,htable_name:String,
-//                                       htable_split_Map:Map[Int,String],HRegion_splitnum:Int,queryHbase_interval:Int,
-//                                       default_split:String)
-//  :Array[Array[Int]]={
-//    val h_conf = HBaseConfiguration.create()
-//    h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
-//    //    println("hbase ipc.server.max.callqueue.size:\t"+h_conf.get("hbase ipc.server.max.callqueue.size"))
-//    h_conf.set("hbase.ipc.server.max.callqueue.size","5368709120")
-//    //    println(h_conf.get("hbase ipc.server.max.callqueue.size"))
-//    h_conf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
-//    val h_table = new HTable(h_conf, htable_name)
-//
-//    val get_list_java = res_edges_maynotin.map(x => {
-//      val get = new Get(Bytes.toBytes(Array2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
-//        HRegion_splitnum,default_split)))
-//      get.setCheckExistenceOnly(true)
-//      get
-//    }).toList
-//
-//    val res={
-//      Batch_QueryHbase match{
-//        case true => {
-//          /**
-//            * Query interval
-//            */
-//          var res_all:List[Boolean]=List()
-//          for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
-//            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
-//            val res_java = h_table.get(sublist)
-//            res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
-//          }
-//          (res_edges_maynotin zip res_all).filter(s => s._2 == false).map(s => s._1)
-//        }
-//        case false => {
-//          /**
-//            * Query all
-//            */
-//          val get_list = res_edges_maynotin.map(x => {
-//            //      val rk = Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,HRegion_splitnum,default_split)
-//            val get = new Get(Bytes.toBytes(Array2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
-//              HRegion_splitnum,default_split)))
-//            get.setCheckExistenceOnly(true)
-//            get
-//          })
-//          val get_list_java: java.util.List[Get] = get_list.toList
-//          val res_java = h_table.get(get_list_java)
-//          val res_list = res_java.map(x => x.getExists.booleanValue()).toList
-//          (res_edges_maynotin zip res_list).filter(s => s._2 == false).map(s => s._1)
-//        }
-//        case _ =>{
-//          var res_all:List[Boolean]=List()
-//          for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
-//            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
-//            val res_java = h_table.get(sublist)
-//            res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
-//          }
-//          (res_edges_maynotin zip res_all).filter(s => s._2 == false).map(s => s._1)
-//        }
-//      }
-//    }
-//    h_table.close()
-//    res
-//  }
+  //  def queryHbase_inPartition_selfdecode(res_edges_maynotin:Array[Int],nodes_num_bitsize:Int,
+  //                                       symbol_num_bitsize:Int,
+  //                                       Batch_QueryHbase:Boolean,htable_name:String,
+  //                                       htable_split_Map:Map[Int,String],HRegion_splitnum:Int,queryHbase_interval:Int,
+  //                                       default_split:String)
+  //  :Array[Array[Int]]={
+  //    val h_conf = HBaseConfiguration.create()
+  //    h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
+  //    //    println("hbase ipc.server.max.callqueue.size:\t"+h_conf.get("hbase ipc.server.max.callqueue.size"))
+  //    h_conf.set("hbase.ipc.server.max.callqueue.size","5368709120")
+  //    //    println(h_conf.get("hbase ipc.server.max.callqueue.size"))
+  //    h_conf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
+  //    val h_table = new HTable(h_conf, htable_name)
+  //
+  //    val get_list_java = res_edges_maynotin.map(x => {
+  //      val get = new Get(Bytes.toBytes(Array2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
+  //        HRegion_splitnum,default_split)))
+  //      get.setCheckExistenceOnly(true)
+  //      get
+  //    }).toList
+  //
+  //    val res={
+  //      Batch_QueryHbase match{
+  //        case true => {
+  //          /**
+  //            * Query interval
+  //            */
+  //          var res_all:List[Boolean]=List()
+  //          for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
+  //            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
+  //            val res_java = h_table.get(sublist)
+  //            res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
+  //          }
+  //          (res_edges_maynotin zip res_all).filter(s => s._2 == false).map(s => s._1)
+  //        }
+  //        case false => {
+  //          /**
+  //            * Query all
+  //            */
+  //          val get_list = res_edges_maynotin.map(x => {
+  //            //      val rk = Edge2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,HRegion_splitnum,default_split)
+  //            val get = new Get(Bytes.toBytes(Array2String(x,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map,
+  //              HRegion_splitnum,default_split)))
+  //            get.setCheckExistenceOnly(true)
+  //            get
+  //          })
+  //          val get_list_java: java.util.List[Get] = get_list.toList
+  //          val res_java = h_table.get(get_list_java)
+  //          val res_list = res_java.map(x => x.getExists.booleanValue()).toList
+  //          (res_edges_maynotin zip res_list).filter(s => s._2 == false).map(s => s._1)
+  //        }
+  //        case _ =>{
+  //          var res_all:List[Boolean]=List()
+  //          for(i:Int<-0 until (res_edges_maynotin.length,queryHbase_interval)){
+  //            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,res_edges_maynotin.length))
+  //            val res_java = h_table.get(sublist)
+  //            res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
+  //          }
+  //          (res_edges_maynotin zip res_all).filter(s => s._2 == false).map(s => s._1)
+  //        }
+  //      }
+  //    }
+  //    h_table.close()
+  //    res
+  //  }
 
 
   def queryHbase_compressnew_df(n:Array[Long],nodes_num_bitsize:Int, symbol_num_bitsize:Int,
@@ -341,45 +306,45 @@ object HBase_OP extends Para{
       }).toList
     }
 
-      Batch_QueryHbase match{
-        case true => {
-          /**
-            * Query interval
-            */
-          var res_all:List[Boolean]=List()
-          for(i:Int<-0 until (n.length,queryHbase_interval)){
-            val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,n.length))
-            val res_java = h_table.get(sublist)
-            res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
-          }
-          var i=0
-          val lenofres=res_all.length
-          while(i<lenofres){
-            if(res_all(i)==false) res.append(Array((n(i) & 0xffffffffL).toInt,(n(i)>>>32).toInt, 0))
-            i+=1
-          }
+    Batch_QueryHbase match{
+      case true => {
+        /**
+          * Query interval
+          */
+        var res_all:List[Boolean]=List()
+        for(i:Int<-0 until (n.length,queryHbase_interval)){
+          val sublist=get_list_java.subList(i,Math.min(i+queryHbase_interval,n.length))
+          val res_java = h_table.get(sublist)
+          res_all = res_all.++(res_java.map(x => x.getExists.booleanValue()).toList)
         }
-        case false => {
-          /**
-            * Query all
-            */
-
-          val res_java = h_table.get(get_list_java)
-          val res_list = res_java.map(x => x.getExists.booleanValue()).toList
-          var i=0
-          val lenofres=res_list.length
-          while(i<lenofres){
-            if(res_list(i)==false) res.append(Array((n(i) & 0xffffffffL).toInt,(n(i)>>>32).toInt, 0))
-            i+=1
-          }
+        var i=0
+        val lenofres=res_all.length
+        while(i<lenofres){
+          if(res_all(i)==false) res.append(Array((n(i) & 0xffffffffL).toInt,(n(i)>>>32).toInt, 0))
+          i+=1
         }
       }
+      case false => {
+        /**
+          * Query all
+          */
+
+        val res_java = h_table.get(get_list_java)
+        val res_list = res_java.map(x => x.getExists.booleanValue()).toList
+        var i=0
+        val lenofres=res_list.length
+        while(i<lenofres){
+          if(res_list(i)==false) res.append(Array((n(i) & 0xffffffffL).toInt,(n(i)>>>32).toInt, 0))
+          i+=1
+        }
+      }
+    }
     h_table.close()
     res.toArray
   }
 
   /**
-    *
+    *Update Operation
     * @param edge_processed
     * @param nodes_num_bitsize
     * @param symbol_num_bitsize
@@ -389,36 +354,6 @@ object HBase_OP extends Para{
     * @param HRegion_splitnum
     * @param default_split
     */
-  def updateHbase(edge_processed:RDD[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
-                  symbol_num_bitsize:Int,htable_name:String,output:String,htable_split_Map:Map[Int,String],
-                  HRegion_splitnum:Int,default_split:String)= {
-    println("Update HBase Using BulkLoad")
-    val h_conf = HBaseConfiguration.create()
-    h_conf.set(TableOutputFormat.OUTPUT_TABLE, htable_name)
-    h_conf.set("hbase.zookeeper.quorum", "slave001,slave002,slave003")
-    h_conf.setInt("hbase.mapreduce.bulkload.max.hfiles.perRegion.perFamily", 4096)
-    val h_table =new HTable(h_conf, htable_name)
-    val h_job = Job.getInstance(h_conf)
-    h_job.setMapOutputKeyClass (classOf[ImmutableBytesWritable])
-    h_job.setMapOutputValueClass (classOf[KeyValue])
-    HFileOutputFormat.configureIncrementalLoad(h_job, h_table)
-
-    edge_processed.map(s => {
-      val final_string = Edge2String(s,nodes_num_bitsize,symbol_num_bitsize,htable_split_Map, HRegion_splitnum,default_split)
-      val final_rowkey = Bytes.toBytes(final_string)
-      val kv: KeyValue = new KeyValue(final_rowkey, colum.getBytes, family.getBytes, Bytes.toBytes(value))
-      (final_string, (new ImmutableBytesWritable(final_rowkey), kv))
-    }).sortByKey().map(s => s._2)
-      .saveAsNewAPIHadoopFile(output, classOf[ImmutableBytesWritable],
-        classOf[KeyValue],
-        classOf[HFileOutputFormat], h_job.getConfiguration())
-
-    val bulkLoader = new LoadIncrementalHFiles(h_job.getConfiguration())
-    bulkLoader.doBulkLoad(new Path(output), h_table)
-    h_table.close()
-  }
-
-  
 
   def updateHbase_java_flat(edge_processed:RDD[Array[Int]],nodes_num_bitsize:Int,
                             symbol_num_bitsize:Int,htable_name:String,output:String,htable_split_Map:Map[Int,String],
@@ -460,8 +395,8 @@ object HBase_OP extends Para{
   }
 
   def updateHbase_batch(edge_processed:RDD[(VertexId,VertexId,EdgeLabel)],nodes_num_bitsize:Int,
-                                symbol_num_bitsize:Int,htable_name:String,output:String,htable_split_Map:Map[Int,String],
-                                HRegion_splitnum:Int,default_split:String,Hbase_interval:Int)= {
+                        symbol_num_bitsize:Int,htable_name:String,output:String,htable_split_Map:Map[Int,String],
+                        HRegion_splitnum:Int,default_split:String,Hbase_interval:Int)= {
     println("Start Update HBase Partition")
     edge_processed.foreachPartition(s=> {
       val h_conf = HBaseConfiguration.create()
