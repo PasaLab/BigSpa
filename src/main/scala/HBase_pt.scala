@@ -74,6 +74,7 @@ object HBase_pt extends Para{
 
     var htable_name:String="edges"
     var queryHBase_interval:Int=50000
+    var updateHBase_interval:Int=50000
     var HRegion_splitnum:Int=36
     var Batch_QueryHbase:Boolean=true
 
@@ -153,6 +154,7 @@ object HBase_pt extends Para{
     println("cluster partition num:        \t" + clusterpar)
     println("queryHBase_interval:          \t" + queryHBase_interval)
     println("HRegion_splitnum:             \t" + HRegion_splitnum)
+    println("Batch_QueryHbase:             \t" + Batch_QueryHbase)
     println("--------------------------------------------------------------------")
     println
     /**
@@ -200,7 +202,15 @@ object HBase_pt extends Para{
       *Hbase初始化
       */
     val t0_hbase=System.nanoTime()
-    val (htable_split_Map, default_split) = HBase_OP.createHBase_Table(htable_name, HRegion_splitnum)
+    val hBase_OP=new HBase_OP(hbase_output,
+      nodes_num_bitsize,
+      symbol_num_bitsize,
+      Batch_QueryHbase,
+      htable_name,
+      HRegion_splitnum,
+      queryHBase_interval,
+      updateHBase_interval)
+    hBase_OP.createHBase_Table()
     println("Init Hbase take time:                \t"+((System.nanoTime()-t0_hbase)/1000000000.0).formatted("%.3f")+
       "sec" )
     /**
@@ -209,8 +219,7 @@ object HBase_pt extends Para{
     //    println("graph Partitions: "+graph.partitions.length)
     val t0_origin_update_Hbase=System.nanoTime()
     deleteDir.deletedir(islocal, master, hbase_output)
-    HBase_OP.updateHbase_java_flat(graph, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
-      htable_split_Map, HRegion_splitnum, default_split)
+    hBase_OP.Update(graph)
     println("Origin Update Hbase take time:        \t"+((System.nanoTime()-t0_hbase)/1000000000.0).formatted
     ("%.3f")+ "sec" )
     //    scan.next()
@@ -272,15 +281,11 @@ object HBase_pt extends Para{
       val t0_ge = System.nanoTime()
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
-          Graspan_OP.computeInPartition_HBase_pt(step,
+          Graspan_OP.computeInPartition_pt(step,
             index, s,
             symbol_num,grammar,
             nodes_num_bitsize,
-            symbol_num_bitsize, directadd,
-            Batch_QueryHbase,
-            htable_name,
-            htable_split_Map,
-            HRegion_splitnum, queryHBase_interval, default_split)).setName("newedge-before-distinct-" + step)
+            symbol_num_bitsize, directadd,hBase_OP)).setName("newedge-before-distinct-" + step)
         .persist (StorageLevel
           .MEMORY_ONLY_SER)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
@@ -303,44 +308,46 @@ object HBase_pt extends Para{
       println("distinct take time:             \t" + ((System.nanoTime()-t0_distinct)/1000000000.0).formatted("%" +
         ".3f")+" secs")
       println("compute take time:              \t" + ((System.nanoTime()-t0)/1000000000.0).formatted("%.3f")+" secs")
+
       /**
         * 记录各分区情况和产生的新边分布
         */
-      val par_INFO = new_edges_str.map(s=>s._2._2).cache()
-      deleteDir.deletedir(islocal, master, output + "/par_INFO/step" + step)
-      par_INFO.repartition(1).saveAsTextFile(output + "/par_INFO/step" + step)
+      var isnotBalance=false
+        if(outputdetails){
+          val par_INFO = new_edges_str.map(s=>s._2._2).cache()
+          deleteDir.deletedir(islocal, master, output + "/par_INFO/step" + step)
+          par_INFO.repartition(1).saveAsTextFile(output + "/par_INFO/step" + step)
 
-      val par_time_JOIN=par_INFO.map(s=>s.split("REPARJOIN")(1).trim.toDouble.toInt).collect().sorted
-      println("Join take time Situation")
-      println("Join Min Task take time         \t"+par_time_JOIN(0))
-      println("Join 25% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.25).toInt))
-      println("Join 50% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.5).toInt))
-      println("Join 75% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.75).toInt))
-      println("Join Max Task take time         \t"+par_time_JOIN(par_time_JOIN.length - 1))
-      val par_time_HB=par_INFO.map(s=>s.split("REPARHBASE")(1).trim.toDouble.toInt).collect().sorted
-      println("HBase take time Situation")
-      println("HBase Min Task take time        \t"+par_time_HB(0))
-      println("HBase 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
-      println("HBase 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
-      println("HBase 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
-      println("HBase Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
-      if(outputdetails){
-        for(i<-symbol_Map){
-          val symbol=i._1
-          val symbol_num=i._2
-          println(symbol+"    \t总数:    \t"+newedges.filter(s=>s(2)==symbol_num).count()
-            +"    \t自环:    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)==s(1)).count()
-            +"    \t非自:    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)!=s(1)).count())
+          val par_time_JOIN=par_INFO.map(s=>s.split("REPARJOIN")(1).trim.toDouble.toInt).collect().sorted
+          println("Join take time Situation")
+          println("Join Min Task take time         \t"+par_time_JOIN(0))
+          println("Join 25% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.25).toInt))
+          println("Join 50% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.5).toInt))
+          println("Join 75% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.75).toInt))
+          println("Join Max Task take time         \t"+par_time_JOIN(par_time_JOIN.length - 1))
+          val par_time_HB=par_INFO.map(s=>s.split("REPARDB")(1).trim.toDouble.toInt).collect().sorted
+          println("DB take time Situation")
+          println("DB Min Task take time        \t"+par_time_HB(0))
+          println("DB 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
+          println("DB 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
+          println("DB 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
+          println("DB Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
+//        for(i<-symbol_Map){
+//          val symbol=i._1
+//          val symbol_num=i._2
+//          println(symbol+"    \t总数:    \t"+newedges.filter(s=>s(2)==symbol_num).count()
+//            +"    \t自环:    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)==s(1)).count()
+//            +"    \t非自:    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)!=s(1)).count())
+//        }
+          isnotBalance=(par_time_JOIN((par_time_JOIN.length * 0.75).toInt)*3 < par_time_JOIN(par_time_JOIN.length - 1)
+          &&par_time_JOIN(par_time_JOIN.length-1)>30)
         }
-      }
       /**
         * 3、Update HBase
         */
       val t0_hb = System.nanoTime(): Double
       deleteDir.deletedir(islocal, master, hbase_output)
-      HBase_OP.updateHbase_java_flat(newedges, nodes_num_bitsize, symbol_num_bitsize, htable_name,
-        hbase_output,
-        htable_split_Map, HRegion_splitnum, default_split)
+      hBase_OP.Update(newedges)
       val t1_hb = System.nanoTime(): Double
       println("update Hbase take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
 
@@ -397,8 +404,7 @@ object HBase_pt extends Para{
           println("edges num is increasing, add Tasks")
           tmp_oldedges.partitionBy(new HashPartitioner(need_par.toInt))
         }
-        else if(par_time_JOIN((par_time_JOIN.length * 0.75).toInt)*3 < par_time_JOIN(par_time_JOIN.length - 1)
-          &&par_time_JOIN(par_time_JOIN.length-1)>30){
+        else if(isnotBalance){
           println("Not Balance,repar")
           tmp_oldedges.partitionBy(new HashPartitioner(cur_par))
         }

@@ -41,6 +41,7 @@ object HBase_df extends Para{
 
     var htable_name:String="edges"
     var queryHBase_interval:Int=50000
+    var updateHBase_interval:Int=50000
     var HRegion_splitnum:Int=36
     var Batch_QueryHbase:Boolean=true
 
@@ -159,7 +160,15 @@ object HBase_df extends Para{
       *Hbase初始化
       */
     val t0_hbase=System.nanoTime()
-    val (htable_split_Map, default_split) = HBase_OP.createHBase_Table(htable_name, HRegion_splitnum)
+    val hBase_OP=new HBase_OP(hbase_output,
+      nodes_num_bitsize,
+      symbol_num_bitsize,
+    Batch_QueryHbase,
+    htable_name,
+    HRegion_splitnum,
+    queryHBase_interval,
+    updateHBase_interval)
+    hBase_OP.createHBase_Table()
     println("Init Hbase take time:                \t"+((System.nanoTime()-t0_hbase)/1000000000.0).formatted("%.3f")+
       "sec" )
     /**
@@ -167,11 +176,9 @@ object HBase_df extends Para{
       */
     //    println("graph Partitions: "+graph.partitions.length)
     deleteDir.deletedir(islocal, master, hbase_output)
-    HBase_OP.updateHbase_java_flat(e, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
-      htable_split_Map, HRegion_splitnum, default_split)
+    hBase_OP.Update(e)
     deleteDir.deletedir(islocal, master, hbase_output)
-    HBase_OP.updateHbase_java_flat(n, nodes_num_bitsize, symbol_num_bitsize, htable_name, hbase_output,
-      htable_split_Map, HRegion_splitnum, default_split)
+    hBase_OP.Update(n)
     //    scan.next()
     deleteDir.deletedir(islocal, master, output)
 
@@ -220,10 +227,10 @@ object HBase_df extends Para{
         }
         n_edges
           .mapPartitionsWithIndex((index, s) =>
-            Graspan_OP.computeInPartition_Redis_df(step,
+            Graspan_OP.computeInPartition_df(step,
               index, s,master,e_str,
-              nodes_num_bitsize,
-              symbol_num_bitsize, is_complete_loop, tmp_max_complete_loop_turn),true).setName("newedge-before-distinct-" + step)
+              hBase_OP.nodes_num_bitsize,
+              hBase_OP.symbol_num_bitsize, is_complete_loop, tmp_max_complete_loop_turn,hBase_OP),true).setName("newedge-before-distinct-" + step)
       }.persist (StorageLevel.MEMORY_ONLY_SER)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
       val t1_ge = System.nanoTime()
@@ -247,13 +254,13 @@ object HBase_df extends Para{
         println("Join 75% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.75).toInt))
         println("Join Max Task take time         \t"+par_time_JOIN(par_time_JOIN.length - 1))
 
-        val par_time_HB=par_INFO.map(s=>s.split("REPARREDIS")(1).trim.toDouble.toInt).collect().sorted
-        println("Redis take time Situation")
-        println("Redis Min Task take time        \t"+par_time_HB(0))
-        println("Redis 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
-        println("Redis 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
-        println("Redis 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
-        println("Redis Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
+        val par_time_HB=par_INFO.map(s=>s.split("REPARDB")(1).trim.toDouble.toInt).collect().sorted
+        println("DB take time Situation")
+        println("DB Min Task take time        \t"+par_time_HB(0))
+        println("DB 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
+        println("DB 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
+        println("DB 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
+        println("DB Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
 
         isnotBalance=(par_time_JOIN((par_time_JOIN.length * 0.75).toInt)*3 < par_time_JOIN(par_time_JOIN.length - 1)
           &&par_time_JOIN(par_time_JOIN.length-1)>30)
@@ -279,9 +286,7 @@ object HBase_df extends Para{
         */
       val t0_hb = System.nanoTime(): Double
       deleteDir.deletedir(islocal, master, hbase_output)
-      HBase_OP.updateHbase_java_flat(newedges, nodes_num_bitsize, symbol_num_bitsize, htable_name,
-        hbase_output,
-        htable_split_Map, HRegion_splitnum, default_split)
+      hBase_OP.Update(newedges)
       val t1_hb = System.nanoTime(): Double
       println("update Redis take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
 

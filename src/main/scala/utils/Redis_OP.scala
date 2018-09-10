@@ -1,14 +1,20 @@
 package utils
 
 import cn.edu.nju.pasalab.db.{BasicKVDatabaseClient, ShardedRedisClusterClient, Utils}
+import org.apache.spark.rdd.RDD
 
 import scala.collection.mutable.ArrayBuffer
 
 /**
   * Created by cycy on 2018/4/13.
   */
-object Redis_OP {
+class Redis_OP extends DataBase_OP with Serializable{
 
+  var updateRedis_interval: Int=0
+  def this(interval:Int){
+    this()
+    updateRedis_interval=interval
+  }
   def Array2ByteArray(edge:Array[Int]):Array[Byte]={
     val res=new Array[Byte](9)
     res(0)=((edge(0) >> 24) & 0xFF).toByte
@@ -46,11 +52,9 @@ object Redis_OP {
   /**
     * Update Redis
     * @param edges
-    * @param updateRedis_interval
-    * @throws
     */
   @throws[Exception]
-  def updateRedis_inPartition(edges: Iterator[Array[Int]], updateRedis_interval: Int) {
+  def updateRedis_inPartition(edges: Iterator[Array[Int]]) {
     val items = edges.toArray
     try{
       val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
@@ -77,15 +81,17 @@ object Redis_OP {
     }
   }
 
+  def Update(edges: RDD[Array[Int]]) {
+    edges.foreachPartition(e=>updateRedis_inPartition(e))
+  }
 
   /**
     * Query Redis
     * @param compressed_edges
-    * @throws
     * @return
     */
   @throws[Exception]
-  def queryRedis_compressed(compressed_edges: Array[Int]): Array[Array[Int]] = {
+  def Query_PT(compressed_edges: Array[Int]): Array[Array[Int]] = {
     val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
     val all_edges_num: Int = compressed_edges.length / 3
     val keys: Array[Array[Byte]] = new Array[Array[Byte]](all_edges_num)
@@ -109,12 +115,12 @@ object Redis_OP {
   }
 
   @throws[Exception]
-  def queryRedis_compressed_df(compressed_edges: Array[Long]):
+  def Query_DF(compressed_edges: Array[Long]):
   Array[Array[Int]] = {
     val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
     val all_edges_num: Int = compressed_edges.length
     val keys: Array[Array[Byte]] = new Array[Array[Byte]](all_edges_num)
-    val res:ArrayBuffer[Array[Int]]=new ArrayBuffer[Array[Int]](all_edges_num*3)
+    val res:ArrayBuffer[Array[Int]]=new ArrayBuffer[Array[Int]](all_edges_num)
     var i: Int = 0
     while (i < all_edges_num) {
         keys(i) =Triple2String((compressed_edges(i) & 0xffffffffL).toInt,(compressed_edges(i)>>>32).toInt, 0)
@@ -123,7 +129,7 @@ object Redis_OP {
     val values: Array[Array[Byte]] = client.getAll(keys)
     i=0
     while (i<all_edges_num){
-      if(values(i)==null) res.append(Array((compressed_edges(i) & 0xffffffffL).toInt,(compressed_edges(i)>>>32).toInt, 0))
+      if(values(i)==null) res.append(Array((compressed_edges(i) & 0xffffffffL).toInt,(compressed_edges(i)>>>32).toInt,0))
       i+=1
     }
     res.toArray

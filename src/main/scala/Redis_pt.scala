@@ -178,8 +178,9 @@ object Redis_pt extends Para{
       * 原边集存入Redis
       */
     ShardedRedisClusterClient.getProcessLevelClient.clearDB()
+    val redis_OP=new Redis_OP(updateRedis_interval)
     val t0_redis=System.nanoTime()
-    graph.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval))
+    redis_OP.Update(graph)
     println("Origin Update Redis take time:        \t"+((System.nanoTime()-t0_redis)/1000000000.0).formatted
     ("%.3f")+ "sec" )
     //    scan.next()
@@ -247,11 +248,11 @@ object Redis_pt extends Para{
 
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
-          Graspan_OP.computeInPartition_Redis_pt(step,
+          Graspan_OP.computeInPartition_pt(step,
             index, s,
             symbol_num,grammar,
             nodes_num_bitsize,
-            symbol_num_bitsize, directadd),true).setName("newedge-before-distinct-" + step)
+            symbol_num_bitsize, directadd,redis_OP),true).setName("newedge-before-distinct-" + step)
         .persist (StorageLevel.MEMORY_ONLY_SER)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
       val t1_ge = System.nanoTime()
@@ -289,32 +290,30 @@ object Redis_pt extends Para{
         println("Join 50% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.5).toInt))
         println("Join 75% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.75).toInt))
         println("Join Max Task take time         \t"+par_time_JOIN(par_time_JOIN.length - 1))
-        val par_time_HB=par_INFO.map(s=>s.split("REPARREDIS")(1).trim.toDouble.toInt).collect().sorted
-        println("REDIS take time Situation")
-        println("REDIS Min Task take time        \t"+par_time_HB(0))
-        println("REDIS 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
-        println("REDIS 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
-        println("REDIS 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
-        println("REDIS Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
+        val par_time_HB=par_INFO.map(s=>s.split("REPARDB")(1).trim.toDouble.toInt).collect().sorted
+        println("DB take time Situation")
+        println("DB Min Task take time        \t"+par_time_HB(0))
+        println("DB 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
+        println("DB 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
+        println("DB 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
+        println("DB Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
 
         isnotBalance=(par_time_JOIN((par_time_JOIN.length * 0.75).toInt)*3 < par_time_JOIN(par_time_JOIN.length - 1)&&
           par_time_JOIN(par_time_JOIN.length-1)>30)
-      }
-      if(outputdetails){
-        for(i<-symbol_Map){
-          val symbol=i._1
-          val symbol_num=i._2
-          println(symbol+"    \t总数:    \t"+newedges.filter(s=>s(2)==symbol_num).count()
-            +"    \t自环:    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)==s(1)).count()
-            +"    \t非自:    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)!=s(1)).count())
-        }
+//        for(i<-symbol_Map){
+//          val symbol=i._1
+//          val symbol_num=i._2
+//          println(symbol+"    \t总数:    \t"+newedges.filter(s=>s(2)==symbol_num).count()
+//            +"    \t自环:    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)==s(1)).count()
+//            +"    \t非自:    \t"+newedges.filter(s=>s(2)==symbol_num&&s(0)!=s(1)).count())
+//        }
       }
       /**
         * 4、Update Redis
         */
       val t0_hb = System.nanoTime(): Double
       deleteDir.deletedir(islocal, master, hbase_output)
-      newedges.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval))
+      redis_OP.Update(newedges)
       val t1_hb = System.nanoTime(): Double
       println("update Redis take time:          \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
 

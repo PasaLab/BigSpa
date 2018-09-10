@@ -161,8 +161,9 @@ object Redis_df extends Para{
     val t0_init_redis_origin=System.nanoTime()
     ShardedRedisClusterClient.getProcessLevelClient.clearDB()
     val t0_redis=System.nanoTime()
-    e.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval))
-    n.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval))
+    val redis_OP=new Redis_OP(updateRedis_interval)
+    redis_OP.Update(e)
+    redis_OP.Update(n)
     println("Origin Update Redis take time:        \t"+((System.nanoTime()-t0_redis)/1000000000.0).formatted
     ("%.3f")+ "sec" )
     //    scan.next()
@@ -213,10 +214,10 @@ object Redis_df extends Para{
         }
         n_edges
           .mapPartitionsWithIndex((index, s) =>
-            Graspan_OP.computeInPartition_Redis_df(step,
+            Graspan_OP.computeInPartition_df(step,
               index, s,master,e_str,
               nodes_num_bitsize,
-              symbol_num_bitsize, is_complete_loop, tmp_max_complete_loop_turn),true).setName("newedge-before-distinct-" + step)
+              symbol_num_bitsize, is_complete_loop, tmp_max_complete_loop_turn,redis_OP),true).setName("newedge-before-distinct-" + step)
       }.persist (StorageLevel.MEMORY_ONLY_SER)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
       val t1_ge = System.nanoTime()
@@ -240,13 +241,13 @@ object Redis_df extends Para{
         println("Join 75% Task take time         \t"+par_time_JOIN((par_time_JOIN.length * 0.75).toInt))
         println("Join Max Task take time         \t"+par_time_JOIN(par_time_JOIN.length - 1))
 
-        val par_time_HB=par_INFO.map(s=>s.split("REPARREDIS")(1).trim.toDouble.toInt).collect().sorted
-        println("Redis take time Situation")
-        println("Redis Min Task take time        \t"+par_time_HB(0))
-        println("Redis 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
-        println("Redis 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
-        println("Redis 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
-        println("Redis Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
+        val par_time_HB=par_INFO.map(s=>s.split("REPARDB")(1).trim.toDouble.toInt).collect().sorted
+        println("DB take time Situation")
+        println("DB Min Task take time        \t"+par_time_HB(0))
+        println("DB 25% Task take time        \t"+par_time_HB((par_time_HB.length * 0.25).toInt))
+        println("DB 50% Task take time        \t"+par_time_HB((par_time_HB.length * 0.5).toInt))
+        println("DB 75% Task take time        \t"+par_time_HB((par_time_HB.length * 0.75).toInt))
+        println("DB Max Task take time        \t"+par_time_HB(par_time_HB.length - 1))
 
         isnotBalance=(par_time_JOIN((par_time_JOIN.length * 0.75).toInt)*3 < par_time_JOIN(par_time_JOIN.length - 1)
           &&par_time_JOIN(par_time_JOIN.length-1)>30)
@@ -272,7 +273,7 @@ object Redis_df extends Para{
         */
       val t0_hb = System.nanoTime(): Double
       deleteDir.deletedir(islocal, master, hbase_output)
-      newedges.foreachPartition(s=>Redis_OP.updateRedis_inPartition(s,updateRedis_interval))
+      redis_OP.Update(newedges)
       val t1_hb = System.nanoTime(): Double
       println("update Redis take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
 
