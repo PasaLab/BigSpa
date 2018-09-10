@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="240c4cd6-2714-4e54-bbc8-1f2e0417ea12" name="Default" comment="" />
+    <list default="true" id="240c4cd6-2714-4e54-bbc8-1f2e0417ea12" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/repo/kvstore-interface-1.0-SNAPSHOT.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cn_edu_nju_pasalab_kvstore_interface_1_0_SNAPSHOT.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__it_unimi_dsi_fastutil_8_1_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/BigSpa.iml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Graspan_noBF.iml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/HBase_df.scala" afterPath="$PROJECT_DIR$/src/main/scala/HBase_df.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/HBase_pt.scala" afterPath="$PROJECT_DIR$/src/main/scala/HBase_pt.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/Redis_df.scala" afterPath="$PROJECT_DIR$/src/main/scala/Redis_df.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/Redis_pt.scala" afterPath="$PROJECT_DIR$/src/main/scala/Redis_pt.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/test.scala" afterPath="$PROJECT_DIR$/src/main/scala/test.scala" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/scala/utils/Graspan_OP.scala" afterPath="$PROJECT_DIR$/src/main/scala/utils/BIgSpa_OP.scala" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/scala/utils/Graspan_OP_java.java" afterPath="$PROJECT_DIR$/src/main/scala/utils/BigSpa_OP_java.java" />
+    </list>
     <ignored path="Graspan_noBF.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -22,72 +42,110 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Statistic.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/Statistic.scala">
+      <file leaf-file-name="Redis_pt.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/Redis_pt.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="65" column="17" selection-start-line="65" selection-start-column="17" selection-end-line="65" selection-end-column="17" />
-              <folding>
-                <element signature="e#43#86#0" expanded="true" />
-                <element signature="e#905#1378#0" expanded="false" />
-                <element signature="e#2550#2729#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="log4j.properties" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/log4j.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
+            <state relative-caret-position="1760">
+              <caret line="346" column="9" selection-start-line="346" selection-start-column="9" selection-end-line="346" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Graspan_noBF.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_noBF.scala">
+      <file leaf-file-name="BIgSpa_OP.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/utils/BIgSpa_OP.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-64">
-              <caret line="199" column="0" selection-start-line="199" selection-start-column="2" selection-end-line="206" selection-end-column="30" />
+            <state relative-caret-position="2336">
+              <caret line="451" column="18" selection-start-line="451" selection-start-column="18" selection-end-line="451" selection-end-column="18" />
               <folding>
-                <element signature="e#130#146#0" expanded="true" />
-                <element signature="e#7652#7679#0" expanded="false" />
-                <element signature="e#9857#9979#0" expanded="false" />
+                <element signature="e#15#31#0" expanded="true" />
+                <element signature="n#!!doc;n#BIgSpa_OP$#0;n#!!top" expanded="false" />
+                <element signature="e#561#1234#0" expanded="false" />
+                <element signature="e#1501#1619#0" expanded="false" />
+                <element signature="e#1239#2922#0" expanded="false" />
+                <element signature="e#2925#3975#0" expanded="false" />
+                <element signature="e#3345#3808#0" expanded="false" />
+                <element signature="e#3512#3541#0" expanded="false" />
+                <element signature="e#3654#3683#0" expanded="false" />
+                <element signature="e#3687#3801#0" expanded="false" />
+                <element signature="e#3780#3799#0" expanded="false" />
+                <element signature="e#3978#5903#0" expanded="false" />
+                <element signature="e#4320#4865#0" expanded="false" />
+                <element signature="e#4363#4836#0" expanded="false" />
+                <element signature="e#4733#4813#0" expanded="false" />
+                <element signature="e#4975#5102#0" expanded="false" />
+                <element signature="e#5907#7194#0" expanded="false" />
+                <element signature="e#6532#6723#0" expanded="false" />
+                <element signature="e#7057#7165#0" expanded="false" />
+                <element signature="e#7198#7691#0" expanded="false" />
+                <element signature="e#7694#8023#0" expanded="false" />
+                <element signature="e#8028#13825#0" expanded="false" />
+                <element signature="e#9145#9313#0" expanded="false" />
+                <element signature="e#9405#10201#0" expanded="false" />
+                <element signature="e#9489#9647#0" expanded="false" />
+                <element signature="e#9677#9877#0" expanded="false" />
+                <element signature="e#10067#10104#0" expanded="false" />
+                <element signature="e#10211#12486#0" expanded="false" />
+                <element signature="e#10284#10369#0" expanded="false" />
+                <element signature="e#10845#11219#0" expanded="false" />
+                <element signature="e#10938#11023#0" expanded="false" />
+                <element signature="e#11235#11423#0" expanded="false" />
+                <element signature="e#11909#12067#0" expanded="false" />
+                <element signature="e#12097#12297#0" expanded="false" />
+                <element signature="e#12492#12518#0" expanded="false" />
+                <element signature="e#12523#12576#0" expanded="false" />
+                <element signature="e#12767#12795#0" expanded="false" />
+                <element signature="e#13238#13468#0" expanded="false" />
+                <element signature="e#13829#17920#0" expanded="false" />
+                <element signature="e#14810#15750#0" expanded="false" />
+                <element signature="e#14887#15066#0" expanded="false" />
+                <element signature="e#15073#15106#0" expanded="false" />
+                <element signature="e#15971#16121#0" expanded="false" />
+                <element signature="e#16147#16420#0" expanded="false" />
+                <element signature="e#16609#16635#0" expanded="false" />
+                <element signature="e#16640#16693#0" expanded="false" />
+                <element signature="e#16884#16912#0" expanded="false" />
+                <element signature="e#17326#17563#0" expanded="false" />
+                <element signature="e#17925#18667#0" expanded="false" />
+                <element signature="e#18595#18630#0" expanded="false" />
+                <element signature="e#18671#23884#0" expanded="false" />
+                <element signature="e#19066#23880#0" expanded="false" />
+                <element signature="e#19123#19935#0" expanded="false" />
+                <element signature="e#19237#19292#0" expanded="false" />
+                <element signature="e#19306#19927#0" expanded="false" />
+                <element signature="e#19629#19818#0" expanded="false" />
+                <element signature="e#19947#23872#0" expanded="false" />
+                <element signature="e#20045#20690#0" expanded="false" />
+                <element signature="e#20078#20652#0" expanded="false" />
+                <element signature="e#20370#20541#0" expanded="false" />
+                <element signature="e#20962#21873#0" expanded="false" />
+                <element signature="e#21343#21482#0" expanded="false" />
+                <element signature="e#21589#21670#0" expanded="false" />
+                <element signature="e#21712#21793#0" expanded="false" />
+                <element signature="e#21895#22075#0" expanded="false" />
+                <element signature="e#21959#22035#0" expanded="false" />
+                <element signature="e#22099#23765#0" expanded="false" />
+                <element signature="e#22482#22896#0" expanded="false" />
+                <element signature="e#23322#23736#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HBase_OP.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/HBase_OP.scala">
+      <file leaf-file-name="BigSpa_OP_java.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/utils/BigSpa_OP_java.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="86" column="2" selection-start-line="86" selection-start-column="2" selection-end-line="86" selection-end-column="2" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-                <element signature="e#978#1487#0" expanded="false" />
-                <element signature="e#1491#3394#0" expanded="false" />
-                <element signature="e#4454#4550#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/test.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="128">
-              <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
+            <state relative-caret-position="-258">
+              <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -97,13 +155,18 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/scala/SparkReadHbase.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/Statistic.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/Graspan_pureRDD.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/Graspan_noBF.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/test.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/HBase_OP.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/test.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/Redis_pt.scala" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/scala/utils/Graspan_OP.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/utils/Graspan_OP_java.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/utils/BigSpa_OP_java.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/utils/BIgSpa_OP.scala" />
       </list>
     </option>
   </component>
@@ -127,24 +190,6 @@
         <PATH_ELEMENT>
           <option name="myItemId" value="" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Graspan_noBF" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Dependencies" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$DependenciesNode" />
-        </PATH_ELEMENT>
-      </PATH>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="Graspan_noBF" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
       </PATH>
     </treeState>
@@ -180,33 +225,31 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Graspan_noBF" />
+              <option name="myItemId" value="BigSpa" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Graspan_noBF" />
+              <option name="myItemId" value="BigSpa" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Graspan_noBF" />
+              <option name="myItemId" value="BigSpa" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Graspan_noBF" />
+              <option name="myItemId" value="BigSpa" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Graspan_noBF" />
+              <option name="myItemId" value="BigSpa" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -216,11 +259,11 @@
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Graspan_noBF" />
+              <option name="myItemId" value="BigSpa" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Graspan_noBF" />
+              <option name="myItemId" value="BigSpa" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -236,28 +279,93 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BigSpa" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BigSpa" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utils" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BigSpa" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BigSpa" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BigSpa" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BigSpa" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="repo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="Console" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="H:/Graspan" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="H:\Graspan_noBF\data" />
-      <recent name="H:\Graspan_noBF\repo" />
-      <recent name="H:\Graspan_noBF\src\main\scala" />
-      <recent name="H:\Graspan_noBF" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="H:\Graspan_noBF\data\correctresult" />
       <recent name="H:\Graspan_noBF\data" />
       <recent name="H:\Graspan_noBF\src" />
       <recent name="H:\Graspan_noBF\data\nosplit_1" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\BigSpa\repo" />
+      <recent name="H:\Graspan_noBF\data" />
+      <recent name="H:\Graspan_noBF\repo" />
+      <recent name="H:\Graspan_noBF\src\main\scala" />
+      <recent name="H:\Graspan_noBF" />
     </key>
   </component>
   <component name="RunManager" selected="Application.test">
@@ -615,18 +723,18 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37694705" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" x="63" y="815" width="1736" height="718" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.07356077" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.074252136" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.57320875" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27102804" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.57217574" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27092052" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15991472" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15972222" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Memory View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32845187" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -635,9 +743,10 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32917964" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37694705" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="63" y="815" width="1736" height="718" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -662,105 +771,47 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Statistic.scala">
+    <entry file="file://$PROJECT_DIR$/src/log4j.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="37" column="22" selection-start-line="37" selection-start-column="22" selection-end-line="37" selection-end-column="22" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/test.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
           <folding>
-            <element signature="e#43#86#0" expanded="true" />
-            <element signature="e#905#1378#0" expanded="false" />
-            <element signature="e#2550#2729#0" expanded="false" />
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Statistic.scala" />
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5568">
           <caret line="174" column="32" selection-start-line="174" selection-start-column="32" selection-end-line="174" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_noBF.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#130#146#0" expanded="true" />
-            <element signature="e#7652#7679#0" expanded="false" />
-            <element signature="e#9857#9979#0" expanded="false" />
+            <element signature="n#repository#0;n#repositories#0;n#project#0;n#!!top" expanded="false" />
+            <element signature="n#repository#1;n#repositories#0;n#project#0;n#!!top" expanded="false" />
+            <element signature="n#repository#2;n#repositories#0;n#project#0;n#!!top" expanded="false" />
+            <element signature="n#repository#3;n#repositories#0;n#project#0;n#!!top" expanded="false" />
+            <element signature="n#pluginRepositories#0;n#project#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/HBase_OP.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-            <element signature="e#978#1487#0" expanded="false" />
-            <element signature="e#1491#3394#0" expanded="false" />
-            <element signature="e#4454#4550#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/deleteDir.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="8" column="7" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/complete_192par.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/result_remove/part-00000">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/part-00000">
-      <provider selected="true" editor-type-id="LargeFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Para.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="6" column="1" selection-start-line="5" selection-start-column="20" selection-end-line="6" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkReadHbase.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="803">
-          <caret line="104" column="66" selection-start-line="104" selection-start-column="66" selection-end-line="104" selection-end-column="66" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#43#84#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4858">
-          <caret line="174" column="32" selection-start-line="174" selection-start-column="32" selection-end-line="174" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_noBF.scala" />
+    <entry file="file://$PROJECT_DIR$/src/main/scala/HBase_OP.scala" />
+    <entry file="file://$PROJECT_DIR$/src/main/scala/deleteDir.scala" />
+    <entry file="file://$PROJECT_DIR$/data/complete_192par.log" />
+    <entry file="file://$PROJECT_DIR$/data/result_remove/part-00000" />
+    <entry file="file://$PROJECT_DIR$/data/part-00000" />
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Para.scala" />
+    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkReadHbase.scala" />
     <entry file="file://$PROJECT_DIR$/src/log4j.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -769,62 +820,141 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_pureRDD.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_pureRDD.scala" />
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Statistic.scala" />
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_noBF.scala" />
+    <entry file="file://$PROJECT_DIR$/src/main/scala/HBase_OP.scala" />
+    <entry file="file://$PROJECT_DIR$/dependency-reduced-pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1283">
-          <caret line="282" column="13" selection-start-line="282" selection-start-column="13" selection-end-line="282" selection-end-column="13" />
+        <state relative-caret-position="-8928">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BigSpa.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="6" column="84" selection-start-line="6" selection-start-column="84" selection-end-line="6" selection-end-column="84" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4960">
+          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
           <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#43#59#0" expanded="false" />
-            <element signature="e#321#1667#0" expanded="false" />
+            <element signature="n#repository#0;n#repositories#0;n#project#0;n#!!top" expanded="false" />
+            <element signature="n#repository#1;n#repositories#0;n#project#0;n#!!top" expanded="false" />
+            <element signature="n#repository#2;n#repositories#0;n#project#0;n#!!top" expanded="false" />
+            <element signature="n#repository#3;n#repositories#0;n#project#0;n#!!top" expanded="false" />
+            <element signature="n#pluginRepositories#0;n#project#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Statistic.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/utils/BigSpa_OP_java.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="65" column="17" selection-start-line="65" selection-start-column="17" selection-end-line="65" selection-end-column="17" />
-          <folding>
-            <element signature="e#43#86#0" expanded="true" />
-            <element signature="e#905#1378#0" expanded="false" />
-            <element signature="e#2550#2729#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="-258">
+          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_noBF.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/utils/BIgSpa_OP.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-64">
-          <caret line="199" column="0" selection-start-line="199" selection-start-column="2" selection-end-line="206" selection-end-column="30" />
+        <state relative-caret-position="2336">
+          <caret line="451" column="18" selection-start-line="451" selection-start-column="18" selection-end-line="451" selection-end-column="18" />
           <folding>
-            <element signature="e#130#146#0" expanded="true" />
-            <element signature="e#7652#7679#0" expanded="false" />
-            <element signature="e#9857#9979#0" expanded="false" />
+            <element signature="e#15#31#0" expanded="true" />
+            <element signature="n#!!doc;n#BIgSpa_OP$#0;n#!!top" expanded="false" />
+            <element signature="e#561#1234#0" expanded="false" />
+            <element signature="e#1501#1619#0" expanded="false" />
+            <element signature="e#1239#2922#0" expanded="false" />
+            <element signature="e#2925#3975#0" expanded="false" />
+            <element signature="e#3345#3808#0" expanded="false" />
+            <element signature="e#3512#3541#0" expanded="false" />
+            <element signature="e#3654#3683#0" expanded="false" />
+            <element signature="e#3687#3801#0" expanded="false" />
+            <element signature="e#3780#3799#0" expanded="false" />
+            <element signature="e#3978#5903#0" expanded="false" />
+            <element signature="e#4320#4865#0" expanded="false" />
+            <element signature="e#4363#4836#0" expanded="false" />
+            <element signature="e#4733#4813#0" expanded="false" />
+            <element signature="e#4975#5102#0" expanded="false" />
+            <element signature="e#5907#7194#0" expanded="false" />
+            <element signature="e#6532#6723#0" expanded="false" />
+            <element signature="e#7057#7165#0" expanded="false" />
+            <element signature="e#7198#7691#0" expanded="false" />
+            <element signature="e#7694#8023#0" expanded="false" />
+            <element signature="e#8028#13825#0" expanded="false" />
+            <element signature="e#9145#9313#0" expanded="false" />
+            <element signature="e#9405#10201#0" expanded="false" />
+            <element signature="e#9489#9647#0" expanded="false" />
+            <element signature="e#9677#9877#0" expanded="false" />
+            <element signature="e#10067#10104#0" expanded="false" />
+            <element signature="e#10211#12486#0" expanded="false" />
+            <element signature="e#10284#10369#0" expanded="false" />
+            <element signature="e#10845#11219#0" expanded="false" />
+            <element signature="e#10938#11023#0" expanded="false" />
+            <element signature="e#11235#11423#0" expanded="false" />
+            <element signature="e#11909#12067#0" expanded="false" />
+            <element signature="e#12097#12297#0" expanded="false" />
+            <element signature="e#12492#12518#0" expanded="false" />
+            <element signature="e#12523#12576#0" expanded="false" />
+            <element signature="e#12767#12795#0" expanded="false" />
+            <element signature="e#13238#13468#0" expanded="false" />
+            <element signature="e#13829#17920#0" expanded="false" />
+            <element signature="e#14810#15750#0" expanded="false" />
+            <element signature="e#14887#15066#0" expanded="false" />
+            <element signature="e#15073#15106#0" expanded="false" />
+            <element signature="e#15971#16121#0" expanded="false" />
+            <element signature="e#16147#16420#0" expanded="false" />
+            <element signature="e#16609#16635#0" expanded="false" />
+            <element signature="e#16640#16693#0" expanded="false" />
+            <element signature="e#16884#16912#0" expanded="false" />
+            <element signature="e#17326#17563#0" expanded="false" />
+            <element signature="e#17925#18667#0" expanded="false" />
+            <element signature="e#18595#18630#0" expanded="false" />
+            <element signature="e#18671#23884#0" expanded="false" />
+            <element signature="e#19066#23880#0" expanded="false" />
+            <element signature="e#19123#19935#0" expanded="false" />
+            <element signature="e#19237#19292#0" expanded="false" />
+            <element signature="e#19306#19927#0" expanded="false" />
+            <element signature="e#19629#19818#0" expanded="false" />
+            <element signature="e#19947#23872#0" expanded="false" />
+            <element signature="e#20045#20690#0" expanded="false" />
+            <element signature="e#20078#20652#0" expanded="false" />
+            <element signature="e#20370#20541#0" expanded="false" />
+            <element signature="e#20962#21873#0" expanded="false" />
+            <element signature="e#21343#21482#0" expanded="false" />
+            <element signature="e#21589#21670#0" expanded="false" />
+            <element signature="e#21712#21793#0" expanded="false" />
+            <element signature="e#21895#22075#0" expanded="false" />
+            <element signature="e#21959#22035#0" expanded="false" />
+            <element signature="e#22099#23765#0" expanded="false" />
+            <element signature="e#22482#22896#0" expanded="false" />
+            <element signature="e#23322#23736#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/test.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+        <state relative-caret-position="-160">
+          <caret line="16" column="40" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/HBase_OP.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/Redis_pt.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="86" column="2" selection-start-line="86" selection-start-column="2" selection-end-line="86" selection-end-column="2" />
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-            <element signature="e#978#1487#0" expanded="false" />
-            <element signature="e#1491#3394#0" expanded="false" />
-            <element signature="e#4454#4550#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="1760">
+          <caret line="346" column="9" selection-start-line="346" selection-start-column="9" selection-end-line="346" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -8,7 +8,7 @@ import org.apache.commons.collections.functors.ExceptionFactory
 import org.apache.spark.rdd.RDD
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
-import utils.{Graspan_OP, Graspan_OP_java, HBase_OP, deleteDir}
+import utils.{BIgSpa_OP, BigSpa_OP_java, HBase_OP, deleteDir}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source

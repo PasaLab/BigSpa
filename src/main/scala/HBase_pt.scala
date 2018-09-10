@@ -4,7 +4,7 @@ import java.util.Scanner
 import org.apache.spark.rdd.RDD
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
-import utils.{Graspan_OP, HBase_OP, Para, deleteDir}
+import utils.{BIgSpa_OP, HBase_OP, Para, deleteDir}
 object HBase_pt extends Para{
 
   def check_edge_RDD(edges:RDD[(Int,(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int]))]):RDD[String]={
@@ -153,7 +153,7 @@ object HBase_pt extends Para{
       */
     val grammar_origin = sc.textFile(input_grammar).filter(s=> !s.trim.equals("")).map(s => s.split("\\s+").map(_.trim))
       .collect().toList
-    val (symbol_Map, symbol_num, symbol_num_bitsize, loop, directadd, grammar) = Graspan_OP.processGrammar(grammar_origin,
+    val (symbol_Map, symbol_num, symbol_num_bitsize, loop, directadd, grammar) = BIgSpa_OP.processGrammar(grammar_origin,
       input_grammar)
     println("------------Grammar INFO--------------------------------------------")
     println("input grammar:      \t" + input_grammar.split("/").last)
@@ -176,7 +176,7 @@ object HBase_pt extends Para{
     /**
       * Graph相关设置
       */
-    val (graph, nodes_num_bitsize, nodes_totalnum) = Graspan_OP.processGraph(sc, input_graph, file_index_f,file_index_b,
+    val (graph, nodes_num_bitsize, nodes_totalnum) = BIgSpa_OP.processGraph(sc, input_graph, file_index_f,file_index_b,
       input_grammar,
       symbol_Map, loop,
       directadd, defaultpar)
@@ -240,7 +240,7 @@ object HBase_pt extends Para{
           Iterable((Array[Int](),old_f_list,new_f_list,old_b_list,new_b_list))
         },Iterable(s._2.toArray))))
         .partitionBy(new HashPartitioner(defaultpar))
-        .mapPartitions(s=>Graspan_OP.Union(s,symbol_num))
+        .mapPartitions(s=>BIgSpa_OP.Union(s,symbol_num))
         .partitionBy(new HashPartitioner(defaultpar))
         .persist(StorageLevel.MEMORY_ONLY_SER)
     oldedges.count()
@@ -271,7 +271,7 @@ object HBase_pt extends Para{
       val t0_ge = System.nanoTime()
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
-          Graspan_OP.computeInPartition_pt(step,
+          BIgSpa_OP.computeInPartition_pt(step,
             index, s,
             symbol_num,grammar,
             nodes_num_bitsize,
@@ -389,7 +389,7 @@ object HBase_pt extends Para{
         println("oldedges_cogroup take time:            \t"+((System.nanoTime()-t0_old_cogroup)/1000000000.0).formatted("%.3f")+" sec")
 
         t0_oldedges_compute_inner=System.nanoTime()
-        val tmp_oldedges=oldedges_cogroup.mapPartitions(v=>Graspan_OP.Union(v,symbol_num))
+        val tmp_oldedges=oldedges_cogroup.mapPartitions(v=>BIgSpa_OP.Union(v,symbol_num))
         if(need_par>cur_par){
           println("edges num is increasing, add Tasks")
           tmp_oldedges.partitionBy(new HashPartitioner(need_par.toInt))

@@ -126,7 +126,7 @@ object HBase_df extends Para{
     val (e_str,n_str)={
       if(input_e.contains("Linux_dataflow_e")){
         println("getinput_EandN")
-        Graspan_OP.getLinux_input_EandN(input_e,input_n,file_index_f,file_index_b,master)
+        BIgSpa_OP.getLinux_input_EandN(input_e,input_n,file_index_f,file_index_b,master)
       }
       else{
         (input_e,input_n)
@@ -142,7 +142,7 @@ object HBase_df extends Para{
     println("e counts : "+e.filter(s=>s(2)==1).count())
     println("n counts : "+n.filter(s=>s(2)==0).count())
     val nodes_totalnum=(e.flatMap(s=>Array(s(0),s(1))) ++ n.flatMap(s=>Array(s(0),s(1)))).distinct().count()
-    val nodes_num_bitsize=Graspan_OP.getIntBit(nodes_totalnum.toInt)
+    val nodes_num_bitsize=BIgSpa_OP.getIntBit(nodes_totalnum.toInt)
     println("------------Graph INFO--------------------------------------------")
     println("input graph:        \t" + input_e)
     println("processed e:        \t" + e.count())
@@ -193,7 +193,7 @@ object HBase_df extends Para{
     var continue: Boolean = true
     var newnum: Long = e.count()+n.count()
     var oldnum: Long = newnum
-    val init_e=n_edges.mapPartitionsWithIndex((index,s)=>Graspan_OP.init_e(index,s,master,e_str))
+    val init_e=n_edges.mapPartitionsWithIndex((index,s)=>BIgSpa_OP.init_e(index,s,master,e_str))
     println("Init e in "+init_e.count()+"Partitions")
     val time_init_HBase_origin=System.nanoTime()-t0_hbase
     val time_prepare=(System.nanoTime()-t0_all)/1000000000.0
@@ -225,7 +225,7 @@ object HBase_df extends Para{
         }
         n_edges
           .mapPartitionsWithIndex((index, s) =>
-            Graspan_OP.computeInPartition_df(step,
+            BIgSpa_OP.computeInPartition_df(step,
               index, s,master,e_str,
               hBase_OP.nodes_num_bitsize,
               hBase_OP.symbol_num_bitsize, is_complete_loop, tmp_max_complete_loop_turn,hBase_OP),true).setName("newedge-before-distinct-" + step)

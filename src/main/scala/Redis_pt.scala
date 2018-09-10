@@ -137,7 +137,7 @@ object Redis_pt extends Para{
       */
     val grammar_origin = sc.textFile(input_grammar).filter(s=> !s.trim.equals("")).map(s => s.split("\\s+").map(_.trim))
       .collect().toList
-    val (symbol_Map, symbol_num, symbol_num_bitsize, loop, directadd, grammar) = Graspan_OP.processGrammar(grammar_origin,
+    val (symbol_Map, symbol_num, symbol_num_bitsize, loop, directadd, grammar) = BIgSpa_OP.processGrammar(grammar_origin,
       input_grammar)
     println("------------Grammar INFO--------------------------------------------")
     println("input grammar:      \t" + input_grammar.split("/").last)
@@ -160,7 +160,7 @@ object Redis_pt extends Para{
     /**
       * Graph相关设置
       */
-    val (graph, nodes_num_bitsize, nodes_totalnum) = Graspan_OP.processGraph(sc, input_graph, file_index_f,file_index_b,
+    val (graph, nodes_num_bitsize, nodes_totalnum) = BIgSpa_OP.processGraph(sc, input_graph, file_index_f,file_index_b,
       input_grammar,
       symbol_Map, loop,
       directadd, defaultpar)
@@ -214,7 +214,7 @@ object Redis_pt extends Para{
           Iterable((Array[Int](),old_f_list,new_f_list,old_b_list,new_b_list))
         },Iterable(s._2.toArray))))
         .partitionBy(new HashPartitioner(defaultpar))
-    oldedges=oldedges_cogroup.mapPartitions((v=>Graspan_OP.Union(v,symbol_num)),true)
+    oldedges=oldedges_cogroup.mapPartitions((v=>BIgSpa_OP.Union(v,symbol_num)),true)
       .setName("oldedge-origin").persist(StorageLevel.MEMORY_ONLY_SER)
     oldedges.count()
     graph.unpersist()
@@ -248,7 +248,7 @@ object Redis_pt extends Para{
 
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
-          Graspan_OP.computeInPartition_pt(step,
+          BIgSpa_OP.computeInPartition_pt(step,
             index, s,
             symbol_num,grammar,
             nodes_num_bitsize,
@@ -347,7 +347,7 @@ object Redis_pt extends Para{
           tmp_oldedges
         }
       }.setName("unioned-edges-" + step)//.persist(StorageLevel.MEMORY_ONLY_SER)
-      oldedges=oldedges_cogroup.mapPartitions((v=>Graspan_OP.Union_old_new_improve(v,symbol_num)),true)
+      oldedges=oldedges_cogroup.mapPartitions((v=>BIgSpa_OP.Union(v,symbol_num)),true)
         .setName("oldedge-" + step).persist(StorageLevel.MEMORY_AND_DISK)
 
       if(step % checkpoint_interval==0) {
