@@ -214,7 +214,7 @@ object Redis_pt extends Para{
           Iterable((Array[Int](),old_f_list,new_f_list,old_b_list,new_b_list))
         },Iterable(s._2.toArray))))
         .partitionBy(new HashPartitioner(defaultpar))
-    oldedges=oldedges_cogroup.mapPartitions((v=>Graspan_OP.Union_old_new_improve(v,symbol_num)),true)
+    oldedges=oldedges_cogroup.mapPartitions((v=>Graspan_OP.Union(v,symbol_num)),true)
       .setName("oldedge-origin").persist(StorageLevel.MEMORY_ONLY_SER)
     oldedges.count()
     graph.unpersist()

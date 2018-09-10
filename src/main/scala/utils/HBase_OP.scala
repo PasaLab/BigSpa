@@ -30,7 +30,6 @@ class HBase_OP extends Para with DataBase_OP with Serializable{
   var htable_name:String="edges"
   var HRegion_splitnum:Int=1
   var queryHbase_interval:Int=50000
-  var updateHbase_interval:Int=50000
 
   var region_splitnum_bitsize:Int=1
 
@@ -40,8 +39,7 @@ class HBase_OP extends Para with DataBase_OP with Serializable{
                _Batch_QueryHbase:Boolean=false,
                _htable_name:String="edges",
                _HRegion_splitnum:Int=0,
-               _queryHbase_interval:Int=50000,
-               _updateHbase_interval:Int=50000) {
+               _queryHbase_interval:Int=50000) {
     this()
     hbase_output=_hbase_output
     nodes_num_bitsize=_nodes_num_bitsize
@@ -50,7 +48,6 @@ class HBase_OP extends Para with DataBase_OP with Serializable{
     htable_name=_htable_name
     HRegion_splitnum=_HRegion_splitnum
     queryHbase_interval=_queryHbase_interval
-    updateHbase_interval=_updateHbase_interval
   }
   var default_split:String=""
   var htable_split_Map:Map[Int,String]=null

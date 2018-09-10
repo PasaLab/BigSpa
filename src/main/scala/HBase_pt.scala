@@ -62,19 +62,14 @@ object HBase_pt extends Para{
     var output: String = "data/result/" //除去ip地址
     var hbase_output:String="data/result/hbase/hbhfile/"
     var checkpoint_output:String="data/checkpoint"
-    var defaultpar:Int=352
-    var clusterpar:Int=352
+    var defaultpar:Int=384
+    var clusterpar:Int=384
     var newnum_interval:Int=40000000
     var checkpoint_interval:Int=10
     var newedges_interval:Int=40000000
 
-    var openBloomFilter:Boolean=false
-    var edges_totalnum:Int=1
-    var error_rate:Double=0.1
-
     var htable_name:String="edges"
     var queryHBase_interval:Int=50000
-    var updateHBase_interval:Int=50000
     var HRegion_splitnum:Int=36
     var Batch_QueryHbase:Boolean=true
 
@@ -102,10 +97,6 @@ object HBase_pt extends Para{
         case "clusterpar"=>clusterpar=argvalue.toInt
         case "defaultpar"=>defaultpar=argvalue.toInt
         case "newedges_interval"=>newedges_interval=argvalue.toInt
-
-        case "openBloomFilter"=>openBloomFilter=argvalue.toBoolean
-        case "edges_totalnum"=>edges_totalnum=argvalue.toInt
-        case "error_rate"=>error_rate=argvalue.toDouble
 
         case "htable_name"=>htable_name=argvalue
         case "queryHBase_interval"=>queryHBase_interval=argvalue.toInt
@@ -208,8 +199,7 @@ object HBase_pt extends Para{
       Batch_QueryHbase,
       htable_name,
       HRegion_splitnum,
-      queryHBase_interval,
-      updateHBase_interval)
+      queryHBase_interval)
     hBase_OP.createHBase_Table()
     println("Init Hbase take time:                \t"+((System.nanoTime()-t0_hbase)/1000000000.0).formatted("%.3f")+
       "sec" )
@@ -250,7 +240,7 @@ object HBase_pt extends Para{
           Iterable((Array[Int](),old_f_list,new_f_list,old_b_list,new_b_list))
         },Iterable(s._2.toArray))))
         .partitionBy(new HashPartitioner(defaultpar))
-        .mapPartitions(s=>Graspan_OP.Union_old_new_improve(s,symbol_num))
+        .mapPartitions(s=>Graspan_OP.Union(s,symbol_num))
         .partitionBy(new HashPartitioner(defaultpar))
         .persist(StorageLevel.MEMORY_ONLY_SER)
     oldedges.count()
@@ -399,7 +389,7 @@ object HBase_pt extends Para{
         println("oldedges_cogroup take time:            \t"+((System.nanoTime()-t0_old_cogroup)/1000000000.0).formatted("%.3f")+" sec")
 
         t0_oldedges_compute_inner=System.nanoTime()
-        val tmp_oldedges=oldedges_cogroup.mapPartitions(v=>Graspan_OP.Union_old_new_improve(v,symbol_num))
+        val tmp_oldedges=oldedges_cogroup.mapPartitions(v=>Graspan_OP.Union(v,symbol_num))
         if(need_par>cur_par){
           println("edges num is increasing, add Tasks")
           tmp_oldedges.partitionBy(new HashPartitioner(need_par.toInt))

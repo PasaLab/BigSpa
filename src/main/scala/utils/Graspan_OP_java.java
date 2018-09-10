@@ -11,200 +11,10 @@ import static org.apache.hadoop.yarn.webapp.hamlet.HamletSpec.Media.print;
  * Created by cycy on 2018/3/4.
  */
 
-class IntArrayCompartor_According_Symbol implements Comparator
-{
-    public int compare(Object o1, Object o2)
-    {
-        int[] array1= (int[])o1;
-        int[] array2= (int[])o2;
-        if(array1[0]<array2[0]) return -1;
-        else if(array1[0]>array2[0]) return 1;
-        else return 0;
-    }
-}
-
-class IntArrayCompartor_Distinguish_Direction implements Comparator
-{
-    private int flag=-1;
-    public int compare(Object o1, Object o2)
-    {
-        int[] array1= (int[])o1;
-        int[] array2= (int[])o2;
-        if(array1[2]<array2[2]) return -1;
-        else if(array1[2]>array2[2]) return 1;
-        else return 0;
-    }
-
-}
-
-
-
 
 public class Graspan_OP_java {
-
     /**
-     *HBase join
-     */
-
-    public static  List<int[]> join_fully_compressed_df(int flag,int[] n_edges,int[] e_edge_after){
-        List<int[]> res_edges=new ArrayList<int[]>();
-        /**
-         * n与e之间的两两连接
-         */
-        int res_label=0;
-        //n在前，e在后
-        int i_end=n_edges.length;
-        int j_end=e_edge_after.length;
-        for(int i=0;i<i_end;i++){
-            for(int j=0;j<j_end;j++){
-                int[] ele={n_edges[i],e_edge_after[j],res_label};
-                res_edges.add(ele);
-            }
-        }
-//        System.out.println(tmp);
-        return res_edges;
-    }
-
-    public static  List<int[]> join_fully_compressed_presort_improve(int flag, int[] all_edges, int[] old_f_index_list,
-                                                                 int[]
-            new_f_index_list, int[] old_b_index_list, int[] new_b_index_list, int[][] grammar, int symbol_num,
-                                                                     int[][] directadd0){
-//        int all_len=all_edges.length/2;
-//        int old_f_len=(old_f_index_list[symbol_num-1]-old_f_index_list[0])/2;
-//        int new_f_len=(new_f_index_list[symbol_num-1]-new_f_index_list[0])/2;
-//        int old_b_len=(old_b_index_list[symbol_num-1]-old_b_index_list[0])/2;
-//        int new_b_len=(new_b_index_list[symbol_num-1]-new_b_index_list[0])/2;
-        //new_f_len*new_b_len+old_f_len*new_b_len+new_f_len*old_b_len
-        List<int[]> res_edges=new ArrayList<int[]>();
-        Map<Integer,Integer> directadd=new HashMap<Integer, Integer>();
-        for(int[] i:directadd0) directadd.put(i[0],i[1]);
-
-        for(int[] gram:grammar){
-            int f=gram[0];
-            int b=gram[1];
-            int res_label=gram[2];
-
-            /**
-             * 判断f和b谁长，决定以谁为主forloop，避免空转
-             */
-            int new_f_length=-1;
-            int new_b_length=-1;
-            int old_f_length=-1;
-            int old_b_length=-1;
-            if(f==0) {
-                old_f_length=old_f_index_list[f]+1;
-                new_f_length=new_f_index_list[f]-old_f_index_list[f];
-            }
-            else {
-                old_f_length=old_f_index_list[f]-new_f_index_list[f-1];
-                new_f_length=new_f_index_list[f]-old_f_index_list[f];
-            }
-            if(b==0){
-                old_b_length=old_b_index_list[b]-new_f_index_list[symbol_num-1];
-                new_b_length=new_b_index_list[b]-old_b_index_list[b];
-            }
-            else {
-                old_b_length=old_b_index_list[b]-new_b_index_list[b-1];
-                new_b_length=new_b_index_list[b]-old_b_index_list[b];
-            }
-
-            if(directadd.containsKey(res_label)){//需添加额外label
-                int directadd_symbol=directadd.get(res_label);
-                /**
-                 * 1、新边之间的两两连接
-                 */
-                if(new_f_length>0&&new_b_length>0) {
-                    int j_end=new_f_index_list[f];
-                    int k_end=new_b_index_list[b];
-                    for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
-                        for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
-                            int[] ele = {all_edges[j],all_edges[k],res_label};
-                            res_edges.add(ele);
-
-                            int[] ele_add = {all_edges[j],all_edges[k],directadd_symbol};
-                            res_edges.add(ele_add);
-                        }
-                    }
-                }
-                /**
-                 * 新边与旧边之间的两两连接
-                 */
-                //新边在前，旧边在后
-                if(new_f_length>0&&old_b_length>0){
-                    int j_end=new_f_index_list[f];
-                    int k_end=old_b_index_list[b];
-                    for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
-                        for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
-                            int[] ele = {all_edges[j],all_edges[k],res_label};
-                            res_edges.add(ele);
-
-                            int[] ele_add = {all_edges[j],all_edges[k],directadd_symbol};
-                            res_edges.add(ele_add);
-                        }
-                    }
-                }
-                //旧边在前，新边在后
-                if(old_f_length>0&&new_b_length>0){
-                    int j_end=old_f_index_list[f];
-                    int k_end=new_b_index_list[b];
-                    for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
-                        for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
-                            int[] ele = {all_edges[j],all_edges[k],res_label};
-                            res_edges.add(ele);
-
-                            int[] ele_add = {all_edges[j],all_edges[k],directadd_symbol};
-                            res_edges.add(ele_add);
-                        }
-                    }
-                }
-            }
-            else{//仅添加当前label
-                /**
-                 * 1、新边之间的两两连接
-                 */
-                if(new_f_length>0&&new_b_length>0) {
-                    int j_end=new_f_index_list[f];
-                    int k_end=new_b_index_list[b];
-                    for (int j = new_f_index_list[f]-new_f_length+1; j <= j_end; j++) {
-                        for (int k = new_b_index_list[b]-new_b_length+1; k <= k_end; k++) {
-                            int[] ele = {all_edges[j],all_edges[k],res_label};
-                            res_edges.add(ele);
-                        }
-                    }
-                }
-                /**
-                 * 新边与旧边之间的两两连接
-                 */
-                //新边在前，旧边在后
-                if(new_f_length>0&&old_b_length>0){
-                    int j_end=new_f_index_list[f];
-                    int k_end=old_b_index_list[b];
-                    for(int j=new_f_index_list[f]-new_f_length+1;j<=j_end;j++){
-                        for(int k=old_b_index_list[b]-old_b_length+1;k<=k_end;k++){
-                            int[] ele = {all_edges[j],all_edges[k],res_label};
-                            res_edges.add(ele);
-                        }
-                    }
-                }
-                //旧边在前，新边在后
-                if(old_f_length>0&&new_b_length>0){
-                    int j_end=old_f_index_list[f];
-                    int k_end=new_b_index_list[b];
-                    for(int j=old_f_index_list[f]-old_f_length+1;j<=j_end;j++){
-                        for(int k=new_b_index_list[b]-new_b_length+1;k<=k_end;k++){
-                            int[] ele = {all_edges[j],all_edges[k],res_label};
-                            res_edges.add(ele);
-                        }
-                    }
-                }
-            }
-        }
-//        System.out.println(tmp);
-        return res_edges;
-    }
-
-    /**
-     * Redis join
+     * join
      * @return
      */
     public static long getCorrectLength(int[][] grammar,Map<Integer,Integer> directadd, int symbol_num,
@@ -247,7 +57,7 @@ public class Graspan_OP_java {
         }
         return sum_length;
     }
-    public static  int[] join_compressnew(int flag, int[] all_edges, int[]
+    public static  int[] join(int flag, int[] all_edges, int[]
             old_f_index_list, int[] new_f_index_list, int[] old_b_index_list, int[] new_b_index_list, int[][] grammar, int symbol_num,
                                            int[][] directadd0){
 
@@ -408,7 +218,7 @@ public class Graspan_OP_java {
             return res;
     }
 
-    public static  long[] join_df_compressnew(int[] n_edges,int[] e_edge_after){
+    public static  long[] join_df(int[] n_edges,int[] e_edge_after){
         long[] res_edges=new long[n_edges.length*e_edge_after.length];
         /**
          * n与e之间的两两连接
@@ -426,7 +236,7 @@ public class Graspan_OP_java {
         return res_edges;
     }
 
-    public static  long[] join_df_compressnew_loop(int flag, long[] n_edges, int[] e_edge_after, int n_start,int[]
+    public static  long[] join_df_loop(int flag, long[] n_edges, int[] e_edge_after, int n_start,int[]
             n_end){
 
         int end=n_start;

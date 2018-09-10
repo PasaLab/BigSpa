@@ -213,7 +213,7 @@ object Graspan_OP extends Para {
     while (index_n < len_n) {
       val index_e = binary_search(e_edges, n(index_n)._1, f0)
       if (index_e != -1) {
-        val res = Graspan_OP_java.join_df_compressnew( n(index_n)._2, e_edges(index_e)._2)
+        val res = Graspan_OP_java.join_df( n(index_n)._2, e_edges(index_e)._2)
         new_n.addElements(new_n.length, res, 0, res.length)
         f0 = index_e
       }
@@ -259,7 +259,7 @@ object Graspan_OP extends Para {
           val index_e = binary_search(e_edges, ((new_n_array(index_n) >> 32)).toInt, f0)
           if (index_e != -1) {
             val n_end = new Array[Int](1)
-            val tmp = Graspan_OP_java.join_df_compressnew_loop(e_edges(index_e)._1, new_n_array, e_edges(index_e)._2,
+            val tmp = Graspan_OP_java.join_df_loop(e_edges(index_e)._1, new_n_array, e_edges(index_e)._2,
               index_n, n_end)
             tmp_new_n.addElements(tmp_new_n.length, tmp, 0, tmp.length)
             f0 = index_e
@@ -352,7 +352,7 @@ object Graspan_OP extends Para {
     var time_realjoin = 0.0
     mid_adj.foreach(s => {
       val t00 = System.nanoTime()
-      val res = Graspan_OP_java.join_compressnew(s._1,
+      val res = Graspan_OP_java.join(s._1,
         s._2._1,
         s._2._2,
         s._2._3,
@@ -912,7 +912,7 @@ object Graspan_OP extends Para {
     * @param symbol_num
     * @return
     */
-  def Union_old_new_improve(edges: Iterator[(Int, (Iterable[(Array[Int], Array[Int], Array[Int], Array[Int], Array[Int])],
+  def Union(edges: Iterator[(Int, (Iterable[(Array[Int], Array[Int], Array[Int], Array[Int], Array[Int])],
     Iterable[Array[Array[Int]]]))], symbol_num: Int): Iterator[(Int, (Array[Int], Array[Int], Array[Int], Array[Int],
     Array[Int]))] = {
     edges.map(s => {

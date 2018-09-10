@@ -37,8 +37,8 @@ object Redis_df extends Para{
     var output: String = "data/result/" //除去ip地址
     var hbase_output:String="data/result/hbase/hbhfile/"
     var checkpoint_output:String="data/checkpoint"
-    var defaultpar:Int=352
-    var clusterpar:Int=352
+    var defaultpar:Int=384
+    var clusterpar:Int=384
     var newnum_interval:Int=40000000
     var checkpoint_interval:Int=10
     var newedges_interval:Int=40000000

@@ -41,7 +41,6 @@ object HBase_df extends Para{
 
     var htable_name:String="edges"
     var queryHBase_interval:Int=50000
-    var updateHBase_interval:Int=50000
     var HRegion_splitnum:Int=36
     var Batch_QueryHbase:Boolean=true
 
@@ -166,8 +165,7 @@ object HBase_df extends Para{
     Batch_QueryHbase,
     htable_name,
     HRegion_splitnum,
-    queryHBase_interval,
-    updateHBase_interval)
+    queryHBase_interval)
     hBase_OP.createHBase_Table()
     println("Init Hbase take time:                \t"+((System.nanoTime()-t0_hbase)/1000000000.0).formatted("%.3f")+
       "sec" )
