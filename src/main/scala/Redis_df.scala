@@ -17,7 +17,7 @@ import utils._
 
 import scala.collection.mutable.ArrayBuffer
 
-object Redis_df extends Para{
+object Redis_df {
 
   def main(args: Array[String]): Unit = {
     val t0_all=System.nanoTime()

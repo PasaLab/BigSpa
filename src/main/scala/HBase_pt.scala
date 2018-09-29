@@ -4,8 +4,9 @@ import java.util.Scanner
 import org.apache.spark.rdd.RDD
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
-import utils.{BIgSpa_OP, HBase_OP, Para, deleteDir}
-object HBase_pt extends Para{
+import utils.{BIgSpa_OP, HBase_OP, deleteDir}
+
+object HBase_pt{
 
   def check_edge_RDD(edges:RDD[(Int,(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int]))]):RDD[String]={
     edges.map(s=>{
@@ -169,7 +170,7 @@ object HBase_pt extends Para{
     directadd.foreach(s => println("                    \t" + s._1 + "\t->\t" + s._2))
     println
     println("grammar_clean:      \t")
-    grammar.foreach(s => println("                    \t" + s._1._1 + "\t+\t" + s._1._2 + "\t->\t" + s._2))
+    grammar.foreach(s => println("                    \t" + s(0) + "\t+\t" + s(1) + "\t->\t" + s(2)))
     println("---------------------------------------------------------------------")
     println
 
@@ -220,7 +221,7 @@ object HBase_pt extends Para{
       */
     var newnum: Long = graph.count()
     var oldnum: Long = newnum
-    var oldedges: RDD[(VertexId,(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int]))] =
+    var oldedges: RDD[(Int,(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int]))] =
       graph.flatMap(s => {
         if(s(0)!=s(1)) Array((s(0),s), (s(1),s))
         else Array((s(0),s))

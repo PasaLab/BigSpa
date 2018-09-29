@@ -6,10 +6,9 @@ package utils.Statistic
 import java.io.{PrintWriter, _}
 
 import org.apache.spark.SparkContext
-import utils.Para
 
 import scala.io.Source
-object split_compute extends Para{
+object split_compute {
   def selectLine(sc:SparkContext,input:String,targetline:String,output:String): Unit ={
     val data=sc.textFile(input).zipWithIndex().map(s=>s.swap).sortByKey().filter(s=> !s._2.trim.equals("")&&s._2.contains
     (targetline)).map(s=>{

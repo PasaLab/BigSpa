@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
   * Created by cycy on 2018/4/13.
   */
-class Redis_OP extends DataBase_OP with Serializable{
+class Redis_OP extends DataBase_OP with Serializable {
 
   var updateRedis_interval: Int=0
   def this(interval:Int){
@@ -85,8 +85,30 @@ class Redis_OP extends DataBase_OP with Serializable{
     edges.foreachPartition(e=>updateRedis_inPartition(e))
   }
 
+
+  @throws[Exception]
+  def Query_DF(compressed_edges: Array[Long]):
+  Array[Array[Int]] = {
+    val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
+    val all_edges_num: Int = compressed_edges.length
+    val keys: Array[Array[Byte]] = new Array[Array[Byte]](all_edges_num)
+    val res:ArrayBuffer[Array[Int]]=new ArrayBuffer[Array[Int]](all_edges_num)
+    var i: Int = 0
+    while (i < all_edges_num) {
+      keys(i) =Triple2String((compressed_edges(i) & 0xffffffffL).toInt,(compressed_edges(i)>>>32).toInt, 0)
+      i += 1
+    }
+    val values: Array[Array[Byte]] = client.getAll(keys)
+    i=0
+    while (i<all_edges_num){
+      if(values(i)==null) res.append(Array((compressed_edges(i) & 0xffffffffL).toInt,(compressed_edges(i)>>>32).toInt,0))
+      i+=1
+    }
+    res.toArray
+  }
+
   /**
-    * Query Redis
+    * Query PT
     * @param compressed_edges
     * @return
     */
@@ -114,25 +136,59 @@ class Redis_OP extends DataBase_OP with Serializable{
     res.toArray
   }
 
+  /**
+    * Query PT
+    * @param compressed_edges
+    * @return
+    */
   @throws[Exception]
-  def Query_DF(compressed_edges: Array[Long]):
-  Array[Array[Int]] = {
+  def Query_PT_Split(compressed_edges: Array[Int],additinal_point:ArrayBuffer[(Int,Int,Int)],origin_nodes_num:Int):
+  Array[Array[Int]]
+  = {
     val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
-    val all_edges_num: Int = compressed_edges.length
+    val all_edges_num: Int = compressed_edges.length / 3
     val keys: Array[Array[Byte]] = new Array[Array[Byte]](all_edges_num)
     val res:ArrayBuffer[Array[Int]]=new ArrayBuffer[Array[Int]](all_edges_num)
     var i: Int = 0
     while (i < all_edges_num) {
-        keys(i) =Triple2String((compressed_edges(i) & 0xffffffffL).toInt,(compressed_edges(i)>>>32).toInt, 0)
+      {
+        keys(i) =Triple2String(getRealVertex(compressed_edges(i * 3 ),additinal_point,origin_nodes_num),
+          getRealVertex(compressed_edges(i * 3 + 1),additinal_point,origin_nodes_num),
+          compressed_edges
+        (i * 3 + 2))
+      }
+      {
         i += 1
+      }
     }
     val values: Array[Array[Byte]] = client.getAll(keys)
     i=0
     while (i<all_edges_num){
-      if(values(i)==null) res.append(Array((compressed_edges(i) & 0xffffffffL).toInt,(compressed_edges(i)>>>32).toInt,0))
+      if(values(i)==null) res.append(Array(compressed_edges(i*3),compressed_edges(i*3+1),compressed_edges(i*3+2)))
       i+=1
     }
     res.toArray
+  }
+
+  def getRealVertex(v:Int,additinal_point:ArrayBuffer[(Int,Int,Int)],origin_nodes_num:Int):Int={
+    if(v<origin_nodes_num) v
+    else{
+      var res=v
+      var f=0
+      var b=additinal_point.size-1
+      var continue=true
+      while(f<=b&&continue){
+        val mid=f+(b-f)/2
+        if(additinal_point(mid)._1<=v&&additinal_point(mid)._2>=v){
+          res=additinal_point(mid)._3
+          continue=false
+        }
+        else if(additinal_point(mid)._1>v) b=mid-1
+        else f=mid+1
+      }
+      if(continue) f
+      else res
+    }
   }
 
 }

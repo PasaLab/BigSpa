@@ -4,8 +4,8 @@ package utils.Statistic
   * Created by cycy on 2018/1/17.
   */
 import org.apache.spark.{SparkConf, SparkContext}
-import utils.{Para, deleteDir}
-object Statistic extends Para{
+import utils.{deleteDir}
+object Statistic{
   def selectLine(sc:SparkContext,input:String,targetline:String,output:String): Unit ={
     val data=sc.textFile(input).zipWithIndex().map(s=>s.swap).sortByKey().filter(s=> !s._2.trim.equals("")&&s._2.contains
     (targetline)).map(s=>{
@@ -37,7 +37,7 @@ object Statistic extends Para{
     var input_graph: String = "H:/Graspan资料/Graspan数据和源代码/Apache_Httpd_2.2.18_Points-to/Apache_httpd_2.2.18_pointsto_graph"
     var input_grammar: String = "H:/Graspan资料/Graspan数据和源代码/Grammar_Files/rules_pointsto"
 
-    var input:String="H:\\Graspan资料\\实验记录\\论文数据\\Linux_PT_Redis\\log.txt"
+    var input:String="H:\\BigSpa资料\\实验记录\\论文数据\\New_MR_PT_Redis\\log.txt"
     var output: String = "data/result/" //除去ip地址
 
     var par: Int = 4
@@ -71,9 +71,9 @@ object Statistic extends Para{
     deleteDir.deletedir(islocal,master,output+targetLine)
     selectLine(sc,input,targetLine,output+targetLine)
 
-//    targetLine="pure_newedges"
-//    deleteDir.deletedir(islocal,master,output+targetLine)
-//    selectLine(sc,input,targetLine,output+targetLine)
+    targetLine="pure_newedges"
+    deleteDir.deletedir(islocal,master,output+targetLine)
+    selectLine(sc,input,targetLine,output+targetLine)
 //
 //    targetLine="distinct take time"
 //    deleteDir.deletedir(islocal,master,output+targetLine)

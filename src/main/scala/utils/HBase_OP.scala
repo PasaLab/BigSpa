@@ -17,7 +17,7 @@ import scala.collection.mutable.ArrayBuffer
 /**
   * Created by cycy on 2018/1/22.
   */
-class HBase_OP extends Para with DataBase_OP with Serializable{
+class HBase_OP extends DataBase_OP with Serializable{
 
   val colum:String="e"
   val family:String="c"

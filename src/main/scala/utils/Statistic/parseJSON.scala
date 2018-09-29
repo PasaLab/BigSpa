@@ -15,10 +15,12 @@ object parseJSON {
   type mem=Double
   /**
     CPU
-    "time", "libstoragemgmt", "experiment", "root", "pcp", "unbound"
-                 0  1  2  3  4  5   6     7       8      9   10
-    [ new Date(2018,3,18,20,14,13), 0, 1.52183, 3.50031, 0, null],
-		[ new Date(2018,3,18,20,14,12), 0, 3.56168, 3.46224, 0, null],
+                            "time","guest_nice", "guest", "steal", "softirq", "irq", "user", "system","nice", "iowait"
+                      0,1,2,3,4,5,  6,              7,       8,        9,       10,    11
+	"data":
+	[
+		[ new Date(2018,8,17,16,42,37), 0, 0, 0, 0, 0, 0.08337, 0.08337, 0.04168, 0],
+		[ new Date(2018,8,17,16,42,36), 0, 0, 0, 0, 0, 0.04168, 0.08337, 0.04168, 0],
     */
   def getCPU(path:String): Array[(hour,min,sec,cpu_usage)] ={
     val source=Source.fromFile(path)
@@ -31,7 +33,7 @@ object parseJSON {
         strs(3).toInt,
         strs(4).toInt,
         strs(5).dropRight(1).toInt,
-        strs(8).toDouble/24
+        strs(11).toDouble/24
         ))
     }
     val res=res_tmp.sortWith((x,y)=>{
@@ -67,7 +69,7 @@ object parseJSON {
         strs(3).toInt,
         strs(4).toInt,
         strs(5).dropRight(1).toInt,
-        strs(8).toDouble
+        strs(7).toDouble
         ))
     }
     val res=res_tmp.sortWith((x,y)=>{
@@ -86,9 +88,10 @@ object parseJSON {
     res
   }
   def gettime(input:String): Array[Int] ={
-    val source=Source.fromFile(input).getLines()
+    val source=Source.fromFile(input,"GBK").getLines()
     val res=new ArrayBuffer[Int]()
     for(l<-source){
+//      println(l)
       if(l.contains("*step:")){
         val tmp=l.split(" ")
         res.append((tmp(tmp.length-2).toDouble+0.5).toInt)
@@ -97,7 +100,7 @@ object parseJSON {
     res.toArray
   }
   def main(args: Array[String]): Unit = {
-    val input="H:\\Graspan资料\\实验记录\\论文数据\\Linux_PT_Redis\\"
+    val input="H:\\BigSpa资料\\实验记录\\论文数据\\New_MR_PT_Redis\\"
     val input_log=input+"log.txt"
     val input_CPU=input+"CPU.txt"
     val input_MEM=input+"MEM.txt"

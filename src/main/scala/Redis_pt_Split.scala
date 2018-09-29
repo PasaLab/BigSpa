@@ -4,19 +4,17 @@
 import java.text.SimpleDateFormat
 import java.util
 import java.util.Scanner
-import java.util.concurrent.Executors
 
 import cn.edu.nju.pasalab.db.ShardedRedisClusterClient
-import org.apache.hadoop.conf.Configuration
-import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
-import org.apache.hadoop.mapreduce.Job
 import org.apache.spark.storage.StorageLevel
+import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
+import utils.BIgSpa_OP._
 import utils._
 
 import scala.collection.mutable.ArrayBuffer
 
-object Redis_pt{
+object Redis_pt_Split{
 
   def main(args: Array[String]): Unit = {
     val t0_all=System.nanoTime()
@@ -63,6 +61,8 @@ object Redis_pt{
     var outputdetails:Boolean=false
     var output_Par_INFO:Boolean=false
 
+    var Split_Threshold:Int=10000000
+
     for (arg <- args) {
       val argname = arg.split(",")(0)
       val argvalue = arg.split(",")(1)
@@ -98,6 +98,9 @@ object Redis_pt{
         case "check_edge"=>check_edge=argvalue.toBoolean
         case "outputdetails"=>outputdetails=argvalue.toBoolean
         case "output_Par_INFO"=>output_Par_INFO=argvalue.toBoolean
+
+        case "Split_Threshold"=>Split_Threshold=argvalue.toInt
+
         case _ => {}
       }
     }
@@ -137,39 +140,42 @@ object Redis_pt{
       */
     val grammar_origin = sc.textFile(input_grammar).filter(s=> !s.trim.equals("")).map(s => s.split("\\s+").map(_.trim))
       .collect().toList
-    val (symbol_Map, symbol_num, symbol_num_bitsize, loop, directadd, grammar) = BIgSpa_OP.processGrammar(grammar_origin,
-      input_grammar)
+    BIgSpa_OP.processGrammar_Split(grammar_origin, input_grammar)
+
     println("------------Grammar INFO--------------------------------------------")
     println("input grammar:      \t" + input_grammar.split("/").last)
-    println("symbol_num:         \t" + symbol_num)
-    println("symbol_num_bitsize: \t" + symbol_num_bitsize)
+    println("symbol_num:         \t" + Property.symbol_num)
+    println("symbol_num_bitsize: \t" + Property.symbol_num_bitsize)
     println("symbol_Map:         \t")
-    symbol_Map.foreach(s => println("                    \t" + s._2 + "\t->\t" + s._1))
+    Property.symbol_Map.foreach(s => println("                    \t" + s._2 + "\t->\t" + s._1))
     println
     println("loop:               \t")
-    loop.foreach(s => println("                    \t" + s))
+    Property.loop.foreach(s => println("                    \t" + s))
     println
     println("directadd:          \t")
-    directadd.foreach(s => println("                    \t" + s._1 + "\t->\t" + s._2))
+    Property.directadd.foreach(s => println("                    \t" + s._1 + "\t->\t" + s._2))
     println
     println("grammar_clean:      \t")
-    grammar.foreach(s => println("                    \t" + s(0) + "\t+\t" + s(1) + "\t->\t" + s(2)))
+    Property.grammar.foreach(s => println("                    \t" + s(0) + "\t+\t" + s(1) + "\t->\t" + s(2)))
     println("---------------------------------------------------------------------")
     println
 
     /**
       * Graph相关设置
       */
-    val (graph, nodes_num_bitsize, nodes_totalnum) = BIgSpa_OP.processGraph(sc, input_graph, file_index_f,file_index_b,
+    var graph:RDD[Array[Int]]=null
+    graph= BIgSpa_OP.processGraph_Split(sc, input_graph,
+      file_index_f,
+      file_index_b,
       input_grammar,
-      symbol_Map, loop,
-      directadd, defaultpar)
+      Property.symbol_Map, Property.loop,
+      Property.directadd, defaultpar)
 
     println("------------Graph INFO--------------------------------------------")
     println("input graph:        \t" + input_graph.split("/").last)
     println("processed edges:    \t" + graph.count())
-    println("nodes_totoalnum:    \t" + nodes_totalnum)
-    println("nodes_num_bitsize:  \t" + nodes_num_bitsize)
+    println("nodes_totoalnum:    \t" + Property.nodes_totalnum)
+    println("nodes_num_bitsize:  \t" + Property.nodes_num_bitsize)
     println("------------------------------------------------------------------")
     println
 
@@ -186,12 +192,15 @@ object Redis_pt{
     //    scan.next()
 
     deleteDir.deletedir(islocal, master, output)
+    val Global_Vertex_Map:ArrayBuffer[(Int,Int,Int)]=new ArrayBuffer[(Int, Int, Int)]()
+
     /**
       * 初始化oldedges
       */
     var newnum: Long = graph.count()
     var oldnum: Long = newnum
     var oldedges:RDD[(Int,(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int]))]=null
+    val symbol_num=Property.symbol_num
     var oldedges_cogroup: RDD[(Int,(Iterable[(Array[Int],Array[Int],Array[Int],Array[Int],Array[Int])],
       Iterable[Array[Array[Int]]])
       )] =
@@ -215,12 +224,26 @@ object Redis_pt{
         },Iterable(s._2.toArray))))
         .partitionBy(new HashPartitioner(defaultpar))
 
-    oldedges=oldedges_cogroup.mapPartitions((v=>BIgSpa_OP.Union(v,symbol_num)),true)
+//    println("symbol_num: "+Property.symbol_num)
+//    println("edges 中 old index 为空的数量： "+ oldedges_cogroup.filter(s=>{
+//      val tmp=s._2._1.head
+//      tmp._2.length<symbol_num||tmp._3.length<symbol_num||tmp._4.length<symbol_num||tmp._5.length<symbol_num
+//    }).count())
+//    println("index length: "+oldedges_cogroup.take(1)(0)._2._1.head._3.length)
+
+    oldedges=BIgSpa_OP.Split(oldedges_cogroup,Split_Threshold,Global_Vertex_Map,defaultpar)
       .setName("oldedge-origin").persist(StorageLevel.MEMORY_ONLY_SER)
     oldedges.count()
+
     graph.unpersist()
     //    println("check oldedges")
     //    println(check_edge_RDD(oldedges).filter(s=> !s.contains("OK")).top(10).mkString("\n"))
+
+
+    if(check_edge){
+      println("Please confirm to start compute!")
+      scan.next()
+    }
     var step = 0
     var change_par=true
     var continue: Boolean = true
@@ -235,8 +258,7 @@ object Redis_pt{
     /**
       * 开始迭代
       */
-//    println("Please confirm to start compute!")
-//    scan.next()
+
     while (continue) {
       val t0_turn = System.nanoTime()
       step += 1
@@ -247,14 +269,17 @@ object Redis_pt{
 //      println("current partitions num:         \t"+oldedges_cogroup.getNumPartitions)
       val t0_ge = System.nanoTime()
 
+      val(grammar,directadd,loop,origin_nodes_num,nodes_num_bitsize,symbol_num_bitsize)=(Property.grammar,Property
+        .directadd,Property.loop,Property.origin_nodes_num,Property.nodes_num_bitsize,Property.symbol_num_bitsize)
       val new_edges_str = oldedges
         .mapPartitionsWithIndex((index, s) =>
-          BIgSpa_OP.computeInPartition_pt(step,
+          BIgSpa_OP.computeInPartition_pt_Split(step,
             index, s,
             symbol_num,grammar,
             nodes_num_bitsize,
-            symbol_num_bitsize, directadd,redis_OP),true).setName("newedge-before-distinct-" + step)
-        .persist (StorageLevel.MEMORY_ONLY_SER)
+            symbol_num_bitsize, directadd,redis_OP,Global_Vertex_Map,origin_nodes_num),true)
+        .setName("newedge-before-distinct-" + step)
+        .persist (StorageLevel.MEMORY_AND_DISK)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
       val t1_ge = System.nanoTime()
       println("old num:                        \t"+oldnum)
@@ -268,7 +293,7 @@ object Redis_pt{
       val t0_distinct=System.nanoTime():Double
       val newedges=new_edges_str.flatMapValues(s=>s._1).map(s=>s._2.toVector).distinct()
         .mapPartitions(s=>s.map(_.toArray)).setName("newedges-after-distinct-" + step).persist(StorageLevel
-        .MEMORY_ONLY_SER)
+        .MEMORY_AND_DISK)
       newnum = newedges.count()
       oldnum += newnum
       println("pure_newedges:                  \t" + newnum)
@@ -328,10 +353,17 @@ object Redis_pt{
       val cur_par=oldedges.getNumPartitions
       val oldEdgesPartitioner = oldedges_cogroup.partitioner.getOrElse(new HashPartitioner(cur_par))
       val need_par=(newnum/newnum_interval)*clusterpar
+
+      val t0_new_flat_groupBykey=System.nanoTime()
       val newedges_to_be_cogrouped = newedges.flatMap(s => {
         if(s(0)!=s(1)) Array((s(0),s),(s(1),s))
         else Array((s(0),s))
       }).groupByKey(oldEdgesPartitioner).mapValues(s=>s.toArray)
+//      newedges_to_be_cogrouped.count
+//      println("newedges_to_be_cogrouped:              \t"+((System.nanoTime()-t0_new_flat_groupBykey)/1000000000.0).formatted("%.3f")+
+//        "sec")
+
+      val t0_old_cogroup=System.nanoTime()
       oldedges_cogroup = {
         val oldedges_cogroup=
           oldedges.cogroup(newedges_to_be_cogrouped,oldEdgesPartitioner).setName("cogrouped-"+step)
@@ -348,11 +380,17 @@ object Redis_pt{
           tmp_oldedges
         }
       }.setName("unioned-edges-" + step)//.persist(StorageLevel.MEMORY_ONLY_SER)
+//      oldedges_cogroup.count
+//      println("oldedges_cogroup take time:            \t"+((System.nanoTime()-t0_old_cogroup)/1000000000.0).formatted("%.3f")+" sec")
+//
 
-
-
-      oldedges=oldedges_cogroup.mapPartitions((v=>BIgSpa_OP.Union(v,symbol_num)),true)
-        .setName("oldedge-" + step).persist(StorageLevel.MEMORY_AND_DISK)
+      var t0_oldedges_compute_inner=System.nanoTime()
+      oldedges=BIgSpa_OP.Split(oldedges_cogroup,Split_Threshold,Global_Vertex_Map,cur_par).setName("oldedge-" + step)
+        .persist(StorageLevel
+        .MEMORY_AND_DISK)
+//      oldedges.count()
+//      println(s"oldedges compute inner take time: \t${((System.nanoTime() - t0_oldedges_compute_inner)/1000000000.0)
+//        .formatted("%.3f")} sec")
 
       if(step % checkpoint_interval==0) {
         val t0_cp=System.nanoTime()
@@ -360,7 +398,7 @@ object Redis_pt{
         println("checkpoint take time:           \t"+((System.nanoTime()-t0_cp)/1000000000.0).formatted("%.3f")
           +" sec")
       }
-      oldedges.count()
+
       println(s"union time take time:            \t${((System.nanoTime() - t0_union)/1000000000.0).formatted("%.3f")}" +
         s" sec")
       println("End UNION")

@@ -13,7 +13,7 @@ import utils._
 
 import scala.collection.mutable.ArrayBuffer
 
-object HBase_df extends Para{
+object HBase_df{
 
   def main(args: Array[String]): Unit = {
     val t0_all=System.nanoTime()
