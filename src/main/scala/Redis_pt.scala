@@ -31,116 +31,45 @@ object Redis_pt{
 
     //    var t0=System.nanoTime():Double
     //    var t1=System.nanoTime():Double
-    var islocal: Boolean = true
-    var master: String = "local"
-
-    var input_grammar: String = "data/test_grammar"
-    var input_graph:String="data/test_graph"
-    var output: String = "data/result/" //除去ip地址
-    var hbase_output:String="data/result/hbase/hbhfile/"
-    var checkpoint_output:String="data/checkpoint"
-    var defaultpar:Int=352
-    var clusterpar:Int=352
-    var newnum_interval:Int=40000000
-    var checkpoint_interval:Int=10
-    var newedges_interval:Int=40000000
-
-    var openBloomFilter:Boolean=false
-    var edges_totalnum:Int=1
-    var error_rate:Double=0.1
-
-    var updateRedis_interval:Int=50000
-    var queryRedis_interval:Int=50000
-
-    var is_complete_loop:Boolean=false
-    var max_complete_loop_turn:Int=5
-    var max_delta:Int=10000
-
-    var file_index_f:Int= -1
-    var file_index_b:Int= -1
-
-    var check_edge:Boolean=false
-    var outputdetails:Boolean=false
-    var output_Par_INFO:Boolean=false
-
-    for (arg <- args) {
-      val argname = arg.split(",")(0)
-      val argvalue = arg.split(",")(1)
-      argname match {
-        case "islocal" => islocal = argvalue.toBoolean
-        case "master" => master = argvalue
-
-        case "input_grammar" => input_grammar = argvalue
-        case "input_graph"=>input_graph=argvalue
-        case "output" => output = argvalue
-        case "hbase_output"=>hbase_output=argvalue
-        case "clusterpar"=>clusterpar=argvalue.toInt
-        case "defaultpar"=>defaultpar=argvalue.toInt
-        case "newedges_interval"=>newedges_interval=argvalue.toInt
-
-        case "openBloomFilter"=>openBloomFilter=argvalue.toBoolean
-        case "edges_totalnum"=>edges_totalnum=argvalue.toInt
-        case "error_rate"=>error_rate=argvalue.toDouble
-
-        case "updateRedis_interval"=>updateRedis_interval=argvalue.toInt
-        case "queryRedis_interval"=>queryRedis_interval=argvalue.toInt
-
-        case "is_complete_loop"=>is_complete_loop=argvalue.toBoolean
-        case "max_complete_loop_turn"=>max_complete_loop_turn=argvalue.toInt
-        case "max_delta"=>max_delta=argvalue.toInt
-
-        case "newnum_interval"=>newnum_interval=argvalue.toInt
-        case "checkpoint_interval"=>checkpoint_interval=argvalue.toInt
-        case "checkpoint_output"=>checkpoint_output=argvalue
-        case "file_index_f"=>file_index_f=argvalue.toInt
-        case "file_index_b"=>file_index_b=argvalue.toInt
-
-        case "check_edge"=>check_edge=argvalue.toBoolean
-        case "outputdetails"=>outputdetails=argvalue.toBoolean
-        case "output_Par_INFO"=>output_Par_INFO=argvalue.toBoolean
-        case _ => {}
-      }
-    }
 
     /**
-      * 输出参数设置
+      * 参数设置
       */
-
-
-
+    Param_pt.makeParams(args)
     /**
       * Spark 设置
       */
     val conf = new SparkConf()
-    if (islocal) {
+    if (Param_pt.islocal) {
       //test location can be adjusted or not
       conf.setAppName("Graspan")
       System.setProperty("hadoop.home.dir", "F:/hadoop-2.6.0/")
       conf.setMaster("local")
     }
     val sc = new SparkContext(conf)
-    sc.setCheckpointDir(checkpoint_output)
+    sc.setCheckpointDir(Param_pt.checkpoint_output)
     //    try {
     println("------------Spark and HBase settings--------------------------------")
     println("spark.driver.memory:          \t" + conf.get("spark.driver.memory"))
     println("spark.executor.memory:        \t" + conf.get("spark.executor.memory"))
     println("spark.executor.instances:     \t" + conf.get("spark.executor.instances"))
     println("spark.executor.cores:         \t" + conf.get("spark.executor.cores"))
-    println("default partition num:        \t" + defaultpar)
-    println("cluster partition num:        \t" + clusterpar)
-    println("updateRedis_interval:          \t" + updateRedis_interval)
-    println("queryRedis_interval:          \t" + queryRedis_interval)
+    println("default partition num:        \t" + Param_pt.defaultpar)
+    println("cluster partition num:        \t" + Param_pt.clusterpar)
+    println("updateRedis_interval:          \t" + Param_pt.updateRedis_interval)
+    println("queryRedis_interval:          \t" + Param_pt.queryRedis_interval)
     println("--------------------------------------------------------------------")
     println
     /**
       * Grammar相关设置
       */
-    val grammar_origin = sc.textFile(input_grammar).filter(s=> !s.trim.equals("")).map(s => s.split("\\s+").map(_.trim))
+    val grammar_origin = sc.textFile(Param_pt.input_grammar).filter(s=> !s.trim.equals("")).map(s => s.split("\\s+").map(_
+      .trim))
       .collect().toList
     val (symbol_Map, symbol_num, symbol_num_bitsize, loop, directadd, grammar) = BIgSpa_OP.processGrammar(grammar_origin,
-      input_grammar)
+      Param_pt.input_grammar)
     println("------------Grammar INFO--------------------------------------------")
-    println("input grammar:      \t" + input_grammar.split("/").last)
+    println("input grammar:      \t" + Param_pt.input_grammar.split("/").last)
     println("symbol_num:         \t" + symbol_num)
     println("symbol_num_bitsize: \t" + symbol_num_bitsize)
     println("symbol_Map:         \t")
@@ -160,13 +89,14 @@ object Redis_pt{
     /**
       * Graph相关设置
       */
-    val (graph, nodes_num_bitsize, nodes_totalnum) = BIgSpa_OP.processGraph(sc, input_graph, file_index_f,file_index_b,
-      input_grammar,
+    val (graph, nodes_num_bitsize, nodes_totalnum) = BIgSpa_OP.processGraph(sc, Param_pt.input_graph, Param_pt.file_index_f,
+      Param_pt.file_index_b,
+      Param_pt.input_grammar,
       symbol_Map, loop,
-      directadd, defaultpar)
+      directadd, Param_pt.defaultpar)
 
     println("------------Graph INFO--------------------------------------------")
-    println("input graph:        \t" + input_graph.split("/").last)
+    println("input graph:        \t" + Param_pt.input_graph.split("/").last)
     println("processed edges:    \t" + graph.count())
     println("nodes_totoalnum:    \t" + nodes_totalnum)
     println("nodes_num_bitsize:  \t" + nodes_num_bitsize)
@@ -178,14 +108,14 @@ object Redis_pt{
       * 原边集存入Redis
       */
     ShardedRedisClusterClient.getProcessLevelClient.clearDB()
-    val redis_OP=new Redis_OP(updateRedis_interval)
+    val redis_OP=new Redis_OP(Param_pt.updateRedis_interval)
     val t0_redis=System.nanoTime()
     redis_OP.Update(graph)
     println("Origin Update Redis take time:        \t"+((System.nanoTime()-t0_redis)/1000000000.0).formatted
     ("%.3f")+ "sec" )
     //    scan.next()
 
-    deleteDir.deletedir(islocal, master, output)
+    deleteDir.deletedir(Param_pt.islocal, Param_pt.master, Param_pt.output)
     /**
       * 初始化oldedges
       */
@@ -213,7 +143,7 @@ object Redis_pt{
           }
           Iterable((Array[Int](),old_f_list,new_f_list,old_b_list,new_b_list))
         },Iterable(s._2.toArray))))
-        .partitionBy(new HashPartitioner(defaultpar))
+        .partitionBy(new HashPartitioner(Param_pt.defaultpar))
 
     oldedges=oldedges_cogroup.mapPartitions((v=>BIgSpa_OP.Union(v,symbol_num)),true)
       .setName("oldedge-origin").persist(StorageLevel.MEMORY_ONLY_SER)
@@ -280,10 +210,10 @@ object Redis_pt{
         * 3、记录各分区情况和产生的新边分布
         */
       val par_INFO = new_edges_str.map(s=>s._2._2).cache()
-      deleteDir.deletedir(islocal, master, output + "/par_INFO/step" + step)
-      par_INFO.repartition(1).saveAsTextFile(output + "/par_INFO/step" + step)
+      deleteDir.deletedir(Param_pt.islocal, Param_pt.master, Param_pt.output + "/par_INFO/step" + step)
+      par_INFO.repartition(1).saveAsTextFile(Param_pt.output + "/par_INFO/step" + step)
       var isnotBalance=false
-      if(output_Par_INFO){
+      if(Param_pt.output_Par_INFO){
         val par_time_JOIN=par_INFO.map(s=>s.split("REPARJOIN")(1).trim.toDouble.toInt).collect().sorted
         println("Join take time Situation")
         println("Join Min Task take time         \t"+par_time_JOIN(0))
@@ -313,7 +243,7 @@ object Redis_pt{
         * 4、Update Redis
         */
       val t0_hb = System.nanoTime(): Double
-      deleteDir.deletedir(islocal, master, hbase_output)
+      deleteDir.deletedir(Param_pt.islocal, Param_pt.master, Param_pt.hbase_output)
       redis_OP.Update(newedges)
       val t1_hb = System.nanoTime(): Double
       println("update Redis take time:          \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
@@ -327,7 +257,7 @@ object Redis_pt{
       val t0_union = System.nanoTime()
       val cur_par=oldedges.getNumPartitions
       val oldEdgesPartitioner = oldedges_cogroup.partitioner.getOrElse(new HashPartitioner(cur_par))
-      val need_par=(newnum/newnum_interval)*clusterpar
+      val need_par=(newnum/Param_pt.newnum_interval)*Param_pt.clusterpar
       val newedges_to_be_cogrouped = newedges.flatMap(s => {
         if(s(0)!=s(1)) Array((s(0),s),(s(1),s))
         else Array((s(0),s))
@@ -354,7 +284,7 @@ object Redis_pt{
       oldedges=oldedges_cogroup.mapPartitions((v=>BIgSpa_OP.Union(v,symbol_num)),true)
         .setName("oldedge-" + step).persist(StorageLevel.MEMORY_AND_DISK)
 
-      if(step % checkpoint_interval==0) {
+      if(step % Param_pt.checkpoint_interval==0) {
         val t0_cp=System.nanoTime()
         oldedges.checkpoint()
         println("checkpoint take time:           \t"+((System.nanoTime()-t0_cp)/1000000000.0).formatted("%.3f")
@@ -369,7 +299,7 @@ object Redis_pt{
       println
       continue = newnum != 0
 
-      if(check_edge){
+      if(Param_pt.check_edge){
         scan.next()
       }
     }

@@ -29,92 +29,31 @@ object Redis_df {
     println("Graspan Begin at "+df.format(System.currentTimeMillis())+"  \t@@")
     println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     println()
-    var islocal: Boolean = true
-    var master: String = "local"
 
-    var input_e:String="data/test_graph"
-    var input_n:String="data/test_graph"
-    var output: String = "data/result/" //除去ip地址
-    var hbase_output:String="data/result/hbase/hbhfile/"
-    var checkpoint_output:String="data/checkpoint"
-    var defaultpar:Int=384
-    var clusterpar:Int=384
-    var newnum_interval:Int=40000000
-    var checkpoint_interval:Int=10
-    var newedges_interval:Int=40000000
-
-    var updateRedis_interval:Int=50000
-    var queryRedis_interval:Int=50000
-
-    var is_complete_loop:Boolean=false
-    var max_complete_loop_turn:Int=5
-    var max_convergence_loop:Int=100
-
-    var file_index_f:Int= -1
-    var file_index_b:Int= -1
-
-    var check_edge:Boolean=false
-    var convergence_threshold:Int=10000
-    var output_Par_INFO:Boolean=false
-
-    for (arg <- args) {
-      val argname = arg.split(",")(0)
-      val argvalue = arg.split(",")(1)
-      argname match {
-        case "islocal" => islocal = argvalue.toBoolean
-        case "master" => master = argvalue
-
-        case "input_e"=>input_e=argvalue
-        case "input_n"=>input_n=argvalue
-        case "output" => output = argvalue
-        case "hbase_output"=>hbase_output=argvalue
-        case "clusterpar"=>clusterpar=argvalue.toInt
-        case "defaultpar"=>defaultpar=argvalue.toInt
-        case "newedges_interval"=>newedges_interval=argvalue.toInt
-
-        case "queryRedis_interval"=>queryRedis_interval=argvalue.toInt
-        case "updateRedis_interval"=>updateRedis_interval=argvalue.toInt
-
-        case "is_complete_loop"=>is_complete_loop=argvalue.toBoolean
-        case "max_complete_loop_turn"=>max_complete_loop_turn=argvalue.toInt
-        case "max_convergence_loop"=>max_convergence_loop=argvalue.toInt
-
-        case "newnum_interval"=>newnum_interval=argvalue.toInt
-        case "checkpoint_interval"=>checkpoint_interval=argvalue.toInt
-        case "checkpoint_output"=>checkpoint_output=argvalue
-        case "file_index_f"=>file_index_f=argvalue.toInt
-        case "file_index_b"=>file_index_b=argvalue.toInt
-
-        case "check_edge"=>check_edge=argvalue.toBoolean
-        case "convergence_threshold"=>convergence_threshold=argvalue.toInt
-        case "output_Par_INFO"=>output_Par_INFO=argvalue.toBoolean
-        case _ => {}
-      }
-    }
-
+    Param_df.makeParams(args)
 
     /**
       * Spark 设置
       */
     val conf = new SparkConf()//.set("spark.kryoserializer.buffer.max", "2048")
-    if (islocal) {
+    if (Param_df.islocal) {
       //test location can be adjusted or not
       conf.setAppName("Graspan")
       System.setProperty("hadoop.home.dir", "F:/hadoop-2.6.0/")
       conf.setMaster("local")
     }
     val sc = new SparkContext(conf)
-    sc.setCheckpointDir(checkpoint_output)
+    sc.setCheckpointDir(Param_df.checkpoint_output)
     //    try {
     println("------------Spark and HBase settings--------------------------------")
     println("spark.driver.memory:          \t" + conf.get("spark.driver.memory"))
     println("spark.executor.memory:        \t" + conf.get("spark.executor.memory"))
     println("spark.executor.instances:     \t" + conf.get("spark.executor.instances"))
     println("spark.executor.cores:         \t" + conf.get("spark.executor.cores"))
-    println("default partition num:        \t" + defaultpar)
-    println("cluster partition num:        \t" + clusterpar)
-    println("queryRedis_interval:          \t" + queryRedis_interval)
-    println("updateRedis_interval:         \t" + updateRedis_interval)
+    println("default partition num:        \t" + Param_df.defaultpar)
+    println("cluster partition num:        \t" + Param_df.clusterpar)
+    println("queryRedis_interval:          \t" + Param_df.queryRedis_interval)
+    println("updateRedis_interval:         \t" + Param_df.updateRedis_interval)
     println("--------------------------------------------------------------------")
     println
     /**
@@ -125,33 +64,33 @@ object Redis_df {
       * Graph相关设置
       */
     val (e_str,n_str)={
-      if(input_e.contains("Linux_dataflow_e")){
+      if(Param_df.input_e.contains("Linux_dataflow_e")){
         println("getinput_EandN")
-        BIgSpa_OP.getLinux_input_EandN(input_e,input_n,file_index_f,file_index_b,master)
+        BIgSpa_OP.getLinux_input_EandN(Param_df.input_e,Param_df.input_n,Param_df.file_index_f,Param_df.file_index_b,Param_df.master)
       }
       else{
-        (input_e,input_n)
+        (Param_df.input_e,Param_df.input_n)
       }
     }
 
 
-    val e=sc.textFile(e_str,defaultpar).flatMap(s=>{
+    val e=sc.textFile(e_str,Param_df.defaultpar).flatMap(s=>{
       val flag=s.split(":")(0).toInt
       s.split(":")(1).split("\\s+").map(x=>Array(flag,x.toInt,1))
     })
-    val n=sc.textFile(n_str,defaultpar).map(s=>s.split("\\s+").map(_.toInt))
+    val n=sc.textFile(n_str,Param_df.defaultpar).map(s=>s.split("\\s+").map(_.toInt))
     println("e counts : "+e.filter(s=>s(2)==1).count())
     println("n counts : "+n.filter(s=>s(2)==0).count())
     val nodes_totalnum=(e.flatMap(s=>Array(s(0),s(1))) ++ n.flatMap(s=>Array(s(0),s(1)))).distinct().count()
     val nodes_num_bitsize=BIgSpa_OP.getIntBit(nodes_totalnum.toInt)
     println("------------Graph INFO--------------------------------------------")
-    println("input graph:        \t" + input_e)
+    println("input graph:        \t" + Param_df.input_e)
     println("processed e:        \t" + e.count())
     println("processed n:        \t" + n.count())
     println("nodes_totoalnum:    \t" + nodes_totalnum)
     println("nodes_num_bitsize:  \t" + nodes_num_bitsize)
-    println("max_loop_turn:      \t" + max_complete_loop_turn)
-    println("convergence_turn:   \t" +max_convergence_loop)
+    println("max_loop_turn:      \t" + Param_df.max_complete_loop_turn)
+    println("convergence_turn:   \t" + Param_df.max_convergence_loop)
     println("------------------------------------------------------------------")
     println
 
@@ -161,17 +100,17 @@ object Redis_df {
     val t0_init_redis_origin=System.nanoTime()
     ShardedRedisClusterClient.getProcessLevelClient.clearDB()
     val t0_redis=System.nanoTime()
-    val redis_OP=new Redis_OP(updateRedis_interval)
+    val redis_OP=new Redis_OP(Param_df.updateRedis_interval)
     redis_OP.Update(e)
     redis_OP.Update(n)
     println("Origin Update Redis take time:        \t"+((System.nanoTime()-t0_redis)/1000000000.0).formatted
     ("%.3f")+ "sec" )
     //    scan.next()
 
-    deleteDir.deletedir(islocal, master, output)
+    deleteDir.deletedir(Param_df.islocal,Param_df.master, Param_df.output)
 
     var n_edges=n.map(s=>(s(1),s(0))).groupByKey().mapValues(_.toArray)
-      .partitionBy(new HashPartitioner(defaultpar))
+      .partitionBy(new HashPartitioner(Param_df.defaultpar))
       .persist(StorageLevel.MEMORY_ONLY_SER)
     //    oldedges.count()
 
@@ -182,7 +121,7 @@ object Redis_df {
     var continue: Boolean = true
     var newnum: Long = e.count()+n.count()
     var oldnum: Long = newnum
-    val init_e=n_edges.mapPartitionsWithIndex((index,s)=>BIgSpa_OP.init_e(index,s,master,e_str))
+    val init_e=n_edges.mapPartitionsWithIndex((index,s)=>BIgSpa_OP.init_e(index,s,Param_df.master,e_str))
     println("Init e in "+init_e.count()+"Partitions")
     val time_init_redis_origin=System.nanoTime()-t0_init_redis_origin
     val time_prepare=(System.nanoTime()-t0_all)/1000000000.0
@@ -209,15 +148,15 @@ object Redis_df {
       val t0_ge = System.nanoTime()
       val new_edges_str = {
         val tmp_max_complete_loop_turn={
-          if(newnum<=convergence_threshold) max_convergence_loop
-          else max_complete_loop_turn
+          if(newnum<=Param_df.convergence_threshold) Param_df.max_convergence_loop
+          else Param_df.max_complete_loop_turn
         }
         n_edges
           .mapPartitionsWithIndex((index, s) =>
             BIgSpa_OP.computeInPartition_df(step,
-              index, s,master,e_str,
+              index, s,Param_df.master,e_str,
               nodes_num_bitsize,
-              symbol_num_bitsize, is_complete_loop, tmp_max_complete_loop_turn,redis_OP),true).setName("newedge-before-distinct-" + step)
+              symbol_num_bitsize, Param_df.is_complete_loop, tmp_max_complete_loop_turn,redis_OP),true).setName("newedge-before-distinct-" + step)
       }.persist (StorageLevel.MEMORY_ONLY_SER)
       val coarest_num=new_edges_str.map(s=>s._2._3).sum
       val t1_ge = System.nanoTime()
@@ -229,10 +168,10 @@ object Redis_df {
         *2、 记录各分区情况
         */
       val par_INFO = new_edges_str.map(s=>s._2._2)
-      deleteDir.deletedir(islocal, master, output + "/par_INFO/step" + step)
-      par_INFO.repartition(1).saveAsTextFile(output + "/par_INFO/step" + step)
+      deleteDir.deletedir(Param_df.islocal, Param_df.master, Param_df.output + "/par_INFO/step" + step)
+      par_INFO.repartition(1).saveAsTextFile(Param_df.output + "/par_INFO/step" + step)
       var isnotBalance=false
-      if(output_Par_INFO){
+      if(Param_df.output_Par_INFO){
         val par_time_JOIN=par_INFO.map(s=>s.split("REPARJOIN")(1).trim.toDouble.toInt).collect().sorted
         println("Join take time Situation")
         println("Join Min Task take time         \t"+par_time_JOIN(0))
@@ -272,7 +211,7 @@ object Redis_df {
         * Update Redis
         */
       val t0_hb = System.nanoTime(): Double
-      deleteDir.deletedir(islocal, master, hbase_output)
+      deleteDir.deletedir(Param_df.islocal, Param_df.master, Param_df.hbase_output)
       redis_OP.Update(newedges)
       val t1_hb = System.nanoTime(): Double
       println("update Redis take time:         \t" + ((t1_hb - t0_hb) / 1000000000.0).formatted("%.3f") + " sec")
@@ -286,7 +225,7 @@ object Redis_df {
       val t0_union = System.nanoTime()
 
       val cur_par=n_edges.getNumPartitions
-      val need_par=(newnum/newnum_interval)*clusterpar
+      val need_par=(newnum/Param_df.newnum_interval)*Param_df.clusterpar
 
       val t0_new_flat_groupBykey=System.nanoTime()
       n_edges = {
@@ -296,7 +235,7 @@ object Redis_df {
         else origin
       }.persist(StorageLevel.MEMORY_ONLY_SER)
 
-      if(step % checkpoint_interval==0) {
+      if(step % Param_df.checkpoint_interval==0) {
         val t0_cp=System.nanoTime()
         n_edges.checkpoint()
 //        println("checkpoint take time:           \t"+((System.nanoTime()-t0_cp)/1000000000.0).formatted("%.3f")
@@ -312,7 +251,7 @@ object Redis_df {
         ".3f") + " sec")
       println
       continue = newnum != 0
-      if(check_edge)  scan.next()
+      if(Param_df.check_edge)  scan.next()
     }
 
 
