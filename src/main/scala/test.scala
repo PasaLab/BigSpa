@@ -47,6 +47,12 @@ object test {
       val sc = new SparkContext(conf)
       deleteDir.deletedir(islocal,master,output)
       processDF(sc, input_graph, output, 384)
+
+    val tmp1 = new LongOpenHashSet()
+    val tmp2=new LongOpenHashSet()
+    val edge_base=new ArrayBuffer[Long]()
+    val new_edges_set = new LongOpenHashSet()
+    tmp1.removeAll(tmp2)
     }
 }
 /*

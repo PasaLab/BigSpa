@@ -1,19 +1,15 @@
-package utils
+package OFFLINE.utils_OFFLINE
 
-import java.util
-import java.util.Scanner
-
-import org.apache.spark.{HashPartitioner, RangePartitioner, SparkContext}
-import org.apache.spark.rdd.RDD
+import it.unimi.dsi.fastutil.ints._
+import it.unimi.dsi.fastutil.longs.{LongArrayList, LongOpenHashSet}
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileUtil, Path}
-import org.apache.spark.util.LongAccumulator
+import org.apache.spark.SparkContext
+import org.apache.spark.rdd.RDD
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
-import it.unimi.dsi.fastutil.ints._
-import it.unimi.dsi.fastutil.longs.{LongArrayList, LongComparator, LongOpenHashSet}
-import BigSpa_OP_java.getCorrectLength
+
 /**
   * Created by cycy on 2018/1/29.
   */

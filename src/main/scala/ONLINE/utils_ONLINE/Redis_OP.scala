@@ -1,4 +1,4 @@
-package utils
+package ONLINE.utils_ONLINE
 
 import cn.edu.nju.pasalab.db.{BasicKVDatabaseClient, ShardedRedisClusterClient, Utils}
 import org.apache.spark.rdd.RDD

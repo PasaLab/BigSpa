@@ -1,4 +1,4 @@
-package utils
+package OFFLINE.utils_OFFLINE
 
 /**
   * Created by cycy on 2018/9/12.

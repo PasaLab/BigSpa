@@ -1,10 +1,12 @@
+package OFFLINE
+
 import java.text.SimpleDateFormat
 import java.util.Scanner
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
-import utils.{BIgSpa_OP, HBase_OP, deleteDir}
+import utils_OFFLINE.{BIgSpa_OP, HBase_OP, deleteDir}
 
 object HBase_pt{
 

@@ -1,6 +1,5 @@
-package utils
+package OFFLINE.utils_OFFLINE
 
-import java.io.{BufferedReader, FileReader}
 import java.net.URI
 import java.util.Scanner
 

@@ -1,10 +1,10 @@
-package utils;
+package ONLINE.utils_ONLINE;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import static java.lang.System.exit;
 import static java.lang.System.out;
-import static org.apache.hadoop.yarn.webapp.hamlet.HamletSpec.Media.print;
 
 
 /**
@@ -262,5 +262,20 @@ public class BigSpa_OP_java {
         return final_res;
     }
 
+//    class tmpCluster_info{
+//        HashMap<Integer,ArrayList<Integer>[][]> v_adj;
+//        ArrayList<Long> hub_edges;
+//    }
+//    class tmpV_info{
+//        int vid;
+//        int[][] edges;
+//    }
+//    public tmpCluster_info processCluster(ArrayList<tmpV_info> v_info, int[][] grammar, int symbol_num)
+//            :(Iterable[(Int, Array[Array[List[Int]]])],List[Long])={
+//
+//    }
 
+    public static long edge2long(int src,int target,int label){
+        return (((long)src)<<36)+(((long)target)<<8)+label;
+    }
 }
