@@ -1,5 +1,7 @@
 package ONLINE.utils_ONLINE;
 
+import cn.edu.nju.pasalab.db.BasicKVDatabaseClient;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -278,4 +280,5 @@ public class BigSpa_OP_java {
     public static long edge2long(int src,int target,int label){
         return (((long)src)<<36)+(((long)target)<<8)+label;
     }
+
 }

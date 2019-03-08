@@ -132,6 +132,9 @@ object BIgSpa_OP  {
     (graph_filter, nodes_num_bitsize, nodes_totalnum)
   }
 
+  /**
+    * Split Nodes Version 's P:rocess Grammar and Graph
+    */
   def processGrammar_Split(grammar_origin: List[Array[String]], input_grammar: String) = {
     val symbol_Map = grammar_origin.flatMap(s => s.toList).distinct.zipWithIndex.toMap
     val (loop: List[Int], directadd: Map[Int, Int], grammar:Array[Array[Int]]) = {
@@ -197,7 +200,6 @@ object BIgSpa_OP  {
     graph_filter
   }
 
-
   def getLinux_input_EandN(input_e: String, input_n: String, file_index_f: Int, file_index_b: Int, master: String):
   (String, String) = {
     val configuration = new Configuration()
@@ -229,16 +231,21 @@ object BIgSpa_OP  {
     (tmpstr_e, tmpstr_n)
   }
 
-  /**
-    * ****************************************************************************************************************
-    * Compute 操作
-    * ****************************************************************************************************************
-    */
   def init_e(index: Int, mid_adj: Iterator[(Int, Array[Int])], master: String, input_e_nomaster: String)
   : Iterator[Int] = {
     Dataflow_e_formation.get_e(master, input_e_nomaster, index)
     Array[Int]().toIterator
   }
+
+  /**
+    * ****************************************************************************************************************
+    * Compute 操作
+    * ****************************************************************************************************************
+    */
+
+  /**
+    * compute df
+    */
   def binary_search(e: Array[(Int, Array[Int])], target: Int, f0: Int): Int = {
     var f = f0
     var b = e.length
@@ -251,8 +258,6 @@ object BIgSpa_OP  {
     if (e(f)._1 != target) return -1
     else return f
   }
-
-
   def computeInPartition_df(step: Int, index: Int,
                             mid_adj: Iterator[(Int, Array[Int])], master: String, input_e_nomaster: String,
                             nodes_num_bitsize: Int, symbol_num_bitsize: Int,
@@ -396,104 +401,20 @@ object BIgSpa_OP  {
     //    List((res_edges_array.toList,recording,coarest_num)).toIterator
   }
 
-  def computeInPartition_pt(step: Int, index: Int,
-                            mid_adj: Iterator[(Int, (Array[Int], Array[Int], Array[Int], Array[Int],Array[Int]))],
-                            symbol_num: Int,
-                            grammar: Array[Array[Int]],
-                            nodes_num_bitsize: Int, symbol_num_bitsize: Int,
-                            directadd0: Map[Int, Int],
-                            dataBase_OP: DataBase_OP)
-  : Iterator[(Int, (Array[Array[Int]], String, Long))] = {
-    var recording = ""
-    val res_edges_list = new IntArrayList()
-    println("At STEP " + step + ", partition " + index)
-    recording += "At STEP " + step + ", partition " + index
-    val directadd = directadd0.toArray.map(s => Array(s._1, s._2))
-    var coarest_num = 0L
-    var t0 = System.nanoTime(): Double
-    var t1 = System.nanoTime(): Double
-    var time_realjoin = 0.0
-    mid_adj.foreach(s => {
-      val t00 = System.nanoTime()
-      val res = BigSpa_OP_java.join(s._1,
-        s._2._1,
-        s._2._2,
-        s._2._3,
-        s._2._4,
-        s._2._5,
-        grammar, symbol_num, directadd)
-      //      coarest_num += res.length
-      //      recording :+="*******************************"
-      //      recording :+="mid: "+s._1+"\n"
-      //      recording :+="old: "+s._2._1.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
-      //      recording :+="new: "+s._2._2.map(x=>"("+"("+x._1+"),"+x._2+")").mkString(", ")+"\n"
-      //      recording :+="res: "+res.toList.map(x=>"("+"("+x(0)+","+x(1)+"),"+x(2)+")").mkString(", ")+"\n"
-      //      recording :+="*******************************"
-      //        coarest_num +=res.size()
-      res_edges_list.addElements(res_edges_list.length, res, 0, res.length)
-      time_realjoin += System.nanoTime() - t00
-    })
-    coarest_num = res_edges_list.length / 3
-    //    var old_edges:List[(Int,Int,Int)]=mid_adj_list.flatMap(s=>(s._2)).map(s=>(s._1._1,s._1._2,s._2)
+  /**
+    * compute pt
+    */
 
-    t1 = System.nanoTime(): Double
-    val toolong = {
-      if ((t1 - t0) / 1000000000.0 < 10) "normal"
-      else if ((t1 - t0) / 1000000000.0 < 100) "longer than 10"
-      else "longer than 100"
-    }
-    println()
-    println("At STEP " + step + ", partition " + index+
-      " , ||"
-      + " origin_formedges: " + coarest_num
-      + " ||"
-      + "join take time: " + toolong + ", " + ((t1 - t0) / 1000000000.0) + " secs"
-      + " real join take time: " + time_realjoin/ 1000000000.0 + " secs")
-    recording += ("|| "
-      + "origin_formedges: " + coarest_num
-      + " ||"
-      + "join take time: " + toolong + ", REPARJOIN" + ((t1 - t0) / 1000000000.0) + "REPARJOIN secs")
-
-    /**
-      * 多线程开启
-      */
-    //    val executors = Executors.newCachedThreadPool()
-    //    val thread = new MyThread
-    //    class MyThread extends Thread{
-    //      override def run(): Unit = {
-    //
-    //      }
-    //    }
-    //    executors.submit(thread)
-    /**
-      * Redis过滤
-      */
-    t0 = System.nanoTime(): Double
-    val len = res_edges_list.length / 3
-    //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "Target Exist!"
-    val res_edges =
-    dataBase_OP.Query_PT(res_edges_list.toIntArray())
-
-    //    if(res_edges_array.filter(s=>s(0)==s(1)&&s(2)==7).length>0) recording += "After HBAse Filter Target Exist!"
-    t1 = System.nanoTime(): Double
-    println("At STEP " + step + ", partition " + index+
-      " , Query Redis for edges: \t" + len
-      + ",\ttake time: \t" + ((t1 - t0) / 1000000000.0).formatted("%.3f") + " sec"
-      + ", \tres_edges:             \t" + res_edges.length + "\n")
-    recording += ("Query DB for edges: \t" + len
-      + ",\ttake time: \tREPARDB" + ((t1 - t0) / 1000000000.0).formatted("%.3f") + "REPARDB sec"
-      + ", \tres_edges:             \t" + res_edges.length + "\n")
-    List((index, (res_edges, recording, coarest_num))).toIterator
-    //    List((res_edges_array.toList,recording,coarest_num)).toIterator
-  }
-
+  /**
+    * Split Nodes Version 's computeInPartition_pt
+    */
   def computeInPartition_pt_Split(step: Int, index: Int,
-                            mid_adj: Iterator[(Int, (Array[Int], Array[Int], Array[Int], Array[Int],Array[Int]))],
-                            symbol_num: Int,
-                            grammar: Array[Array[Int]],
-                            nodes_num_bitsize: Int, symbol_num_bitsize: Int,
-                            directadd0: Map[Int, Int],
-                            dataBase_OP: Redis_OP,Global_Vertex_Map:ArrayBuffer[(Int,Int,Int)],origin_nodes_num:Int)
+                                  mid_adj: Iterator[(Int, (Array[Int], Array[Int], Array[Int], Array[Int],Array[Int]))],
+                                  symbol_num: Int,
+                                  grammar: Array[Array[Int]],
+                                  nodes_num_bitsize: Int, symbol_num_bitsize: Int,
+                                  directadd0: Map[Int, Int],
+                                  dataBase_OP: Redis_OP,Global_Vertex_Map:ArrayBuffer[(Int,Int,Int)],origin_nodes_num:Int)
   : Iterator[(Int, (Array[Array[Int]], String, Long))] = {
     var recording = ""
     val res_edges_list = new IntArrayList()
@@ -578,6 +499,99 @@ object BIgSpa_OP  {
     //    List((res_edges_array.toList,recording,coarest_num)).toIterator
   }
 
+  /**
+    * 在线计算有哪些新边产生
+    * @param index
+    * @param mid_adj
+    * @param symbol_num
+    * @param loop
+    * @param directadd
+    * @param grammar
+    * @return
+    */
+  def computeInPartition_pt_predictNextEdges(index:Int,mid_adj:Iterator[(Int,(Iterable[(Int,Int,Int)],
+    Option[Node_Info]))],symbol_num:Int,loop:List[Int],directadd:Map[Int,Int],grammar:Array[Array[Int]]):Iterator[(Int,
+    Int,Int)]={
+    println("in partition "+index+" , computeInPartition_pt_predictNextEdges")
+    val res:ArrayBuffer[(Int,Int,Int)]=ArrayBuffer()
+//    println("mid_adj.length: "+mid_adj.length)//此句仅用于检查分区内是否有可遍历数据
+    /**
+      * 边的生成有三种方式
+      * 1、loop: 在旧边为空时，即新的顶点出现时，需要进行添加
+      * 2、directadd: 在新边转换为Node_Info时，进行统一处理
+      * 3、grammar: 新旧边笛卡尔积(若旧边为空则不做)和新边自己笛卡尔积(一定要做)
+      */
+    mid_adj.foreach(s=>{
+      val flag=s._1
+      println("flag: "+flag)
+      // 新边转换为Node_Info和directadd边添加
+      val newNode_Info=new Node_Info(flag,symbol_num)
+      s._2._1.map(e=>{
+        val directadd_label:Int=directadd.getOrElse(e._3,-1)
+        if(directadd_label != -1) {
+          println("directadd: "+directadd_label)
+          res.append((e._1,e._2,directadd_label))
+        }
+        if(flag==e._2){//f
+          newNode_Info.add_count(e._1,e._3,Param_pt.f,0,1)
+        }
+        if(flag==e._1){//b
+          newNode_Info.add_count(e._2,e._3,Param_pt.b,0,1)
+        }
+      })
+      //新旧边笛卡尔积
+      if(!s._2._2.isEmpty){//新旧边俱存，可能会有的新边包括：directadd(上一步统一处理)和grammar(新旧此处处理)触发的，但不包括loop，loop在旧边顶点出现时即已添加了
+        val node_Info=s._2._2.head
+        produce(newNode_Info,node_Info,res,grammar)
+      }
+        // 旧边为空，则进行loop添加
+      else{
+        println("add loop: "+loop)
+        for(l<-loop){
+          res.append((flag,flag,l))
+        }
+      }
+      // 新边自己笛卡尔积一定要做
+      produce(newNode_Info,newNode_Info,res,grammar)
+    })
+    println("final result "+res.length)
+    res.toIterator
+  }
+
+  /**
+    * 同一个点两个不同 Node_Info 做边的生成
+    * @param node_info1
+    * @param node_info2
+    * @param res
+    * @param grammar
+    */
+  def produce(node_info1:Node_Info,node_info2:Node_Info,res:ArrayBuffer[(Int,Int,Int)], grammar:Array[Array[Int]])={
+    for(g <- grammar){
+      val l3=g(2)
+      val f_index=g(0)*2+Param_pt.f
+      val b_index=g(1)*2+Param_pt.b
+      val neighbours1=node_info1.getNeighbours()
+      val neighbours2=node_info2.getNeighbours()
+      if(neighbours1(f_index)!=null && neighbours2(b_index)!=null){
+        val v1_set=neighbours1(f_index).keySet()
+        val v2_set=neighbours2(b_index).keySet()
+        for(v1<-v1_set){
+          for(v2<-v2_set){
+            res.append((v1,v2,l3))
+          }
+        }
+      }
+      if(neighbours2(f_index)!=null && neighbours1(b_index)!=null){
+        val v1_set=neighbours2(f_index).keySet()
+        val v2_set=neighbours1(b_index).keySet()
+        for(v1<-v1_set){
+          for(v2<-v2_set){
+            res.append((v1,v2,l3))
+          }
+        }
+      }
+    }
+  }
   /**
     * ****************************************************************************************************************
     * Union 操作
@@ -713,6 +727,11 @@ object BIgSpa_OP  {
     })
   }
 
+  /**
+    * Split Nodes Version 's Union
+    * @param e
+    * @return
+    */
   def union_normal_elements(e:(Int,((Array[Int],Array[Int],Array[Int]),(Array[ArrayBuffer[Int]],
   Array[ArrayBuffer[Int]])))):(Int, (Array[Int], Array[Int], Array[Int], Array[Int], Array[Int]))={
   val flag=e._1
@@ -1161,5 +1180,53 @@ object BIgSpa_OP  {
     }
     res
   }
+
+  /**
+    * 更新 oldedges 的 count array，且可能 出现新的顶点
+    */
+  def Update_Count_inPartition(index:Int,mid_adj:Iterator[(Int,(Option[Node_Info],Option[Iterable[((Int,Int,Int),Int)
+    ]]))],symbol_num:Int,grammar:Array[Array[Int]], count_direction:Int )
+  :Iterator[(Int,(Array[(Int,Node_Info)],Long))]={
+    var total=0L
+    val res1:Array[(Int,Node_Info)]=mid_adj.toArray.map(s=>{
+      val flag=s._1
+      val node_info:Node_Info= {
+        if (s._2._1.isEmpty) {
+          new Node_Info(flag,symbol_num)
+        }
+        else s._2._1.head
+      }
+      if(!s._2._2.isEmpty){
+        s._2._2.head.map(e=>{
+          if(flag==e._1._2) {//f
+            node_info.add_count(e._1._1,e._1._3,Param_pt.f,count_direction,e._2)
+          }
+          if(flag==e._1._1){//b
+            node_info.add_count(e._1._2,e._1._3,Param_pt.b,count_direction,e._2)
+          }
+        })
+      }
+      total+=GetTotalnum(node_info)
+      (flag,node_info)
+    })
+    println(s"node num: "+res1.length+s" , total edges: $total")
+    List((index,(res1,total))).toIterator
+  }
+
+  def GetTotalnum(node_info:Node_Info):Long={
+      var ans: Long = 0
+    val neighbours=node_info.getNeighbours()
+      for (map <- neighbours) {
+        if (map != null) ans += map.size
+      }
+      ans
+  }
+
+
+  /**
+    * Spark Streaming + Redis hold all 版各种操作
+    */
+
+
 }
 

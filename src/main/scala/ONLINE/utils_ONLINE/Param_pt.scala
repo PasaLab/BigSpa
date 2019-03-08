@@ -36,6 +36,7 @@ object Param_pt {
   var outputdetails:Boolean=false
   var output_Par_INFO:Boolean=false
 
+  var input_interval:Int=1000
   def makeParams(args:Array[String]) {
     for (arg <- args) {
       val argname = arg.split(",")(0)
@@ -72,8 +73,17 @@ object Param_pt {
         case "check_edge" => check_edge = argvalue.toBoolean
         case "outputdetails" => outputdetails = argvalue.toBoolean
         case "output_Par_INFO" => output_Par_INFO = argvalue.toBoolean
+        case "input_interval"=>input_interval=argvalue.toInt
         case _ => {}
       }
     }
   }
+
+  /**
+    * Node_Info 更新参数
+    */
+  val f=0
+  val b=1
+  val dir=0//直接计数索引
+  val tri=1//三角计数索引
 }

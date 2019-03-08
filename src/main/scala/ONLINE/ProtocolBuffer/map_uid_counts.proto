@@ -1,0 +1,6 @@
+syntax="proto3"; 
+option java_outer_classname = "map_uid_counts_Protobuf";   
+message map_uid_counts {   
+  map<int32,int64> uid_counts= 1;
+}
+
