@@ -349,8 +349,7 @@ class Redis_OP extends DataBase_OP with Serializable {
     val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
     val keys: Array[Array[Byte]] = Query.map(q=>Long2ByteArray(q))
     val values: Array[Array[Byte]] = client.getAll(keys)
-    val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP
-      .Deserialized_Map_UidCounts(v))
+    val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP.Deserialized_Map_UidCounts(v))
     (Query zip Answers).toMap
   }
 
@@ -366,11 +365,14 @@ class Redis_OP extends DataBase_OP with Serializable {
       val (src_label_b_map,dst_label_f_map)=(client.get(Long2ByteArray(src_label_b)),client.get(Long2ByteArray(dst_label_f)))
       val compute_map:Array[Array[java.util.Map[Integer,java.lang.Long]]]=new Array(2)
       val compute_keys=ecuc._3
+      println("compute_keys.length: "+compute_keys(0).length+" "+compute_keys(1).length)
       for(i<-0 to 1){
         compute_map(i)=new Array[java.util.Map[Integer,java.lang.Long]](compute_keys(i).length)
         val compute_key=compute_keys(i)
         for(j<-0 to compute_key.length-1){
           compute_map(i)(j)=ProtocolBuffer_OP.Deserialized_Map_UidCounts(client.get(Long2ByteArray(compute_key(j)._1)))
+          if(compute_map(i)(j)!=null) println(s"compute_map($i)($j): "+null)
+          else println(s"compute_map($i)($j).size: "+compute_map(i)(j).size())
         }
       }
       (ecuc._1,ecuc._2,ecuc._3,(ProtocolBuffer_OP.Deserialized_Map_UidCounts(src_label_b_map),ProtocolBuffer_OP

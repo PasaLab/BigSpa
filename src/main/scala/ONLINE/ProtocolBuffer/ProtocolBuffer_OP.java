@@ -28,9 +28,14 @@ public class ProtocolBuffer_OP {
     }
     public static Map<Integer,Long> Deserialized_Map_UidCounts(byte[] data){
         try {
-            map_uid_counts_Protobuf.map_uid_counts muc= map_uid_counts_Protobuf.map_uid_counts.parseFrom(data);
-            System.out.println(muc.getUidCountsMap());
-            return muc.getUidCountsMap();
+            if(data==null) return null;
+            else {
+                map_uid_counts_Protobuf.map_uid_counts muc = map_uid_counts_Protobuf.map_uid_counts.parseFrom(data);
+//                System.out.println(muc.getUidCountsMap());
+                HashMap<Integer,Long> newmap=new HashMap<>();
+                newmap.putAll(muc.getUidCountsMap());
+                return newmap;
+            }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
             return null;
@@ -55,7 +60,9 @@ public class ProtocolBuffer_OP {
         System.out.println("deserialization begin.");
         try {
             map_uid_counts_Protobuf.map_uid_counts muc= map_uid_counts_Protobuf.map_uid_counts.parseFrom(data);
-            System.out.println(muc.getUidCountsMap());
+            Map<Integer,Long> map_after=muc.getUidCountsMap();
+            map_after.put(0,1l);
+//            System.out.println(muc.getUidCountsMap());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }

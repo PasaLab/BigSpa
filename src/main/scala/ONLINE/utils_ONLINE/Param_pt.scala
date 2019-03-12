@@ -37,6 +37,8 @@ object Param_pt {
   var output_Par_INFO:Boolean=false
 
   var input_interval:Int=1000
+  var changemode_interval:Int=1000
+  var add:String="data/httpd_pt_2_add"
   def makeParams(args:Array[String]) {
     for (arg <- args) {
       val argname = arg.split(",")(0)
@@ -74,6 +76,8 @@ object Param_pt {
         case "outputdetails" => outputdetails = argvalue.toBoolean
         case "output_Par_INFO" => output_Par_INFO = argvalue.toBoolean
         case "input_interval"=>input_interval=argvalue.toInt
+        case "changemode_interval"=>changemode_interval=argvalue.toInt
+        case "add"=>add=argvalue
         case _ => {}
       }
     }

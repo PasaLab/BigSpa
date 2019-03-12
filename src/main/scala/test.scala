@@ -6,6 +6,7 @@ import java.util
 import java.util.Scanner
 
 import ONLINE.ProtocolBuffer.ProtocolBuffer_OP
+import ONLINE.ProtocolBuffer.ProtocolBuffer_OP._
 import ONLINE.Query_Filter_Compute_Update
 import ONLINE.utils_ONLINE._
 import ONLINE.utils_ONLINE.Redis_OP
@@ -25,11 +26,17 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 object test {
   def main(args: Array[String]): Unit = {
-    val map=new util.HashMap[Integer,java.lang.Long]()
-    map.put(1,2l)
-    map.put(2,4l)
-    val keys=ProtocolBuffer_OP.getmapKeys(map)
-    for(k<-keys) println(k)
+//    println("test map protocol buffer at driver")
+//    val map:java.util.Map[Integer,java.lang.Long]=new util.HashMap[Integer,java.lang.Long]()
+//    map.put(1,2l)
+//    map.put(2,4l)
+//    val str=Serialzed_Map_UidCounts(map)
+//    println(new String(str))
+//    val a=Array[Int]()
+//    a.foreach(println)
+    println(Query_Filter_Compute_Update.DecodeVid_label_pos(3788066665791503l))
+    println(Query_Filter_Compute_Update.DecodeCounts(4294967296l))
   }
+
 }
 
