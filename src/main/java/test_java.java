@@ -1,3 +1,4 @@
+import ONLINE.ProtocolBuffer.ProtocolBuffer_OP;
 import ONLINE.utils_ONLINE.Node_Info;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
@@ -21,8 +22,19 @@ public class test_java {
     public static void main(String[] args) throws IOException {
 
         Scanner scan=new Scanner(System.in);
+        String tmp="a a a";
+        String a=tmp.split(" ")[0];
+        out.println(a.compareTo("a"));
+        out.println(a=="a");
 
-
+        HashMap<Integer,Long> map=new HashMap<>();
+        map.put(1,1l);
+        map.put(2,1l);
+        byte[] bs=ProtocolBuffer_OP.Serialzed_Map_UidCounts(map);
+        out.println("buye array: "+new String(bs));
+        Map<Integer,Long> newmap=ProtocolBuffer_OP.Deserialized_Map_UidCounts(bs);
+        for(Map.Entry<Integer,Long> entry:newmap.entrySet()) out.println("k: "+entry.getKey()+" , v: "+entry.getValue
+                ());
 //        int len=(int)1e8;
 //
 //        double t0=System.nanoTime();

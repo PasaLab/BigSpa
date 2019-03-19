@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static ONLINE.ProtocolBuffer.map_uid_counts_Protobuf.*;
+import static java.lang.System.out;
 import static javax.swing.UIManager.put;
 import static org.bouncycastle.asn1.x500.style.RFC4519Style.o;
+import static sun.misc.Version.println;
 
 /**
  * Created by cycy on 2019/3/5.
@@ -30,10 +32,22 @@ public class ProtocolBuffer_OP {
         try {
             if(data==null) return null;
             else {
+                double t0=System.nanoTime();
                 map_uid_counts_Protobuf.map_uid_counts muc = map_uid_counts_Protobuf.map_uid_counts.parseFrom(data);
-//                System.out.println(muc.getUidCountsMap());
+                double t1_parseFrom=System.nanoTime();
+////                System.out.println(muc.getUidCountsMap());
+//                return muc.getUidCountsMap();
+                Map<Integer,Long> tempmap=muc.getUidCountsMap();
+                double t1_formMap=System.nanoTime();
                 HashMap<Integer,Long> newmap=new HashMap<>();
-                newmap.putAll(muc.getUidCountsMap());
+                newmap.putAll(tempmap);
+                double t1_putAll=System.nanoTime();
+                if(newmap.size()>10000) {
+                    out.print("map length: \t" + newmap.size());
+                    out.print(" \tparseFrom bytes uses " + (t1_parseFrom - t0) / 1e9);
+                    out.print(" \tformMap uses " + (t1_formMap - t1_parseFrom) / 1e9);
+                    out.println(" \tput into new map uses " + (t1_putAll - t1_formMap) / 1e9);
+                }
                 return newmap;
             }
         } catch (InvalidProtocolBufferException e) {
@@ -53,11 +67,11 @@ public class ProtocolBuffer_OP {
         map_uid_counts instance = muc_builder.build();
         // 序列化，byte[]可以被写到磁盘文件，或者通过网络发送出去。
         byte[] data = instance.toByteArray();
-        System.out.println("serialization end.");
+        out.println("serialization end.");
 
 
         // 反序列化，byte[]可以读文件或者读取网络数据构建。
-        System.out.println("deserialization begin.");
+        out.println("deserialization begin.");
         try {
             map_uid_counts_Protobuf.map_uid_counts muc= map_uid_counts_Protobuf.map_uid_counts.parseFrom(data);
             Map<Integer,Long> map_after=muc.getUidCountsMap();
@@ -77,5 +91,8 @@ public class ProtocolBuffer_OP {
 
     public static Integer[] getmapKeys(Map<Integer,Long> map){
         return map.keySet().toArray(new Integer[0]);
+    }
+    public static scala.Long[] getmapKeys_special(Map<scala.Long,Map<Integer,Long>> map){
+        return map.keySet().toArray(new scala.Long[0]);
     }
 }

@@ -1,24 +1,23 @@
 package ONLINE
 
-import java.io.File
+import java.io.{File, PrintWriter}
 import java.util
+import java.lang
 import java.util.Scanner
 import javax.management
 
 import ONLINE.ProtocolBuffer.ProtocolBuffer_OP
 import ONLINE.ProtocolBuffer.ProtocolBuffer_OP._
 import ONLINE.utils_ONLINE.{BIgSpa_OP, Param_pt, Redis_OP}
-import cn.edu.nju.pasalab.db.ShardedRedisClusterClient
+import cn.edu.nju.pasalab.db.{BasicKVDatabaseClient, ShardedRedisClusterClient, Utils}
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{HashPartitioner, SparkConf, SparkContext}
-import org.apache.spark.sql.functions._
-import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.types.StructType
 import org.apache.spark.storage.StorageLevel
 
-import collection.JavaConversions
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.JavaConversions.mapAsScalaMap
 import scala.io.Source
 /**
   * Created by cycy on 2019/3/5.
@@ -147,15 +146,6 @@ object Query_Filter_Compute_Update {
     /**
       * RDD读入原边集
       */
-
-    println("test map protocol buffer at driver")
-    val map:java.util.Map[Integer,java.lang.Long]=new util.HashMap[Integer,java.lang.Long]()
-    map.put(1,2l)
-    map.put(2,4l)
-    val str=Serialzed_Map_UidCounts(map)
-    println(new String(str))
-    //    scan.next()
-
     if(Param_pt.input_graph!="null") {
       t0 = System.nanoTime()
       val original_edges: RDD[(Long, java.util.Map[Integer, java.lang.Long])] = sc.textFile(Param_pt.input_graph, Param_pt
@@ -187,16 +177,21 @@ object Query_Filter_Compute_Update {
       */
 
     while(true) {
-      println("please input the added edges file path")
+
 
       val source: Array[String] = {
-//        var path = scan.nextLine()
-//        var file=new File(path)
-//        while(!file.exists()){
-//          path=scan.nextLine()
-//          file=new File(path)
-//        }
-//        Source.fromFile(path).getLines().toArray
+//                var path = scan.nextLine()
+//                var file=new File(path)
+//                while(!file.exists()){
+//                  path=scan.nextLine()
+//                  file=new File(path)
+//                }
+//                Source.fromFile(path).getLines().toArray
+//        println("please input the added edges file path")
+        //scan.next()
+//        Param_pt.add=scan.nextLine()
+        println("add file: \t"+Param_pt.add)
+        scan.nextLine()
         Source.fromFile(Param_pt.add).getLines().toArray
       }
       //source 的数量保证小批量
@@ -232,7 +227,7 @@ object Query_Filter_Compute_Update {
             add_edges_rdd.unpersist()
             add_edges_rdd = null
           }
-          add_edges = ComputeSingleMachine(add_edges, grammar_match, loop, directadd, step, redis_OP)
+          add_edges = ComputeSingleMachine_ADD(add_edges, grammar_match, loop, directadd, step, redis_OP)
           add_edges_len = add_edges.length
           println("add_edges count: "+add_edges.length)
           //          add_edges.foreach(s => println(s._1, s._2, Symbol_Map_read(s._3)))
@@ -251,219 +246,15 @@ object Query_Filter_Compute_Update {
         val t1_1=System.nanoTime()
         println(s" \t step $step uses " + (t1_1-t0_1)/1e9 )
         step += 1
-        val pause=scan.nextLine()
+//        val pause=scan.nextLine()
       }
       val t1_delta=System.nanoTime()
-      println("update use "+(t1_delta-t0_delta)/1e9)
+      println(s"update use step $step and takes time "+(t1_delta-t0_delta)/1e9)
+      scan.next()
     }
 
   }
 
-  def ComputeSingleMachine(add_edges:Array[(Int,Int,Int)],grammar_match:Map[Int,Array[(Int,Int)]],loop:List[Int],
-                           directadd:Map[Int,Int],
-                           step:Int,
-                           redis_OP:Redis_OP):Array[(Int,Int,Int)]={
-    /**
-      * 1 统计数据
-      */
-    val t0_1=System.nanoTime()
-    var add_edges_count:Array[((Int,Int,Int),Int)]=add_edges.map(e=>(e,1)).groupBy(_._1).map(eg=>(eg._1,eg._2.length)).toArray
-    println("add_edges_count: "+add_edges_count.length)//+" \n"+add_edges_count.mkString("\n")
-    val distinct_newedges_count=add_edges_count.length
-    val t1_1=System.nanoTime()
-    println(" 1: form add_edges_count uses \t"+(t1_1-t0_1)/1e9)
-    /**
-      * 2 计算所需查询的所有key，包括
-      *   1) Update_Count所需的key : src_label_b and dst_label_f ，其中任选其一可作为filter
-      *   2) Compute new edges 所需的key : [src_x_f] and [dst_y_b]
-      *
-      *   数据格式: (
-      *     (src,dst,label),
-      *     (src_label_,dst_label_f),
-      *     Array[Arraybuffer[vid_label_pos,label_target]] : [(src_x_f,A)] and [(dst_y_b,B)]
-      *     )
-      */
-    //
-    val t0_2=System.nanoTime()
-    val newedges_count_update_compute:Array[(((Int,Int,Int),Int),(Long,Long),Array[ArrayBuffer[(Long,Int)]])]=
-      add_edges_count.map(ec=>{
-        val (src,dst,label)=ec._1
-        val update_src=EncodeVid_label_pos(src,label,1)
-        val update_dst=EncodeVid_label_pos(dst,label,0)
-        val compute=new Array[ArrayBuffer[(Long,Int)]](2)
-        for(i<-0 to 1)
-          compute(i)=new ArrayBuffer[(Long, Int)]()
-        grammar_match.getOrElse(EncodeLabel_pos(label,1),Array[(Int,Int)]())
-          .foreach(s=> {
-            val (x_f, label_A) = s
-            compute(0).append((EncodeVid_labelpos(src, x_f), label_A))
-          })
-        grammar_match.getOrElse(EncodeLabel_pos(label,0),Array[(Int,Int)]()).foreach(s=>{
-          val (y_b,label_B)=s
-          compute(1).append((EncodeVid_labelpos(dst,y_b),label_B))
-        })
-        (ec,(update_src,update_dst),compute)
-      })
-    val t1_2=System.nanoTime()
-    println(" 2: compute all Query keys  uses \t"+(t1_2-t0_2)/1e9)
-//    println("newedges_count_update_compute: \n"+newedges_count_update_compute.map(s=>(s._1+" "+s._2+" "+s._3.mkString(",")))
-//      .mkString("\n"))
-    /**
-      * 3 Query Redis
-      *   1) 形成 Query Redis 所需的所有键
-      *   2) Query
-      */
-    val t0_3=System.nanoTime()
-    val Query:Array[Long]=newedges_count_update_compute.flatMap(s=>{
-      val res=ArrayBuffer[Long]()
-      res.append(s._2._1,s._2._2)
-      res.appendAll(s._3(0).map(_._1))
-      res.appendAll(s._3(1).map(_._1))
-      res
-    }).distinct
-    println("Query: "+Query.length)
-    //    +"-"+Query.mkString(" "))
-    val Query_Answer:Map[Long,java.util.Map[Integer,java.lang.Long]]=redis_OP.Query_PB_Array(Query)
-    val t1_3=System.nanoTime()
-    println(" 3: Query Redis uses \t"+(t1_3-t0_3)/1e9)
-//    println("Qurey_Answer: \n"+Query_Answer.mkString("\n"))
-    /**
-      * 4 根据 Query_Answer 进行计算 和 count更新
-      *   注: 若不存在原边则进行新边计算，所有的新边都要进行count更新
-      */
-    /**
-      * 4.2 计算新的边
-      */
-    val add_edges_buffer:ArrayBuffer[(Int,Int,Int)]=new ArrayBuffer(distinct_newedges_count*13)
-
-    /**
-      * 4.2.1 计算新边与新边产生的
-      */
-    val t0_4_2_1=System.nanoTime()
-    add_edges_count.flatMap(es=>Array((es._1._1,(EncodeLabel_pos(es._1._3,1),es._1._2)), (es._1._2,(EncodeLabel_pos
-    (es._1._3,0),es._1._1)))).groupBy(_._1).foreach(mid_edges=>{
-      val lable_pos_nodes:Map[Int,Array[Int]]=mid_edges._2.map(s=>s._2).groupBy(_._1).map(s=>(s._1,s._2.map(e=>e._2)))
-      for(lpn<-lable_pos_nodes){
-        if(DecodeLabel_pos(lpn._1)._2==0){//为防止重复，只以f为标准计算
-        val other_b_target_label_arrays=grammar_match.getOrElse(lpn._1,null)
-          if(other_b_target_label_arrays!=null){
-            val srcs=lpn._2
-            for((other_b,targetlabel)<-other_b_target_label_arrays){
-              val dsts=lable_pos_nodes.getOrElse(other_b,Array[Int]())
-              for(dst<-dsts){
-                for(src<-srcs){
-                  add_edges_buffer.append((src,dst,targetlabel))
-                }
-              }
-            }
-          }
-        }
-      }
-    })
-
-    val t1_4_2_1=System.nanoTime()
-    println(" 4.2.1: Compute new edges product new-new uses  \t"+(t1_4_2_1-t0_4_2_1)/1e9)
-    println(" 4.2.1: Compute new edges product new-new count \t"+add_edges_buffer.size)
-//    println(" new_new : "+add_edges_buffer.mkString("\n"))
-    val num_new_new=add_edges_buffer.length
-    /**
-      * 4.2.2 计算新边与旧边产生
-      */
-      println("new_old:")
-
-    val t0_4_2_2=System.nanoTime()
-    newedges_count_update_compute.foreach(ecuc=>{
-      val (src,dst,label)=ecuc._1._1
-      val src_label_b=ecuc._2._1
-      val dst_label_f=ecuc._2._2
-      val filter_map=Query_Answer.getOrElse(src_label_b,null)
-//      println(ecuc._1._1+"filter_map: "+filter_map)
-//      if(filter_map!=null) println(s"filter_map.get($dst)= "+filter_map.getOrDefault(dst,null))
-      if(filter_map==null||filter_map.getOrDefault(dst,null)==null){//说明此边原先不存在，可能产生新的边
-        /**
-          * for directadd
-          */
-        val add_label:Int=directadd.getOrElse(label,-1)
-        if(add_label!= -1) add_edges_buffer.append((src,dst,add_label))
-
-        /**
-          * for grammar
-          */
-        val label_other_target=ecuc._3
-//        println("label_other_target: "+label_other_target)
-        /**
-          * for src_x_f
-          */
-        for((src_x_f,label_A)<-label_other_target(0)){
-          val uid_counts:java.util.Map[Integer,java.lang.Long]=Query_Answer.getOrElse(src_x_f,null)
-          if(uid_counts!=null){
-            val ks=ProtocolBuffer_OP.getmapKeys(uid_counts)
-            for(k<-ks) add_edges_buffer.append((k, dst, label_A))
-          }
-        }
-        /**
-          * for dst_y_b
-          */
-        for((dst_y_b,label_B)<-label_other_target(1)){
-          val uid_counts:java.util.Map[Integer,java.lang.Long]=Query_Answer.getOrElse(dst_y_b,null)
-          if(uid_counts!=null){
-            val ks=ProtocolBuffer_OP.getmapKeys(uid_counts)
-            for(k<-ks) add_edges_buffer.append((src, k, label_B))
-          }
-        }
-
-      }
-    })
-    val t1_4_2_2=System.nanoTime()
-    println(" 4.2.2: Compute new edges product old-new uses  \t "+(t1_4_2_2-t0_4_2_2)/1e9)
-    println(" 4.2.2: Compute new edges product old-new count \t "+(add_edges_buffer.length-num_new_new))
-//    println("add_edges_buffer now: "+add_edges_buffer.mkString("\n"))
-    val t0_5=System.nanoTime()
-    val res=add_edges_buffer.toArray
-    val t1_5=System.nanoTime()
-    println(" 5: buffer to array uses \t"+(t1_5-t0_5)/1e9)
-//    println(res.mkString("\n"))
-
-    /**
-      * 4.1 更新 Count 此处将转换为Byte数组的操作直接执行
-      * 合并对同一个vid_label_pos的更新，此处不能直接应用map，不同的边可能会对同一个点进行更新
-      */
-    val t0_4_1=System.nanoTime()
-    val key_toUpdateCounts=newedges_count_update_compute.flatMap(ele=>Array((ele._2._1,ele._1),(ele._2._2,ele._1)))
-      .groupBy(_._1).toArray
-    val key_num=key_toUpdateCounts.size
-    val keys:Array[Array[Byte]]=new Array[Array[Byte]](key_num)
-    val values:Array[Array[Byte]]=new Array[Array[Byte]](key_num)
-    println("key_toUpdateCounts: "+key_toUpdateCounts.length)
-    //      +"-"+key_toUpdateCounts.mkString(","))
-    for(i<-0 to key_num-1) {
-      val key_updateedges = key_toUpdateCounts(i)
-      val src_dst_label = key_updateedges._2
-      val key = key_updateedges._1
-      val vid = DecodeVid_labelpos(key)._1
-      keys(i) = Long2ByteArray(key)
-      val targetMap: java.util.Map[Integer, java.lang.Long] = {
-        val temp=Query_Answer.getOrElse(key, null)
-        if(temp==null) new java.util.HashMap[Integer, java.lang.Long]()
-        else temp
-      }
-      var (src,dst,label,count) = (0,0,0,0)
-      for (ele <- src_dst_label) {
-        count = ele._2._2
-        src=ele._2._1._1
-        dst=ele._2._1._2
-        label=ele._2._1._3
-        val encoded_counts = EncodeCount(count, step)
-        if(vid==dst) ProtocolBuffer_OP.UpdateCounts(targetMap,src,encoded_counts)
-        else ProtocolBuffer_OP.UpdateCounts(targetMap,dst,encoded_counts)
-      }
-      values(i) = ProtocolBuffer_OP.Serialzed_Map_UidCounts(targetMap)
-    }
-    redis_OP.Update_PB_ByteArray(keys,values)
-    val t1_4_1=System.nanoTime()
-    println(" 4.1:Update Counts uses \t"+(t1_4_1-t0_4_1)/1e9)
-    res
-  }
 
   def ComputeDistribution(add_edges:RDD[(Int,Int,Int)],grammar_match:Map[Int,Array[(Int,Int)]],
                           loop:List[Int],
@@ -508,7 +299,7 @@ object Query_Filter_Compute_Update {
       (ec,(update_src,update_dst),compute)
     }).persist(StorageLevel.MEMORY_ONLY_SER)
     println("newedges_count_update_compute.count: "+newedges_count_update_compute.count())
-//    println("newedges_count_update_compute: \n"+newedges_count_update_compute.collect().map(s=>(s._1+" "+s._2+" "+s._3.mkString(","))).mkString("\n"))
+    //    println("newedges_count_update_compute: \n"+newedges_count_update_compute.collect().map(s=>(s._1+" "+s._2+" "+s._3.mkString(","))).mkString("\n"))
     /**
       * 3 Query Redis
       *   1) 形成 Query Redis 所需的所有键
@@ -519,8 +310,8 @@ object Query_Filter_Compute_Update {
       ]=newedges_count_update_compute.mapPartitions(p_ecuc=>redis_OP.QueryAndUpdate_PB_RDD_Partition(p_ecuc)).persist
     (StorageLevel.MEMORY_ONLY_SER)
     println("newedges_count_update_compute_Answer.count: "+newedges_count_update_compute_Answer.count())
-//    println("newedges_count_update_compute_Answer: \n"+newedges_count_update_compute_Answer.collect().map(s=>(s._1+" " +
-//      ""+s._2+" "+s._3.mkString(",")+" "+s._4+" "+s._5(0).mkString(";")+" and "+s._5(1).mkString(";"))).mkString("\n"))
+    //    println("newedges_count_update_compute_Answer: \n"+newedges_count_update_compute_Answer.collect().map(s=>(s._1+" " +
+    //      ""+s._2+" "+s._3.mkString(",")+" "+s._4+" "+s._5(0).mkString(";")+" and "+s._5(1).mkString(";"))).mkString("\n"))
     //    val temp=newedges_count_update_compute_Answer.collect()
 
     /**
@@ -559,18 +350,18 @@ object Query_Filter_Compute_Update {
         res
       }).persist(StorageLevel.MEMORY_ONLY_SER)
     println("newedges_nn.count: \t"+newedges_nn.count())
-//    println("newedges_nn: \t"+newedges_nn.collect().mkString("\n"))
+    //    println("newedges_nn: \t"+newedges_nn.collect().mkString("\n"))
 
     println("newedges_count_update_compute_Answer.count : "+newedges_count_update_compute_Answer.count())
     val newedges_on:RDD[(Int,Int,Int)]=
       newedges_count_update_compute_Answer.mapPartitions(p=>{
         val arrays=new ArrayBuffer[(Int,Int,Int)](1024)
         p.foreach(s=>{
-//          println(s._1)
+          //          println(s._1)
           val src_label_b=s._2._1
           val src_label_b_map=s._4._1
           val (src,dst,label)=s._1._1
-//          println("src_label_b_map: "+src_label_b_map)
+          //          println("src_label_b_map: "+src_label_b_map)
           if(src_label_b_map==null||src_label_b_map.getOrDefault(dst,null)==null){
             val res:ArrayBuffer[(Int,Int,Int)]=new ArrayBuffer[(Int, Int, Int)]()
             /**
@@ -591,7 +382,7 @@ object Query_Filter_Compute_Update {
               if(uid_counts!=null){
                 src_x_f=label_other_target(0)(i)._1
                 label_A=label_other_target(0)(i)._2
-                val ks=ProtocolBuffer_OP.getmapKeys(uid_counts)
+                val ks=getmapKeys(uid_counts)
                 for(k<-ks) res.append((k, dst, label_A))
               }
             }
@@ -604,7 +395,7 @@ object Query_Filter_Compute_Update {
               if(uid_counts!=null){
                 dst_y_b=label_other_target(1)(i)._1
                 label_B=label_other_target(1)(i)._2
-                val ks=ProtocolBuffer_OP.getmapKeys(uid_counts)
+                val ks=getmapKeys(uid_counts)
                 for(k<-ks) res.append((src, k, label_B))
               }
             }
@@ -616,7 +407,7 @@ object Query_Filter_Compute_Update {
         arrays.toIterator
       }).persist(StorageLevel.MEMORY_ONLY_SER)
     println("newedges_on.count: \t"+newedges_on.count())
-//    println("newedges_on: \t"+newedges_on.collect().mkString("\n"))
+    //    println("newedges_on: \t"+newedges_on.collect().mkString("\n"))
 
     /**
       * 4.1 合并对同一个vid_label_pos的更新，此处不能直接应用map，不同的边可能会对同一个点进行更新
@@ -648,12 +439,440 @@ object Query_Filter_Compute_Update {
         (s._1,targetMap)
       }))
     println("UpdateCounts.count: "+UpdateCounts.count())
-//    println("UpdateCounts: "+UpdateCounts.collect().mkString("\n"))
+    //    println("UpdateCounts: "+UpdateCounts.collect().mkString("\n"))
     redis_OP.Update_PB(UpdateCounts)
     //    println("newedges_count_update_compute_Answer.count : "+newedges_count_update_compute_Answer.count())
     val res=newedges_nn.union(newedges_on).setName(s"add_edges_rdd $step").persist(StorageLevel.MEMORY_ONLY_SER)
-//    println(res.collect().mkString("\n"))
+    //    println(res.collect().mkString("\n"))
     res
   }
+
+
+  def ComputeSingleMachine_ADD(add_edges:Array[(Int,Int,Int)],grammar_match:Map[Int,Array[(Int,Int)]],loop:List[Int],
+                             directadd:Map[Int,Int],
+                             step:Int,
+                             redis_OP:Redis_OP):Array[(Int,Int,Int)]={
+    /**
+      * 1 统计数据
+      */
+    val t0_1=System.nanoTime()
+    var add_edges_count_0:Array[((Int,Int,Int),Int)]=add_edges.map(e=>(e,1)).groupBy(_._1).map(eg=>(eg._1,eg._2
+      .length)).toArray
+    println("add_edges_count_0: "+add_edges_count_0.length)//+" \n"+add_edges_count.mkString("\n")
+    val t1_1=System.nanoTime()
+    println(" \t1: form add_edges_count uses \t"+(t1_1-t0_1)/1e9)
+    val add_edges_count_0_len=add_edges_count_0.length
+
+    /**
+      * 2 计算Update和filter所需的key，包括
+      *   1) Update_Count所需的key : src_label_b and dst_label_f ，其中任选其一可作为filter
+      *
+      *   数据格式: (
+      *     (src,dst,label),
+      *     (src_label_,dst_label_f),
+      *     Array[Arraybuffer[vid_label_pos,label_target]] : [(src_x_f,A)] and [(dst_y_b,B)]
+      *     )
+      */
+    //
+    val t0_2=System.nanoTime()
+    val key_Update_Filter:Array[(Long,Array[(Int,Long)])] = {
+      add_edges_count_0.flatMap(ec=>{
+        val ((src,dst,label),count)=ec
+        val encodedcounts=EncodeCount(count,step)
+        Array((EncodeVid_label_pos(src,label,1),(dst,encodedcounts)),(EncodeVid_label_pos(dst,label,0),(src,encodedcounts)))
+      }).groupBy(_._1).map(s=>(s._1,s._2.map(_._2)))
+      }.toArray
+    val t1_2_1_1=System.nanoTime()
+    println(" \t2.1.1 form Key_Update_filter "+key_Update_Filter.size+" uses "+(t1_2_1_1-t0_2)/1e9)
+    val key_answer_counts_Update_Filter:Map[Long,(Array[(Int,Long)],util.Map[Integer,lang.Long])]=
+      redis_OP.Query_PB_withCounts(key_Update_Filter)
+    val t1_2_1_2=System.nanoTime()
+    println(" \t2.1.2 form key_answer_Update_Filter uses "+(t1_2_1_2-t1_2_1_1)/1e9)
+
+    val add_edges_count_purenew:Array[(Int,Int,Int)]=add_edges_count_0.filter(s=>{
+      val temp=key_answer_counts_Update_Filter.getOrElse(EncodeVid_label_pos(s._1._1,s._1._3,1),null)
+      if(temp._2==null||temp._2.getOrDefault(s._1._2,null)==null) true
+      else false
+    }).map(_._1)
+    val t1_2_2=System.nanoTime()
+    println(" \t2.2 form clean new edges uses \t"+(t1_2_2-t1_2_1_2)/1e9)
+    println("add_edges_count_pure_new.count: \t"+add_edges_count_purenew.length)
+    //    println("newedges_count_update_compute: \n"+newedges_count_update_compute.map(s=>(s._1+" "+s._2+" "+s._3.mkString(",")))
+    //      .mkString("\n"))
+
+
+    /**
+      * 3 Query Redis
+      *   1) 形成 Compute 所需的所有键
+      *   2) Query
+      */
+    val t0_3=System.nanoTime()
+
+    // mid, Map[label_pos, Array[uid]]
+    val mid_neighbour:Array[(Int,Map[Int,Array[Int]])]=add_edges_count_purenew.flatMap(s=>Array(
+      (s._1,(EncodeLabel_pos(s._3,1),s._2)),(s._2,(EncodeLabel_pos(s._3,0),s._1))))
+      .groupBy(_._1)
+      .map(s=>(s._1,s._2.map(_._2).groupBy(_._1).map(x=>(x._1,x._2.map(_._2)))))
+      .toArray
+    val t1_3_1=System.nanoTime()
+    println(" \t3.1 form mid_neighbours uses "+(t1_3_1-t0_3)/1e9)
+
+    val Query:Array[Long]={
+      val longhashset=new LongOpenHashSet()
+      mid_neighbour.foreach(s=>
+        s._2.foreach(x=>{
+          val other_label_poss=grammar_match.getOrElse(x._1,null)
+          if(other_label_poss!=null){
+            for(other_label_pos<-other_label_poss){
+              for(uid<-x._2){
+                longhashset.add(EncodeVid_labelpos(s._1,other_label_pos._1))
+              }}}}))
+      longhashset.toLongArray
+    }
+    println("Query for Compute: "+Query.length)
+    //    +"-"+Query.mkString(" "))
+    val Query_Answer:Map[Long,java.util.Map[Integer,java.lang.Long]]=redis_OP.Query_PB_Array(Query)
+    val t1_3=System.nanoTime()
+    println(" \t3: Query Redis for Compute uses \t"+(t1_3-t0_3)/1e9)
+    //    println("Qurey_Answer: \n"+Query_Answer.mkString("\n"))
+
+    /**
+      * 4 根据 Query_Answer 进行计算
+      *
+      *   new-new and new-old
+      */
+    val t0_4=System.nanoTime()
+    val add_edges_buffer:ArrayBuffer[(Int,Int,Int)]={
+      val res:ArrayBuffer[(Int,Int,Int)]=new ArrayBuffer(add_edges_count_0_len)
+      mid_neighbour.foreach(m_n=>{
+        val mid=m_n._1
+        m_n._2.foreach(label_pos_uids=>{
+          val ((label,pos),uids)=(DecodeLabel_pos(label_pos_uids._1),label_pos_uids._2)
+          val otherlabelpos_targetlabels=grammar_match.getOrElse(label_pos_uids._1,null)
+          if(otherlabelpos_targetlabels!=null){
+            /**
+              * new-new
+              */
+            if(pos==0){//以f为准，避免重复计算
+              for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
+                val uid_dst=m_n._2.getOrElse(otherlabelpos,null)
+                if(uid_dst!=null){
+                  uids.foreach(src=>res.appendAll(uid_dst.map(dst=>(src,dst,targetlabel))))}}
+            }
+            /**
+              * new-old
+              */
+            for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
+              val uid_old_count=Query_Answer.getOrElse(EncodeVid_labelpos(mid,otherlabelpos),null)
+              if(uid_old_count!=null){
+                val uid_old=getmapKeys(uid_old_count)
+                if(pos==0){
+                  uids.foreach(src=>res.appendAll(uid_old.map(dst=>(src,dst.toInt,targetlabel))))
+                }//uids 在前
+                else{
+                  uids.foreach(dst=>res.appendAll(uid_old.map(src=>(src.toInt,dst,targetlabel))))
+                }//uids 在后
+              }}}
+        })})
+      res
+    }
+    val t1_4=System.nanoTime()
+    println(" \t4 form new edges uses "+(t1_4-t0_4)/1e9)
+    println("add_edges_formed.count: \t"+add_edges_buffer.length)
+//    if(step>=0) {
+//      println("!!!!!!!!!!!!!!!!!!!!! To Judge ")
+//      println()
+//      val writer=new PrintWriter("tmp_reverse/add_edges_buffer_"+add_edges_buffer.length+s"_$step")
+//      writer.println(add_edges_buffer.mkString("\n"))
+//      writer.close()
+//    }
+//    println ("add_edges_buffer: \t"+add_edges_buffer.mkString(" \t"))
+//    println(" 4.2.1: Compute new edges product new-new uses  \t"+(t1_4_2_1-t0_4_2_1)/1e9)
+//    println(" 4.2.1: Compute new edges product new-new count \t"+add_edges_buffer.size)
+    //    println(" new_new : "+add_edges_buffer.mkString("\n"))
+//    val num_new_new=add_edges_buffer.length
+//    println(" 4.2.2: Compute new edges product old-new uses  \t "+(t1_4_2_2-t0_4_2_2)/1e9)
+//    println(" 4.2.2: Compute new edges product old-new count \t "+(add_edges_buffer.length-num_new_new))
+    //    println("add_edges_buffer now: "+add_edges_buffer.mkString("\n"))
+    /**
+      * 5 ArrayBuffer -> Array
+      */
+    val t0_5=System.nanoTime()
+    val res=add_edges_buffer.toArray
+    val t1_5=System.nanoTime()
+    println(" \t5: buffer to array uses \t"+(t1_5-t0_5)/1e9)
+//        println(res.mkString("\n"))
+
+    /**
+      * 6 更新 Count
+      * 数据格式： Map[Long,(Array[(Int,Long)],util.Map[Integer,lang.Long])]
+      */
+    val t0_6=System.nanoTime()
+    val len_Update=key_answer_counts_Update_Filter.size
+    val keys2Update=new Array[Array[Byte]](len_Update)
+    val values2Update=new Array[Array[Byte]](len_Update)
+    var index=0
+    for((k,v)<-key_answer_counts_Update_Filter) {
+      keys2Update(index)=Long2ByteArray(k)
+      val map={
+        if(v._2==null) new util.HashMap[Integer,lang.Long]()
+        else v._2
+      }
+      v._1.foreach(s=>ProtocolBuffer_OP.UpdateCounts(map,s._1,s._2))
+//      val encoded_counts = EncodeCount(count, step)
+//      //更新 dst_label_f_Map
+//        var temp=answer_Update_Filter(2*i+1)
+//        if(temp==null) temp=new java.util.HashMap[Integer, java.lang.Long]()
+//      ProtocolBuffer_OP.UpdateCounts(temp,src,encoded_counts)
+//      answer_Update_Filter(2*i+1)=temp
+//
+//      // 更新 src_label_b_Map
+//      temp=answer_Update_Filter(2*i)
+//      if(temp==null) temp=new java.util.HashMap[Integer, java.lang.Long]()
+//      ProtocolBuffer_OP.UpdateCounts(temp,dst,encoded_counts)
+//      answer_Update_Filter(2*i)=temp
+      values2Update(index)=ProtocolBuffer_OP.Serialzed_Map_UidCounts(map)
+      index+=1
+    }
+    val t1_6_1=System.nanoTime()
+    println(" \t6.1 form Update keys and values (byte array) uses "+(t1_6_1-t0_6)/1e9)
+//    if(step>=0){//354_2
+//      val writer_map_real=new PrintWriter((s"tmp_reverse/map_real((1721621,1479443,4))_"+s"step_$step"))
+//      val map_real=redis_OP.QueryforOneRecord(EncodeVid_label_pos(1721621,4,1))
+//      println("real map: "+map_real)
+//      if(map_real==null) writer_map_real.write("null\n")
+//      else writer_map_real.write(map_real.toString+"\n")
+//      writer_map_real.close()
+//    }
+    // 正式更新
+    redis_OP.Update_PB_ByteArray(keys2Update,values2Update)
+    val t1_6_2=System.nanoTime()
+    println(" \t6.2 Update Redis uses "+(t1_6_2-t1_6_1)/1e9)
+//    if(step>=0){//354_2
+//    val writer_map_real=new PrintWriter((s"tmp_reverse/map_real((1721621,1479443,4))_afterUpdate_"+s"step_$step"))
+//      val map_real=redis_OP.QueryforOneRecord(EncodeVid_label_pos(1721621,4,1))
+//      println("real map after Update : "+map_real)
+//      if(map_real==null) writer_map_real.write("null\n")
+//      else writer_map_real.write(map_real.toString+"\n")
+//      writer_map_real.close()
+//    }
+//    val t1_4_1=System.nanoTime()
+////    println(" 4.1:Update Counts uses \t"+(t1_4_1-t0_4_1)/1e9)
+    res
+  }
+
+
+//  def ComputeSingleMachine_DEL(del_edges:Array[(Int,Int,Int)],grammar_match:Map[Int,Array[(Int,Int)]],loop:List[Int],
+//                               directadd:Map[Int,Int],
+//                               step:Int,
+//                               redis_OP:Redis_OP):Array[(Int,Int,Int)]={
+//    /**
+//      * 1 统计数据
+//      */
+//    val t0_1=System.nanoTime()
+//    var del_edges_count_0:Array[((Int,Int,Int),Int)]=del_edges.map(e=>(e,1)).groupBy(_._1).map(eg=>(eg._1,eg._2
+//      .length)).toArray
+//    println("add_edges_count_0: "+del_edges_count_0.length)//+" \n"+add_edges_count.mkString("\n")
+//    val t1_1=System.nanoTime()
+//    println(" \t1: form add_edges_count uses \t"+(t1_1-t0_1)/1e9)
+//    val add_edges_count_0_len=del_edges_count_0.length
+//
+//    /**
+//      * 2 计算Update和filter所需的key，包括
+//      *   1) Update_Count所需的key : src_label_b and dst_label_f ，其中任选其一可作为filter
+//      *
+//      *   数据格式: (
+//      *     (src,dst,label),
+//      *     (src_label_,dst_label_f),
+//      *     Array[Arraybuffer[vid_label_pos,label_target]] : [(src_x_f,A)] and [(dst_y_b,B)]
+//      *     )
+//      */
+//    //
+//    val t0_2=System.nanoTime()
+//    val key_Update_Filter:Array[(Long,Array[(Int,Long)])] = {
+//      add_edges_count_0.flatMap(ec=>{
+//        val ((src,dst,label),count)=ec
+//        val encodedcounts=EncodeCount(count,step)
+//        Array((EncodeVid_label_pos(src,label,1),(dst,encodedcounts)),(EncodeVid_label_pos(dst,label,0),(src,encodedcounts)))
+//      }).groupBy(_._1).map(s=>(s._1,s._2.map(_._2)))
+//    }.toArray
+//    val t1_2_1_1=System.nanoTime()
+//    println(" \t2.1.1 form Key_Update_filter "+key_Update_Filter.size+" uses "+(t1_2_1_1-t0_2)/1e9)
+//    val key_answer_counts_Update_Filter:Map[Long,(Array[(Int,Long)],util.Map[Integer,lang.Long])]=
+//      redis_OP.Query_PB_withCounts(key_Update_Filter)
+//    val t1_2_1_2=System.nanoTime()
+//    println(" \t2.1.2 form key_answer_Update_Filter uses "+(t1_2_1_2-t1_2_1_1)/1e9)
+//
+//    val add_edges_count_purenew:Array[(Int,Int,Int)]=add_edges_count_0.filter(s=>{
+//      val temp=key_answer_counts_Update_Filter.getOrElse(EncodeVid_label_pos(s._1._1,s._1._3,1),null)
+//      if(temp._2==null||temp._2.getOrDefault(s._1._2,null)==null) true
+//      else false
+//    }).map(_._1)
+//    val t1_2_2=System.nanoTime()
+//    println(" \t2.2 form clean new edges uses \t"+(t1_2_2-t1_2_1_2)/1e9)
+//    println("add_edges_count_pure_new.count: \t"+add_edges_count_purenew.length)
+//    //    println("newedges_count_update_compute: \n"+newedges_count_update_compute.map(s=>(s._1+" "+s._2+" "+s._3.mkString(",")))
+//    //      .mkString("\n"))
+//
+//
+//    /**
+//      * 3 Query Redis
+//      *   1) 形成 Compute 所需的所有键
+//      *   2) Query
+//      */
+//    val t0_3=System.nanoTime()
+//
+//    // mid, Map[label_pos, Array[uid]]
+//    val mid_neighbour:Array[(Int,Map[Int,Array[Int]])]=add_edges_count_purenew.flatMap(s=>Array(
+//      (s._1,(EncodeLabel_pos(s._3,1),s._2)),(s._2,(EncodeLabel_pos(s._3,0),s._1))))
+//      .groupBy(_._1)
+//      .map(s=>(s._1,s._2.map(_._2).groupBy(_._1).map(x=>(x._1,x._2.map(_._2)))))
+//      .toArray
+//    val t1_3_1=System.nanoTime()
+//    println(" \t3.1 form mid_neighbours uses "+(t1_3_1-t0_3)/1e9)
+//
+//    val Query:Array[Long]={
+//      val longhashset=new LongOpenHashSet()
+//      mid_neighbour.foreach(s=>
+//        s._2.foreach(x=>{
+//          val other_label_poss=grammar_match.getOrElse(x._1,null)
+//          if(other_label_poss!=null){
+//            for(other_label_pos<-other_label_poss){
+//              for(uid<-x._2){
+//                longhashset.add(EncodeVid_labelpos(s._1,other_label_pos._1))
+//              }}}}))
+//      longhashset.toLongArray
+//    }
+//    println("Query for Compute: "+Query.length)
+//    //    +"-"+Query.mkString(" "))
+//    val Query_Answer:Map[Long,java.util.Map[Integer,java.lang.Long]]=redis_OP.Query_PB_Array(Query)
+//    val t1_3=System.nanoTime()
+//    println(" \t3: Query Redis for Compute uses \t"+(t1_3-t0_3)/1e9)
+//    //    println("Qurey_Answer: \n"+Query_Answer.mkString("\n"))
+//
+//    /**
+//      * 4 根据 Query_Answer 进行计算
+//      *
+//      *   new-new and new-old
+//      */
+//    val t0_4=System.nanoTime()
+//    val add_edges_buffer:ArrayBuffer[(Int,Int,Int)]={
+//      val res:ArrayBuffer[(Int,Int,Int)]=new ArrayBuffer(add_edges_count_0_len)
+//      mid_neighbour.foreach(m_n=>{
+//        val mid=m_n._1
+//        m_n._2.foreach(label_pos_uids=>{
+//          val ((label,pos),uids)=(DecodeLabel_pos(label_pos_uids._1),label_pos_uids._2)
+//          val otherlabelpos_targetlabels=grammar_match.getOrElse(label_pos_uids._1,null)
+//          if(otherlabelpos_targetlabels!=null){
+//            /**
+//              * new-new
+//              */
+//            if(pos==0){//以f为准，避免重复计算
+//              for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
+//                val uid_dst=m_n._2.getOrElse(otherlabelpos,null)
+//                if(uid_dst!=null){
+//                  uids.foreach(src=>res.appendAll(uid_dst.map(dst=>(src,dst,targetlabel))))}}
+//            }
+//            /**
+//              * new-old
+//              */
+//            for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
+//              val uid_old_count=Query_Answer.getOrElse(EncodeVid_labelpos(mid,otherlabelpos),null)
+//              if(uid_old_count!=null){
+//                val uid_old=getmapKeys(uid_old_count)
+//                if(pos==0){
+//                  uids.foreach(src=>res.appendAll(uid_old.map(dst=>(src,dst.toInt,targetlabel))))
+//                }//uids 在前
+//                else{
+//                  uids.foreach(dst=>res.appendAll(uid_old.map(src=>(src.toInt,dst,targetlabel))))
+//                }//uids 在后
+//              }}}
+//        })})
+//      res
+//    }
+//    val t1_4=System.nanoTime()
+//    println(" \t4 form new edges uses "+(t1_4-t0_4)/1e9)
+//    println("add_edges_formed.count: \t"+add_edges_buffer.length)
+//    //    if(step>=0) {
+//    //      println("!!!!!!!!!!!!!!!!!!!!! To Judge ")
+//    //      println()
+//    //      val writer=new PrintWriter("tmp_reverse/add_edges_buffer_"+add_edges_buffer.length+s"_$step")
+//    //      writer.println(add_edges_buffer.mkString("\n"))
+//    //      writer.close()
+//    //    }
+//    //    println ("add_edges_buffer: \t"+add_edges_buffer.mkString(" \t"))
+//    //    println(" 4.2.1: Compute new edges product new-new uses  \t"+(t1_4_2_1-t0_4_2_1)/1e9)
+//    //    println(" 4.2.1: Compute new edges product new-new count \t"+add_edges_buffer.size)
+//    //    println(" new_new : "+add_edges_buffer.mkString("\n"))
+//    //    val num_new_new=add_edges_buffer.length
+//    //    println(" 4.2.2: Compute new edges product old-new uses  \t "+(t1_4_2_2-t0_4_2_2)/1e9)
+//    //    println(" 4.2.2: Compute new edges product old-new count \t "+(add_edges_buffer.length-num_new_new))
+//    //    println("add_edges_buffer now: "+add_edges_buffer.mkString("\n"))
+//    /**
+//      * 5 ArrayBuffer -> Array
+//      */
+//    val t0_5=System.nanoTime()
+//    val res=add_edges_buffer.toArray
+//    val t1_5=System.nanoTime()
+//    println(" \t5: buffer to array uses \t"+(t1_5-t0_5)/1e9)
+//    //        println(res.mkString("\n"))
+//
+//    /**
+//      * 6 更新 Count
+//      * 数据格式： Map[Long,(Array[(Int,Long)],util.Map[Integer,lang.Long])]
+//      */
+//    val t0_6=System.nanoTime()
+//    val len_Update=key_answer_counts_Update_Filter.size
+//    val keys2Update=new Array[Array[Byte]](len_Update)
+//    val values2Update=new Array[Array[Byte]](len_Update)
+//    var index=0
+//    for((k,v)<-key_answer_counts_Update_Filter) {
+//      keys2Update(index)=Long2ByteArray(k)
+//      val map={
+//        if(v._2==null) new util.HashMap[Integer,lang.Long]()
+//        else v._2
+//      }
+//      v._1.foreach(s=>ProtocolBuffer_OP.UpdateCounts(map,s._1,s._2))
+//      //      val encoded_counts = EncodeCount(count, step)
+//      //      //更新 dst_label_f_Map
+//      //        var temp=answer_Update_Filter(2*i+1)
+//      //        if(temp==null) temp=new java.util.HashMap[Integer, java.lang.Long]()
+//      //      ProtocolBuffer_OP.UpdateCounts(temp,src,encoded_counts)
+//      //      answer_Update_Filter(2*i+1)=temp
+//      //
+//      //      // 更新 src_label_b_Map
+//      //      temp=answer_Update_Filter(2*i)
+//      //      if(temp==null) temp=new java.util.HashMap[Integer, java.lang.Long]()
+//      //      ProtocolBuffer_OP.UpdateCounts(temp,dst,encoded_counts)
+//      //      answer_Update_Filter(2*i)=temp
+//      values2Update(index)=ProtocolBuffer_OP.Serialzed_Map_UidCounts(map)
+//      index+=1
+//    }
+//    val t1_6_1=System.nanoTime()
+//    println(" \t6.1 form Update keys and values (byte array) uses "+(t1_6_1-t0_6)/1e9)
+//    //    if(step>=0){//354_2
+//    //      val writer_map_real=new PrintWriter((s"tmp_reverse/map_real((1721621,1479443,4))_"+s"step_$step"))
+//    //      val map_real=redis_OP.QueryforOneRecord(EncodeVid_label_pos(1721621,4,1))
+//    //      println("real map: "+map_real)
+//    //      if(map_real==null) writer_map_real.write("null\n")
+//    //      else writer_map_real.write(map_real.toString+"\n")
+//    //      writer_map_real.close()
+//    //    }
+//    // 正式更新
+//    redis_OP.Update_PB_ByteArray(keys2Update,values2Update)
+//    val t1_6_2=System.nanoTime()
+//    println(" \t6.2 Update Redis uses "+(t1_6_2-t1_6_1)/1e9)
+//    //    if(step>=0){//354_2
+//    //    val writer_map_real=new PrintWriter((s"tmp_reverse/map_real((1721621,1479443,4))_afterUpdate_"+s"step_$step"))
+//    //      val map_real=redis_OP.QueryforOneRecord(EncodeVid_label_pos(1721621,4,1))
+//    //      println("real map after Update : "+map_real)
+//    //      if(map_real==null) writer_map_real.write("null\n")
+//    //      else writer_map_real.write(map_real.toString+"\n")
+//    //      writer_map_real.close()
+//    //    }
+//    //    val t1_4_1=System.nanoTime()
+//    ////    println(" 4.1:Update Counts uses \t"+(t1_4_1-t0_4_1)/1e9)
+//    res
+//  }
 
 }
