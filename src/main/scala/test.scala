@@ -38,11 +38,7 @@ object test {
 //    println(array.size())
 //    val t1=System.nanoTime()
 //    println(s"distinct $len uses "+(t1-t0)/1e9)
-  val bytes=new Array[Array[Byte]](2)
-    bytes(0)=Array[Byte](3,3,3)
-    bytes(1)=Array[Byte](1)
-    println(new String(bytes(0))+" "+new String(bytes(1)))
-  }
+
 
 
 }

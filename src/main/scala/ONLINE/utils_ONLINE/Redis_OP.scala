@@ -362,46 +362,45 @@ class Redis_OP extends DataBase_OP with Serializable {
     val t1_deserialize=System.nanoTime()
     val res=(Query zip Answers).toMap
     val t1_zip=System.nanoTime()
-    println("Query SingleMachine")
-    println("form keys uses "+(t1_formkeys-t0)/1e9)
-    println("get values uses "+(t1_values-t1_formkeys)/1e9)
-    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
-    println("get zip uses "+(t1_zip-t1_deserialize)/1e9)
+//    println("Query SingleMachine")
+//    println("form keys uses "+(t1_formkeys-t0)/1e9)
+//    println("get values uses "+(t1_values-t1_formkeys)/1e9)
+//    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
+//    println("get zip uses "+(t1_zip-t1_deserialize)/1e9)
     res
   }
-  def Query_PB_Array_special(Query:Array[Long]):util.HashMap[Long,java.util.Map[Integer,java.lang.Long]]={
-    val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
-    val t0=System.nanoTime()
-    val keys: Array[Array[Byte]] = Query.map(q=>Long2ByteArray(q))
-    val t1_formkeys=System.nanoTime()
-    val values: Array[Array[Byte]] = client.getAll(keys)
-    val t1_values=System.nanoTime()
-    val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP.Deserialized_Map_UidCounts(v))
-    val t1_deserialize=System.nanoTime()
-    val res=(Query zip Answers).toMap
-    val t1_zip=System.nanoTime()
-    val map_res=new util.HashMap[Long,util.Map[Integer,lang.Long]]()
-    map_res.putAll(res)
-    map_res
-  }
-  def Query_PB_RetArray(Query:Array[Long]):Array[java.util.Map[Integer,java.lang.Long]]={
-    val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
-    val t0=System.nanoTime()
-    val keys: Array[Array[Byte]] = Query.map(q=>Long2ByteArray(q))
-    val t1_formkeys=System.nanoTime()
-    val values: Array[Array[Byte]] = client.getAll(keys)
-    val t1_values=System.nanoTime()
-    val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP.Deserialized_Map_UidCounts(v))
-    val t1_deserialize=System.nanoTime()
-
-    println("Query SingleMachine")
-    println("form keys uses "+(t1_formkeys-t0)/1e9)
-    println("get values uses "+(t1_values-t1_formkeys)/1e9)
-    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
-
-    Answers
-  }
-
+//  def Query_PB_Array_special(Query:Array[Long]):util.HashMap[Long,java.util.Map[Integer,java.lang.Long]]={
+//    val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
+//    val t0=System.nanoTime()
+//    val keys: Array[Array[Byte]] = Query.map(q=>Long2ByteArray(q))
+//    val t1_formkeys=System.nanoTime()
+//    val values: Array[Array[Byte]] = client.getAll(keys)
+//    val t1_values=System.nanoTime()
+//    val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP.Deserialized_Map_UidCounts(v))
+//    val t1_deserialize=System.nanoTime()
+//    val res=(Query zip Answers).toMap
+//    val t1_zip=System.nanoTime()
+//    val map_res=new util.HashMap[Long,util.Map[Integer,lang.Long]]()
+//    map_res.putAll(res)
+//    map_res
+//  }
+//  def Query_PB_RetArray(Query:Array[Long]):Array[java.util.Map[Integer,java.lang.Long]]={
+//    val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
+//    val t0=System.nanoTime()
+//    val keys: Array[Array[Byte]] = Query.map(q=>Long2ByteArray(q))
+//    val t1_formkeys=System.nanoTime()
+//    val values: Array[Array[Byte]] = client.getAll(keys)
+//    val t1_values=System.nanoTime()
+//    val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP.Deserialized_Map_UidCounts(v))
+//    val t1_deserialize=System.nanoTime()
+//
+//    println("Query SingleMachine")
+//    println("form keys uses "+(t1_formkeys-t0)/1e9)
+//    println("get values uses "+(t1_values-t1_formkeys)/1e9)
+//    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
+//
+//    Answers
+//  }
   def Query_PB_withCounts(Query:Array[(Long,Array[(Int,Long)])]):Map[Long,(Array[(Int,Long)],util.Map[Integer,lang
   .Long])]={
     val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
@@ -413,13 +412,60 @@ class Redis_OP extends DataBase_OP with Serializable {
     val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP.Deserialized_Map_UidCounts(v))
     val t1_deserialize=System.nanoTime()
 
-    println("Query SingleMachine")
-    println("form keys uses "+(t1_formkeys-t0)/1e9)
-    println("get values uses "+(t1_values-t1_formkeys)/1e9)
-    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
+//    println("Query SingleMachine")
+//    println("form keys uses "+(t1_formkeys-t0)/1e9)
+//    println("get values uses "+(t1_values-t1_formkeys)/1e9)
+//    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
 
     Query.zip(Answers).map(s=>(s._1._1,(s._1._2,s._2))).toMap
   }
+
+
+  def Query_PBRDD_Long_inPartition(p:Iterator[Long]):Iterator[(Long,util.Map[Integer,lang.Long])]={
+    val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
+    val t0=System.nanoTime()
+    val Query=p.toArray
+    val keys: Array[Array[Byte]] =Query.map(q=>Long2ByteArray(q))
+    val t1_formkeys=System.nanoTime()
+    val values: Array[Array[Byte]] = client.getAll(keys)
+    val t1_values=System.nanoTime()
+    val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP.Deserialized_Map_UidCounts(v))
+    val t1_deserialize=System.nanoTime()
+
+//    println("Query SingleMachine")
+//    println("form keys uses "+(t1_formkeys-t0)/1e9)
+//    println("get values uses "+(t1_values-t1_formkeys)/1e9)
+//    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
+
+    Query.zip(Answers).toIterator
+  }
+  def Query_PBRDD_Long(Query:RDD[Long]):RDD[(Long,util.Map[Integer,lang.Long])]={
+    Query.mapPartitions(q=>Query_PBRDD_Long_inPartition(q))
+  }
+  def Query_PBRDD_withCounts_inPartition(p:Iterator[(Long,Array[(Int,Long)])]):
+  Iterator[(Long,(Array[(Int,Long)],util.Map[Integer,lang.Long]))]={
+    val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
+    val t0=System.nanoTime()
+    val Query=p.toArray
+    val keys: Array[Array[Byte]] =Query.map(q=>Long2ByteArray(q._1))
+    val t1_formkeys=System.nanoTime()
+    val values: Array[Array[Byte]] = client.getAll(keys)
+    val t1_values=System.nanoTime()
+    val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP.Deserialized_Map_UidCounts(v))
+    val t1_deserialize=System.nanoTime()
+
+//    println("Query SingleMachine")
+//    println("form keys uses "+(t1_formkeys-t0)/1e9)
+//    println("get values uses "+(t1_values-t1_formkeys)/1e9)
+//    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
+
+    Query.zip(Answers).map(s=>(s._1._1,(s._1._2,s._2))).toIterator
+  }
+  def Query_PBRDD_withCounts(Query:RDD[(Long,Array[(Int,Long)])]):RDD[(Long,(Array[(Int,Long)],util.Map[Integer,lang
+  .Long]))]={
+    Query.mapPartitions(p=>Query_PBRDD_withCounts_inPartition(p))
+  }
+
 
   //这一步可能会造成大量冗余的map，但也可以一次性完成Query，减少以后的操作
   def QueryAndUpdate_PB_RDD_Partition(p_ecuc:Iterator[(((Int,Int,Int),Int),(Long,Long),Array[ArrayBuffer[(Long,Int)]])

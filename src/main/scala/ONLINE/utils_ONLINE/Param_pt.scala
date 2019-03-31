@@ -15,7 +15,7 @@ object Param_pt {
   var defaultpar:Int=352
   var clusterpar:Int=352
   var newnum_interval:Int=40000000
-  var checkpoint_interval:Int=10
+  var checkpoint_interval:Int=5
   var newedges_interval:Int=40000000
 
   var openBloomFilter:Boolean=false

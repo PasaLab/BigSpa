@@ -92,6 +92,7 @@ public class ProtocolBuffer_OP {
     public static Integer[] getmapKeys(Map<Integer,Long> map){
         return map.keySet().toArray(new Integer[0]);
     }
+
     public static scala.Long[] getmapKeys_special(Map<scala.Long,Map<Integer,Long>> map){
         return map.keySet().toArray(new scala.Long[0]);
     }
