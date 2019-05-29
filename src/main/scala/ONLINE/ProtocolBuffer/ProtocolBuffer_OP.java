@@ -5,6 +5,7 @@ import shapeless.HMap;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import static ONLINE.ProtocolBuffer.map_uid_counts_Protobuf.*;
 import static java.lang.System.out;
@@ -42,7 +43,7 @@ public class ProtocolBuffer_OP {
                 HashMap<Integer,Long> newmap=new HashMap<>();
                 newmap.putAll(tempmap);
                 double t1_putAll=System.nanoTime();
-                if(newmap.size()>10000) {
+                if(newmap.size()>10000&&((t1_putAll - t0) / 1e9)>1) {
                     out.print("map length: \t" + newmap.size());
                     out.print(" \tparseFrom bytes uses " + (t1_parseFrom - t0) / 1e9);
                     out.print(" \tformMap uses " + (t1_formMap - t1_parseFrom) / 1e9);
@@ -97,3 +98,4 @@ public class ProtocolBuffer_OP {
         return map.keySet().toArray(new scala.Long[0]);
     }
 }
+

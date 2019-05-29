@@ -1,5 +1,5 @@
 package ONLINE.utils_ONLINE
-
+import ONLINE.ProtocolBuffer.future_DeserializedBytes
 import ONLINE.ProtocolBuffer.ProtocolBuffer_OP
 import cn.edu.nju.pasalab.db.{BasicKVDatabaseClient, ShardedRedisClusterClient, Utils}
 import org.apache.spark.rdd.RDD
@@ -9,6 +9,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConversions.mapAsJavaMap
 import java.util
 import java.lang
+import java.util.concurrent.{ExecutorService, Executors, Future}
 /**
   * Created by cycy on 2018/4/13.
   */
@@ -344,9 +345,35 @@ class Redis_OP extends DataBase_OP with Serializable {
       }
     }
   }
+def UpdateforOneRecord(key:Long,value:util.Map[Integer,lang.Long]):Unit={
+  try{
+    val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
+    client.put(Long2ByteArray(key),Serialzed_Map_UidCounts(value))
+  }
+  catch {
+    case e: Exception => {
+      e.printStackTrace()
+    }
+  }
+}
 
 
+  def Bytes2Map_Multithreads(values:Array[Array[Byte]],threadnum:Int):Array[util.Map[Integer,lang.Long]]={
+    val executorService:ExecutorService = Executors.newFixedThreadPool(threadnum)
+    val resultList : ArrayBuffer[Future[util.Map[Integer,lang.Long]]]= new ArrayBuffer[Future[util.Map[Integer,lang
+    .Long]]](values.length)
+    values.map(v=>{
+      val future:Future[util.Map[Integer,lang.Long]] = executorService.submit(new future_DeserializedBytes(v))
+      resultList.append(future)
+    })
+    for (fs <-resultList){
+        while(!fs.isDone){
 
+        }//Future返回如果没有完成，则一直循环等待，直到Future返回完成
+    }
+    executorService.shutdown()
+    resultList.map(r=>r.get()).toArray
+  }
   def QueryforOneRecord(q:Long):util.Map[Integer,lang.Long]={
     val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
     ProtocolBuffer_OP.Deserialized_Map_UidCounts(client.get(Long2ByteArray(q)))
@@ -358,6 +385,7 @@ class Redis_OP extends DataBase_OP with Serializable {
     val t1_formkeys=System.nanoTime()
     val values: Array[Array[Byte]] = client.getAll(keys)
     val t1_values=System.nanoTime()
+
     val Answers:Array[java.util.Map[Integer,java.lang.Long]]=values.map(v=>ProtocolBuffer_OP.Deserialized_Map_UidCounts(v))
     val t1_deserialize=System.nanoTime()
     val res=(Query zip Answers).toMap
@@ -367,6 +395,25 @@ class Redis_OP extends DataBase_OP with Serializable {
 //    println("get values uses "+(t1_values-t1_formkeys)/1e9)
 //    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
 //    println("get zip uses "+(t1_zip-t1_deserialize)/1e9)
+    res
+  }
+  def Query_PB_Array_Multithread(Query:Array[Long]):Map[Long,java.util.Map[Integer,java.lang.Long]]={
+    val client: BasicKVDatabaseClient = ShardedRedisClusterClient.getProcessLevelClient
+    val t0=System.nanoTime()
+    val keys: Array[Array[Byte]] = Query.map(q=>Long2ByteArray(q))
+    val t1_formkeys=System.nanoTime()
+    val values: Array[Array[Byte]] = client.getAll(keys)
+    val t1_values=System.nanoTime()
+
+    val Answers:Array[java.util.Map[Integer,java.lang.Long]]=Bytes2Map_Multithreads(values,24)
+    val t1_deserialize=System.nanoTime()
+    val res=(Query zip Answers).toMap
+    val t1_zip=System.nanoTime()
+    //    println("Query SingleMachine")
+    //    println("form keys uses "+(t1_formkeys-t0)/1e9)
+    //    println("get values uses "+(t1_values-t1_formkeys)/1e9)
+    //    println("get deserialized map uses "+(t1_deserialize-t1_values)/1e9)
+    //    println("get zip uses "+(t1_zip-t1_deserialize)/1e9)
     res
   }
 //  def Query_PB_Array_special(Query:Array[Long]):util.HashMap[Long,java.util.Map[Integer,java.lang.Long]]={

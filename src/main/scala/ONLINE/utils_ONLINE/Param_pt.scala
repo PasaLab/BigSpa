@@ -76,7 +76,7 @@ object Param_pt {
         case "outputdetails" => outputdetails = argvalue.toBoolean
         case "output_Par_INFO" => output_Par_INFO = argvalue.toBoolean
         case "input_interval"=>input_interval=argvalue.toInt
-        case "changemode_interval"=>changemode_interval=argvalue.toInt
+        case "changemode_interval"=>changemode_interval=argvalue.toDouble.toInt
         case "add"=>add=argvalue
         case _ => {}
       }

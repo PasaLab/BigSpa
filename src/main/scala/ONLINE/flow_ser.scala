@@ -1,7 +1,5 @@
-
-
 /**
-  * Created by cycy on 2019/3/31.
+  * Created by cycy on 2019/4/10.
   */
 package ONLINE
 
@@ -26,10 +24,9 @@ import org.apache.spark.storage.StorageLevel
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConversions.mapAsScalaMap
 import scala.io.Source
-
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-object flow_muitithread {
+object flow_ser {
   var totaladd=0l
   var flowadd=0l
   /**
@@ -155,36 +152,102 @@ object flow_muitithread {
     ShardedRedisClusterClient.getProcessLevelClient.clearDB()
     val redis_OP = new Redis_OP(Param_pt.updateRedis_interval)
 
-    val f = new File(Param_pt.add).listFiles.filter(_.isFile).toIterator
+    val f = Source.fromFile(Param_pt.add).getLines()
     /**
       * Streaming
       */
 
     println("FLOW START AT "+df.format(System.currentTimeMillis()))
     var addturn=0
+    t0=System.nanoTime()
     for(add<-f){
       println("\n************During add turn " + addturn + s"\t$add\t************")
       flowadd=0
-
       val t0_delta=System.nanoTime()
-      val add_edges: Array[(Int, Int, Int)] = Source.fromFile(add).getLines().toArray.filter(! _.trim.equals("")).map(line => {
+      val worklist=new ArrayBuffer[((Int,Int,Int),Int)]()
+      worklist.appendAll(Source.fromFile(add).getLines().toArray.filter(! _.trim.equals("")).map(line => {
         val s = line.split("\\s+")
         val (src, dst, label) = (s(0).toInt, s(1).toInt, symbol_Map.getOrElse(s(2), -1))
         if (label == -1) println("there is some label wrong in input")
-        (src,dst,label)
-      })
+        ((src,dst,label),1)
+      }))
+      var step=0
+      while(worklist.length>0)
+      {
+        val ((src,dst,label),count)=worklist.remove(0)
+        val res=new ArrayBuffer[(Int,Int,Int)]()
+//        println(s"e: $src,$dst,$label")
+        //filter
+        val updatesrckey=EncodeVid_label_pos(src,label,1)
+        val updatesrcMap={
+          val temp=redis_OP.QueryforOneRecord(updatesrckey)
+          if(temp==null) new util.HashMap[Integer,lang.Long]()
+          else temp
+        }
 
-      val step=ComputeFile(add_edges,grammar_match,directadd,redis_OP,sc)
+        if(updatesrcMap.containsKey(dst)==false){
+          totaladd+=1
+//          println(s"new edge ($src,$dst,$label)")
+          //compute
+          //label在前
+          if (grammar_match.getOrElse(EncodeLabel_pos(label, 0), null) != null) {
+            for ((otherlabelpos, target) <- grammar_match.getOrElse(EncodeLabel_pos(label, 0), null)) {
+              val otherlabel = DecodeLabel_pos(otherlabelpos)._1
+              val key = EncodeVid_label_pos(dst, otherlabel, 1)
+              val map = redis_OP.QueryforOneRecord(key)
+              if(map!=null){
+                val others=getmapKeys(map)
+                res.appendAll(others.map(s=>(src,s.toInt,target)))
+                println(others.length)
+              }
+            }
+          }
+          //label在后
+          if (grammar_match.getOrElse(EncodeLabel_pos(label, 1), null) != null) {
+            for ((otherlabelpos, target) <- grammar_match.getOrElse(EncodeLabel_pos(label, 1), null)) {
+              val otherlabel = DecodeLabel_pos(otherlabelpos)._1
+              val key = EncodeVid_label_pos(src, otherlabel, 0)
+              val map = redis_OP.QueryforOneRecord(key)
+              if(map!=null){
+                val others=getmapKeys(map)
+                res.appendAll(others.map(s=>(s.toInt,dst,target)))
+                println(others.length)
+              }
+            }
+          }
+
+          //directadd
+          if(directadd.getOrElse(label,-1)!= -1){
+            val dir_label=directadd.getOrElse(label,-1)
+            res.append((src,dst,dir_label))
+            println("directadd")
+          }
+        }
+        //update
+        ProtocolBuffer_OP.UpdateCounts(updatesrcMap,dst,EncodeCount(count,step))
+        redis_OP.UpdateforOneRecord(updatesrckey,updatesrcMap)
+
+        val updatedstkey=EncodeVid_label_pos(dst,label,0)
+        val updatedstMap={
+          val temp=redis_OP.QueryforOneRecord(updatedstkey)
+          if(temp==null) new util.HashMap[Integer,lang.Long]()
+          else temp
+        }
+        ProtocolBuffer_OP.UpdateCounts(updatedstMap,src,EncodeCount(count,step))
+        redis_OP.UpdateforOneRecord(updatedstkey,updatedstMap)
+        worklist.appendAll(res.map((_,1)).groupBy(_._1).map(t=>(t._1,t._2.size)))
+      step+=1
+      }
       val t1_delta=System.nanoTime()
 
-      println(s"update use step $step and takes time "+(t1_delta-t0_delta)/1e9)
-      totaladd+=flowadd
+      println(s"update takes time\t"+(t1_delta-t0_delta)/1e9)
       println(s"addturn\t$addturn\taddfile\t$add\tflowadd\t$flowadd\ttotaladd\t$totaladd")
       addturn+=1
     }
 
     println("FLOW END AT "+df.format(System.currentTimeMillis()))
     println(s"FLOW ADD　TOTAL EDGES $totaladd")
+    println("average time: "+(System.nanoTime()-t0)/1e11)
 
   }
 
@@ -202,7 +265,7 @@ object flow_muitithread {
     while (add_edges_len > 0 && (System.nanoTime()-t0_delta)/1e9 <60 ) {
       val t0_1=System.nanoTime()
       if (add_edges_len < Param_pt.changemode_interval) {
-//        print("SingleMachine : ")
+        //        print("SingleMachine : ")
         if (add_edges == null) {
           add_edges = add_edges_rdd.collect()
           add_edges_rdd.unpersist()
@@ -213,7 +276,7 @@ object flow_muitithread {
 
       }
       else {
-//        print("Distributed : ")
+        //        print("Distributed : ")
         if (add_edges_rdd == null) {
           add_edges_rdd = sc.parallelize(add_edges, Param_pt.clusterpar)
           add_edges = null
@@ -223,7 +286,7 @@ object flow_muitithread {
         //          println("add_edges count: "+add_edges_rdd.count())
       }
       val t1_1=System.nanoTime()
-//      println(s"step $step uses " + (t1_1-t0_1)/1e9 )
+      //      println(s"step $step uses " + (t1_1-t0_1)/1e9 )
       step += 1
       //        val pause=scan.nextLine()
     }
@@ -272,7 +335,7 @@ object flow_muitithread {
       else false
     }).map(s=>s._2._1)
 
-//    println("add pure new : "+add_edges_count_purenew.count())
+    //    println("add pure new : "+add_edges_count_purenew.count())
     flowadd+=add_edges_count_purenew.count()
 
     val t1_2_2=System.nanoTime()
@@ -616,7 +679,7 @@ object flow_muitithread {
     }.toArray
 
     val key_answer_counts_Update_Filter:Map[Long,(Array[(Int,Long)],util.Map[Integer,lang.Long])]=
-    redis_OP.Query_PB_withCounts(key_Update_Filter)//MultiThread
+      redis_OP.Query_PB_withCounts(key_Update_Filter)//MultiThread
 
 
     val add_edges_count_purenew:Array[(Int,Int,Int)]=add_edges_count_0.filter(s=>{
@@ -624,7 +687,7 @@ object flow_muitithread {
       if(temp._2==null||temp._2.getOrDefault(s._1._2,null)==null) true
       else false
     }).map(_._1)
-//    println("add pure new : "+add_edges_count_purenew.length)
+    //    println("add pure new : "+add_edges_count_purenew.length)
     flowadd+=add_edges_count_purenew.length
 
 
@@ -760,7 +823,7 @@ object flow_muitithread {
     // 正式更新
     redis_OP.Update_PB_ByteArray(keys2Update,values2Update)
 
-//    println(s"nn_num:\t$nn_num\tno_num:\t$no_num")
+    //    println(s"nn_num:\t$nn_num\tno_num:\t$no_num")
     res
   }
 
@@ -769,50 +832,50 @@ object flow_muitithread {
     * MT-form edges
     */
   //  def multithread_formnewedges(mid_neighbour:Array[(Int,Map[Int,Array[Int]])],threadnum:Int):ArrayBuffer[(Int,Int,
-//    Int)]={
-//    mid_neighbour.foreach(m_n=>{
-//      val mid=m_n._1
-//      m_n._2.foreach(label_pos_uids=>{
-//        val ((label,pos),uids)=(DecodeLabel_pos(label_pos_uids._1),label_pos_uids._2)
-//        val otherlabelpos_targetlabels=grammar_match.getOrElse(label_pos_uids._1,null)
-//        if(otherlabelpos_targetlabels!=null){
-//          /**
-//            * new-new
-//            */
-//          if(pos==0){//以f为准，避免重复计算
-//            for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
-//              val uid_dst=m_n._2.getOrElse(otherlabelpos,null)
-//              if(uid_dst!=null){
-//                uids.foreach(src=>res.appendAll(uid_dst.map(dst=>(src,dst,targetlabel))))
-//                nn_num+=uids.length*uid_dst.length
-//              }
-//            }
-//          }
-//          /**
-//            * new-old
-//            */
-//          for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
-//            val uid_old_count=Query_Answer.getOrElse(EncodeVid_labelpos(mid,otherlabelpos),null)
-//            if(uid_old_count!=null){
-//              val uid_old=getmapKeys(uid_old_count)
-//              if(pos==0){
-//                uids.foreach(src=>res.appendAll(uid_old.map(dst=>(src,dst.toInt,targetlabel))))
-//              }//uids 在前
-//              else{
-//                uids.foreach(dst=>res.appendAll(uid_old.map(src=>(src.toInt,dst,targetlabel))))
-//              }//uids 在后
-//              no_num+=uids.length*uid_old.length
-//            }}}
-//        /**
-//          * 产生 Mq::=M
-//          */
-//        if(pos==0) {
-//          val directadd_label = directadd.getOrElse(label, -1)
-//          if (directadd_label != -1)
-//            res.appendAll(uids.map(src => (src, mid, directadd_label)))
-//        }
-//      })})
-//  }
+  //    Int)]={
+  //    mid_neighbour.foreach(m_n=>{
+  //      val mid=m_n._1
+  //      m_n._2.foreach(label_pos_uids=>{
+  //        val ((label,pos),uids)=(DecodeLabel_pos(label_pos_uids._1),label_pos_uids._2)
+  //        val otherlabelpos_targetlabels=grammar_match.getOrElse(label_pos_uids._1,null)
+  //        if(otherlabelpos_targetlabels!=null){
+  //          /**
+  //            * new-new
+  //            */
+  //          if(pos==0){//以f为准，避免重复计算
+  //            for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
+  //              val uid_dst=m_n._2.getOrElse(otherlabelpos,null)
+  //              if(uid_dst!=null){
+  //                uids.foreach(src=>res.appendAll(uid_dst.map(dst=>(src,dst,targetlabel))))
+  //                nn_num+=uids.length*uid_dst.length
+  //              }
+  //            }
+  //          }
+  //          /**
+  //            * new-old
+  //            */
+  //          for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
+  //            val uid_old_count=Query_Answer.getOrElse(EncodeVid_labelpos(mid,otherlabelpos),null)
+  //            if(uid_old_count!=null){
+  //              val uid_old=getmapKeys(uid_old_count)
+  //              if(pos==0){
+  //                uids.foreach(src=>res.appendAll(uid_old.map(dst=>(src,dst.toInt,targetlabel))))
+  //              }//uids 在前
+  //              else{
+  //                uids.foreach(dst=>res.appendAll(uid_old.map(src=>(src.toInt,dst,targetlabel))))
+  //              }//uids 在后
+  //              no_num+=uids.length*uid_old.length
+  //            }}}
+  //        /**
+  //          * 产生 Mq::=M
+  //          */
+  //        if(pos==0) {
+  //          val directadd_label = directadd.getOrElse(label, -1)
+  //          if (directadd_label != -1)
+  //            res.appendAll(uids.map(src => (src, mid, directadd_label)))
+  //        }
+  //      })})
+  //  }
 
 }
 
