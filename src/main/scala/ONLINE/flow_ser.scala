@@ -828,54 +828,6 @@ object flow_ser {
   }
 
 
-  /**
-    * MT-form edges
-    */
-  //  def multithread_formnewedges(mid_neighbour:Array[(Int,Map[Int,Array[Int]])],threadnum:Int):ArrayBuffer[(Int,Int,
-  //    Int)]={
-  //    mid_neighbour.foreach(m_n=>{
-  //      val mid=m_n._1
-  //      m_n._2.foreach(label_pos_uids=>{
-  //        val ((label,pos),uids)=(DecodeLabel_pos(label_pos_uids._1),label_pos_uids._2)
-  //        val otherlabelpos_targetlabels=grammar_match.getOrElse(label_pos_uids._1,null)
-  //        if(otherlabelpos_targetlabels!=null){
-  //          /**
-  //            * new-new
-  //            */
-  //          if(pos==0){//以f为准，避免重复计算
-  //            for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
-  //              val uid_dst=m_n._2.getOrElse(otherlabelpos,null)
-  //              if(uid_dst!=null){
-  //                uids.foreach(src=>res.appendAll(uid_dst.map(dst=>(src,dst,targetlabel))))
-  //                nn_num+=uids.length*uid_dst.length
-  //              }
-  //            }
-  //          }
-  //          /**
-  //            * new-old
-  //            */
-  //          for((otherlabelpos,targetlabel)<-otherlabelpos_targetlabels){
-  //            val uid_old_count=Query_Answer.getOrElse(EncodeVid_labelpos(mid,otherlabelpos),null)
-  //            if(uid_old_count!=null){
-  //              val uid_old=getmapKeys(uid_old_count)
-  //              if(pos==0){
-  //                uids.foreach(src=>res.appendAll(uid_old.map(dst=>(src,dst.toInt,targetlabel))))
-  //              }//uids 在前
-  //              else{
-  //                uids.foreach(dst=>res.appendAll(uid_old.map(src=>(src.toInt,dst,targetlabel))))
-  //              }//uids 在后
-  //              no_num+=uids.length*uid_old.length
-  //            }}}
-  //        /**
-  //          * 产生 Mq::=M
-  //          */
-  //        if(pos==0) {
-  //          val directadd_label = directadd.getOrElse(label, -1)
-  //          if (directadd_label != -1)
-  //            res.appendAll(uids.map(src => (src, mid, directadd_label)))
-  //        }
-  //      })})
-  //  }
 
 }
 

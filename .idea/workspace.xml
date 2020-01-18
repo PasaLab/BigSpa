@@ -2,25 +2,321 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="240c4cd6-2714-4e54-bbc8-1f2e0417ea12" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/repo/kvstore-interface-1.0-SNAPSHOT.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__cn_edu_nju_pasalab_kvstore_interface_1_0_SNAPSHOT.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__it_unimi_dsi_fastutil_8_1_1.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/BigSpa.iml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Graspan_noBF.iml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/test_streaming/a" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/test_streaming/b" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/test_streaming/c" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/tmp_graph" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/OFFLINE/HBase_df.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/OFFLINE/HBase_pt.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/OFFLINE/utils_OFFLINE/HBase_OP.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/DO_20190119.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/DeltaSpa_20190121.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/Query_Filter_Compute_Update.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/Redis_df.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/Redis_pt.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/Redis_pt_Split.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/Redis_pt_all.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/Verification.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/flow.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Dataflow_e_formation.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Param_df.scala" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/BigSpa-1.0-SNAPSHOT.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$1$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$10.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$11.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$12.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$13.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$14.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$15$$anonfun$apply$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$15.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$16.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$17.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$2$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$9.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$main$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$main$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$$anonfun$main$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_df.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$10$$anonfun$apply$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$10.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$11.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$12.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$13.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$14.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$15.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$16.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$17.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$2$$anonfun$apply$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$4$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$9.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$check_edge_RDD$1$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$check_edge_RDD$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$main$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$main$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$main$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$main$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$$anonfun$main$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/HBase_pt.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Long_Comparator.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$1$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$10.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$11.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$12.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$13.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$14.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$15$$anonfun$apply$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$15.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$16.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$17.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$2$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$9.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$main$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$main$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$$anonfun$main$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_df.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$10.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$11.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$12.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$13.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$14.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$15.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$2$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$4$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$9$$anonfun$apply$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$9.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$main$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$main$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$main$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$main$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$main$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$main$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$$anonfun$main$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Redis_pt.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$10.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$11.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$12.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$13$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$13.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$14.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$15$$anonfun$apply$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$15$$anonfun$apply$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$15.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$16.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$17$$anonfun$apply$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$17$$anonfun$apply$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$17$$anonfun$apply$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$17.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$18.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$19$$anonfun$apply$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$19.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$20.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$21.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$22$$anonfun$apply$11.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$22.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$23.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$24$$anonfun$apply$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$24.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$25.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$26.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$27.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$8$$anonfun$apply$10.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$9.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$Union$1$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$Union$1$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$Union$1$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$Union$1$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$Union$1$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$Union$1$$anonfun$apply$9.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$Union$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$computeInPartition_pt$1$$anonfun$28.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$computeInPartition_pt$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$getLinux_input_EandN$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$getLinux_input_EandN$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$processDF$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$processDF$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$processDF$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$$anonfun$processGraph$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BIgSpa_OP.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/BigSpa_OP_java.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/DataBase_OP.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Dataflow_e_formation$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Dataflow_e_formation$$anonfun$get_e$1$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Dataflow_e_formation$$anonfun$get_e$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Dataflow_e_formation$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Dataflow_e_formation.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$Array2String$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$Query_DF$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$Query_DF$2$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$Query_DF$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$Query_PT$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$Query_PT$2$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$Query_PT$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$Triple2String$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$Update$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$$anonfun$createHBase_Table$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/HBase_OP.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Para.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Redis_OP$$anonfun$Update$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Redis_OP.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Singleton.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Edge$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Edge.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$10.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$11.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$12.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$13.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$$anonfun$9.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/Statistic.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO$$anonfun$getIO$1$$anonfun$apply$1$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO$$anonfun$getIO$1$$anonfun$apply$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO$$anonfun$getIO$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO$$anonfun$gettime$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO$$anonfun$main$1$$anonfun$apply$mcVI$sp$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO$$anonfun$main$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO$$anonfun$main$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseIO.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$getCPU$1$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$getCPU$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$getMEM$1$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$getMEM$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$gettime$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$main$1$$anonfun$apply$mcVI$sp$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$main$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$$anonfun$main$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/parseJSON.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_GC$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_GC$$anonfun$split_Linux_Union$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_GC$$anonfun$split_Linux_Union$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_GC$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_GC.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_Linux_Union$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_Linux_Union$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_Linux_Union$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_other_Union$1$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_other_Union$1$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_other_Union$1$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_other_Union$1$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_other_Union$1$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_other_Union$1$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_other_Union$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$$anonfun$split_other_Union$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_TaskTime.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$10.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$11.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$12.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$13.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$9.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$main$1$$anonfun$apply$mcVI$sp$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$$anonfun$main$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_compute.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$8.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_Linux_Union$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_Linux_Union$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_other_Union$1$$anonfun$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_other_Union$1$$anonfun$3.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_other_Union$1$$anonfun$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_other_Union$1$$anonfun$5.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_other_Union$1$$anonfun$6.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_other_Union$1$$anonfun$7.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_other_Union$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$$anonfun$split_other_Union$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/Statistic/split_shuffle_compute.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/deleteDir$$anonfun$deletedir$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/deleteDir$.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/utils/deleteDir.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/repo/kvstore-interface-1.0-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/repo/kvstore-interface-1.0-SNAPSHOT.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/BigSpa-1.0-SNAPSHOT-jar-with-dependencies.jar" afterPath="$PROJECT_DIR$/target/BigSpa-1.0-SNAPSHOT-jar-with-dependencies.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/test$$anonfun$main$1.class" afterPath="$PROJECT_DIR$/target/classes/test$$anonfun$main$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/test$.class" afterPath="$PROJECT_DIR$/target/classes/test$.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/test.class" afterPath="$PROJECT_DIR$/target/classes/test.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/original-BigSpa-1.0-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/target/original-BigSpa-1.0-SNAPSHOT.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BigSpa.iml" afterPath="$PROJECT_DIR$/BigSpa.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/grammar" afterPath="$PROJECT_DIR$/data/grammar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/test_online" afterPath="$PROJECT_DIR$/data/test_online" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/HBase_df.scala" afterPath="$PROJECT_DIR$/src/main/scala/HBase_df.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/HBase_pt.scala" afterPath="$PROJECT_DIR$/src/main/scala/HBase_pt.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/Redis_df.scala" afterPath="$PROJECT_DIR$/src/main/scala/Redis_df.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/Redis_pt.scala" afterPath="$PROJECT_DIR$/src/main/scala/Redis_pt.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/test.scala" afterPath="$PROJECT_DIR$/src/main/scala/test.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/scala/utils/Graspan_OP.scala" afterPath="$PROJECT_DIR$/src/main/scala/utils/BIgSpa_OP.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/scala/utils/Graspan_OP_java.java" afterPath="$PROJECT_DIR$/src/main/scala/utils/BigSpa_OP_java.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/flow_muitithread.scala" afterPath="$PROJECT_DIR$/src/main/scala/ONLINE/flow_muitithread.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/ONLINE/flow_ser.scala" afterPath="$PROJECT_DIR$/src/main/scala/ONLINE/flow_ser.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" />
     </list>
     <ignored path="Graspan_noBF.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,107 +338,175 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Redis_pt.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/Redis_pt.scala">
+      <file leaf-file-name="flow_muitithread.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/flow_muitithread.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1760">
-              <caret line="346" column="9" selection-start-line="346" selection-start-column="9" selection-end-line="346" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BIgSpa_OP.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/utils/BIgSpa_OP.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2336">
-              <caret line="451" column="18" selection-start-line="451" selection-start-column="18" selection-end-line="451" selection-end-column="18" />
+            <state relative-caret-position="383">
+              <caret line="759" column="11" selection-start-line="759" selection-start-column="11" selection-end-line="759" selection-end-column="11" />
               <folding>
-                <element signature="e#15#31#0" expanded="true" />
-                <element signature="n#!!doc;n#BIgSpa_OP$#0;n#!!top" expanded="false" />
-                <element signature="e#561#1234#0" expanded="false" />
-                <element signature="e#1501#1619#0" expanded="false" />
-                <element signature="e#1239#2922#0" expanded="false" />
-                <element signature="e#2925#3975#0" expanded="false" />
-                <element signature="e#3345#3808#0" expanded="false" />
-                <element signature="e#3512#3541#0" expanded="false" />
-                <element signature="e#3654#3683#0" expanded="false" />
-                <element signature="e#3687#3801#0" expanded="false" />
-                <element signature="e#3780#3799#0" expanded="false" />
-                <element signature="e#3978#5903#0" expanded="false" />
-                <element signature="e#4320#4865#0" expanded="false" />
-                <element signature="e#4363#4836#0" expanded="false" />
-                <element signature="e#4733#4813#0" expanded="false" />
-                <element signature="e#4975#5102#0" expanded="false" />
-                <element signature="e#5907#7194#0" expanded="false" />
-                <element signature="e#6532#6723#0" expanded="false" />
-                <element signature="e#7057#7165#0" expanded="false" />
-                <element signature="e#7198#7691#0" expanded="false" />
-                <element signature="e#7694#8023#0" expanded="false" />
-                <element signature="e#8028#13825#0" expanded="false" />
-                <element signature="e#9145#9313#0" expanded="false" />
-                <element signature="e#9405#10201#0" expanded="false" />
-                <element signature="e#9489#9647#0" expanded="false" />
-                <element signature="e#9677#9877#0" expanded="false" />
-                <element signature="e#10067#10104#0" expanded="false" />
-                <element signature="e#10211#12486#0" expanded="false" />
-                <element signature="e#10284#10369#0" expanded="false" />
-                <element signature="e#10845#11219#0" expanded="false" />
-                <element signature="e#10938#11023#0" expanded="false" />
-                <element signature="e#11235#11423#0" expanded="false" />
-                <element signature="e#11909#12067#0" expanded="false" />
-                <element signature="e#12097#12297#0" expanded="false" />
-                <element signature="e#12492#12518#0" expanded="false" />
-                <element signature="e#12523#12576#0" expanded="false" />
-                <element signature="e#12767#12795#0" expanded="false" />
-                <element signature="e#13238#13468#0" expanded="false" />
-                <element signature="e#13829#17920#0" expanded="false" />
-                <element signature="e#14810#15750#0" expanded="false" />
-                <element signature="e#14887#15066#0" expanded="false" />
-                <element signature="e#15073#15106#0" expanded="false" />
-                <element signature="e#15971#16121#0" expanded="false" />
-                <element signature="e#16147#16420#0" expanded="false" />
-                <element signature="e#16609#16635#0" expanded="false" />
-                <element signature="e#16640#16693#0" expanded="false" />
-                <element signature="e#16884#16912#0" expanded="false" />
-                <element signature="e#17326#17563#0" expanded="false" />
-                <element signature="e#17925#18667#0" expanded="false" />
-                <element signature="e#18595#18630#0" expanded="false" />
-                <element signature="e#18671#23884#0" expanded="false" />
-                <element signature="e#19066#23880#0" expanded="false" />
-                <element signature="e#19123#19935#0" expanded="false" />
-                <element signature="e#19237#19292#0" expanded="false" />
-                <element signature="e#19306#19927#0" expanded="false" />
-                <element signature="e#19629#19818#0" expanded="false" />
-                <element signature="e#19947#23872#0" expanded="false" />
-                <element signature="e#20045#20690#0" expanded="false" />
-                <element signature="e#20078#20652#0" expanded="false" />
-                <element signature="e#20370#20541#0" expanded="false" />
-                <element signature="e#20962#21873#0" expanded="false" />
-                <element signature="e#21343#21482#0" expanded="false" />
-                <element signature="e#21589#21670#0" expanded="false" />
-                <element signature="e#21712#21793#0" expanded="false" />
-                <element signature="e#21895#22075#0" expanded="false" />
-                <element signature="e#21959#22035#0" expanded="false" />
-                <element signature="e#22099#23765#0" expanded="false" />
-                <element signature="e#22482#22896#0" expanded="false" />
-                <element signature="e#23322#23736#0" expanded="false" />
+                <element signature="e#2#44#0" expanded="false" />
+                <element signature="e#969#992#0" expanded="false" />
+                <element signature="e#1226#1326#0" expanded="false" />
+                <element signature="e#1329#1352#0" expanded="false" />
+                <element signature="e#1433#1644#0" expanded="false" />
+                <element signature="e#1762#1858#0" expanded="false" />
+                <element signature="e#1862#2282#0" expanded="false" />
+                <element signature="e#2015#2234#0" expanded="false" />
+                <element signature="e#2085#2227#0" expanded="false" />
+                <element signature="e#2286#2335#0" expanded="false" />
+                <element signature="e#2286#2482#0" expanded="false" />
+                <element signature="e#2486#2612#0" expanded="false" />
+                <element signature="e#2615#2654#0" expanded="false" />
+                <element signature="e#2852#2877#0" expanded="false" />
+                <element signature="e#2912#2941#0" expanded="false" />
+                <element signature="e#2999#3178#0" expanded="false" />
+                <element signature="e#4088#4120#0" expanded="false" />
+                <element signature="e#4217#4258#0" expanded="false" />
+                <element signature="e#4242#4257#0" expanded="false" />
+                <element signature="e#4388#4434#0" expanded="false" />
+                <element signature="e#5634#5662#0" expanded="false" />
+                <element signature="e#5866#5898#0" expanded="false" />
+                <element signature="e#6001#6827#0" expanded="false" />
+                <element signature="e#6258#6496#0" expanded="false" />
+                <element signature="e#8453#23873#0" expanded="false" />
+                <element signature="e#8677#8704#0" expanded="false" />
+                <element signature="e#8791#8882#0" expanded="false" />
+                <element signature="e#8887#8998#0" expanded="false" />
+                <element signature="e#9060#9387#0" expanded="false" />
+                <element signature="e#9447#9768#0" expanded="false" />
+                <element signature="e#9480#9709#0" expanded="false" />
+                <element signature="e#10375#10500#0" expanded="false" />
+                <element signature="e#10666#10740#0" expanded="false" />
+                <element signature="e#10994#11078#0" expanded="false" />
+                <element signature="e#11234#11328#0" expanded="false" />
+                <element signature="e#11243#11327#0" expanded="false" />
+                <element signature="e#11432#11466#0" expanded="false" />
+                <element signature="e#11544#11574#0" expanded="false" />
+                <element signature="e#11626#12616#0" expanded="false" />
+                <element signature="e#11709#12599#0" expanded="false" />
+                <element signature="e#11743#12591#0" expanded="false" />
+                <element signature="e#11758#11800#0" expanded="false" />
+                <element signature="e#11958#12260#0" expanded="false" />
+                <element signature="e#12036#12248#0" expanded="false" />
+                <element signature="e#12124#12234#0" expanded="false" />
+                <element signature="e#12272#12324#0" expanded="false" />
+                <element signature="e#12468#12581#0" expanded="false" />
+                <element signature="e#12679#13297#0" expanded="false" />
+                <element signature="e#12759#12795#0" expanded="false" />
+                <element signature="e#12932#13016#0" expanded="false" />
+                <element signature="e#13023#13059#0" expanded="false" />
+                <element signature="e#13196#13280#0" expanded="false" />
+                <element signature="e#13638#13855#0" expanded="false" />
+                <element signature="e#13721#13819#0" expanded="false" />
+                <element signature="e#13900#13930#0" expanded="false" />
+                <element signature="e#14017#14907#0" expanded="false" />
+                <element signature="e#14140#14890#0" expanded="false" />
+                <element signature="e#14224#14882#0" expanded="false" />
+                <element signature="e#14344#14872#0" expanded="false" />
+                <element signature="e#14411#14860#0" expanded="false" />
+                <element signature="e#14510#14846#0" expanded="false" />
+                <element signature="e#14549#14679#0" expanded="false" />
+                <element signature="e#14700#14830#0" expanded="false" />
+                <element signature="e#15162#15195#0" expanded="false" />
+                <element signature="e#15293#15503#0" expanded="false" />
+                <element signature="e#15313#15407#0" expanded="false" />
+                <element signature="e#15549#15660#0" expanded="false" />
+                <element signature="e#24275#24308#0" expanded="false" />
+                <element signature="e#24799#25028#0" expanded="false" />
+                <element signature="e#25331#25533#0" expanded="false" />
+                <element signature="e#25901#25995#0" expanded="false" />
+                <element signature="e#25910#25994#0" expanded="false" />
+                <element signature="e#26141#26564#0" expanded="false" />
+                <element signature="e#26214#26528#0" expanded="false" />
+                <element signature="e#26239#26527#0" expanded="false" />
+                <element signature="e#26347#26525#0" expanded="false" />
+                <element signature="e#26399#26524#0" expanded="false" />
+                <element signature="e#26429#26523#0" expanded="false" />
+                <element signature="e#26896#28762#0" expanded="false" />
+                <element signature="e#27016#28746#0" expanded="false" />
+                <element signature="e#27069#28744#0" expanded="false" />
+                <element signature="e#27311#28467#0" expanded="false" />
+                <element signature="e#27325#27369#0" expanded="false" />
+                <element signature="e#27392#27775#0" expanded="false" />
+                <element signature="e#27481#27761#0" expanded="false" />
+                <element signature="e#27581#27745#0" expanded="false" />
+                <element signature="e#27788#27832#0" expanded="false" />
+                <element signature="e#27905#28466#0" expanded="false" />
+                <element signature="e#28043#28465#0" expanded="false" />
+                <element signature="e#28125#28242#0" expanded="false" />
+                <element signature="e#28272#28389#0" expanded="false" />
+                <element signature="e#28478#28520#0" expanded="false" />
+                <element signature="e#28542#28733#0" expanded="false" />
+                <element signature="e#29304#30253#0" expanded="false" />
+                <element signature="e#29363#29451#0" expanded="false" />
+                <element signature="e#29527#29580#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BigSpa_OP_java.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/utils/BigSpa_OP_java.java">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-258">
-              <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+            <state relative-caret-position="4704">
+              <caret line="147" column="25" selection-start-line="147" selection-start-column="25" selection-end-line="147" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="flow_ser.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/flow_ser.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="575">
+              <caret line="829" column="0" selection-start-line="829" selection-start-column="0" selection-end-line="829" selection-end-column="0" />
+              <folding>
+                <element signature="e#1215#1315#0" expanded="false" />
+                <element signature="e#1422#1633#0" expanded="false" />
+                <element signature="e#1751#1847#0" expanded="false" />
+                <element signature="e#1851#2271#0" expanded="false" />
+                <element signature="e#2275#2471#0" expanded="false" />
+                <element signature="e#9624#11145#0" expanded="false" />
+                <element signature="e#11149#26573#0" expanded="false" />
+                <element signature="e#15379#15997#0" expanded="false" />
+                <element signature="e#18249#18360#0" expanded="false" />
+                <element signature="e#26578#33135#0" expanded="false" />
+                <element signature="e#29602#31468#0" expanded="false" />
+                <element signature="e#32233#32286#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Node_Info.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Node_Info.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="18" column="48" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Param_pt.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/utils_OFFLINE/Param_pt.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-320">
+              <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Package Object" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -155,18 +519,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/scala/SparkReadHbase.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/Statistic.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/Graspan_pureRDD.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/Graspan_noBF.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/HBase_OP.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/test.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/Redis_pt.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Property.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/OFFLINE/HBase_df.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/OFFLINE/HBase_pt.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/OFFLINE/Redis_df.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/OFFLINE/Redis_pt.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/OFFLINE/Redis_pt_Split.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/DeltaSpa_20190121.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/BigSpa_OP_java.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/DataBase_OP.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/Redis_df.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/Redis_pt_Split.scala" />
+        <option value="$PROJECT_DIR$/data/test_online" />
+        <option value="$PROJECT_DIR$/data/result/grammar_online" />
+        <option value="$PROJECT_DIR$/src/main/java/Student.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/BIgSpa_OP.scala" />
+        <option value="$PROJECT_DIR$/src/main/java/ProcessOffLineResult.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/Redis_pt_all.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/ProtocolBuffer/map_uid_counts_Protobuf.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/ProtocolBuffer/testProtocolBuffer.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Query_Filter_Compute_Update.scala" />
+        <option value="$PROJECT_DIR$/data/result/test_add" />
+        <option value="$PROJECT_DIR$/data/test_streaming/test_add" />
+        <option value="$PROJECT_DIR$/data/test_streaming/test_add.csv" />
+        <option value="$PROJECT_DIR$/data/test_streaming/add1.csv" />
+        <option value="$PROJECT_DIR$/data/test_streaming/test_add_1.csv" />
+        <option value="$PROJECT_DIR$/data/test_streaming/test_add_2.csv" />
+        <option value="$PROJECT_DIR$/data/test_streaming/a" />
+        <option value="$PROJECT_DIR$/data/test_streaming/b" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/Redis_pt.scala" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/scala/utils/Graspan_OP.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/utils/Graspan_OP_java.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/utils/BigSpa_OP_java.java" />
-        <option value="$PROJECT_DIR$/src/main/scala/utils/BIgSpa_OP.scala" />
+        <option value="$PROJECT_DIR$/src/main/java/formRandomNewEdges.java" />
+        <option value="$PROJECT_DIR$/src/main/java/formRandomDelEdges.java" />
+        <option value="$PROJECT_DIR$/data/tmp_graph" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/formRandomAddEdges.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/formRandomAddEdges_purenewnodes.java" />
+        <option value="$PROJECT_DIR$/src/main/java/formRandomAddEdges_purenewnodes.java" />
+        <option value="$PROJECT_DIR$/src/main/java/formRandomAddEdges.java" />
+        <option value="$PROJECT_DIR$/src/main/java/FormAdd_large.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/Query_Filter_Compute_Update.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/Verification.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/flow.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/test.scala" />
+        <option value="$PROJECT_DIR$/src/main/java/future_DeserializedBytes.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/ProtocolBuffer/future_DeserializedBytes.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Param_pt.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/ProtocolBuffer/ProtocolBuffer_OP.java" />
+        <option value="$PROJECT_DIR$/src/main/java/test_java.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Redis_OP.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Node_Info.java" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/flow_ser.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/ONLINE/flow_muitithread.scala" />
       </list>
     </option>
   </component>
@@ -185,14 +588,7 @@
     </option>
   </component>
   <component name="MavenProjectNavigator">
-    <treeState>
-      <PATH>
-        <PATH_ELEMENT>
-          <option name="myItemId" value="" />
-          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
-        </PATH_ELEMENT>
-      </PATH>
-    </treeState>
+    <treeState />
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
@@ -243,135 +639,54 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="utils" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BigSpa" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="repo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="Console" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.language" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="H:/BigSpa_clean" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://H:/BigSpa/src/main/scala/OFFLINE/Redis_pt.scala" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="H:\Graspan_noBF\data\correctresult" />
-      <recent name="H:\Graspan_noBF\data" />
-      <recent name="H:\Graspan_noBF\src" />
-      <recent name="H:\Graspan_noBF\data\nosplit_1" />
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\BigSpa\data\test_streaming" />
+      <recent name="H:\BigSpa\src\main\java" />
+      <recent name="H:\BigSpa\src\main\scala\ONLINE\utils_ONLINE" />
+      <recent name="H:\BigSpa\src\main\scala\OFFLINE\utils_OFFLINE" />
+      <recent name="H:\BigSpa\src\main\scala\ONLINE" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ONLINE" />
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="H:\BigSpa\data\test_streaming" />
+      <recent name="H:\BigSpa\data" />
+      <recent name="H:\BigSpa\src\main\scala\ONLINE\ProtocolBuffer" />
       <recent name="H:\BigSpa\repo" />
-      <recent name="H:\Graspan_noBF\data" />
-      <recent name="H:\Graspan_noBF\repo" />
-      <recent name="H:\Graspan_noBF\src\main\scala" />
-      <recent name="H:\Graspan_noBF" />
+      <recent name="H:\Graspan_noBF\data\correctresult" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.test">
-    <configuration default="false" name="Statistic" type="Application" factoryName="Application" temporary="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="Statistic" />
+  <component name="RunManager" selected="Application.test_java">
+    <configuration default="false" name="Statistic (1)" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="utils.Statistic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="utils.Statistic.Statistic" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -380,13 +695,28 @@
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="Graspan_noBF" />
+      <module name="BigSpa" />
       <envs />
       <method />
     </configuration>
     <configuration default="false" name="test" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="test" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BigSpa" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="test_java" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="test_java" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -395,7 +725,47 @@
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="Graspan_noBF" />
+      <module name="BigSpa" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="DeltaSpa_20190121" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value=".*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="ONLINE.DeltaSpa_20190121" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BigSpa" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="ProtocolBuffer_OP" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="ONLINE.ProtocolBuffer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="ONLINE.ProtocolBuffer.ProtocolBuffer_OP" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BigSpa" />
       <envs />
       <method />
     </configuration>
@@ -688,14 +1058,20 @@
       <envs />
       <method />
     </configuration>
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="Application.Statistic" />
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Application.Statistic (1)" />
       <item index="1" class="java.lang.String" itemvalue="Application.test" />
+      <item index="2" class="java.lang.String" itemvalue="Application.test_java" />
+      <item index="3" class="java.lang.String" itemvalue="Application.DeltaSpa_20190121" />
+      <item index="4" class="java.lang.String" itemvalue="Application.ProtocolBuffer_OP" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Application.test" />
-        <item index="1" class="java.lang.String" itemvalue="Application.Statistic" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Application.test_java" />
+        <item index="1" class="java.lang.String" itemvalue="Application.test" />
+        <item index="2" class="java.lang.String" itemvalue="Application.ProtocolBuffer_OP" />
+        <item index="3" class="java.lang.String" itemvalue="Application.DeltaSpa_20190121" />
+        <item index="4" class="java.lang.String" itemvalue="Application.Statistic (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -707,6 +1083,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="240c4cd6-2714-4e54-bbc8-1f2e0417ea12" name="Default" comment="" />
@@ -717,37 +1096,78 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.074252136" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.57217574" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27092052" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32910052" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29811716" sideWeight="0.53365386" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.081318684" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32910052" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.374477" sideWeight="0.42200854" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29811716" sideWeight="0.46634614" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15972222" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Memory View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32845187" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32845187" sideWeight="0.4957265" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25641027" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Memory View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17254274" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24476987" sideWeight="0.6143162" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.05982906" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39853558" sideWeight="0.49786323" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37694705" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" x="63" y="815" width="1736" height="718" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37029287" sideWeight="0.4332265" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="63" y="815" width="1736" height="718" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29811716" sideWeight="0.53365386" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.081318684" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Memory View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17254274" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.05982906" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39853558" sideWeight="0.49786323" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32910052" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37029287" sideWeight="0.4332265" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="63" y="815" width="1736" height="718" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32910052" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.374477" sideWeight="0.42200854" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29811716" sideWeight="0.46634614" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32845187" sideWeight="0.4957265" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31143162" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24476987" sideWeight="0.6143162" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -762,7 +1182,33 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="5" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="scala-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/utils/Property.scala</url>
+          <line>9</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="scala-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/utils/BIgSpa_OP.scala</url>
+          <line>330</line>
+          <properties />
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/cn/edu/nju/pasalab/kvstore-interface/1.0-SNAPSHOT/kvstore-interface-1.0-SNAPSHOT.jar!/cn/edu/nju/pasalab/db/ShardedRedisClusterClient.class</url>
+          <line>298</line>
+          <properties />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/cn/edu/nju/pasalab/kvstore-interface/1.0-SNAPSHOT/kvstore-interface-1.0-SNAPSHOT.jar!/cn/edu/nju/pasalab/db/ShardedRedisClusterClient.class</url>
+          <line>288</line>
+          <properties />
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="32" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -771,192 +1217,596 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/log4j.properties">
+    <entry file="jar://E:/Java/jdk1.8.0_152/src.zip!/java/util/Collections.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="985">
+          <caret line="1455" column="38" selection-start-line="1455" selection-start-column="38" selection-end-line="1455" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.6.0/protobuf-java-3.6.0.jar!/com/google/protobuf/MapField.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2272">
+          <caret line="87" column="17" selection-start-line="87" selection-start-column="17" selection-end-line="87" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/ProtocolBuffer/map_uid_counts.proto">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/test.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/ProtocolBuffer/map_uid_counts_Protobuf.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+        <state relative-caret-position="5888">
+          <caret line="195" column="39" selection-start-line="195" selection-start-column="39" selection-end-line="195" selection-end-column="39" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Statistic.scala" />
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/BigSpa_OP_java.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5568">
-          <caret line="174" column="32" selection-start-line="174" selection-start-column="32" selection-end-line="174" selection-end-column="32" />
-          <folding>
-            <element signature="n#repository#0;n#repositories#0;n#project#0;n#!!top" expanded="false" />
-            <element signature="n#repository#1;n#repositories#0;n#project#0;n#!!top" expanded="false" />
-            <element signature="n#repository#2;n#repositories#0;n#project#0;n#!!top" expanded="false" />
-            <element signature="n#repository#3;n#repositories#0;n#project#0;n#!!top" expanded="false" />
-            <element signature="n#pluginRepositories#0;n#project#0;n#!!top" expanded="false" />
-          </folding>
+        <state relative-caret-position="-279">
+          <caret line="66" column="19" selection-start-line="66" selection-start-column="18" selection-end-line="66" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_noBF.scala" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/HBase_OP.scala" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/deleteDir.scala" />
-    <entry file="file://$PROJECT_DIR$/data/complete_192par.log" />
-    <entry file="file://$PROJECT_DIR$/data/result_remove/part-00000" />
-    <entry file="file://$PROJECT_DIR$/data/part-00000" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Para.scala" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/SparkReadHbase.scala" />
-    <entry file="file://$PROJECT_DIR$/src/log4j.properties">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.11.8/scala-library-2.11.8-sources.jar!/scala/concurrent/Future.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
-          <folding />
+        <state relative-caret-position="190">
+          <caret line="449" column="7" selection-start-line="449" selection-start-column="7" selection-end-line="449" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_pureRDD.scala" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Statistic.scala" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Graspan_noBF.scala" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/HBase_OP.scala" />
-    <entry file="file://$PROJECT_DIR$/dependency-reduced-pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/formRandomDelEdges.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8928">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="224">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BigSpa.iml">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.11.8/scala-library-2.11.8-sources.jar!/scala/collection/TraversableLike.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="231" column="5" selection-start-line="231" selection-start-column="5" selection-end-line="231" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/formRandomAddEdges.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/FormAdd_small.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="24" column="11" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/FormAdd_large.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="62" column="43" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ProcessOffLineResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2432">
+          <caret line="101" column="72" selection-start-line="101" selection-start-column="72" selection-end-line="101" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/FileOperation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
-          <caret line="6" column="84" selection-start-line="6" selection-start-column="84" selection-end-line="6" selection-end-column="84" />
+          <caret line="6" column="54" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/Verification.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7680">
+          <caret line="262" column="0" selection-start-line="262" selection-start-column="0" selection-end-line="337" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/WordCount.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="7" column="7" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/ProtocolBuffer/future_DeserializedBytes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="25" column="50" selection-start-line="25" selection-start-column="50" selection-end-line="25" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Param_pt.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2432">
+          <caret line="76" column="70" selection-start-line="76" selection-start-column="70" selection-end-line="76" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/Redis_pt_all.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10432">
+          <caret line="336" column="61" selection-start-line="336" selection-start-column="61" selection-end-line="336" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/Redis_pt.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9248">
+          <caret line="299" column="9" selection-start-line="299" selection-start-column="9" selection-end-line="299" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/test.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="29" column="73" selection-start-line="29" selection-start-column="4" selection-end-line="29" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/style" />
+    <entry file="file://$PROJECT_DIR$/data/httpd.pt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/httpd.df">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1420">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/test_java.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1216">
+          <caret line="81" column="88" selection-start-line="81" selection-start-column="88" selection-end-line="81" selection-end-column="88" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/BIgSpa_OP.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1248">
+          <caret line="47" column="80" selection-start-line="47" selection-start-column="69" selection-end-line="47" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/Query_Filter_Compute_Update.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="148" column="37" selection-start-line="148" selection-start-column="37" selection-end-line="148" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/ProtocolBuffer/ProtocolBuffer_OP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="89" column="19" selection-start-line="89" selection-start-column="19" selection-end-line="89" selection-end-column="19" />
+          <folding>
+            <element signature="method#Serialzed_Map_UidCounts#0;class#ProtocolBuffer_OP#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Redis_OP.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="347" column="4" selection-start-line="347" selection-start-column="4" selection-end-line="347" selection-end-column="4" />
+          <folding>
+            <element signature="e#629#701#0" expanded="false" />
+            <element signature="e#1165#1604#0" expanded="false" />
+            <element signature="e#2561#2661#0" expanded="false" />
+            <element signature="e#2665#3501#0" expanded="false" />
+            <element signature="e#4371#5184#0" expanded="false" />
+            <element signature="e#6524#7643#0" expanded="false" />
+            <element signature="e#7647#8191#0" expanded="false" />
+            <element signature="e#8397#9318#0" expanded="false" />
+            <element signature="e#10881#11563#0" expanded="false" />
+            <element signature="e#11800#12738#0" expanded="false" />
+            <element signature="e#12741#13682#0" expanded="false" />
+            <element signature="e#13683#13791#0" expanded="false" />
+            <element signature="e#13683#16228#0" expanded="false" />
+            <element signature="e#16233#17101#0" expanded="false" />
+            <element signature="e#17104#17247#0" expanded="false" />
+            <element signature="e#17250#18203#0" expanded="false" />
+            <element signature="e#18206#18404#0" expanded="false" />
+            <element signature="e#18409#20111#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/utils_OFFLINE/BIgSpa_OP.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="43">
+          <caret line="474" column="24" selection-start-line="474" selection-start-column="16" selection-end-line="474" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/Redis_pt.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-574">
+          <caret line="249" column="18" selection-start-line="249" selection-start-column="18" selection-end-line="249" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/Redis_df.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="72" column="2" selection-start-line="72" selection-start-column="2" selection-end-line="72" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/utils_OFFLINE/Dataflow_e_formation.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/utils_OFFLINE/Param_pt.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-320">
+          <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/utils_OFFLINE/Param_df.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-32">
+          <caret line="23" column="36" selection-start-line="23" selection-start-column="2" selection-end-line="23" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/Redis_pt_Split.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="393" column="0" selection-start-line="393" selection-start-column="0" selection-end-line="393" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Node_Info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="18" column="48" selection-start-line="18" selection-start-column="10" selection-end-line="18" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/flow.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="733">
+          <caret line="953" column="11" selection-start-line="953" selection-start-column="11" selection-end-line="953" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/HBase_pt.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3136">
+          <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/OFFLINE/HBase_df.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="9" column="7" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/flow_ser.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="829" column="0" selection-start-line="829" selection-start-column="0" selection-end-line="829" selection-end-column="0" />
+          <folding>
+            <element signature="e#1215#1315#0" expanded="false" />
+            <element signature="e#1422#1633#0" expanded="false" />
+            <element signature="e#1751#1847#0" expanded="false" />
+            <element signature="e#1851#2271#0" expanded="false" />
+            <element signature="e#2275#2471#0" expanded="false" />
+            <element signature="e#9624#11145#0" expanded="false" />
+            <element signature="e#11149#26573#0" expanded="false" />
+            <element signature="e#15379#15997#0" expanded="false" />
+            <element signature="e#18249#18360#0" expanded="false" />
+            <element signature="e#26578#33135#0" expanded="false" />
+            <element signature="e#29602#31468#0" expanded="false" />
+            <element signature="e#32233#32286#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/utils_ONLINE/Param_df.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/psql.pt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2208">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/grammar">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/grammar_online">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/test_online">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/tmp_graph">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1472">
+          <caret line="46" column="9" selection-start-line="0" selection-start-column="0" selection-end-line="46" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/ONLINE/flow_muitithread.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="759" column="11" selection-start-line="759" selection-start-column="11" selection-end-line="759" selection-end-column="11" />
+          <folding>
+            <element signature="e#2#44#0" expanded="false" />
+            <element signature="e#969#992#0" expanded="false" />
+            <element signature="e#1226#1326#0" expanded="false" />
+            <element signature="e#1329#1352#0" expanded="false" />
+            <element signature="e#1433#1644#0" expanded="false" />
+            <element signature="e#1762#1858#0" expanded="false" />
+            <element signature="e#1862#2282#0" expanded="false" />
+            <element signature="e#2015#2234#0" expanded="false" />
+            <element signature="e#2085#2227#0" expanded="false" />
+            <element signature="e#2286#2335#0" expanded="false" />
+            <element signature="e#2286#2482#0" expanded="false" />
+            <element signature="e#2486#2612#0" expanded="false" />
+            <element signature="e#2615#2654#0" expanded="false" />
+            <element signature="e#2852#2877#0" expanded="false" />
+            <element signature="e#2912#2941#0" expanded="false" />
+            <element signature="e#2999#3178#0" expanded="false" />
+            <element signature="e#4088#4120#0" expanded="false" />
+            <element signature="e#4217#4258#0" expanded="false" />
+            <element signature="e#4242#4257#0" expanded="false" />
+            <element signature="e#4388#4434#0" expanded="false" />
+            <element signature="e#5634#5662#0" expanded="false" />
+            <element signature="e#5866#5898#0" expanded="false" />
+            <element signature="e#6001#6827#0" expanded="false" />
+            <element signature="e#6258#6496#0" expanded="false" />
+            <element signature="e#8453#23873#0" expanded="false" />
+            <element signature="e#8677#8704#0" expanded="false" />
+            <element signature="e#8791#8882#0" expanded="false" />
+            <element signature="e#8887#8998#0" expanded="false" />
+            <element signature="e#9060#9387#0" expanded="false" />
+            <element signature="e#9447#9768#0" expanded="false" />
+            <element signature="e#9480#9709#0" expanded="false" />
+            <element signature="e#10375#10500#0" expanded="false" />
+            <element signature="e#10666#10740#0" expanded="false" />
+            <element signature="e#10994#11078#0" expanded="false" />
+            <element signature="e#11234#11328#0" expanded="false" />
+            <element signature="e#11243#11327#0" expanded="false" />
+            <element signature="e#11432#11466#0" expanded="false" />
+            <element signature="e#11544#11574#0" expanded="false" />
+            <element signature="e#11626#12616#0" expanded="false" />
+            <element signature="e#11709#12599#0" expanded="false" />
+            <element signature="e#11743#12591#0" expanded="false" />
+            <element signature="e#11758#11800#0" expanded="false" />
+            <element signature="e#11958#12260#0" expanded="false" />
+            <element signature="e#12036#12248#0" expanded="false" />
+            <element signature="e#12124#12234#0" expanded="false" />
+            <element signature="e#12272#12324#0" expanded="false" />
+            <element signature="e#12468#12581#0" expanded="false" />
+            <element signature="e#12679#13297#0" expanded="false" />
+            <element signature="e#12759#12795#0" expanded="false" />
+            <element signature="e#12932#13016#0" expanded="false" />
+            <element signature="e#13023#13059#0" expanded="false" />
+            <element signature="e#13196#13280#0" expanded="false" />
+            <element signature="e#13638#13855#0" expanded="false" />
+            <element signature="e#13721#13819#0" expanded="false" />
+            <element signature="e#13900#13930#0" expanded="false" />
+            <element signature="e#14017#14907#0" expanded="false" />
+            <element signature="e#14140#14890#0" expanded="false" />
+            <element signature="e#14224#14882#0" expanded="false" />
+            <element signature="e#14344#14872#0" expanded="false" />
+            <element signature="e#14411#14860#0" expanded="false" />
+            <element signature="e#14510#14846#0" expanded="false" />
+            <element signature="e#14549#14679#0" expanded="false" />
+            <element signature="e#14700#14830#0" expanded="false" />
+            <element signature="e#15162#15195#0" expanded="false" />
+            <element signature="e#15293#15503#0" expanded="false" />
+            <element signature="e#15313#15407#0" expanded="false" />
+            <element signature="e#15549#15660#0" expanded="false" />
+            <element signature="e#24275#24308#0" expanded="false" />
+            <element signature="e#24799#25028#0" expanded="false" />
+            <element signature="e#25331#25533#0" expanded="false" />
+            <element signature="e#25901#25995#0" expanded="false" />
+            <element signature="e#25910#25994#0" expanded="false" />
+            <element signature="e#26141#26564#0" expanded="false" />
+            <element signature="e#26214#26528#0" expanded="false" />
+            <element signature="e#26239#26527#0" expanded="false" />
+            <element signature="e#26347#26525#0" expanded="false" />
+            <element signature="e#26399#26524#0" expanded="false" />
+            <element signature="e#26429#26523#0" expanded="false" />
+            <element signature="e#26896#28762#0" expanded="false" />
+            <element signature="e#27016#28746#0" expanded="false" />
+            <element signature="e#27069#28744#0" expanded="false" />
+            <element signature="e#27311#28467#0" expanded="false" />
+            <element signature="e#27325#27369#0" expanded="false" />
+            <element signature="e#27392#27775#0" expanded="false" />
+            <element signature="e#27481#27761#0" expanded="false" />
+            <element signature="e#27581#27745#0" expanded="false" />
+            <element signature="e#27788#27832#0" expanded="false" />
+            <element signature="e#27905#28466#0" expanded="false" />
+            <element signature="e#28043#28465#0" expanded="false" />
+            <element signature="e#28125#28242#0" expanded="false" />
+            <element signature="e#28272#28389#0" expanded="false" />
+            <element signature="e#28478#28520#0" expanded="false" />
+            <element signature="e#28542#28733#0" expanded="false" />
+            <element signature="e#29304#30253#0" expanded="false" />
+            <element signature="e#29363#29451#0" expanded="false" />
+            <element signature="e#29527#29580#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/f.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grammar.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/v.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4960">
-          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
-          <folding>
-            <element signature="n#repository#0;n#repositories#0;n#project#0;n#!!top" expanded="false" />
-            <element signature="n#repository#1;n#repositories#0;n#project#0;n#!!top" expanded="false" />
-            <element signature="n#repository#2;n#repositories#0;n#project#0;n#!!top" expanded="false" />
-            <element signature="n#repository#3;n#repositories#0;n#project#0;n#!!top" expanded="false" />
-            <element signature="n#pluginRepositories#0;n#project#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/utils/BigSpa_OP_java.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-258">
-          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
+        <state relative-caret-position="4704">
+          <caret line="147" column="25" selection-start-line="147" selection-start-column="25" selection-end-line="147" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/utils/BIgSpa_OP.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2336">
-          <caret line="451" column="18" selection-start-line="451" selection-start-column="18" selection-end-line="451" selection-end-column="18" />
-          <folding>
-            <element signature="e#15#31#0" expanded="true" />
-            <element signature="n#!!doc;n#BIgSpa_OP$#0;n#!!top" expanded="false" />
-            <element signature="e#561#1234#0" expanded="false" />
-            <element signature="e#1501#1619#0" expanded="false" />
-            <element signature="e#1239#2922#0" expanded="false" />
-            <element signature="e#2925#3975#0" expanded="false" />
-            <element signature="e#3345#3808#0" expanded="false" />
-            <element signature="e#3512#3541#0" expanded="false" />
-            <element signature="e#3654#3683#0" expanded="false" />
-            <element signature="e#3687#3801#0" expanded="false" />
-            <element signature="e#3780#3799#0" expanded="false" />
-            <element signature="e#3978#5903#0" expanded="false" />
-            <element signature="e#4320#4865#0" expanded="false" />
-            <element signature="e#4363#4836#0" expanded="false" />
-            <element signature="e#4733#4813#0" expanded="false" />
-            <element signature="e#4975#5102#0" expanded="false" />
-            <element signature="e#5907#7194#0" expanded="false" />
-            <element signature="e#6532#6723#0" expanded="false" />
-            <element signature="e#7057#7165#0" expanded="false" />
-            <element signature="e#7198#7691#0" expanded="false" />
-            <element signature="e#7694#8023#0" expanded="false" />
-            <element signature="e#8028#13825#0" expanded="false" />
-            <element signature="e#9145#9313#0" expanded="false" />
-            <element signature="e#9405#10201#0" expanded="false" />
-            <element signature="e#9489#9647#0" expanded="false" />
-            <element signature="e#9677#9877#0" expanded="false" />
-            <element signature="e#10067#10104#0" expanded="false" />
-            <element signature="e#10211#12486#0" expanded="false" />
-            <element signature="e#10284#10369#0" expanded="false" />
-            <element signature="e#10845#11219#0" expanded="false" />
-            <element signature="e#10938#11023#0" expanded="false" />
-            <element signature="e#11235#11423#0" expanded="false" />
-            <element signature="e#11909#12067#0" expanded="false" />
-            <element signature="e#12097#12297#0" expanded="false" />
-            <element signature="e#12492#12518#0" expanded="false" />
-            <element signature="e#12523#12576#0" expanded="false" />
-            <element signature="e#12767#12795#0" expanded="false" />
-            <element signature="e#13238#13468#0" expanded="false" />
-            <element signature="e#13829#17920#0" expanded="false" />
-            <element signature="e#14810#15750#0" expanded="false" />
-            <element signature="e#14887#15066#0" expanded="false" />
-            <element signature="e#15073#15106#0" expanded="false" />
-            <element signature="e#15971#16121#0" expanded="false" />
-            <element signature="e#16147#16420#0" expanded="false" />
-            <element signature="e#16609#16635#0" expanded="false" />
-            <element signature="e#16640#16693#0" expanded="false" />
-            <element signature="e#16884#16912#0" expanded="false" />
-            <element signature="e#17326#17563#0" expanded="false" />
-            <element signature="e#17925#18667#0" expanded="false" />
-            <element signature="e#18595#18630#0" expanded="false" />
-            <element signature="e#18671#23884#0" expanded="false" />
-            <element signature="e#19066#23880#0" expanded="false" />
-            <element signature="e#19123#19935#0" expanded="false" />
-            <element signature="e#19237#19292#0" expanded="false" />
-            <element signature="e#19306#19927#0" expanded="false" />
-            <element signature="e#19629#19818#0" expanded="false" />
-            <element signature="e#19947#23872#0" expanded="false" />
-            <element signature="e#20045#20690#0" expanded="false" />
-            <element signature="e#20078#20652#0" expanded="false" />
-            <element signature="e#20370#20541#0" expanded="false" />
-            <element signature="e#20962#21873#0" expanded="false" />
-            <element signature="e#21343#21482#0" expanded="false" />
-            <element signature="e#21589#21670#0" expanded="false" />
-            <element signature="e#21712#21793#0" expanded="false" />
-            <element signature="e#21895#22075#0" expanded="false" />
-            <element signature="e#21959#22035#0" expanded="false" />
-            <element signature="e#22099#23765#0" expanded="false" />
-            <element signature="e#22482#22896#0" expanded="false" />
-            <element signature="e#23322#23736#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/test.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-160">
-          <caret line="16" column="40" selection-start-line="16" selection-start-column="40" selection-end-line="16" selection-end-column="40" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/Redis_pt.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1760">
-          <caret line="346" column="9" selection-start-line="346" selection-start-column="9" selection-end-line="346" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>scala-sdk-2.11.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>BigSpa</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: asm:asm:3.1</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

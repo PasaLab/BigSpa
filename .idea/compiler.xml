@@ -22,11 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="BigSpa" />
         <module name="Graspan_noBF" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Graspan_noBF" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="BigSpa" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

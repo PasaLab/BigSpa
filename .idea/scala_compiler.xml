@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="Maven 1" modules="Graspan_noBF">
+    <profile name="Maven 1" modules="Graspan_noBF,BigSpa">
       <parameters>
         <parameter value="-target:jvm-1.8" />
       </parameters>
