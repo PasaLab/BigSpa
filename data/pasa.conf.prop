@@ -1,0 +1,3 @@
+redis.connection.pool.size=24
+redis.db.index=2
+redis.hosts.list=slave002,slave003,slave004,slave005,slave007,slave008,slave009,slave010,slave011,slave012,slave013,slave014,slave015,slave016,slave017

@@ -39,7 +39,7 @@ spark-submit \
 --conf spark.storage.unrollMemoryThreshold=10000000 \
 --conf spark.locality.wait.time=1ms \
 --conf spark.locality.wait.node=1ms \
---files pasa.conf.prop \
+--files data/pasa.conf.prop \
 --driver-memory 16G \
 --driver-class-path /home/user/class/path \
  \
@@ -82,9 +82,9 @@ The script can be run in the directory where the JAR package is located. For a d
 |                                | executor-cores        | number of cores of each executor                                                                                                                   | 24                                   |
 |                                | executor-memory       | memory of each executor                                                                                                                            | 16G                                  |
 |                                | conf                  | params of Spark or Java                                                                                                                            |                                      |
-|                                | files                 | file path for Redis                                                                                                                                | pasa.conf.prop                       |
+|                                | files                 | file path for Redis                                                                                                                                | data/pasa.conf.prop                       |
 |                                | driver-memory         |                                                                                                                                                    | 16G                                  |
-|                                | driver-class-path     |                                                                                                                                                    | /home/experiment/jiangxi/res/        |
+|                                | driver-class-path     |                                                                                                                                                    |                                      |
 | General parameters             | islocal               | whether to perform local debugging                                                                                                                 | FALSE                                |
 |                                | master                | HDFS address                                                                                                                                       | hdfs://master:9001/                  |
 |                                | input_graph           | file path of the input graph                                                                                                                       | /data/linux.pt                       |
